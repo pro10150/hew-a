@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(MyApp());
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'You have pushed the button this many times yeah:',
             ),
             Text(
               '$_counter',
@@ -108,6 +109,23 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        //backgroundColor: Color(0xffffab91),
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.search), label: 'Search'),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.cheese), label: 'Fridge'),
+          BottomNavigationBarItem(
+              icon: FaIcon(FontAwesomeIcons.solidUser), label: 'Profile'),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
