@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hewa/config/palette.dart';
 
 void main() {
@@ -127,15 +128,15 @@ class _MyHomePageState extends State<MyHomePage> {
         //backgroundColor: Color(0xffffab91),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.home),
+            icon: Icon(MdiIcons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.search), label: 'Search'),
+              icon: Icon(MdiIcons.magnify), label: 'Search'),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.cheese), label: 'Fridge'),
+              icon: Icon(MdiIcons.fridgeIndustrial), label: 'Fridge'),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.solidUser), label: 'Profile'),
+              icon: Icon(MdiIcons.account), label: 'Profile'),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
