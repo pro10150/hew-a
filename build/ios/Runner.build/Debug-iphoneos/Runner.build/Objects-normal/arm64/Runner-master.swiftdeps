@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)"
+options: "771ba61dc8176d836ef38f77c180336b7d6069f9022f0feda71b83753d684aa9"
+build_start_time: [1640201974, 896512031]
+build_end_time: [1640201982, 112283945]
+inputs:
+  "/Users/skooter/Desktop/Class/\u0E1B\u0E353/se/hew-a/ios/Runner/AppDelegate.swift": [1640112876, 835830211]
