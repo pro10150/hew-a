@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hewa/config/palette.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.red,
+        primarySwatch: Palette.roseBud,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -72,8 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        backgroundColor: Color(0xffffab91),
+        title: Text(widget.title)
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times yeah:',
+              'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
@@ -106,11 +106,22 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        elevation: 2.0,
+        child: Container(
+          width: 60,
+          height: 60,
+          child: Icon(
+            Icons.add,
+            size: 40,
+          ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(colors: [Color(0xFFEC7063), Color(0xFFFFAB91)])
+          ),
+        ),
+        onPressed: () {},
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         //backgroundColor: Color(0xffffab91),
