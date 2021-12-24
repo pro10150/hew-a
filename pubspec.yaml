@@ -29,6 +29,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: 9.2.0
   material_design_icons_flutter: 5.0.6595
+  page_transition: "^2.0.4"
+  animate_icons: 2.0.0
 
 dev_dependencies:
   flutter_test:

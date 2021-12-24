@@ -2,6 +2,12 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "animate_icons",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/animate_icons-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.1.6",
       "packageUri": "lib/",
@@ -116,6 +122,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "page_transition",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/page_transition-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
       "packageUri": "lib/",
@@ -200,7 +212,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-12-24T08:44:15.493784Z",
+  "generated": "2021-12-24T09:31:05.339980Z",
   "generator": "pub",
   "generatorVersion": "2.13.3"
 }
