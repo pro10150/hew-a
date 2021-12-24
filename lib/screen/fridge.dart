@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hewa/screen/fridge/ingredients.dart';
+import 'package:hewa/screen/fridge/kitchenware.dart';
 
 class Fridge extends StatefulWidget {
   static const routeName = '/';
@@ -14,17 +16,25 @@ class Fridge extends StatefulWidget {
 class _FridgeState extends State<Fridge> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Fridge'),
+    final ButtonStyle style =
+        TextButton.styleFrom(primary: Theme.of(context).colorScheme.onPrimary);
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Ingredients'),
+              Tab(
+                text: 'Kitchenwares',
+              )
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [Ingredients(), Kitchenware()],
+        ),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('Fridge Screen'),
-        ],
-      )),
     );
   }
 }

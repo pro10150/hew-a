@@ -31,6 +31,7 @@ dependencies:
   material_design_icons_flutter: 5.0.6595
   page_transition: "^2.0.4"
   animate_icons: 2.0.0
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:
