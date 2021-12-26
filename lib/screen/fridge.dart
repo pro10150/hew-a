@@ -22,7 +22,9 @@ class _FridgeState extends State<Fridge> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 50,
           bottom: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
             tabs: [
               Tab(text: 'Ingredients'),
               Tab(
