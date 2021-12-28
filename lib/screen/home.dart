@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'home/actions_toolbar.dart';
-import 'home/recipe_description.dart';
 import 'home/recipe_content.dart';
+import 'home/daily_pick.dart';
+import 'home/discover.dart';
+import 'home/trending.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -15,6 +16,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool dsc = false;
+  bool dp = true;
+  bool trd = false;
+
   @override
   Widget get topSection => Container(
         height: 100,
@@ -24,45 +29,69 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('Discover'),
-            Container(width: 15),
-            Text(
-              'Daily Pick',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  dsc = true;
+                  dp = false;
+                  trd = false;
+                });
+              },
+              child: Text(
+                'Discover',
+                style: dsc
+                    ? TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)
+                    : TextStyle(color: Colors.black, fontSize: 16),
+              ),
             ),
-            Container(
-              width: 15,
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    dsc = false;
+                    dp = true;
+                    trd = false;
+                  });
+                },
+                child: Text(
+                  'Daily Pick',
+                  style: dp
+                      ? TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18)
+                      : TextStyle(color: Colors.black, fontSize: 16),
+                )),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  dsc = false;
+                  dp = false;
+                  trd = true;
+                });
+              },
+              child: Text(
+                'Trending',
+                style: trd
+                    ? TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)
+                    : TextStyle(color: Colors.black, fontSize: 16),
+              ),
             ),
-            Text('Trending')
           ],
         ),
       );
 
-  Widget get middleSection => Expanded(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(left: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image(
-                  image: AssetImage('assets/home/food.png'),
-                  fit: BoxFit.cover,
-                  height: 430,
-                  width: 350,
-                ),
-                // decoration:
-                //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-              ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[recipeDescription(), actionsToolbar()],
-            )
-          ],
-        ),
-      );
+  Widget get middleSection => Container(
+      child: dsc
+          ? discover()
+          : dp
+              ? dailyPick()
+              : trending());
 
   Widget build(BuildContext context) {
     return Scaffold(
