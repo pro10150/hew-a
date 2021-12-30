@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		DTp/RCVz5o5XiuuK0V2cIXXNb7Y=
+		wKN1iEJsyG0dHH0pRNSZ2/be8CE=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>flutter_assets/NOTICES</key>
 		<data>
-		wNuCmQkNveTEBDM+rPnlLPXL+6U=
+		FBWUyH9iB4hBPt3BwmWYGuQ5iWU=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -30,7 +30,11 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		s++JBS3PlD9yhNS/y0LCs2nKlmw=
+		p24QL/IJiQ9FehMHOE7X5RwjkRw=
+		</data>
+		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
+		<data>
+		AX2e2+Af+55o+qU4NGv0R7xqXTg=
 		</data>
 		<key>flutter_assets/lib/assets/home/food.png</key>
 		<data>
@@ -67,11 +71,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			DTp/RCVz5o5XiuuK0V2cIXXNb7Y=
+			wKN1iEJsyG0dHH0pRNSZ2/be8CE=
 			</data>
 			<key>hash2</key>
 			<data>
-			2UXTKphJON82N6mvw5/gAf3dKl/j0FPh457nCzy0vT0=
+			woBvzY0nwT1MyZEzVVLugcXxmmyO/W85mRYqdDJi+Kk=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -89,11 +93,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			wNuCmQkNveTEBDM+rPnlLPXL+6U=
+			FBWUyH9iB4hBPt3BwmWYGuQ5iWU=
 			</data>
 			<key>hash2</key>
 			<data>
-			jgChuEECfP6PPgBcmdTnL5DjjWwEiR2Y+ty8l3rUPvc=
+			NhmPhwQfHhQl4Kq0c5C1rTNJdwm8vyj773N6pmXC1ew=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -122,11 +126,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			s++JBS3PlD9yhNS/y0LCs2nKlmw=
+			p24QL/IJiQ9FehMHOE7X5RwjkRw=
 			</data>
 			<key>hash2</key>
 			<data>
-			ckNmXomKMGnE2eIPyseUOY0j+jcGbXlFC0xF70DFSQ4=
+			hLuNvLpr/j0BqjIRRpyO+mSpWcdi40LcQZ5nkvewmfY=
+			</data>
+		</dict>
+		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			AX2e2+Af+55o+qU4NGv0R7xqXTg=
+			</data>
+			<key>hash2</key>
+			<data>
+			7RLe4CpMAX7oCqcGNExwtVV771SnOYSkwJLqTqb0wMw=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/home/food.png</key>
