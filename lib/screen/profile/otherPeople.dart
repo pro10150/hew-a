@@ -2,34 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 
-class Profile extends StatefulWidget {
+class OtherProfile extends StatefulWidget {
   static const routeName = '/';
 
-  const Profile({Key? key}) : super(key: key);
+  const OtherProfile({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _ProfileState();
+    return _OtherProfileState();
   }
 }
-
-// class _ProfileState extends State<Profile> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//         title: Text('Profile'),
-//       ),
-//       body: Center(
-//           child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: <Widget>[
-//           Text('Profile Screen'),
-//         ],
-//       )),
-//     );
-//   }
-// }
 
 class UpperClipper extends CustomClipper<Path> {
   @override
@@ -51,13 +33,13 @@ class UpperClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-class _ProfileState extends State<Profile> {
+class _OtherProfileState extends State<OtherProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(
+          child: Stack(
             children: <Widget>[
               ClipPath(
                 clipper: UpperClipper(),
@@ -204,10 +186,9 @@ class _ProfileState extends State<Profile> {
                                   textColor: Colors.white,
                                   padding: EdgeInsets.only(
                                       bottom: 0, top: 0, right: 42, left: 42),
-                                  onPressed: () =>
-                                      {navigateToEditPage(context)},
+                                  onPressed: () => {},
                                   child: Text(
-                                    "Edit Profile",
+                                    "follow",
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     ),
@@ -331,17 +312,3 @@ navigateToEditPage(BuildContext context) {
     return EditProfile();
   }));
 }
-
-var rep = new Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: <Widget>[
-    Expanded(
-      child: Image.network(
-        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-        width: 1000,
-        height: 2000,
-      ),
-    ),
-  ],
-);
