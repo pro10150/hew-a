@@ -158,6 +158,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "getwidget",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/getwidget-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.3",
       "packageUri": "lib/",
@@ -392,7 +398,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-12-29T10:02:55.979663Z",
+  "generated": "2021-12-30T19:46:49.807585Z",
   "generator": "pub",
   "generatorVersion": "2.13.3"
 }

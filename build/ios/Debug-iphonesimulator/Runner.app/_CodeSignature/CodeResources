@@ -38,7 +38,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		ykaktf6qubfyxPsulh0Ytk/3ijQ=
+		/RUuAyctGXZwnPWOxjlXIs/zOgU=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -46,11 +46,11 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		bf2W37rJHU70jPvEFCRTbEsAfxM=
+		4WXr6e/yR/bO6yTVW6RWQaZL5+E=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		wKN1iEJsyG0dHH0pRNSZ2/be8CE=
+		P4tijllxkGNmcVw9g5rR4oo09rg=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		p24QL/IJiQ9FehMHOE7X5RwjkRw=
+		0cYo2BqajAQ3aRsa3H3eaUm/a2w=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/lib/assets/fridge/egg.jpeg</key>
 		<data>
@@ -79,6 +79,18 @@
 		<key>Frameworks/App.framework/flutter_assets/lib/assets/home/food.png</key>
 		<data>
 		+TJvRbtPOGNFAJz+CgcFxmYFPus=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food.png</key>
+		<data>
+		+TJvRbtPOGNFAJz+CgcFxmYFPus=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food2.png</key>
+		<data>
+		3azsS+ePJnJO70oaIP+QI9c6LqY=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food3.png</key>
+		<data>
+		tIipztBfFvRJsgct2t/9wVBe7Fo=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -282,7 +294,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		nDCTSqQdELi28sbBKbllIzKHI14=
+		hHPt/MHZPDmmbuTR8uGmjpZEHWo=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -383,11 +395,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ykaktf6qubfyxPsulh0Ytk/3ijQ=
+			/RUuAyctGXZwnPWOxjlXIs/zOgU=
 			</data>
 			<key>hash2</key>
 			<data>
-			mh/2KpT5RzTT/1L4PYE/q8osbsy6LropKC9NWVyCQGM=
+			qH7WqC0EedbN3rBrlQa9aWRrnbKDUctWmToeLPiklog=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -405,22 +417,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			bf2W37rJHU70jPvEFCRTbEsAfxM=
+			4WXr6e/yR/bO6yTVW6RWQaZL5+E=
 			</data>
 			<key>hash2</key>
 			<data>
-			31Xmt9AxSScF1Pu1jRCbZh+M2YXKfOz+yOl+OjjxHDI=
+			rGRx7U4JyQ+FuKtJbXRrZLITHl+eM7/uYPSIM9uS2Dc=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			wKN1iEJsyG0dHH0pRNSZ2/be8CE=
+			P4tijllxkGNmcVw9g5rR4oo09rg=
 			</data>
 			<key>hash2</key>
 			<data>
-			woBvzY0nwT1MyZEzVVLugcXxmmyO/W85mRYqdDJi+Kk=
+			M4orkrjVRwsXJ7rYitz1jy115AxOqN/H96DMRC73GI4=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -471,11 +483,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			p24QL/IJiQ9FehMHOE7X5RwjkRw=
+			0cYo2BqajAQ3aRsa3H3eaUm/a2w=
 			</data>
 			<key>hash2</key>
 			<data>
-			hLuNvLpr/j0BqjIRRpyO+mSpWcdi40LcQZ5nkvewmfY=
+			KKW/gtwmiahWFf9wD9/e2Wgfkgqhis+OW5IjBIfrmGY=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/lib/assets/fridge/egg.jpeg</key>
@@ -498,6 +510,39 @@
 			<key>hash2</key>
 			<data>
 			qi6feARqirCJfjl9dJZfjZxfVgWcB+gqi4k9IUVSZrU=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+TJvRbtPOGNFAJz+CgcFxmYFPus=
+			</data>
+			<key>hash2</key>
+			<data>
+			qi6feARqirCJfjl9dJZfjZxfVgWcB+gqi4k9IUVSZrU=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food2.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			3azsS+ePJnJO70oaIP+QI9c6LqY=
+			</data>
+			<key>hash2</key>
+			<data>
+			4cgF9q1kzbt8tnwEBcZ+XMN4Kljz8mYUjzjk8EeYiIo=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/lib/assets/menu_detail/food3.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			tIipztBfFvRJsgct2t/9wVBe7Fo=
+			</data>
+			<key>hash2</key>
+			<data>
+			/Y/cMyisiU++zM0nsXJD5ISR6pplGvUkPPAQb7T8CUE=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
