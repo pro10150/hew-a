@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:page_transition/page_transition.dart';
+import 'detailed_recipe.dart';
 
 class MenuDetail extends StatefulWidget {
   static const routeName = '/';
@@ -63,7 +65,7 @@ class _MenuDetailState extends State<MenuDetail> {
               height: 30,
             ),
             ClipRRect(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(30),
                 child: Container(
                   width: double.infinity,
                   color: Colors.white,
@@ -154,7 +156,18 @@ class _MenuDetailState extends State<MenuDetail> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             GFButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                    context: context,
+                                    builder: (BuildContext conext) {
+                                      return DetailedRecipe();
+                                    });
+                              },
                               text: 'ViewStep',
                               textColor: Colors.black,
                               shape: GFButtonShape.pills,
@@ -162,7 +175,7 @@ class _MenuDetailState extends State<MenuDetail> {
                               color: Colors.black,
                             ),
                             Container(
-                              width: 10,
+                              width: 20,
                             )
                           ],
                         )
