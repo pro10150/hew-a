@@ -62,14 +62,13 @@ class _MenuDetailState extends State<MenuDetail> {
                   ),
                 )),
             Container(
-              height: 30,
+              height: 10,
             ),
             ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: Container(
                   width: double.infinity,
                   color: Colors.white,
-                  height: 370,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -101,7 +100,6 @@ class _MenuDetailState extends State<MenuDetail> {
                             )
                           ],
                         ),
-                        Container(height: 10),
                         Row(
                           children: <Widget>[
                             Container(
@@ -139,7 +137,6 @@ class _MenuDetailState extends State<MenuDetail> {
                             )
                           ],
                         ),
-                        Container(height: 10),
                         Row(
                           children: <Widget>[
                             Container(
@@ -168,7 +165,7 @@ class _MenuDetailState extends State<MenuDetail> {
                                       return DetailedRecipe();
                                     });
                               },
-                              text: 'ViewStep',
+                              text: 'View Step',
                               textColor: Colors.black,
                               shape: GFButtonShape.pills,
                               type: GFButtonType.outline2x,

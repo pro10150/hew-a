@@ -6,19 +6,19 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		Mq+wRuRJiH7IsTeur7zwrEDoks4=
+		2WH3EkzfNpYxRzEQezsUEM18s6A=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		P4tijllxkGNmcVw9g5rR4oo09rg=
+		XDjDz7JVQ80PSukeC2jBrbA5Oeo=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
 		qncnRYeHyRzkXM9Stvee+oXTXK4=
 		</data>
-		<key>flutter_assets/NOTICES</key>
+		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		Gr/IQspm5Gqid65+J5EaQelbTAI=
+		+31EdG0QTm6wtBV9oqKv/1ks4y8=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -26,11 +26,11 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		ELluN2aQ5lXx4NZnJlBUXyZEfGo=
+		Nd3wH+jFbOE4a4++rWcTw4AJLNw=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		mRHfWoOFHIi1mm54iAtdU64KtcE=
+		4bSJEkJZi+Ak2U65Kgg3QEtRg68=
 		</data>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
 		<data>
@@ -51,6 +51,10 @@
 		<key>flutter_assets/lib/assets/menu_detail/food3.png</key>
 		<data>
 		tIipztBfFvRJsgct2t/9wVBe7Fo=
+		</data>
+		<key>flutter_assets/lib/assets/menu_detail/recipe.png</key>
+		<data>
+		phD3rkte51aJtfWkn393PYBU+9U=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -74,7 +78,7 @@
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
-		BICKLyZmEDX0yMJrQwYDz3tKwt8=
+		kzk1wp8qHso+VmYD8lJ5+HidZCw=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -83,11 +87,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			P4tijllxkGNmcVw9g5rR4oo09rg=
+			XDjDz7JVQ80PSukeC2jBrbA5Oeo=
 			</data>
 			<key>hash2</key>
 			<data>
-			M4orkrjVRwsXJ7rYitz1jy115AxOqN/H96DMRC73GI4=
+			PqMcbJSA2E30IIr72kKwKx5XOSUSVVYB4hf9JE9TpgI=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -101,15 +105,15 @@
 			BWCzBVv4yyoWJkZ/LWVXKV1FASrkFYyNtsbSVyvtSx0=
 			</data>
 		</dict>
-		<key>flutter_assets/NOTICES</key>
+		<key>flutter_assets/NOTICES.Z</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Gr/IQspm5Gqid65+J5EaQelbTAI=
+			+31EdG0QTm6wtBV9oqKv/1ks4y8=
 			</data>
 			<key>hash2</key>
 			<data>
-			58nWU73b2GTmXrcA0iP+8z3Le7SmbJ8hgopRQQ6GGyY=
+			5sH0cINURcmB4cHMGTlQUzFmCEVQ421IdixWFDgZdwE=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -127,22 +131,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ELluN2aQ5lXx4NZnJlBUXyZEfGo=
+			Nd3wH+jFbOE4a4++rWcTw4AJLNw=
 			</data>
 			<key>hash2</key>
 			<data>
-			d5Zhq5S+3ylGF8osqx2M/nYmzI/1w4FDUIjGiKWFaOc=
+			qxHPtMq9AeXtOLOxeAxXKm2ymUz4n0CYnxVVK7SbGeU=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			mRHfWoOFHIi1mm54iAtdU64KtcE=
+			4bSJEkJZi+Ak2U65Kgg3QEtRg68=
 			</data>
 			<key>hash2</key>
 			<data>
-			1A4BG+M3iZva0ZqG6X5i4MOTnc7BlKhZQAoyhbSXK8c=
+			E1JC2uKXVkEbrEPtOyRsM5ZfasecfwJWIXIVXIrWWpU=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
@@ -198,6 +202,17 @@
 			<key>hash2</key>
 			<data>
 			/Y/cMyisiU++zM0nsXJD5ISR6pplGvUkPPAQb7T8CUE=
+			</data>
+		</dict>
+		<key>flutter_assets/lib/assets/menu_detail/recipe.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			phD3rkte51aJtfWkn393PYBU+9U=
+			</data>
+			<key>hash2</key>
+			<data>
+			GguqwuSsrhokkLD/2Y3tej7S77pvk/6cpyZKGeKGd8I=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
@@ -259,11 +274,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BICKLyZmEDX0yMJrQwYDz3tKwt8=
+			kzk1wp8qHso+VmYD8lJ5+HidZCw=
 			</data>
 			<key>hash2</key>
 			<data>
-			dW/lW8/DGE7kqgVOIL22hio/M/WrH8+bodAoyvhyXsU=
+			SWudSb+UjFAbtsuvOflVVEzSQrNcWWVHTwGa+DH02Gs=
 			</data>
 		</dict>
 	</dict>

@@ -14,7 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Palette.roseBud),
+      theme: ThemeData(
+          primarySwatch: Palette.roseBud,
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          })),
       title: 'Hew\'a App',
       initialRoute: '/', // สามารถใช้ home แทนได้
       routes: {

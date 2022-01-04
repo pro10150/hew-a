@@ -43,17 +43,6 @@ class recipeDescription extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              height: 50,
-              margin: EdgeInsets.only(top: 10, bottom: 40, left: 10),
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                      child: new Text(
-                          'ผัดกะเพราหมูสับใส่บราวนี จะเขียนอะไรดีอ่าาาาาาาาาาาาาาาาาาาาา'))
-                ],
-              ),
-            ),
           ]),
     ));
   }
