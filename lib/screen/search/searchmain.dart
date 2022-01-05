@@ -5,18 +5,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Search extends StatefulWidget {
+class SearchContent extends StatefulWidget {
   static const routeName = '/';
 
-  const Search({Key? key}) : super(key: key);
+  const SearchContent({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _SearchState();
+    return _SearchContentState();
   }
 }
 
-class _SearchState extends State<Search> {
+class _SearchContentState extends State<SearchContent> {
   static const color = const Color(0xffffab91);
 
   @override
@@ -42,7 +42,7 @@ class _SearchState extends State<Search> {
                           color: Colors.grey,
                         ),
                         border: InputBorder.none,
-                        hintText: "Search Menu",
+                        hintText: "SearchContent Menu",
                       ),
                     ),
                   ),
@@ -129,7 +129,7 @@ var top = new Column(
             ),
             makeFeed(
                 userName: 'egg boi',
-                userImage: 'assets/icon/Icon-App.png',
+                userImage: 'lib/assets/icon/Icon-App.png',
                 follow: '615 Followers',
                 Recipes: 'Recipes'),
             // SizedBox(height: 20,),

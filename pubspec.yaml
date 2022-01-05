@@ -72,6 +72,7 @@ flutter:
     - lib/assets/menu_detail/food2.png
     - lib/assets/menu_detail/food3.png
     - lib/assets/menu_detail/recipe.png
+    - lib/assets/icon/Icon-App.png
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
