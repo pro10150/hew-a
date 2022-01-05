@@ -1,0 +1,4 @@
+#Sun Jan 02 17:01:13 ICT 2022
+base.0=/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
