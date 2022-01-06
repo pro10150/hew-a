@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -148,7 +149,10 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Widget buildLoginBtn() {
     return GestureDetector(
-      onTap: () => print("Login Pressed"),
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      },
       child: RichText(
         text: TextSpan(children: [
           TextSpan(

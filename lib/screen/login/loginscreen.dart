@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'regsrceen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -120,7 +121,10 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print("Sign Up Pressed"),
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+      },
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
@@ -139,6 +143,14 @@ class LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  // Widget buildButtonRegister() {
+  //   return InkWell(
+  //       onTap: () {
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+  //   });
+  // }
 
   Widget showLogo() {
     return Container(
@@ -211,6 +223,8 @@ class LoginScreenState extends State<LoginScreen> {
                                       SizedBox(height: 20),
                                       buildLoginBtn(),
                                       buildSignupBtn()
+
+                                      // buildSignupBtn()
                                     ]))),
                       ]),
                 ),
