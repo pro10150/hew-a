@@ -126,9 +126,7 @@ class LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            PageTransition(
-                child: RegisterScreen(), type: PageTransitionType.rightToLeft));
+            context, MaterialPageRoute(builder: (context) => RegisterScreen()));
       },
       child: RichText(
         text: TextSpan(children: [
@@ -148,6 +146,14 @@ class LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  // Widget buildButtonRegister() {
+  //   return InkWell(
+  //       onTap: () {
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+  //   });
+  // }
 
   Widget showLogo() {
     return Container(
@@ -221,6 +227,8 @@ class LoginScreenState extends State<LoginScreen> {
                                       SizedBox(height: 20),
                                       buildLoginBtn(),
                                       buildSignupBtn()
+
+                                      // buildSignupBtn()
                                     ]))),
                       ]),
                 ),
