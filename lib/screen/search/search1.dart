@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import "package:material_design_icons_flutter/material_design_icons_flutter.dart";
 
-class Search extends StatefulWidget {
+class SearchWidget extends StatefulWidget {
   static const routeName = '/';
 
-  const Search({Key? key}) : super(key: key);
+  const SearchWidget({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _SearchState();
+    return _SearchWidgetState();
   }
 }
 
-class _SearchState extends State<Search> {
+class _SearchWidgetState extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -46,7 +46,7 @@ class _SearchState extends State<Search> {
                         color: Colors.grey,
                       ),
                       border: InputBorder.none,
-                      hintText: "Search Menu",
+                      hintText: "SearchWidget Menu",
                     ),
                   ),
                 ),
@@ -79,13 +79,13 @@ class _SearchState extends State<Search> {
       ),
 
       // appBar: AppBar(
-      //   title: Text('Search'),
+      //   title: Text('SearchWidget'),
       // ),
       // body: Center(
       //     child: Column(
       //   mainAxisAlignment: MainAxisAlignment.center,
       //   children: <Widget>[
-      //     Text('Search Screen'),
+      //     Text('SearchWidget Screen'),
       //   ],
       // )),
     );

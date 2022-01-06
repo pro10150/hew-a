@@ -3,6 +3,7 @@ import 'home/recipe_content.dart';
 import 'home/daily_pick.dart';
 import 'home/discover.dart';
 import 'home/trending.dart';
+import 'package:hewa/config/palette.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -95,8 +96,19 @@ class _HomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[topSection, middleSection],
+      body: Stack(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(50),
+                bottomRight: Radius.circular(50)),
+            child: Container(
+                width: double.infinity, height: 400, color: Palette.roseBud),
+          ),
+          Column(
+            children: <Widget>[topSection, middleSection],
+          )
+        ],
       ),
     );
   }
