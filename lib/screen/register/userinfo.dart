@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class UserInfo extends StatefulWidget {
+  const UserInfo({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _UserInfoState createState() => _UserInfoState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _UserInfoState extends State<UserInfo> {
   int number = 0;
   @override
   Widget build(BuildContext context) {

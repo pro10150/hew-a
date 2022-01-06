@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:page_transition/page_transition.dart';
+import '../register/regscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -105,7 +107,9 @@ class LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 2,
-        onPressed: () => print("Login Pressed"),
+        onPressed: () {
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         color: Colors.black,
@@ -120,7 +124,12 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print("Sign Up Pressed"),
+      onTap: () {
+        Navigator.push(
+            context,
+            PageTransition(
+                child: RegisterScreen(), type: PageTransitionType.rightToLeft));
+      },
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
@@ -142,8 +151,9 @@ class LoginScreenState extends State<LoginScreen> {
 
   Widget showLogo() {
     return Container(
+      margin: EdgeInsets.only(top: 10),
       height: 250.0,
-      child: Image.asset('images/logo.png'),
+      child: Image.asset('lib/assets/icon/icon-original.png'),
     );
   }
 

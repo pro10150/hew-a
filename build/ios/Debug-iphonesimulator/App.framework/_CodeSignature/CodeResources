@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		XDjDz7JVQ80PSukeC2jBrbA5Oeo=
+		QgLSOkXT4KbVF3W9cppe0hqYIUI=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		2b88H6I1pinvlwVekoNS+R2udkQ=
+		+hX40dQxg7EE9n5DRe/QH/pIrrM=
 		</data>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
 		<data>
@@ -39,6 +39,10 @@
 		<key>flutter_assets/lib/assets/home/food.png</key>
 		<data>
 		+TJvRbtPOGNFAJz+CgcFxmYFPus=
+		</data>
+		<key>flutter_assets/lib/assets/icon/Icon-App.png</key>
+		<data>
+		X8LdcHV1RD2HetLWRmd76cWIG6U=
 		</data>
 		<key>flutter_assets/lib/assets/menu_detail/food.png</key>
 		<data>
@@ -87,11 +91,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XDjDz7JVQ80PSukeC2jBrbA5Oeo=
+			QgLSOkXT4KbVF3W9cppe0hqYIUI=
 			</data>
 			<key>hash2</key>
 			<data>
-			PqMcbJSA2E30IIr72kKwKx5XOSUSVVYB4hf9JE9TpgI=
+			6VnHDVC9wqgan4Mu34cW6XTYWlPOpFxghX6+VM0ONu8=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -142,11 +146,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			2b88H6I1pinvlwVekoNS+R2udkQ=
+			+hX40dQxg7EE9n5DRe/QH/pIrrM=
 			</data>
 			<key>hash2</key>
 			<data>
-			MDYTTJ2j/OL5BdbsMP58/fLXYkLyBpMdZMWDiaiVmTk=
+			zquh+ziqPLPApqcVbwo5K6de+308F+fxNFtnjwknvto=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
@@ -169,6 +173,17 @@
 			<key>hash2</key>
 			<data>
 			qi6feARqirCJfjl9dJZfjZxfVgWcB+gqi4k9IUVSZrU=
+			</data>
+		</dict>
+		<key>flutter_assets/lib/assets/icon/Icon-App.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			X8LdcHV1RD2HetLWRmd76cWIG6U=
+			</data>
+			<key>hash2</key>
+			<data>
+			kFzMil9AH3fzSCB/Er4RC2b5FKYZwiGT4/D8/JOB1xE=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/menu_detail/food.png</key>

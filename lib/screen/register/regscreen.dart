@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:page_transition/page_transition.dart';
+import 'userinfo.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -133,7 +135,12 @@ class RegisterScreenState extends State<RegisterScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () => print("Register Pressed"),
+        onPressed: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  child: UserInfo(), type: PageTransitionType.rightToLeft));
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         color: Colors.black,
@@ -148,7 +155,9 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Widget buildLoginBtn() {
     return GestureDetector(
-      onTap: () => print("Login Pressed"),
+      onTap: () {
+        Navigator.pop(context);
+      },
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
@@ -170,8 +179,9 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Widget showLogo() {
     return Container(
+      margin: EdgeInsets.only(top: 10),
       height: 250.0,
-      child: Image.asset('images/logo.png'),
+      child: Image.asset('lib/assets/icon/icon-original.png'),
     );
   }
 
@@ -233,7 +243,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                       buildCFPassword(),
                                       SizedBox(height: 30),
                                       buildRegisterBtn(),
-                                      SizedBox(height: 70),
                                       buildLoginBtn()
                                     ]))),
                       ]),

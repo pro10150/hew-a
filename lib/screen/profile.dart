@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
+import 'package:page_transition/page_transition.dart';
+import 'login/loginscreen.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -78,23 +80,44 @@ class _ProfileState extends State<Profile> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(""),
-                            Text(""),
-                            Text(
-                              "Johannieieie",
-                              style: TextStyle(
-                                  fontSize: 24.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                            Container(
+                              margin: EdgeInsets.only(top: 40, bottom: 10),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Spacer(),
+                                    Text(
+                                      "Johannieieie",
+                                      style: TextStyle(
+                                          fontSize: 24.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                        child: TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                      child: LoginScreen(),
+                                                      type: PageTransitionType
+                                                          .rightToLeft));
+                                            },
+                                            child: Text(
+                                              'Log out',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                            )))
+                                  ]),
                             ),
-                            Text(" "),
                             CircleAvatar(
                               backgroundImage: NetworkImage(
                                 "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
                               ),
                               radius: 60.0,
                             ),
-                            Text(" "),
                             Text(
                               "@iamJohannie",
                               style: TextStyle(
