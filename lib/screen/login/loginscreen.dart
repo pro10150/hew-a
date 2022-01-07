@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
-import '../register/regscreen.dart';
+import 'regscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -159,7 +159,7 @@ class LoginScreenState extends State<LoginScreen> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       height: 250.0,
-      child: Image.asset('lib/assets/icon/icon-original.png'),
+      child: Image.asset('lib/assets/logo/logoo.png'),
     );
   }
 

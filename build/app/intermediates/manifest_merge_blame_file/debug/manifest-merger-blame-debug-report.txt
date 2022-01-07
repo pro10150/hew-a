@@ -12,34 +12,34 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/debug/AndroidManifest.xml:6:5-66
-14-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/debug/AndroidManifest.xml:6:22-64
+14-->C:\Users\66931\Documents\projects\hew-a\android\app\src\debug\AndroidManifest.xml:6:5-66
+14-->C:\Users\66931\Documents\projects\hew-a\android\app\src\debug\AndroidManifest.xml:6:22-64
 15
 16    <application
-16-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:3:4-41:19
+16-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:3:4-41:19
 17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.6.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/122df2e57d294d1a53db26bbc3b813c1/core-1.6.0/AndroidManifest.xml:24:18-86
+17-->[androidx.core:core:1.6.0] C:\Users\66931\.gradle\caches\transforms-2\files-2.1\122df2e57d294d1a53db26bbc3b813c1\core-1.6.0\AndroidManifest.xml:24:18-86
 18        android:debuggable="true"
 19        android:icon="@mipmap/ic_launcher"
-19-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:6:9-43
+19-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:6:9-43
 20        android:label="Hew&apos;a"
-20-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:5:9-28
+20-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:5:9-28
 21        android:requestLegacyExternalStorage="true" >
-21-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:4:9-52
+21-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:4:9-52
 22        <activity
-22-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:7:9-35:20
+22-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:7:9-35:20
 23            android:name="com.example.se.MainActivity"
-23-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:8:13-41
+23-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:8:13-41
 24            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-24-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:11:13-163
+24-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:11:13-163
 25            android:hardwareAccelerated="true"
-25-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:12:13-47
+25-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:12:13-47
 26            android:launchMode="singleTop"
-26-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:9:13-43
+26-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:9:13-43
 27            android:theme="@style/LaunchTheme"
-27-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:10:13-47
+27-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:10:13-47
 28            android:windowSoftInputMode="adjustResize" >
-28-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:13:13-55
+28-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:13:13-55
 29
 30            <!--
 31                 Specifies an Android theme to apply to this Activity as soon as
@@ -48,11 +48,11 @@
 34                 to determine the Window background behind the Flutter UI.
 35            -->
 36            <meta-data
-36-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:18:13-21:17
+36-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:18:13-21:17
 37                android:name="io.flutter.embedding.android.NormalTheme"
-37-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:19:15-70
+37-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:19:15-70
 38                android:resource="@style/NormalTheme" />
-38-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:20:15-52
+38-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:20:15-52
 39            <!--
 40                 Displays an Android View that continues showing the launch screen
 41                 Drawable until Flutter paints its first frame, then this splash
@@ -61,21 +61,21 @@
 44                 Flutter's first frame.
 45            -->
 46            <meta-data
-46-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:27:13-30:17
+46-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:27:13-30:17
 47                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-47-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:28:15-79
+47-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:28:15-79
 48                android:resource="@drawable/launch_background" />
-48-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:29:15-61
+48-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:29:15-61
 49
 50            <intent-filter>
-50-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:31:13-34:29
+50-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:31:13-34:29
 51                <action android:name="android.intent.action.MAIN" />
-51-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:32:17-68
-51-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:32:25-66
+51-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:32:17-68
+51-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:32:25-66
 52
 53                <category android:name="android.intent.category.LAUNCHER" />
-53-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:33:17-76
-53-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:33:27-74
+53-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:33:17-76
+53-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:33:27-74
 54            </intent-filter>
 55        </activity>
 56        <!--
@@ -83,42 +83,29 @@
 58             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
 59        -->
 60        <meta-data
-60-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:38:9-40:33
+60-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:38:9-40:33
 61            android:name="flutterEmbedding"
-61-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:39:13-44
+61-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:39:13-44
 62            android:value="2" />
-62-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:40:13-30
+62-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:40:13-30
 63
 64        <provider
-64-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
+64-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
 65            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-65-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-82
+65-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
 66            android:authorities="com.example.se.flutter.image_provider"
-66-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
+66-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
 67            android:exported="false"
-67-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
+67-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
 68            android:grantUriPermissions="true" >
-68-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
+68-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
 69            <meta-data
-69-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
+69-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
 70                android:name="android.support.FILE_PROVIDER_PATHS"
-70-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
+70-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
 71                android:resource="@xml/flutter_image_picker_file_paths" />
-71-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
+71-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
 72        </provider>
-73
-74        <uses-library
-74-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
-75            android:name="androidx.window.extensions"
-75-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
-76            android:required="false" />
-76-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
-77        <uses-library
-77-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
-78            android:name="androidx.window.sidecar"
-78-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
-79            android:required="false" />
-79-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/03c633e46d75bfb21f082f0417f55161/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
-80    </application>
-81
-82</manifest>
+73    </application>
+74
+75</manifest>

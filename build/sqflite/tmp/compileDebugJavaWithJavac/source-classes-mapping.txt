@@ -39,7 +39,7 @@ com/tekartik/sqflite/operation/BaseOperation.java
  com.tekartik.sqflite.operation.BaseOperation
 com/tekartik/sqflite/dev/Debug.java
  com.tekartik.sqflite.dev.Debug
-com/tekartik/sqflite/operation/SqlErrorInfo.java
- com.tekartik.sqflite.operation.SqlErrorInfo
 com/tekartik/sqflite/operation/ExecuteOperation.java
  com.tekartik.sqflite.operation.ExecuteOperation
+com/tekartik/sqflite/operation/SqlErrorInfo.java
+ com.tekartik.sqflite.operation.SqlErrorInfo

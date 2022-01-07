@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hewa/screen/login/meal.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({Key? key}) : super(key: key);
@@ -138,7 +139,12 @@ class _UserInfoState extends State<UserInfo> {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              var rount = new MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new Mealpre());
+                              Navigator.of(context).push(rount);
+                            },
                           ),
                           TextButton(
                             child: Text("Skip>>",

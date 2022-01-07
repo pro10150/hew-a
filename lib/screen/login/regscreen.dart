@@ -182,7 +182,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       height: 250.0,
-      child: Image.asset('lib/assets/icon/icon-original.png'),
+      child: Image.asset('lib/assets/logo/logoo.png'),
     );
   }
 
