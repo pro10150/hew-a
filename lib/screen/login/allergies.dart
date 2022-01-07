@@ -56,6 +56,7 @@ class AllergiesState extends State<Allergies> {
         child: Stack(
           children: <Widget>[
             Container(
+              height: 1400,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(

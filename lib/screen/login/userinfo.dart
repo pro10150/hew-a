@@ -16,7 +16,7 @@ class _UserInfoState extends State<UserInfo> {
         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg";
     return Scaffold(
       body: Container(
-        height: 800,
+        height: 1400,
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(urlImage), fit: BoxFit.cover)),

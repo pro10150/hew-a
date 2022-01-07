@@ -86,6 +86,7 @@ class MealpreState extends State<Mealpre> {
         child: Stack(
           children: <Widget>[
             Container(
+              height: 1400,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(

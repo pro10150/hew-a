@@ -174,6 +174,7 @@ class LoginScreenState extends State<LoginScreen> {
           child: Stack(
             children: <Widget>[
               Container(
+                height: 1400,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(urlImage), fit: BoxFit.cover)),
