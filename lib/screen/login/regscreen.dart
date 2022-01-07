@@ -201,7 +201,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(urlImage),
-                        fit: BoxFit.cover,)),
+                        fit: BoxFit.fill,)),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),

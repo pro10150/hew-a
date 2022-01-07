@@ -19,7 +19,7 @@ class _UserInfoState extends State<UserInfo> {
         height: 1400,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(urlImage), fit: BoxFit.cover)),
+                image: NetworkImage(urlImage), fit: BoxFit.fill)),
         child: Column(
           children: [
             SizedBox(

@@ -91,7 +91,7 @@ class MealpreState extends State<Mealpre> {
                 image: DecorationImage(
                     image: NetworkImage(
                         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg"),
-                    fit: BoxFit.cover),
+                    fit: BoxFit.fill),
               ),
               child: null,
             ),

@@ -177,7 +177,7 @@ class LoginScreenState extends State<LoginScreen> {
                 height: 1400,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(urlImage), fit: BoxFit.cover)),
+                        image: NetworkImage(urlImage), fit: BoxFit.fill)),
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
