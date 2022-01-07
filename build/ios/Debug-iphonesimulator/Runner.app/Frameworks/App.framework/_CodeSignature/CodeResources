@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		QgLSOkXT4KbVF3W9cppe0hqYIUI=
+		KUODyNbiQVFN0zWcpWzt51Shx1U=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		+hX40dQxg7EE9n5DRe/QH/pIrrM=
+		/tOiHZM7/OYb5wfuhFkJx8CjRwY=
 		</data>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
 		<data>
@@ -43,6 +43,14 @@
 		<key>flutter_assets/lib/assets/icon/Icon-App.png</key>
 		<data>
 		X8LdcHV1RD2HetLWRmd76cWIG6U=
+		</data>
+		<key>flutter_assets/lib/assets/icon/icon-original.png</key>
+		<data>
+		fWrFh91ph7ojjLvYumDcczSApXA=
+		</data>
+		<key>flutter_assets/lib/assets/logo/logoo.png</key>
+		<data>
+		Ewc29mAMhriNfT7GRYQAZqIMTbs=
 		</data>
 		<key>flutter_assets/lib/assets/menu_detail/food.png</key>
 		<data>
@@ -91,11 +99,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			QgLSOkXT4KbVF3W9cppe0hqYIUI=
+			KUODyNbiQVFN0zWcpWzt51Shx1U=
 			</data>
 			<key>hash2</key>
 			<data>
-			6VnHDVC9wqgan4Mu34cW6XTYWlPOpFxghX6+VM0ONu8=
+			NkawEVgUvbY8kSN82Jm9C1AtODmGC51SXLt5e6VgFsI=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -146,11 +154,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			+hX40dQxg7EE9n5DRe/QH/pIrrM=
+			/tOiHZM7/OYb5wfuhFkJx8CjRwY=
 			</data>
 			<key>hash2</key>
 			<data>
-			zquh+ziqPLPApqcVbwo5K6de+308F+fxNFtnjwknvto=
+			QyFATRXFSFebwpwZpFv8mcjQ6+v4MB7jf3WOMyKwMS0=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/fridge/egg.jpeg</key>
@@ -184,6 +192,28 @@
 			<key>hash2</key>
 			<data>
 			kFzMil9AH3fzSCB/Er4RC2b5FKYZwiGT4/D8/JOB1xE=
+			</data>
+		</dict>
+		<key>flutter_assets/lib/assets/icon/icon-original.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fWrFh91ph7ojjLvYumDcczSApXA=
+			</data>
+			<key>hash2</key>
+			<data>
+			wE+qBbHkb13pu3JRqckZC67rgSGcCU/cnSmjJc4Nif8=
+			</data>
+		</dict>
+		<key>flutter_assets/lib/assets/logo/logoo.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Ewc29mAMhriNfT7GRYQAZqIMTbs=
+			</data>
+			<key>hash2</key>
+			<data>
+			NM907OhynKK3N/e5RLf6WI8luNJ10zJGJ+o6EAf934k=
 			</data>
 		</dict>
 		<key>flutter_assets/lib/assets/menu_detail/food.png</key>
