@@ -52,10 +52,10 @@ class AllergiesState extends State<Allergies> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Container(
+      body: Stack(
+        children: <Widget>[
+          SafeArea(
+            child: Container(
               height: 1400,
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -63,40 +63,35 @@ class AllergiesState extends State<Allergies> {
                         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg"),
                     fit: BoxFit.fill),
               ),
-              child: null,
-            ),
-            Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 250.0, left: 30.0, right: 30, bottom: 30),
-                      child: Text(
-                        "Did you have any allergies?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  Container(
+                    alignment: Alignment.center,
+                    color: Colors.transparent,
+                    margin: EdgeInsets.only(top: 275, right: 35.0, left: 33.0),
+                    child: Text(
+                      "Did you have any allergies?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 35),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    children: <Widget>[
                       buildnoBtn(),
                       buildyesBtn(),
                     ],
-                  ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

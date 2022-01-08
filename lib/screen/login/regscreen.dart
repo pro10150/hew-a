@@ -196,59 +196,62 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-              Container(
-                height: 1400,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(urlImage),
-                        fit: BoxFit.fill,)),
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(padding: EdgeInsets.only(top: 10.0)),
-                        showLogo(),
-                        Container(
-                            height: 620,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.white24,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Container(
-                                padding: const EdgeInsets.only(top: 30.0),
-                                margin: const EdgeInsets.only(
-                                    left: 25.0, right: 25.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Register',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
+              SafeArea(
+                child: Container(
+                  height: 1400,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: NetworkImage(urlImage),
+                    fit: BoxFit.fill,
+                  )),
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          showLogo(),
+                          Container(
+                              height: 620,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.white24,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Container(
+                                  padding: const EdgeInsets.only(top: 30.0),
+                                  margin: const EdgeInsets.only(
+                                      left: 25.0, right: 25.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Register',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: 20),
-                                      buildUser(),
-                                      SizedBox(height: 20),
-                                      buildEmail(),
-                                      SizedBox(height: 20),
-                                      buildPassword(),
-                                      SizedBox(height: 20),
-                                      buildCFPassword(),
-                                      SizedBox(height: 30),
-                                      buildRegisterBtn(),
-                                      buildLoginBtn()
-                                    ]))),
-                      ]),
+                                        SizedBox(height: 20),
+                                        buildUser(),
+                                        SizedBox(height: 20),
+                                        buildEmail(),
+                                        SizedBox(height: 20),
+                                        buildPassword(),
+                                        SizedBox(height: 20),
+                                        buildCFPassword(),
+                                        SizedBox(height: 30),
+                                        buildRegisterBtn(),
+                                        buildLoginBtn()
+                                      ]))),
+                        ]),
+                  ),
                 ),
               )
             ],

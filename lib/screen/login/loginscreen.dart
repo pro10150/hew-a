@@ -173,65 +173,67 @@ class LoginScreenState extends State<LoginScreen> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-              Container(
-                height: 1400,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(urlImage), fit: BoxFit.fill)),
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        showLogo(),
-                        Container(
-                            height: 470,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.white24,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Container(
-                                padding: const EdgeInsets.only(top: 40.0),
-                                margin: const EdgeInsets.only(
-                                    left: 25.0, right: 25.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        'Login to',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'your account',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
+              SafeArea(
+                child: Container(
+                  height: 1400,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(urlImage), fit: BoxFit.fill)),
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          showLogo(),
+                          Container(
+                              height: 470,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.white24,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Container(
+                                  padding: const EdgeInsets.only(top: 40.0),
+                                  margin: const EdgeInsets.only(
+                                      left: 25.0, right: 25.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Login to',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
                                             color: Colors.black87,
                                             fontSize: 30,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(height: 15),
-                                      buildEmail(),
-                                      SizedBox(height: 20),
-                                      buildPassword(),
-                                      SizedBox(height: 20),
-                                      buildRememberCb(),
-                                      SizedBox(height: 20),
-                                      buildLoginBtn(),
-                                      buildSignupBtn()
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'your account',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 15),
+                                        buildEmail(),
+                                        SizedBox(height: 20),
+                                        buildPassword(),
+                                        SizedBox(height: 20),
+                                        buildRememberCb(),
+                                        SizedBox(height: 20),
+                                        buildLoginBtn(),
+                                        buildSignupBtn()
 
-                                      // buildSignupBtn()
-                                    ]))),
-                      ]),
+                                        // buildSignupBtn()
+                                      ]))),
+                        ]),
+                  ),
                 ),
               )
             ],

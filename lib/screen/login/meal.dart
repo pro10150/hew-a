@@ -82,10 +82,10 @@ class MealpreState extends State<Mealpre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Container(
+      body: Stack(
+        children: <Widget>[
+          SafeArea(
+            child: Container(
               height: 1400,
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -93,89 +93,58 @@ class MealpreState extends State<Mealpre> {
                         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg"),
                     fit: BoxFit.fill),
               ),
-              child: null,
-            ),
-            // Center(
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     children: <Widget>[
-            //       Padding(
-            //           padding: EdgeInsets.only(top: 50.0,bottom: 30),
-            //         child: Text(
-            //           "Choose your preference",
-            //           style: TextStyle(
-            //             color: Colors.black,
-            //             fontSize: 30,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: double.infinity,
-            //   width: double.infinity,
-            //   color: Colors.white60,
-            //   margin: EdgeInsets.only(top: 120.0,left: 20.0,right: 20.0),
-            //   padding: EdgeInsets.all(20),
-
-            // SizedBox(height: 70),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: 70.0, bottom: 30, left: 35.0, right: 10.0),
-              child: Text(
-                "Choose your preference",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Container(
-              // height: double.infinity,
-              // width: double.infinity,
-              color: Colors.transparent,
-              margin: EdgeInsets.only(top: 150, right: 10.0, left: 10.0),
-
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Container(
+                    color: Colors.transparent,
+                    margin: EdgeInsets.only(top: 50, right: 35.0, left: 33.0),
+                    child: Text(
+                      "Choose your preference",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Column(
                     children: <Widget>[
-                      buildmealBtn(),
-                      buildmealBtn(),
-                      buildmealBtn(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          buildmealBtn(),
+                          buildmealBtn(),
+                          buildmealBtn(),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          buildmealBtn(),
+                          buildmealBtn(),
+                          buildmealBtn(),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          buildmealBtn(),
+                          buildmealBtn(),
+                          buildmealBtn(),
+                        ],
+                      ),
+                      SizedBox(height: 300),
+                      buildnextBtn(),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      buildmealBtn(),
-                      buildmealBtn(),
-                      buildmealBtn(),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      buildmealBtn(),
-                      buildmealBtn(),
-                      buildmealBtn(),
-                    ],
-                  ),
-                  SizedBox(height: 250),
-                  buildnextBtn(),
                 ],
               ),
             ),
-
-            // ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
