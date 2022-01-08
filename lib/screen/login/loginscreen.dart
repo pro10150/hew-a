@@ -173,12 +173,20 @@ class LoginScreenState extends State<LoginScreen> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-              SafeArea(
-                child: Container(
-                  height: 1400,
+               Container(
+                  height: double.infinity,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(urlImage), fit: BoxFit.fill)),
+                    gradient: RadialGradient(
+                      colors: [
+                        Color(0xffffffff),
+                        Color(0xffff8a65),
+                        Color(0xffe69a83),
+                      ],
+                      center: Alignment.topRight,
+                      radius: 3,
+                    ),
+                  ),
                   child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
@@ -235,7 +243,6 @@ class LoginScreenState extends State<LoginScreen> {
                         ]),
                   ),
                 ),
-              )
             ],
           ),
         ),

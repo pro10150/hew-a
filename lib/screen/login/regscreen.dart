@@ -196,14 +196,27 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-              SafeArea(
-                child: Container(
-                  height: 1400,
+              Container(
+                  height: double.infinity,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                    image: NetworkImage(urlImage),
-                    fit: BoxFit.fill,
-                  )),
+                    gradient: RadialGradient(
+                      colors: [
+                        Color(0xffffffff),
+                        Color(0xffff8a65),
+                        Color(0xffe69a83),
+                      ],
+                      center: Alignment.topRight,
+                      radius: 3,
+                    ),
+                  ),
+                // Container(
+                //   height: 1400,
+                //   decoration: BoxDecoration(
+                //       image: DecorationImage(
+                //     image: NetworkImage(urlImage),
+                //     fit: BoxFit.fill,
+                //   )),
                   child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
@@ -253,7 +266,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                         ]),
                   ),
                 ),
-              )
             ],
           ),
         ),

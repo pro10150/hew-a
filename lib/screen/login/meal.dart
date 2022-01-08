@@ -84,14 +84,19 @@ class MealpreState extends State<Mealpre> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          SafeArea(
-            child: Container(
-              height: 1400,
+          Container(
+              height: double.infinity,
+              width: double.infinity,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(
-                        "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg"),
-                    fit: BoxFit.fill),
+                gradient: RadialGradient(
+                  colors: [
+                    Color(0xffffffff),
+                    Color(0xffff8a65),
+                    Color(0xffe69a83),
+                  ],
+                  center: Alignment.topRight,
+                  radius: 3,
+                ),
               ),
               child: Column(
                 children: <Widget>[
@@ -143,7 +148,7 @@ class MealpreState extends State<Mealpre> {
                 ],
               ),
             ),
-          ),
+
         ],
       ),
     );
