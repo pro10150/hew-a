@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hewa/screen/login/meal.dart';
 
 class UserInfo extends StatefulWidget {
@@ -10,156 +13,231 @@ class UserInfo extends StatefulWidget {
 
 class _UserInfoState extends State<UserInfo> {
   int number = 0;
+
+  Widget builcam() {
+    return Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: new BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
+  Widget buildname() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: Colors.white)),
+          height: 50,
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: 35),
+              hintText: 'Nickname',
+              hintStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildbirthday() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(color: Colors.white)),
+          height: 50,
+          child: TextField(
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: 35),
+              hintText: 'DD/MM/YY',
+              hintStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildnextBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      width: 320,
+      child: RaisedButton(
+        elevation: 5,
+        onPressed: () {
+          var rount = new MaterialPageRoute(
+              builder: (BuildContext context) => new Mealpre());
+          Navigator.of(context).push(rount);
+        },
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        color: Colors.black,
+        child: Text(
+          'Next',
+          style: TextStyle(
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget buildskipBtn() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: RichText(
+        text: TextSpan(children: [
+          TextSpan(
+              text: 'Skip',
+              style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.double,
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold))
+        ]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final urlImage =
         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg";
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: 1000,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(urlImage), fit: BoxFit.fill)),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 150,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SizedBox(
-                  height: 500,
-                  child: Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white24,
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                      SizedBox(
-                          height: 115,
-                          width: 115,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            overflow: Overflow.visible,
-                            children: [
-                              Positioned(
-                                height: 100,
-                                width: 100,
-                                top: -50,
-                                right: -120,
-                                child: CircleAvatar(
-                                  backgroundImage: AssetImage(urlImage),
-                                ),
-                              ),
-                              Positioned(
-                                top: 5,
-                                right: -120,
-                                child: SizedBox(
-                                  height: 40,
-                                  width: 40,
-                                  child: FlatButton(
-                                    padding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                        side: BorderSide(color: Colors.white)),
-                                    color: Colors.white,
-                                    onPressed: () {},
-                                    child: Icon(Icons.camera),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: GestureDetector(
+          child: Stack(
+            children: <Widget>[
+              SafeArea(
+                  child: Container(
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(urlImage), fit: BoxFit.fill)),
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(height: 120),
+                            Stack(
+                                children: [
+                                  Container(
+                                      height: 600,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white24,
+                                          borderRadius: BorderRadius.circular(15)),
+                                      child: Container(
+                                          padding: const EdgeInsets.only(top: 130.0),
+                                          margin: const EdgeInsets.only(
+                                              left: 25.0, right: 25.0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius: BorderRadius.circular(15)),
+                                          child: Column(
+                                            // crossAxisAlignment:
+                                            // CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  'User Info',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 20),
+                                                buildname(),
+                                                SizedBox(height: 20),
+                                                buildbirthday(),
+                                                SizedBox(height: 50),
+                                                buildnextBtn(),
+                                                SizedBox(height: 15),
+                                                buildskipBtn(),
+                                                // buildSignupBtn()
+                                              ]
+                                          )
+                                      )
                                   ),
-                                ),
-                              ),
-                            ],
-                          )),
-                      //SizedBox(height: 120,),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Container(
-                            child: Column(
-                          children: [
-                            SizedBox(
-                              height: 80,
+                                  SizedBox(
+                                    height: 115,
+                                    width: 115,
+                                    child: Stack(
+                                        fit: StackFit.expand,
+                                        overflow: Overflow.visible,
+                                        children: [
+                                          Positioned(
+                                            height: 100,
+                                            width: 100,
+                                            top: -50,
+                                            right: -100,
+                                            child: builcam(),
+                                          ),
+                                          Positioned(
+                                            top: 5,
+                                            right: -110,
+                                            child: SizedBox(
+                                              height: 40,
+                                              width: 40,
+                                              child: FlatButton(
+                                                padding: EdgeInsets.zero,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(50),
+                                                    side: BorderSide(color: Colors.white24)),
+                                                color: Colors.white,
+                                                onPressed: () {},
+                                                child: Icon(Icons.camera),
+                                              ),
+                                            ),
+                                          ),
+                                        ]),
+                                  ),
+
+                                ]
                             ),
-                            Text(
-                              "User Info",
-                              style: TextStyle(
-                                  fontSize: 35, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            TextField(
-                                decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(50)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(50)),
-                              labelText: '     Nickname',
-                              hintText: '    Nickname',
-                              hintStyle: TextStyle(
-                                  color: Colors.white54, fontSize: 14),
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                            )),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            TextField(
-                                decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(50)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(50)),
-                              labelText: '    Birthday:DD/MM/YY',
-                              hintText: '01/01/2021',
-                              hintStyle: TextStyle(
-                                  color: Colors.white54, fontSize: 14),
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                            )),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            RaisedButton(
-                              color: Colors.black,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 120, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Text(
-                                "Next",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                              onPressed: () {
-                                var rount = new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        new Mealpre());
-                                Navigator.of(context).push(rount);
-                              },
-                            ),
-                            TextButton(
-                              child: Text("Skip>>",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16)),
-                              onPressed: () {},
-                            )
-                          ],
-                        )),
+                          ]
                       ),
-                    ],
-                  ),
-                ),
-              ),
+
+                    ),
+                    // SizedBox(height: 150),
+                  )
+              )
             ],
           ),
         ),
