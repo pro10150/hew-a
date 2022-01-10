@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'regsrceen.dart';
 // import 'allergies.dart';
-
+import 'package:hewa/screen/home.dart';
 
 class Choosekitchenware extends StatefulWidget {
   @override
@@ -63,12 +63,12 @@ class ChoosekitchenwareState extends State<Choosekitchenware> {
       width: 320,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () {},
-        // onPressed: () {
-        //   var rount = new MaterialPageRoute(
-        //       builder: (BuildContext context) => new Home());
-        //   Navigator.of(context).push(rount);
-        // },
+        // onPressed: () {},
+        onPressed: () {
+          var rount = new MaterialPageRoute(
+              builder: (BuildContext context) => new Home());
+          Navigator.of(context).push(rount);
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         color: Colors.black,

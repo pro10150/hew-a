@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'meal.dart';
 import 'chooseall.dart';
+import 'choosekit.dart';
 
 class Allergies extends StatefulWidget {
   @override
@@ -35,8 +36,8 @@ class AllergiesState extends State<Allergies> {
       // onPressed: (){},
       onPressed: () {
         var rount = new MaterialPageRoute(
-            builder: (BuildContext context) => new Mealpre());
-        Navigator.pop(context);
+            builder: (BuildContext context) => new Choosekitchenware());
+        Navigator.of(context).push(rount);
       },
       textColor: Colors.black,
       color: Colors.white,
