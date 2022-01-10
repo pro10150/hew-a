@@ -162,7 +162,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
-              text: '      I already have an account ?',
+              text: '     I already have an account ?',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

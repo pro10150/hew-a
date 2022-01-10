@@ -29,7 +29,7 @@ class MealpreState extends State<Mealpre> {
       textColor: Colors.white,
       color: Colors.black,
       disabledColor: Colors.black,
-      child: Text("Meal"),
+      child: Text("Food"),
       // onPressed: () {},
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(30.0),
@@ -100,6 +100,7 @@ class MealpreState extends State<Mealpre> {
               ),
               child: Column(
                 children: <Widget>[
+                  SizedBox(height: 50),
                   Container(
                     color: Colors.transparent,
                     margin: EdgeInsets.only(top: 50, right: 35.0, left: 33.0),
@@ -141,7 +142,7 @@ class MealpreState extends State<Mealpre> {
                           buildmealBtn(),
                         ],
                       ),
-                      SizedBox(height: 300),
+                      SizedBox(height: 250),
                       buildnextBtn(),
                     ],
                   ),

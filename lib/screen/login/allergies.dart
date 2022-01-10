@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'meal.dart';
+import 'chooseall.dart';
 
 class Allergies extends StatefulWidget {
   @override
@@ -11,12 +12,12 @@ class Allergies extends StatefulWidget {
 class AllergiesState extends State<Allergies> {
   Widget buildyesBtn() {
     return RaisedButton(
-      onPressed: () {},
-      // onPressed: () {
-      //   var rount = new MaterialPageRoute(
-      //       builder: (BuildContext context) => new Allergies());
-      //   Navigator.of(context).push(rount);
-      // },
+      // onPressed: () {},
+      onPressed: () {
+        var rount = new MaterialPageRoute(
+            builder: (BuildContext context) => new Chooseallergies());
+        Navigator.of(context).push(rount);
+      },
       textColor: Colors.white,
       color: Colors.black,
       disabledColor: Colors.black,
@@ -35,7 +36,7 @@ class AllergiesState extends State<Allergies> {
       onPressed: () {
         var rount = new MaterialPageRoute(
             builder: (BuildContext context) => new Mealpre());
-        Navigator.of(context).push(rount);
+        Navigator.pop(context);
       },
       textColor: Colors.black,
       color: Colors.white,
@@ -75,7 +76,7 @@ class AllergiesState extends State<Allergies> {
                     color: Colors.transparent,
                     margin: EdgeInsets.only(top: 275, right: 35.0, left: 33.0),
                     child: Text(
-                      "Did you have any allergies?",
+                      "Did you have any Allergies?",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
