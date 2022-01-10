@@ -65,9 +65,7 @@ class ChoosekitchenwareState extends State<Choosekitchenware> {
         elevation: 5,
         // onPressed: () {},
         onPressed: () {
-          var rount = new MaterialPageRoute(
-              builder: (BuildContext context) => new Home());
-          Navigator.of(context).push(rount);
+          Navigator.popUntil(context, ModalRoute.withName('/'));
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -151,7 +149,6 @@ class ChoosekitchenwareState extends State<Choosekitchenware> {
               ],
             ),
           ),
-
         ],
       ),
     );

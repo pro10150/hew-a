@@ -113,7 +113,7 @@ class _UserInfoState extends State<UserInfo> {
   Widget buildskipBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.pop(context);
+        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
       child: RichText(
         text: TextSpan(children: [
@@ -140,112 +140,105 @@ class _UserInfoState extends State<UserInfo> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-               Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        colors: [
-                          Color(0xffffffff),
-                          Color(0xffff8a65),
-                          Color(0xffe69a83),
-                        ],
-                        center: Alignment.topRight,
-                        radius: 3,
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(height: 120),
-                            Stack(
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      Color(0xffffffff),
+                      Color(0xffff8a65),
+                      Color(0xffe69a83),
+                    ],
+                    center: Alignment.topRight,
+                    radius: 3,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 120),
+                        Stack(children: [
+                          Container(
+                              height: 600,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Colors.white24,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Container(
+                                  padding: const EdgeInsets.only(top: 130.0),
+                                  margin: const EdgeInsets.only(
+                                      left: 25.0, right: 25.0),
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(
+                                      // crossAxisAlignment:
+                                      // CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'User Info',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 20),
+                                        buildname(),
+                                        SizedBox(height: 20),
+                                        buildbirthday(),
+                                        SizedBox(height: 50),
+                                        buildnextBtn(),
+                                        SizedBox(height: 15),
+                                        buildskipBtn(),
+                                        // buildSignupBtn()
+                                      ]))),
+                          SizedBox(
+                            height: 115,
+                            width: 115,
+                            child: Stack(
+                                fit: StackFit.expand,
+                                overflow: Overflow.visible,
                                 children: [
-                                  Container(
-                                      height: 600,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white24,
-                                          borderRadius: BorderRadius.circular(15)),
-                                      child: Container(
-                                          padding: const EdgeInsets.only(top: 130.0),
-                                          margin: const EdgeInsets.only(
-                                              left: 25.0, right: 25.0),
-                                          decoration: BoxDecoration(
-                                              color: Colors.transparent,
-                                              borderRadius: BorderRadius.circular(15)),
-                                          child: Column(
-                                            // crossAxisAlignment:
-                                            // CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  'User Info',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-
-                                                SizedBox(height: 20),
-                                                buildname(),
-                                                SizedBox(height: 20),
-                                                buildbirthday(),
-                                                SizedBox(height: 50),
-                                                buildnextBtn(),
-                                                SizedBox(height: 15),
-                                                buildskipBtn(),
-                                                // buildSignupBtn()
-                                              ]
-                                          )
-                                      )
+                                  Positioned(
+                                    height: 100,
+                                    width: 100,
+                                    top: -50,
+                                    right: -100,
+                                    child: builcam(),
                                   ),
-                                  SizedBox(
-                                    height: 115,
-                                    width: 115,
-                                    child: Stack(
-                                        fit: StackFit.expand,
-                                        overflow: Overflow.visible,
-                                        children: [
-                                          Positioned(
-                                            height: 100,
-                                            width: 100,
-                                            top: -50,
-                                            right: -100,
-                                            child: builcam(),
-                                          ),
-                                          Positioned(
-                                            top: 5,
-                                            right: -110,
-                                            child: SizedBox(
-                                              height: 40,
-                                              width: 40,
-                                              child: FlatButton(
-                                                padding: EdgeInsets.zero,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(50),
-                                                    side: BorderSide(color: Colors.white24)),
-                                                color: Colors.white,
-                                                onPressed: () {},
-                                                child: Icon(Icons.camera),
-                                              ),
-                                            ),
-                                          ),
-                                        ]),
+                                  Positioned(
+                                    top: 5,
+                                    right: -110,
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 40,
+                                      child: FlatButton(
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            side: BorderSide(
+                                                color: Colors.white24)),
+                                        color: Colors.white,
+                                        onPressed: () {},
+                                        child: Icon(Icons.camera),
+                                      ),
+                                    ),
                                   ),
-
-                                ]
-                            ),
-                          ]
-                      ),
-
-                    ),
-                    // SizedBox(height: 150),
-                  )
-
+                                ]),
+                          ),
+                        ]),
+                      ]),
+                ),
+                // SizedBox(height: 150),
+              )
             ],
           ),
         ),
