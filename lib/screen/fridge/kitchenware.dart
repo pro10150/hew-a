@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
 
-const List<String> kitchenware = ['Pan', 'Microwave', 'Oven'];
+List<String> kitchenware = [];
 
 class Kitchenware extends StatefulWidget {
   static const routeName = '/';
@@ -39,7 +39,13 @@ class _KitchenwareState extends State<Kitchenware> {
     var object = await KitchHelper().readlDataFromSQLite();
     print('object length ==> ${object.length}');
     if (object.length != 0) {
-      print('found something');
+      if (kitchenware.length == 0) {
+        for (var model in object) {
+          kitchenware.add(model.nameKitc!);
+        }
+      }
+
+      print(kitchenware);
     } else {
       print('found nothing');
     }
@@ -49,6 +55,9 @@ class _KitchenwareState extends State<Kitchenware> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // KitchHelper().deleteAlldata();
+    // KitchHelper().initialInsert();
+    //ใช้ initialInsert เพื่อinsert เครื่องครัว
     readSQLite();
   }
 

@@ -1,6 +1,6 @@
 class KitchenwareModel {
   String? nameKitc;
-  String? id;
+  int? id;
 
   KitchenwareModel({required this.nameKitc, required this.id});
 

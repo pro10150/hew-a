@@ -48,6 +48,22 @@ class KitchHelper {
     return kitchenwareModels;
   }
 
+  Future<Null> initialInsert() async {
+    Database database = await connectedDatabase();
+    database
+        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Pan\')');
+    database.execute(
+        'INSERT INTO $tableDatabase($nameColumn) VALUES (\'Microwave\')');
+    database
+        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Over\')');
+    database
+        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Pot\')');
+    database
+        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Fryer\')');
+    database.execute(
+        'INSERT INTO $tableDatabase($nameColumn) VALUES (\'Cheese grater\')');
+  }
+
   Future<Null> deleteDataWhereId(int id) async {
     Database database = await connectedDatabase();
     try {
