@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:hewa/utilities/kitch_helper.dart';
 
 const List<String> kitchenware = ['Pan', 'Microwave', 'Oven'];
 
@@ -32,6 +33,23 @@ class _KitchenwareState extends State<Kitchenware> {
 
   void deleteKitchenware(int index) {
     _kitchenwareList.removeAt(index);
+  }
+
+  Future<Null> readSQLite() async {
+    var object = await KitchHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    if (object.length != 0) {
+      print('found something');
+    } else {
+      print('found nothing');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readSQLite();
   }
 
   @override
