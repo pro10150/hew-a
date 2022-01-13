@@ -21,13 +21,11 @@ class _HomeState extends State<Home> {
   bool dsc = false;
   bool dp = true;
   bool trd = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(_auth.currentUser);
   }
 
   @override

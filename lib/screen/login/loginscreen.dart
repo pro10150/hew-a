@@ -16,6 +16,9 @@ class LoginScreenState extends State<LoginScreen> {
   bool isRememberMe = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   Future checkAuth(BuildContext context) async {
     if (_auth.currentUser != null) {
       print('Already signed-in with');
@@ -24,15 +27,25 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  singIn() {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  signIn() {
     _auth
         .signInWithEmailAndPassword(
-            email: "pro10150@gmail.com", password: "123456")
+            email: emailController.text.trim(),
+            password: passwordController.text.trim())
         .then((user) {
-      print("signed in ${user.user}");
+      print("signed in ${user.additionalUserInfo!.username}");
       checkAuth(context);
     }).catchError((error) {
       print(error);
+      scaffoldKey.currentState!.showSnackBar(SnackBar(
+        content: Text(
+          error,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ));
     });
   }
 
@@ -49,12 +62,13 @@ class LoginScreenState extends State<LoginScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left: 35),
-              hintText: 'Username',
+              hintText: 'email',
               hintStyle: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -80,6 +94,7 @@ class LoginScreenState extends State<LoginScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: passwordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -132,7 +147,7 @@ class LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 2,
         onPressed: () {
-          singIn();
+          signIn();
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -199,6 +214,7 @@ class LoginScreenState extends State<LoginScreen> {
     final urlImage =
         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg";
     return Scaffold(
+      key: scaffoldKey,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -263,8 +279,6 @@ class LoginScreenState extends State<LoginScreen> {
                                       buildEmail(),
                                       SizedBox(height: 20),
                                       buildPassword(),
-                                      SizedBox(height: 20),
-                                      buildRememberCb(),
                                       SizedBox(height: 20),
                                       buildLoginBtn(),
                                       buildSignupBtn()

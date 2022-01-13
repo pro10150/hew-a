@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/user_model.dart';
@@ -7,11 +9,9 @@ class UserHelper {
   final String tableDatabase = 'userTABLE';
   int version = 1;
 
-  final String userIDColumn = 'userID';
+  final String uidColumn = 'uid';
   final String nameColumn = 'name';
-  final String emailColumn = 'email';
   final String usernameColumn = 'username';
-  final String passwordColumn = 'password';
   final String imageColumn = 'image';
   // final String AllergyID = 'AllergyID';
   // final String AllergyName = 'AllergyName';
@@ -37,7 +37,7 @@ class UserHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($userIDColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT, $usernameColumn TEXT, $passwordColumn TEXT, $imageColumn TEXT)'),
+            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT $imageColumn BLOB)'),
         version: version);
   }
 
@@ -47,11 +47,22 @@ class UserHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(UserModel userModel) async {
+    print(join(await getDatabasesPath(), nameDatabase));
     Database database = await connectedDatabase();
     try {
       database.insert(tableDatabase, userModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> updateDataToSQLite(UserModel userModel) async {
+    Database database = await connectedDatabase();
+    try {
+      database.update(tableDatabase, userModel.toJson(),
+          where: '${uidColumn} = ?', whereArgs: [userModel.uid]);
+    } catch (e) {
+      print('e updateData ==>> ${e.toString()}');
     }
   }
 
@@ -70,7 +81,7 @@ class UserHelper {
   Future<Null> deleteDataWhereId(int id) async {
     Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$userIDColumn = $id');
+      await database.delete(tableDatabase, where: '$uidColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }

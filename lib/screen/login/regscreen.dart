@@ -4,6 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'userinfo.dart';
 import 'loginscreen.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/screen/launcher.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -11,6 +15,45 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
+
+  Future<Null> readSQLite() async {
+    var object = await UserHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    if (object.length != 0) {
+      for (var model in object) {
+        print(model.username);
+      }
+    } else {
+      print('Found nothing!');
+    }
+  }
+
+  signUp() {
+    String username = usernameController.text.trim();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmController.text.trim();
+    if (password == confirmPassword && password.length >= 6) {
+      _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((user) {
+        print('Sign up user successful');
+        UserModel userModel =
+            UserModel(uid: user.user!.uid, username: username);
+        UserHelper();
+        UserHelper().insertDataToSQLite(userModel);
+        readSQLite();
+      }).catchError((error) {
+        print(error.toString());
+      });
+    }
+  }
+
   Widget buildUser() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,6 +67,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: usernameController,
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -54,6 +98,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -84,6 +129,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: passwordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -114,6 +160,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: confirmController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -137,10 +184,11 @@ class RegisterScreenState extends State<RegisterScreen> {
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
-          Navigator.push(
+          signUp();
+          Navigator.pushAndRemoveUntil(
               context,
-              PageTransition(
-                  child: UserInfo(), type: PageTransitionType.rightToLeft));
+              MaterialPageRoute(builder: (context) => Launcher()),
+              ModalRoute.withName('/'));
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -187,6 +235,13 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readSQLite();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final urlImage =
         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg";
@@ -197,19 +252,19 @@ class RegisterScreenState extends State<RegisterScreen> {
           child: Stack(
             children: <Widget>[
               Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [
-                        Color(0xffffffff),
-                        Color(0xffff8a65),
-                        Color(0xffe69a83),
-                      ],
-                      center: Alignment.topRight,
-                      radius: 3,
-                    ),
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      Color(0xffffffff),
+                      Color(0xffff8a65),
+                      Color(0xffe69a83),
+                    ],
+                    center: Alignment.topRight,
+                    radius: 3,
                   ),
+                ),
                 // Container(
                 //   height: 1400,
                 //   decoration: BoxDecoration(
@@ -217,55 +272,55 @@ class RegisterScreenState extends State<RegisterScreen> {
                 //     image: NetworkImage(urlImage),
                 //     fit: BoxFit.fill,
                 //   )),
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
-                          showLogo(),
-                          Container(
-                              height: 620,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.white24,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Container(
-                                  padding: const EdgeInsets.only(top: 30.0),
-                                  margin: const EdgeInsets.only(
-                                      left: 25.0, right: 25.0),
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'Register',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.only(top: 10.0)),
+                        showLogo(),
+                        Container(
+                            height: 620,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Container(
+                                padding: const EdgeInsets.only(top: 30.0),
+                                margin: const EdgeInsets.only(
+                                    left: 25.0, right: 25.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        'Register',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        SizedBox(height: 20),
-                                        buildUser(),
-                                        SizedBox(height: 20),
-                                        buildEmail(),
-                                        SizedBox(height: 20),
-                                        buildPassword(),
-                                        SizedBox(height: 20),
-                                        buildCFPassword(),
-                                        SizedBox(height: 30),
-                                        buildRegisterBtn(),
-                                        buildLoginBtn()
-                                      ]))),
-                        ]),
-                  ),
+                                      ),
+                                      SizedBox(height: 20),
+                                      buildUser(),
+                                      SizedBox(height: 20),
+                                      buildEmail(),
+                                      SizedBox(height: 20),
+                                      buildPassword(),
+                                      SizedBox(height: 20),
+                                      buildCFPassword(),
+                                      SizedBox(height: 30),
+                                      buildRegisterBtn(),
+                                      buildLoginBtn()
+                                    ]))),
+                      ]),
                 ),
+              ),
             ],
           ),
         ),

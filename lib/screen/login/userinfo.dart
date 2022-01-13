@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hewa/screen/login/meal.dart';
 
-class UserInfo extends StatefulWidget {
-  const UserInfo({Key? key}) : super(key: key);
+class UserInformation extends StatefulWidget {
+  const UserInformation({Key? key}) : super(key: key);
 
   @override
-  _UserInfoState createState() => _UserInfoState();
+  _UserInformationState createState() => _UserInformationState();
 }
 
-class _UserInfoState extends State<UserInfo> {
+class _UserInformationState extends State<UserInformation> {
   int number = 0;
 
   Widget builcam() {

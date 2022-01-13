@@ -60,10 +60,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   void signOut(BuildContext context) {
     _auth.signOut();
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-        ModalRoute.withName('/'));
+    Future.delayed(Duration.zero, () {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          ModalRoute.withName('/'));
+    });
   }
 
   @override
