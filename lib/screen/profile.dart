@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login/loginscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -56,6 +57,14 @@ class UpperClipper extends CustomClipper<Path> {
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late TabController controller;
   late var _scrollViewController;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  void signOut(BuildContext context) {
+    _auth.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/'));
+  }
 
   @override
   void initState() {
@@ -123,13 +132,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                 Expanded(
                                                     child: TextButton(
                                                         onPressed: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              PageTransition(
-                                                                  child:
-                                                                      LoginScreen(),
-                                                                  type: PageTransitionType
-                                                                      .rightToLeft));
+                                                          signOut(context);
                                                         },
                                                         child: Text(
                                                           'Log out',

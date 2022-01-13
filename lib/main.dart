@@ -4,6 +4,7 @@ import 'package:hewa/config/palette.dart';
 import 'package:hewa/screen/launcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:hewa/screen/login/loginscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Hew\'a App',
       initialRoute: '/', // สามารถใช้ home แทนได้
       routes: {
-        Launcher.routeName: (context) => Launcher(),
+        LoginScreen.routeName: (context) => LoginScreen(),
       },
     );
   }

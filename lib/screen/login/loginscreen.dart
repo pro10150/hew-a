@@ -3,14 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'regscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/screen/launcher.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/';
   @override
   LoginScreenState createState() => LoginScreenState();
 }
 
 class LoginScreenState extends State<LoginScreen> {
   bool isRememberMe = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future checkAuth(BuildContext context) async {
+    if (_auth.currentUser != null) {
+      print('Already signed-in with');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Launcher()));
+    }
+  }
+
+  singIn() {
+    _auth
+        .signInWithEmailAndPassword(
+            email: "pro10150@gmail.com", password: "123456")
+        .then((user) {
+      print("signed in ${user.user}");
+      checkAuth(context);
+    }).catchError((error) {
+      print(error);
+    });
+  }
 
   Widget buildEmail() {
     return Column(
@@ -108,7 +132,7 @@ class LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 2,
         onPressed: () {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+          singIn();
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -164,6 +188,13 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkAuth(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final urlImage =
         "https://i.pinimg.com/564x/ee/a7/59/eea7597b2336cec27f04a875887bb2a6.jpg";
@@ -173,76 +204,76 @@ class LoginScreenState extends State<LoginScreen> {
         child: GestureDetector(
           child: Stack(
             children: <Widget>[
-               Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [
-                        Color(0xffffffff),
-                        Color(0xffff8a65),
-                        Color(0xffe69a83),
-                      ],
-                      center: Alignment.topRight,
-                      radius: 3,
-                    ),
-                  ),
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          showLogo(),
-                          Container(
-                              height: 470,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.white24,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Container(
-                                  padding: const EdgeInsets.only(top: 40.0),
-                                  margin: const EdgeInsets.only(
-                                      left: 25.0, right: 25.0),
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'Login to',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          'your account',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              color: Colors.black87,
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(height: 15),
-                                        buildEmail(),
-                                        SizedBox(height: 20),
-                                        buildPassword(),
-                                        SizedBox(height: 20),
-                                        buildRememberCb(),
-                                        SizedBox(height: 20),
-                                        buildLoginBtn(),
-                                        buildSignupBtn()
-
-                                        // buildSignupBtn()
-                                      ]))),
-                        ]),
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      Color(0xffffffff),
+                      Color(0xffff8a65),
+                      Color(0xffe69a83),
+                    ],
+                    center: Alignment.topRight,
+                    radius: 3,
                   ),
                 ),
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        showLogo(),
+                        Container(
+                            height: 470,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Container(
+                                padding: const EdgeInsets.only(top: 40.0),
+                                margin: const EdgeInsets.only(
+                                    left: 25.0, right: 25.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        'Login to',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'your account',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 15),
+                                      buildEmail(),
+                                      SizedBox(height: 20),
+                                      buildPassword(),
+                                      SizedBox(height: 20),
+                                      buildRememberCb(),
+                                      SizedBox(height: 20),
+                                      buildLoginBtn(),
+                                      buildSignupBtn()
+
+                                      // buildSignupBtn()
+                                    ]))),
+                      ]),
+                ),
+              ),
             ],
           ),
         ),
