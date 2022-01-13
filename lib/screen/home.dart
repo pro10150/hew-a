@@ -4,6 +4,7 @@ import 'home/daily_pick.dart';
 import 'home/discover.dart';
 import 'home/trending.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -20,6 +21,14 @@ class _HomeState extends State<Home> {
   bool dsc = false;
   bool dp = true;
   bool trd = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(_auth.currentUser);
+  }
 
   @override
   Widget get topSection => Container(

@@ -5,107 +5,333 @@
 5    android:versionName="1.0.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="16"
+8        android:minSdkVersion="19"
 9        android:targetSdkVersion="30" />
 10    <!--
 11         Flutter needs it to communicate with the running application
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->C:\Users\66931\Documents\projects\hew-a\android\app\src\debug\AndroidManifest.xml:6:5-66
-14-->C:\Users\66931\Documents\projects\hew-a\android\app\src\debug\AndroidManifest.xml:6:22-64
-15
-16    <application
-16-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:3:4-41:19
-17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.6.0] C:\Users\66931\.gradle\caches\transforms-2\files-2.1\122df2e57d294d1a53db26bbc3b813c1\core-1.6.0\AndroidManifest.xml:24:18-86
-18        android:debuggable="true"
-19        android:icon="@mipmap/ic_launcher"
-19-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:6:9-43
-20        android:label="Hew&apos;a"
-20-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:5:9-28
-21        android:requestLegacyExternalStorage="true" >
-21-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:4:9-52
-22        <activity
-22-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:7:9-35:20
-23            android:name="com.example.se.MainActivity"
-23-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:8:13-41
-24            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-24-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:11:13-163
-25            android:hardwareAccelerated="true"
-25-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:12:13-47
-26            android:launchMode="singleTop"
-26-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:9:13-43
-27            android:theme="@style/LaunchTheme"
-27-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:10:13-47
-28            android:windowSoftInputMode="adjustResize" >
-28-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:13:13-55
-29
-30            <!--
-31                 Specifies an Android theme to apply to this Activity as soon as
-32                 the Android process has started. This theme is visible to the user
-33                 while the Flutter UI initializes. After that, this theme continues
-34                 to determine the Window background behind the Flutter UI.
-35            -->
-36            <meta-data
-36-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:18:13-21:17
-37                android:name="io.flutter.embedding.android.NormalTheme"
-37-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:19:15-70
-38                android:resource="@style/NormalTheme" />
-38-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:20:15-52
-39            <!--
-40                 Displays an Android View that continues showing the launch screen
-41                 Drawable until Flutter paints its first frame, then this splash
-42                 screen fades out. A splash screen is useful to avoid any visual
-43                 gap between the end of Android's launch screen and the painting of
-44                 Flutter's first frame.
-45            -->
-46            <meta-data
-46-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:27:13-30:17
-47                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-47-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:28:15-79
-48                android:resource="@drawable/launch_background" />
-48-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:29:15-61
-49
-50            <intent-filter>
-50-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:31:13-34:29
-51                <action android:name="android.intent.action.MAIN" />
-51-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:32:17-68
-51-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:32:25-66
-52
-53                <category android:name="android.intent.category.LAUNCHER" />
-53-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:33:17-76
-53-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:33:27-74
-54            </intent-filter>
-55        </activity>
-56        <!--
-57             Don't delete the meta-data below.
-58             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-59        -->
-60        <meta-data
-60-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:38:9-40:33
-61            android:name="flutterEmbedding"
-61-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:39:13-44
-62            android:value="2" />
-62-->C:\Users\66931\Documents\projects\hew-a\android\app\src\main\AndroidManifest.xml:40:13-30
-63
-64        <provider
-64-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-65            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-65-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
-66            android:authorities="com.example.se.flutter.image_provider"
-66-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
-67            android:exported="false"
-67-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-68            android:grantUriPermissions="true" >
-68-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-69            <meta-data
-69-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
-70                android:name="android.support.FILE_PROVIDER_PATHS"
-70-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-71                android:resource="@xml/flutter_image_picker_file_paths" />
-71-->[:image_picker] C:\Users\66931\Documents\projects\hew-a\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
-72        </provider>
-73    </application>
-74
-75</manifest>
+14-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/debug/AndroidManifest.xml:6:5-66
+14-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/debug/AndroidManifest.xml:6:22-64
+15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+15-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
+15-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:22-76
+16    <uses-permission android:name="android.permission.WAKE_LOCK" />
+16-->[com.google.android.gms:play-services-measurement-api:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/20687de29f74bc8d6a4189244a5817c5/jetified-play-services-measurement-api-20.0.2/AndroidManifest.xml:24:5-68
+16-->[com.google.android.gms:play-services-measurement-api:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/20687de29f74bc8d6a4189244a5817c5/jetified-play-services-measurement-api-20.0.2/AndroidManifest.xml:24:22-65
+17    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- Include required permissions for Advertising Id -->
+17-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:26:5-110
+17-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:26:22-107
+18    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+18-->[com.google.android.gms:play-services-ads-identifier:18.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/9dc0d6f2df9bf55279cf060ee25cc540/jetified-play-services-ads-identifier-18.0.0/AndroidManifest.xml:23:5-79
+18-->[com.google.android.gms:play-services-ads-identifier:18.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/9dc0d6f2df9bf55279cf060ee25cc540/jetified-play-services-ads-identifier-18.0.0/AndroidManifest.xml:23:22-76
+19
+20    <application
+20-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:3:4-41:19
+21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+21-->[androidx.core:core:1.6.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/AndroidManifest.xml:24:18-86
+22        android:debuggable="true"
+23        android:icon="@mipmap/ic_launcher"
+23-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:6:9-43
+24        android:label="Hew&apos;a"
+24-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:5:9-28
+25        android:requestLegacyExternalStorage="true" >
+25-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:4:9-52
+26        <activity
+26-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:7:9-35:20
+27            android:name="com.example.se.MainActivity"
+27-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:8:13-41
+28            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+28-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:11:13-163
+29            android:hardwareAccelerated="true"
+29-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:12:13-47
+30            android:launchMode="singleTop"
+30-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:9:13-43
+31            android:theme="@style/LaunchTheme"
+31-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:10:13-47
+32            android:windowSoftInputMode="adjustResize" >
+32-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:13:13-55
+33
+34            <!--
+35                 Specifies an Android theme to apply to this Activity as soon as
+36                 the Android process has started. This theme is visible to the user
+37                 while the Flutter UI initializes. After that, this theme continues
+38                 to determine the Window background behind the Flutter UI.
+39            -->
+40            <meta-data
+40-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:18:13-21:17
+41                android:name="io.flutter.embedding.android.NormalTheme"
+41-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:19:15-70
+42                android:resource="@style/NormalTheme" />
+42-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:20:15-52
+43            <!--
+44                 Displays an Android View that continues showing the launch screen
+45                 Drawable until Flutter paints its first frame, then this splash
+46                 screen fades out. A splash screen is useful to avoid any visual
+47                 gap between the end of Android's launch screen and the painting of
+48                 Flutter's first frame.
+49            -->
+50            <meta-data
+50-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:27:13-30:17
+51                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+51-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:28:15-79
+52                android:resource="@drawable/launch_background" />
+52-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:29:15-61
+53
+54            <intent-filter>
+54-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:31:13-34:29
+55                <action android:name="android.intent.action.MAIN" />
+55-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:32:17-68
+55-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:32:25-66
+56
+57                <category android:name="android.intent.category.LAUNCHER" />
+57-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:33:17-76
+57-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:33:27-74
+58            </intent-filter>
+59        </activity>
+60        <!--
+61             Don't delete the meta-data below.
+62             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+63        -->
+64        <meta-data
+64-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:38:9-40:33
+65            android:name="flutterEmbedding"
+65-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:39:13-44
+66            android:value="2" />
+66-->/Users/skooter/Desktop/Class/ปี3/se/hew-a/android/app/src/main/AndroidManifest.xml:40:13-30
+67
+68        <service
+68-->[:firebase_auth] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
+69            android:name="com.google.firebase.components.ComponentDiscoveryService"
+69-->[:firebase_auth] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:8:18-89
+70            android:directBootAware="true"
+70-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:35:13-43
+71            android:exported="false" >
+71-->[com.google.firebase:firebase-analytics-ktx:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/b677bbc354b4900d742589092b4dcbd5/jetified-firebase-analytics-ktx-20.0.2/AndroidManifest.xml:10:13-37
+72            <meta-data
+72-->[:firebase_auth] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
+73                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+73-->[:firebase_auth] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
+74                android:value="com.google.firebase.components.ComponentRegistrar" />
+74-->[:firebase_auth] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
+75            <meta-data
+75-->[:firebase_core] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-11:85
+76                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+76-->[:firebase_core] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-124
+77                android:value="com.google.firebase.components.ComponentRegistrar" />
+77-->[:firebase_core] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
+78            <meta-data
+78-->[com.google.firebase:firebase-analytics-ktx:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/b677bbc354b4900d742589092b4dcbd5/jetified-firebase-analytics-ktx-20.0.2/AndroidManifest.xml:11:13-13:85
+79                android:name="com.google.firebase.components:com.google.firebase.analytics.ktx.FirebaseAnalyticsKtxRegistrar"
+79-->[com.google.firebase:firebase-analytics-ktx:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/b677bbc354b4900d742589092b4dcbd5/jetified-firebase-analytics-ktx-20.0.2/AndroidManifest.xml:12:17-126
+80                android:value="com.google.firebase.components.ComponentRegistrar" />
+80-->[com.google.firebase:firebase-analytics-ktx:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/b677bbc354b4900d742589092b4dcbd5/jetified-firebase-analytics-ktx-20.0.2/AndroidManifest.xml:13:17-82
+81            <meta-data
+81-->[com.google.firebase:firebase-common-ktx:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/88e32c098d2c065b3d9114cecd41d219/jetified-firebase-common-ktx-20.0.0/AndroidManifest.xml:15:13-17:85
+82                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonKtxRegistrar"
+82-->[com.google.firebase:firebase-common-ktx:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/88e32c098d2c065b3d9114cecd41d219/jetified-firebase-common-ktx-20.0.0/AndroidManifest.xml:16:17-113
+83                android:value="com.google.firebase.components.ComponentRegistrar" />
+83-->[com.google.firebase:firebase-common-ktx:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/88e32c098d2c065b3d9114cecd41d219/jetified-firebase-common-ktx-20.0.0/AndroidManifest.xml:17:17-82
+84            <meta-data
+84-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:77:13-79:85
+85                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+85-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:78:17-109
+86                android:value="com.google.firebase.components.ComponentRegistrar" />
+86-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:79:17-82
+87            <meta-data
+87-->[com.google.android.gms:play-services-measurement-api:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/20687de29f74bc8d6a4189244a5817c5/jetified-play-services-measurement-api-20.0.2/AndroidManifest.xml:30:13-32:85
+88                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+88-->[com.google.android.gms:play-services-measurement-api:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/20687de29f74bc8d6a4189244a5817c5/jetified-play-services-measurement-api-20.0.2/AndroidManifest.xml:31:17-139
+89                android:value="com.google.firebase.components.ComponentRegistrar" />
+89-->[com.google.android.gms:play-services-measurement-api:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/20687de29f74bc8d6a4189244a5817c5/jetified-play-services-measurement-api-20.0.2/AndroidManifest.xml:32:17-82
+90            <meta-data
+90-->[com.google.firebase:firebase-installations:17.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c67383452b743da162768be50d6e0953/jetified-firebase-installations-17.0.0/AndroidManifest.xml:18:13-20:85
+91                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+91-->[com.google.firebase:firebase-installations:17.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c67383452b743da162768be50d6e0953/jetified-firebase-installations-17.0.0/AndroidManifest.xml:19:17-127
+92                android:value="com.google.firebase.components.ComponentRegistrar" />
+92-->[com.google.firebase:firebase-installations:17.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c67383452b743da162768be50d6e0953/jetified-firebase-installations-17.0.0/AndroidManifest.xml:20:17-82
+93        </service>
+94
+95        <provider
+95-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-16:20
+96            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+96-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:9:13-82
+97            android:authorities="com.example.se.flutter.image_provider"
+97-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:10:13-74
+98            android:exported="false"
+98-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:11:13-37
+99            android:grantUriPermissions="true" >
+99-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-47
+100            <meta-data
+100-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-15:75
+101                android:name="android.support.FILE_PROVIDER_PATHS"
+101-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:14:17-67
+102                android:resource="@xml/flutter_image_picker_file_paths" />
+102-->[:image_picker] /Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-72
+103        </provider>
+104
+105        <uses-library
+105-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+106            android:name="androidx.window.extensions"
+106-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+107            android:required="false" />
+107-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+108        <uses-library
+108-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+109            android:name="androidx.window.sidecar"
+109-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+110            android:required="false" />
+110-->[androidx.window:window:1.0.0-beta04] /Users/skooter/.gradle/caches/transforms-2/files-2.1/c15149140bcc27b70424f541b52a2f41/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+111
+112        <activity
+112-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:27:9-44:20
+113            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+113-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:28:13-80
+114            android:excludeFromRecents="true"
+114-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:29:13-46
+115            android:exported="true"
+115-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:30:13-36
+116            android:launchMode="singleTask"
+116-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:31:13-44
+117            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+117-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:32:13-72
+118            <intent-filter>
+118-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:33:13-43:29
+119                <action android:name="android.intent.action.VIEW" />
+119-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:17-69
+119-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:25-66
+120
+121                <category android:name="android.intent.category.DEFAULT" />
+121-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:17-76
+121-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:27-73
+122                <category android:name="android.intent.category.BROWSABLE" />
+122-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:37:17-78
+122-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:37:27-75
+123
+124                <data
+124-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:39:17-42:51
+125                    android:host="firebase.auth"
+125-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:40:21-49
+126                    android:path="/"
+126-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:41:21-37
+127                    android:scheme="genericidp" />
+127-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:42:21-48
+128            </intent-filter>
+129        </activity>
+130        <activity
+130-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:45:9-62:20
+131            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+131-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:46:13-79
+132            android:excludeFromRecents="true"
+132-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:47:13-46
+133            android:exported="true"
+133-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:48:13-36
+134            android:launchMode="singleTask"
+134-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:49:13-44
+135            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+135-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:50:13-72
+136            <intent-filter>
+136-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:51:13-61:29
+137                <action android:name="android.intent.action.VIEW" />
+137-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:17-69
+137-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:34:25-66
+138
+139                <category android:name="android.intent.category.DEFAULT" />
+139-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:17-76
+139-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:27-73
+140                <category android:name="android.intent.category.BROWSABLE" />
+140-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:37:17-78
+140-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:37:27-75
+141
+142                <data
+142-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:39:17-42:51
+143                    android:host="firebase.auth"
+143-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:40:21-49
+144                    android:path="/"
+144-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:41:21-37
+145                    android:scheme="recaptcha" />
+145-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:42:21-48
+146            </intent-filter>
+147        </activity>
+148
+149        <service
+149-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:64:9-73:19
+150            android:name="com.google.firebase.auth.api.fallback.service.FirebaseAuthFallbackService"
+150-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:65:13-101
+151            android:enabled="true"
+151-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:66:13-35
+152            android:exported="false" >
+152-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:67:13-37
+153            <intent-filter>
+153-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:68:13-72:29
+154                <action android:name="com.google.firebase.auth.api.gms.service.START" />
+154-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:17-89
+154-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:69:25-86
+155
+156                <category android:name="android.intent.category.DEFAULT" />
+156-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:17-76
+156-->[com.google.firebase:firebase-auth:21.0.1] /Users/skooter/.gradle/caches/transforms-2/files-2.1/14571d30233b761a8bce049c222a9299/jetified-firebase-auth-21.0.1/AndroidManifest.xml:36:27-73
+157            </intent-filter>
+158        </service>
+159
+160        <provider
+160-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
+161            android:name="com.google.firebase.provider.FirebaseInitProvider"
+161-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
+162            android:authorities="com.example.se.firebaseinitprovider"
+162-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
+163            android:directBootAware="true"
+163-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43
+164            android:exported="false"
+164-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:30:13-37
+165            android:initOrder="100" />
+165-->[com.google.firebase:firebase-common:20.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/ee44d4534e2021e991693ced647b50b5/jetified-firebase-common-20.0.0/AndroidManifest.xml:31:13-36
+166
+167        <activity
+167-->[com.google.android.gms:play-services-base:17.1.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/2cd47c5e7ab28841ea7a996dbee41228/jetified-play-services-base-17.1.0/AndroidManifest.xml:23:9-26:75
+168            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+168-->[com.google.android.gms:play-services-base:17.1.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/2cd47c5e7ab28841ea7a996dbee41228/jetified-play-services-base-17.1.0/AndroidManifest.xml:24:13-79
+169            android:exported="false"
+169-->[com.google.android.gms:play-services-base:17.1.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/2cd47c5e7ab28841ea7a996dbee41228/jetified-play-services-base-17.1.0/AndroidManifest.xml:25:13-37
+170            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+170-->[com.google.android.gms:play-services-base:17.1.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/2cd47c5e7ab28841ea7a996dbee41228/jetified-play-services-base-17.1.0/AndroidManifest.xml:26:13-72
+171
+172        <receiver
+172-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:29:9-33:20
+173            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+173-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:30:13-85
+174            android:enabled="true"
+174-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:31:13-35
+175            android:exported="false" >
+175-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:32:13-37
+176        </receiver>
+177
+178        <service
+178-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:35:9-38:40
+179            android:name="com.google.android.gms.measurement.AppMeasurementService"
+179-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:36:13-84
+180            android:enabled="true"
+180-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:37:13-35
+181            android:exported="false" />
+181-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:38:13-37
+182        <service
+182-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:39:9-43:72
+183            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+183-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:40:13-87
+184            android:enabled="true"
+184-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:41:13-35
+185            android:exported="false"
+185-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:42:13-37
+186            android:permission="android.permission.BIND_JOB_SERVICE" />
+186-->[com.google.android.gms:play-services-measurement:20.0.2] /Users/skooter/.gradle/caches/transforms-2/files-2.1/dfd281a3e5b612973246bd8558006b23/jetified-play-services-measurement-20.0.2/AndroidManifest.xml:43:13-69
+187
+188        <meta-data
+188-->[com.google.android.gms:play-services-basement:18.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/cc91cf130b386aac8a252a7bb5e33ef9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:21:9-23:69
+189            android:name="com.google.android.gms.version"
+189-->[com.google.android.gms:play-services-basement:18.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/cc91cf130b386aac8a252a7bb5e33ef9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:22:13-58
+190            android:value="@integer/google_play_services_version" />
+190-->[com.google.android.gms:play-services-basement:18.0.0] /Users/skooter/.gradle/caches/transforms-2/files-2.1/cc91cf130b386aac8a252a7bb5e33ef9/jetified-play-services-basement-18.0.0/AndroidManifest.xml:23:13-66
+191    </application>
+192
+193</manifest>

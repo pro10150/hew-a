@@ -1,16 +1,57 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\66931\\Documents\\projects\\hew-a\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-az\\values-az.xml",
+            "outputFile": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-az/values-az.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\122df2e57d294d1a53db26bbc3b813c1\\core-1.6.0\\res\\values-az\\values-az.xml",
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/cc91cf130b386aac8a252a7bb5e33ef9/jetified-play-services-basement-18.0.0/res/values-az/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "157",
+                        "endOffsets": "352"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1275",
+                        "endColumns": "161",
+                        "endOffsets": "1432"
+                    }
+                },
+                {
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/2cd47c5e7ab28841ea7a996dbee41228/jetified-play-services-base-17.1.0/res/values-az/values.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
+                        "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+                        "startOffsets": "245,352,539,670,778,983,1114,1260,1391,1616,1724,1904,2039,2242,2424,2514,2605",
+                        "endColumns": "106,186,130,107,204,130,145,130,224,107,179,134,202,181,89,90,105",
+                        "endOffsets": "351,538,669,777,982,1113,1259,1390,1615,1723,1903,2038,2241,2423,2513,2604,2710"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,216,403,538,650,855,990,1140,1437,1662,1774,1954,2093,2296,2482,2576,2671",
+                        "endColumns": "110,186,134,111,204,134,149,134,224,111,179,138,202,185,93,94,109",
+                        "endOffsets": "211,398,533,645,850,985,1135,1270,1657,1769,1949,2088,2291,2477,2571,2666,2776"
+                    }
+                },
+                {
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/values-az/values-az.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
                         "endColumns": "100",
                         "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "2781",
+                        "endColumns": "100",
+                        "endOffsets": "2877"
                     }
                 }
             ]

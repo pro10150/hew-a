@@ -38,6 +38,8 @@ dependencies:
   flutter_slidable: ^1.2.0
   getwidget: ^2.0.4
   image_picker: ^0.8.4+4
+  firebase_core: ^1.11.0
+  firebase_auth: ^3.3.5
 
 dev_dependencies:
   flutter_test:
