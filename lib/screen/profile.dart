@@ -69,7 +69,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     });
   }
 
-  late var username;
+  late var username = null;
 
   Future<String?> getUsername() async {
     var object =
@@ -408,10 +408,12 @@ class recipes extends StatelessWidget {
   }
 }
 
-navigateToEditPage(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) {
-    return EditProfile();
-  }));
+void navigateToEditPage(BuildContext context) async {
+  Future.delayed(const Duration(milliseconds: 500), () {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return EditProfile();
+    }));
+  });
 }
 
 var rep = new Column(
