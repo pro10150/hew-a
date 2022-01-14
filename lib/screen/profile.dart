@@ -4,6 +4,7 @@ import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/utilities/user_helper.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -68,11 +69,23 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     });
   }
 
+  late var username;
+
+  Future<String?> getUsername() async {
+    var object =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    var value = object[0].username;
+    setState(() {
+      username = value;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _scrollViewController = ScrollController();
     controller = TabController(length: 2, vsync: this);
+    getUsername();
   }
 
   @override
@@ -155,7 +168,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                           radius: 60.0,
                                         ),
                                         Text(
-                                          "@iamJohannie",
+                                          "@${username}",
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black,

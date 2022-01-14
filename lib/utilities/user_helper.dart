@@ -78,7 +78,19 @@ class UserHelper {
     return userModels;
   }
 
-  Future<Null> deleteDataWhereId(int id) async {
+  Future<List<UserModel>> readDataFromSQLiteWhereId(String id) async {
+    Database database = await connectedDatabase();
+    List<UserModel> userModels = [];
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      UserModel userModel = UserModel.fromJson(map);
+      userModels.add(userModel);
+    }
+    return userModels;
+  }
+
+  Future<Null> deleteDataWhereId(String id) async {
     Database database = await connectedDatabase();
     try {
       await database.delete(tableDatabase, where: '$uidColumn = $id');
