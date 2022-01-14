@@ -5,9 +5,7 @@ class MenuModel {
   String? userID;
 
   MenuModel(
-      {required this.nameMenu,
-      required this.mainIngredient,
-      required this.userID});
+      {required this.nameMenu, required this.mainIngredient, this.userID});
 
   MenuModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
