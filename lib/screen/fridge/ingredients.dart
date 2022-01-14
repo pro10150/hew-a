@@ -1,19 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
 
-const List<String> ingredients = [
-  'Pork',
-  'Beef',
-  'Fish',
-  'Bok Choi',
-  'Lettuce',
-  'Cabbage',
-  'Basil',
-  'Spinach',
-  'Garlic',
-  'Egg'
-];
+List<String> ingredients = [];
 
 class Ingredients extends StatefulWidget {
   static const routeName = '/';
@@ -42,6 +32,29 @@ class _IngredientsState extends State<Ingredients> {
       items.add(Text(i));
     }
     return items;
+  }
+
+  Future<Null> readSQLite() async {
+    var object = await IngredHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    if (object.length != 0) {
+      if (ingredients.length == 0) {
+        for (var model in object) {
+          print(model.name);
+          ingredients.add(model.name!);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //IngredHelper();
+    //IngredHelper().initInsertToSQLite();
+    readSQLite();
+    print(ingredients);
   }
 
   @override

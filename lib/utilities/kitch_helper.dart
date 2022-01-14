@@ -55,7 +55,7 @@ class KitchHelper {
     database.execute(
         'INSERT INTO $tableDatabase($nameColumn) VALUES (\'Microwave\')');
     database
-        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Over\')');
+        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Oven\')');
     database
         .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Pot\')');
     database

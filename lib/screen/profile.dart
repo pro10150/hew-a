@@ -62,12 +62,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   void signOut(BuildContext context) {
     _auth.signOut();
-    Future.delayed(Duration.zero, () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-          ModalRoute.withName('/'));
-    });
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/'));
   }
 
   late var username = null;
@@ -147,20 +145,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                 ),
                                                 Expanded(
                                                     child: TextButton(
-                                                        onPressed: () {
-                                                          signOut(context);
-                                                        },
-                                                        child: Icon(Icons.logout,color: Colors.black),)),
-                                                        // child: Text(
-                                                        //   'Log out',
-                                                        //   style: TextStyle(
-                                                        //       fontWeight:
-                                                        //           FontWeight
-                                                        //               .bold,
-                                                        //       fontSize: 18,
-                                                        //       color:
-                                                        //           Colors.white),
-                                                        // )))
+                                                  onPressed: () {
+                                                    signOut(context);
+                                                  },
+                                                  child: Icon(Icons.logout,
+                                                      color: Colors.black),
+                                                )),
+                                                // child: Text(
+                                                //   'Log out',
+                                                //   style: TextStyle(
+                                                //       fontWeight:
+                                                //           FontWeight
+                                                //               .bold,
+                                                //       fontSize: 18,
+                                                //       color:
+                                                //           Colors.white),
+                                                // )))
                                               ]),
                                         ),
                                         CircleAvatar(
