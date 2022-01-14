@@ -8,6 +8,7 @@ import 'package:hewa/utilities/user_helper.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
+  static const IconData logout = IconData(0xe3b3, fontFamily: 'MaterialIcons');
 
   const Profile({Key? key}) : super(key: key);
 
@@ -149,16 +150,17 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                         onPressed: () {
                                                           signOut(context);
                                                         },
-                                                        child: Text(
-                                                          'Log out',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18,
-                                                              color:
-                                                                  Colors.white),
-                                                        )))
+                                                        child: Icon(Icons.logout,color: Colors.black),)),
+                                                        // child: Text(
+                                                        //   'Log out',
+                                                        //   style: TextStyle(
+                                                        //       fontWeight:
+                                                        //           FontWeight
+                                                        //               .bold,
+                                                        //       fontSize: 18,
+                                                        //       color:
+                                                        //           Colors.white),
+                                                        // )))
                                               ]),
                                         ),
                                         CircleAvatar(
