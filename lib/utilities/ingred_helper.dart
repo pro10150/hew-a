@@ -39,7 +39,7 @@ class IngredHelper {
   Future<Null> initInsertToSQLite() async {
     print(join(await getDatabasesPath(), nameDatabase));
     Database database = await connectedDatabase();
-    List<int> id = Iterable<int>.generate(69).toList();
+    List<int> id = Iterable<int>.generate(68).toList();
     List<String> ingredient = [
       'Egg',
       'Minced pork',
