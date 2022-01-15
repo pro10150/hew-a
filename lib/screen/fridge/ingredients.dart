@@ -52,7 +52,7 @@ class _IngredientsState extends State<Ingredients> {
     // TODO: implement initState
     super.initState();
     //IngredHelper();
-    //IngredHelper().initInsertToSQLite();
+    // IngredHelper().initInsertToSQLite();
     readSQLite();
     print(ingredients);
   }

@@ -50,18 +50,37 @@ class KitchHelper {
 
   Future<Null> initialInsert() async {
     Database database = await connectedDatabase();
-    database
-        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Pan\')');
-    database.execute(
-        'INSERT INTO $tableDatabase($nameColumn) VALUES (\'Microwave\')');
-    database
-        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Oven\')');
-    database
-        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Pot\')');
-    database
-        .execute('INSERT INTO $tableDatabase($nameColumn) VALUES (\'Fryer\')');
-    database.execute(
-        'INSERT INTO $tableDatabase($nameColumn) VALUES (\'Cheese grater\')');
+    List<String> kitchenwares = [
+      'Rice cooker',
+      'Pan',
+      'Pot',
+      'Air fryer',
+      'Microwave',
+      'Food processor',
+      'Cutting board',
+      'Knife',
+      'Induction cooker',
+      'Oven',
+      'Spatula',
+      'Mortar',
+      'Whisker',
+      'Pressure cooker',
+      'Grinder',
+      'Sifter',
+      'Electric kettle',
+      'Kettle',
+      'Steamer',
+      'Toaster',
+      'Halogen oven',
+      'Pastry blender',
+      'Thermoemeter',
+      'Cheese gater',
+      'Stove'
+    ];
+    for (var kitchenware in kitchenwares) {
+      database.execute(
+          'INSERT INTO $tableDatabase($nameColumn) VALUES (\'$kitchenware\')');
+    }
   }
 
   Future<Null> deleteDataWhereId(int id) async {
