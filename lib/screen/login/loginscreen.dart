@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'regscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/launcher.dart';
+import 'package:hewa/utilities/db_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -206,6 +207,9 @@ class LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // DBHelper().deleteDB();
+    DBHelper().database();
     checkAuth(context);
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
+import 'package:hewa/utilities/db_helper.dart';
 
 List<String> kitchenware = [];
 
@@ -56,6 +57,7 @@ class _KitchenwareState extends State<Kitchenware> {
     // TODO: implement initState
     super.initState();
     // KitchHelper().deleteAlldata();
+    // DBHelper().delteDatabase();
     // KitchHelper().initialInsert();
     //ใช้ initialInsert เพื่อinsert เครื่องครัว
     readSQLite();
