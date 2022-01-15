@@ -69,13 +69,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   late var username = null;
+  late var name = null;
 
   Future<String?> getUsername() async {
     var object =
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     var value = object[0].username;
     setState(() {
-      username = value;
+      username = object[0].username;
+      name = object[0].name;
     });
   }
 
@@ -136,7 +138,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                               children: <Widget>[
                                                 Spacer(),
                                                 Text(
-                                                  "Johannieieie",
+                                                  name != null
+                                                      ? '$name'
+                                                      : '$username',
                                                   style: TextStyle(
                                                       fontSize: 24.0,
                                                       color: Colors.black,
