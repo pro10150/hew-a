@@ -86,6 +86,10 @@ class _IngredientsState extends State<Ingredients> {
                     ),
                     IconButton(
                         onPressed: () {
+                          setState(() {
+                            _selectedIngredient = ingredients[0];
+                            _selectedIngredientAmount = 10;
+                          });
                           showCupertinoModalPopup(
                               context: context,
                               builder: (context) {
@@ -115,13 +119,14 @@ class _IngredientsState extends State<Ingredients> {
                                             child: Text('Add'),
                                             onPressed: () {
                                               setState(() {
+                                                ingredients.remove(
+                                                    _selectedIngredient);
                                                 _ingredientsList
                                                     .add(_selectedIngredient);
                                                 _ingredientsAmountList.add(
-                                                    (_selectedIngredientAmount +
-                                                            1) *
-                                                        5);
+                                                    (_selectedIngredientAmount));
                                               });
+                                              Navigator.pop(context);
                                             },
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 16.0,
@@ -162,9 +167,9 @@ class _IngredientsState extends State<Ingredients> {
                                                 });
                                               },
                                               children:
-                                                  new List<Widget>.generate(20,
+                                                  new List<Widget>.generate(50,
                                                       (int index) {
-                                                int amount = (index + 1) * 5;
+                                                int amount = (index + 1) * 10;
                                                 return new Center(
                                                   child: new Text('${amount}'),
                                                 );

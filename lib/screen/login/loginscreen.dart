@@ -23,8 +23,10 @@ class LoginScreenState extends State<LoginScreen> {
   Future checkAuth(BuildContext context) async {
     if (_auth.currentUser != null) {
       print('Already signed-in with');
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Launcher()));
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Launcher()));
+      });
     }
   }
 

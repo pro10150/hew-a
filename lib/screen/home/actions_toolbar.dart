@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hewa/screen/profile/otherPeople.dart';
+import 'package:page_transition/page_transition.dart';
 
 class actionsToolbar extends StatelessWidget {
   Widget _getSocialAction({required String title, required IconData icon}) {
@@ -22,12 +24,13 @@ class actionsToolbar extends StatelessWidget {
         ));
   }
 
-  Widget _getFollowAction({required String pictureUrl}) {
+  Widget _getFollowAction(
+      {required String pictureUrl, required BuildContext context}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       width: 60,
       height: 60,
-      child: Stack(children: [_getProfilePicture(), _getPlusIcon()]),
+      child: Stack(children: [_getProfilePicture(context), _getPlusIcon()]),
     );
   }
 
@@ -52,24 +55,30 @@ class actionsToolbar extends StatelessWidget {
     );
   }
 
-  Widget _getProfilePicture() {
+  Widget _getProfilePicture(BuildContext context) {
     return Positioned(
-      left: (ActionWidgetSize / 2) - (ProfileImageSize / 2),
-      child: Container(
-        padding: EdgeInsets.all(1.0),
-        height: ProfileImageSize,
-        width: ProfileImageSize,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(ProfileImageSize / 2)),
-        child: CachedNetworkImage(
-          imageUrl:
-              "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
-          placeholder: (context, url) => new CircularProgressIndicator(),
-          errorWidget: (context, url, error) => new Icon(Icons.error),
-        ),
-      ),
-    );
+        left: (ActionWidgetSize / 2) - (ProfileImageSize / 2),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return OtherProfile();
+            }));
+          },
+          child: Container(
+            padding: EdgeInsets.all(1.0),
+            height: ProfileImageSize,
+            width: ProfileImageSize,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(ProfileImageSize / 2)),
+            child: CachedNetworkImage(
+              imageUrl:
+                  "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+              placeholder: (context, url) => new CircularProgressIndicator(),
+              errorWidget: (context, url, error) => new Icon(Icons.error),
+            ),
+          ),
+        ));
   }
 
   @override
@@ -82,7 +91,8 @@ class actionsToolbar extends StatelessWidget {
         children: [
           _getFollowAction(
               pictureUrl:
-                  "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7"),
+                  "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
+              context: context),
           _getSocialAction(title: '15.2k', icon: MdiIcons.heartOutline),
           _getSocialAction(title: '132', icon: MdiIcons.messageOutline),
           _getSocialAction(title: 'Share', icon: MdiIcons.shareOutline)

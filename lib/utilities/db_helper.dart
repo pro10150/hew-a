@@ -36,5 +36,7 @@ class DBHelper {
         'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT)');
     db.execute(
         'CREATE TABLE userTABLE (uid TEXT PRIMARY KEY, name TEXT,username TEXT image BLOB)');
+    db.execute(
+        'CREATE TABLE userKitchenwareTABLE(id INTEGER PRIMARY KEY, uid TEXT, kitchenware INTEGER)');
   }
 }

@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
-import 'package:hewa/utilities/db_helper.dart';
+import 'package:hewa/utilities/userKitch_helper.dart' as userKitchHelper;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/models/userKitch_model.dart';
 
 List<String> kitchenware = [];
 
@@ -24,6 +27,7 @@ void doNothing(BuildContext context) {}
 class _KitchenwareState extends State<Kitchenware> {
   bool isSwitched = false;
   String _selectedKitchenware = '';
+  FirebaseAuth _auth = FirebaseAuth.instance;
   List<Widget> getPickerItems(List<String> list) {
     List<Widget> items = [];
     for (var i in list) {
@@ -36,7 +40,7 @@ class _KitchenwareState extends State<Kitchenware> {
     _kitchenwareList.removeAt(index);
   }
 
-  Future<Null> readSQLite() async {
+  Future<Null> getKitchenware() async {
     var object = await KitchHelper().readlDataFromSQLite();
     print('object length ==> ${object.length}');
     if (object.length != 0) {
@@ -52,15 +56,28 @@ class _KitchenwareState extends State<Kitchenware> {
     }
   }
 
+  Future<Null> getUserKitchenware() async {
+    var object = await userKitchHelper.UserKitchHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    print('user kitchenware length ==> ${object.length}');
+    if (object.length != 0) {
+      _kitchenwareList.clear();
+      for (var model in object) {
+        _kitchenwareList.add(model.kitchenware!);
+        kitchenware.remove(model.kitchenware);
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // KitchHelper().deleteAlldata();
-    // DBHelper().delteDatabase();
-    // KitchHelper().initialInsert();
+    KitchHelper().deleteAlldata();
+    KitchHelper().initialInsert();
     //ใช้ initialInsert เพื่อinsert เครื่องครัว
-    readSQLite();
+    getKitchenware();
+    getUserKitchenware();
   }
 
   @override
@@ -87,6 +104,9 @@ class _KitchenwareState extends State<Kitchenware> {
                   ),
                   IconButton(
                       onPressed: () {
+                        setState(() {
+                          _selectedKitchenware = kitchenware[0];
+                        });
                         showCupertinoModalPopup(
                           context: context,
                           builder: (context) {
@@ -121,9 +141,17 @@ class _KitchenwareState extends State<Kitchenware> {
                                         child: Text('Confirm'),
                                         onPressed: () {
                                           setState(() {
+                                            kitchenware
+                                                .remove(_selectedKitchenware);
                                             _kitchenwareList
                                                 .add(_selectedKitchenware);
                                           });
+                                          var model = UserKitchenwareModel(
+                                              uid: _auth.currentUser!.uid,
+                                              kitchenware:
+                                                  _selectedKitchenware);
+                                          userKitchHelper.UserKitchHelper()
+                                              .insertDataToSQLite(model);
                                           Navigator.pop(context);
                                         },
                                         padding: const EdgeInsets.symmetric(
@@ -179,7 +207,13 @@ class _KitchenwareState extends State<Kitchenware> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (context) {
+                                        userKitchHelper.UserKitchHelper()
+                                            .deleteDataWhere(
+                                                _auth.currentUser!.uid,
+                                                _kitchenwareList[index]);
                                         setState(() {
+                                          kitchenware
+                                              .add(_kitchenwareList[index]);
                                           _kitchenwareList.removeAt(index);
                                         });
                                       },
@@ -208,7 +242,8 @@ class _KitchenwareState extends State<Kitchenware> {
                                             Expanded(
                                               child: InkWell(
                                                   onTap: () {
-                                                    print('Yeet');
+                                                    print(_kitchenwareList[
+                                                        index]);
                                                   },
                                                   child: Column(
                                                     mainAxisAlignment:
