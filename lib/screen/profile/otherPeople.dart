@@ -139,7 +139,7 @@ class _OtherProfileState extends State<OtherProfile>
                                                       //   height: 5.0,
                                                       // ),
                                                       Text(
-                                                        "following",
+                                                        "Following",
                                                         style: TextStyle(
                                                           fontSize: 18.0,
                                                           color: Colors.black,
@@ -189,7 +189,7 @@ class _OtherProfileState extends State<OtherProfile>
                                                       //   height: 5.0,
                                                       // ),
                                                       Text(
-                                                        "Recripes",
+                                                        "Recipes",
                                                         style: TextStyle(
                                                           fontSize: 18.0,
                                                           color: Colors.black,

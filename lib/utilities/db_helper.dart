@@ -40,5 +40,7 @@ class DBHelper {
         'CREATE TABLE userKitchenwareTABLE(id INTEGER PRIMARY KEY, uid TEXT, kitchenware INTEGER)');
     db.execute(
         'CREATE TABLE followTABLE (id INTEGER PRIMARY KEY, uid TEXT, followedUserID TEXT)');
+    db.execute(
+        'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER)');
   }
 }

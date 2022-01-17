@@ -6,6 +6,7 @@ import 'login/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/follow_helper.dart';
+import 'package:hewa/utilities/recipe_helper.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -73,6 +74,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late var name = null;
   late var follower = 0;
   late var following = 0;
+  late var recipe = 0;
 
   Future<String?> getUsername() async {
     var object =
@@ -110,6 +112,20 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     }
   }
 
+  Future<String?> getRecipe() async {
+    var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
+    var length = 0;
+    if (object.length != 0) {
+      for (var i = 0; i < object.length; i++) {
+        length += 1;
+      }
+      setState(() {
+        recipe = length;
+      });
+      length = 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -117,6 +133,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     controller = TabController(length: 2, vsync: this);
     getUsername();
     getFollow();
+    getRecipe();
   }
 
   @override
@@ -240,7 +257,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                       //   height: 5.0,
                                                       // ),
                                                       Text(
-                                                        "following",
+                                                        "Following",
                                                         style: TextStyle(
                                                           fontSize: 18.0,
                                                           color: Colors.black,
@@ -278,7 +295,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
-                                                        "6",
+                                                        "$recipe",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -290,7 +307,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                       //   height: 5.0,
                                                       // ),
                                                       Text(
-                                                        "Recripes",
+                                                        "Recipes",
                                                         style: TextStyle(
                                                           fontSize: 18.0,
                                                           color: Colors.black,
