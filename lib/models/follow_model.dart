@@ -1,18 +1,18 @@
 class FollowModel {
-  String? followerUserID;
-  String? followeeUserID;
+  String? uid;
+  String? followedUserID;
 
-  FollowModel({required this.followerUserID, required this.followeeUserID});
+  FollowModel({required this.uid, required this.followedUserID});
 
   FollowModel.fromJson(Map<String, dynamic> json) {
-    followerUserID = json['followerUserID'];
-    followeeUserID = json['followeeUserID'];
+    uid = json['uid'];
+    followedUserID = json['followedUserID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['followerUserID'] = this.followerUserID;
-    data['followeeUserID'] = this.followeeUserID;
+    data['uid'] = this.uid;
+    data['followedUserID'] = this.followedUserID;
     return data;
   }
 }

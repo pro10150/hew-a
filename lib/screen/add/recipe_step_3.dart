@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:hewa/screen/launcher.dart';
 
 class RecipeStep3 extends StatefulWidget {
   @override
@@ -485,8 +486,11 @@ class _RecipeStep3State extends State<RecipeStep3> {
                                   alignment: Alignment.centerRight,
                                   child: TextButton(
                                       onPressed: () {
-                                        Navigator.popUntil(
-                                            context, ModalRoute.withName('/'));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Launcher()));
                                       },
                                       child: Text('Done'))))
                         ],

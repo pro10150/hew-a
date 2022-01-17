@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'login/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/utilities/follow_helper.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -70,6 +71,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   late var username = null;
   late var name = null;
+  late var follower = 0;
+  late var following = 0;
 
   Future<String?> getUsername() async {
     var object =
@@ -81,12 +84,39 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     });
   }
 
+  Future<String?> getFollow() async {
+    var followerObject =
+        await FollowHelper().getFollower(_auth.currentUser!.uid);
+    var followingObject =
+        await FollowHelper().getFollowing(_auth.currentUser!.uid);
+    var length = 0;
+    if (followerObject.length != 0) {
+      for (var i = 0; i < followerObject.length; i++) {
+        length += 1;
+      }
+      setState(() {
+        follower = length;
+      });
+      length = 0;
+    }
+    if (followingObject.length != 0) {
+      for (var i = 0; i < followingObject.length; i++) {
+        length += 1;
+      }
+      setState(() {
+        following = length;
+      });
+      length = 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _scrollViewController = ScrollController();
     controller = TabController(length: 2, vsync: this);
     getUsername();
+    getFollow();
   }
 
   @override
@@ -198,7 +228,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                             .center,
                                                     children: <Widget>[
                                                       Text(
-                                                        "520",
+                                                        '$follower',
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -223,7 +253,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
-                                                        "116",
+                                                        "$following",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
