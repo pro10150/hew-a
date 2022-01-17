@@ -110,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "file_picker",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "firebase_auth",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.5",
       "packageUri": "lib/",
@@ -142,6 +148,24 @@
     {
       "name": "firebase_core_web",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_storage",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_storage_platform_interface",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.0.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_storage_web",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.6",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -500,7 +524,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-01-14T09:34:22.200586Z",
+  "generated": "2022-01-17T16:54:44.476825Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }
