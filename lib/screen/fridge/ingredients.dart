@@ -30,7 +30,7 @@ class _IngredientsState extends State<Ingredients> {
   String _selectedIngredient = '';
   int _selectedIngredientAmount = 0;
   FirebaseAuth _auth = FirebaseAuth.instance;
-  String username = '';
+  UserModel? userModel;
 
   List<Widget> getPickerItems(List<String> list) {
     List<Widget> items = [];
@@ -45,7 +45,7 @@ class _IngredientsState extends State<Ingredients> {
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     if (object.length != 0) {
       for (var model in object) {
-        username = model.username!;
+        userModel = model;
         print(model.ingredients);
         if (model.ingredients == 1) {
           setState(() {
@@ -106,11 +106,8 @@ class _IngredientsState extends State<Ingredients> {
                           } else {
                             ing = 0;
                           }
-                          UserModel userModel = UserModel(
-                              uid: _auth.currentUser!.uid,
-                              username: username,
-                              ingredients: ing);
-                          UserHelper().updateIngredients(userModel);
+                          userModel!.ingredients = ing;
+                          UserHelper().updateDataToSQLite(userModel!);
                         });
                       },
                     ),

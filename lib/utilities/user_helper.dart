@@ -68,34 +68,6 @@ class UserHelper {
     }
   }
 
-  Future<Null> updateKitchenwares(UserModel userModel) async {
-    Database database = await connectedDatabase();
-    Map<String, dynamic> row = {
-      uidColumn: userModel.uid,
-      usernameColumn: userModel.username,
-      kitchenwaresColumn: userModel.kitchenwares
-    };
-    try {
-      database.update(tableDatabase, row);
-    } catch (e) {
-      print('e updateData ==> ${e.toString()}');
-    }
-  }
-
-  Future<Null> updateIngredients(UserModel userModel) async {
-    Database database = await connectedDatabase();
-    Map<String, dynamic> row = {
-      uidColumn: userModel.uid,
-      usernameColumn: userModel.username,
-      ingredientsColumn: userModel.ingredients
-    };
-    try {
-      database.update(tableDatabase, row);
-    } catch (e) {
-      print('e updateData ==> ${e.toString()}');
-    }
-  }
-
   Future<List<UserModel>> readlDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<UserModel> userModels = [];

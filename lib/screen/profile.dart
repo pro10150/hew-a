@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login/loginscreen.dart';
@@ -70,8 +71,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ModalRoute.withName('/'));
   }
 
-  late var username = null;
-  late var name = null;
+  late UserModel user;
   late var follower = 0;
   late var following = 0;
   late var recipe = 0;
@@ -79,10 +79,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Future<String?> getUsername() async {
     var object =
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
-    var value = object[0].username;
     setState(() {
-      username = object[0].username;
-      name = object[0].name;
+      user = object[0];
     });
   }
 
@@ -91,39 +89,17 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         await FollowHelper().getFollower(_auth.currentUser!.uid);
     var followingObject =
         await FollowHelper().getFollowing(_auth.currentUser!.uid);
-    var length = 0;
-    if (followerObject.length != 0) {
-      for (var i = 0; i < followerObject.length; i++) {
-        length += 1;
-      }
-      setState(() {
-        follower = length;
-      });
-      length = 0;
-    }
-    if (followingObject.length != 0) {
-      for (var i = 0; i < followingObject.length; i++) {
-        length += 1;
-      }
-      setState(() {
-        following = length;
-      });
-      length = 0;
-    }
+    setState(() {
+      follower = followerObject.length;
+      following = followingObject.length;
+    });
   }
 
   Future<String?> getRecipe() async {
     var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
-    var length = 0;
-    if (object.length != 0) {
-      for (var i = 0; i < object.length; i++) {
-        length += 1;
-      }
-      setState(() {
-        recipe = length;
-      });
-      length = 0;
-    }
+    setState(() {
+      recipe = object.length;
+    });
   }
 
   @override
@@ -185,9 +161,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                               children: <Widget>[
                                                 Spacer(),
                                                 Text(
-                                                  name != null
-                                                      ? '$name'
-                                                      : '$username',
+                                                  user.name != null
+                                                      ? '${user.name}'
+                                                      : '${user.username}',
                                                   style: TextStyle(
                                                       fontSize: 24.0,
                                                       color: Colors.black,
@@ -221,7 +197,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                           radius: 60.0,
                                         ),
                                         Text(
-                                          "@${username}",
+                                          "@${user.username}",
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black,

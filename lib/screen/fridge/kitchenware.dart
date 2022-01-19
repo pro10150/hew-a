@@ -30,7 +30,7 @@ class _KitchenwareState extends State<Kitchenware> {
   bool isSwitched = false;
   String _selectedKitchenware = '';
   FirebaseAuth _auth = FirebaseAuth.instance;
-  String username = '';
+  UserModel? userModel;
   List<Widget> getPickerItems(List<String> list) {
     List<Widget> items = [];
     for (var i in list) {
@@ -77,7 +77,7 @@ class _KitchenwareState extends State<Kitchenware> {
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     if (object.length != 0) {
       for (var model in object) {
-        username = model.username!;
+        userModel = model as UserModel?;
         print(model.kitchenwares);
         if (model.kitchenwares == 1) {
           setState(() {
@@ -123,11 +123,8 @@ class _KitchenwareState extends State<Kitchenware> {
                           } else {
                             ing = 0;
                           }
-                          UserModel userModel = UserModel(
-                              uid: _auth.currentUser!.uid,
-                              username: username,
-                              kitchenwares: ing);
-                          UserHelper().updateIngredients(userModel);
+                          userModel!.kitchenwares = ing;
+                          UserHelper().updateDataToSQLite(userModel!);
                         });
                       }),
                   Container(
