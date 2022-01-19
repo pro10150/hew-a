@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/models/user_model.dart';
 
 List<String> ingredients = [];
 
@@ -26,6 +29,8 @@ class _IngredientsState extends State<Ingredients> {
   List<int> _ingredientsAmountList = [];
   String _selectedIngredient = '';
   int _selectedIngredientAmount = 0;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  String username = '';
 
   List<Widget> getPickerItems(List<String> list) {
     List<Widget> items = [];
@@ -33,6 +38,22 @@ class _IngredientsState extends State<Ingredients> {
       items.add(Text(i));
     }
     return items;
+  }
+
+  Future<Null> getSwitch() async {
+    var object =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    if (object.length != 0) {
+      for (var model in object) {
+        username = model.username!;
+        print(model.ingredients);
+        if (model.ingredients == 1) {
+          setState(() {
+            isSwitched = true;
+          });
+        }
+      }
+    }
   }
 
   Future<Null> readSQLite() async {
@@ -56,6 +77,7 @@ class _IngredientsState extends State<Ingredients> {
     // DBHelper().database();
     // IngredHelper().initInsertToSQLite();
     readSQLite();
+    getSwitch();
     print(ingredients);
   }
 
@@ -78,6 +100,17 @@ class _IngredientsState extends State<Ingredients> {
                       onChanged: (value) {
                         setState(() {
                           isSwitched = value;
+                          var ing;
+                          if (isSwitched == true) {
+                            ing = 1;
+                          } else {
+                            ing = 0;
+                          }
+                          UserModel userModel = UserModel(
+                              uid: _auth.currentUser!.uid,
+                              username: username,
+                              ingredients: ing);
+                          UserHelper().updateIngredients(userModel);
                         });
                       },
                     ),
@@ -199,93 +232,91 @@ class _IngredientsState extends State<Ingredients> {
                             return Container(
                                 height: MediaQuery.of(context).size.width * 0.3,
                                 child: Slidable(
-                                    key: const ValueKey(0),
+                                  key: const ValueKey(0),
 
-                                    // The end action pane is the one at the right or the bottom side.
-                                    endActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          // An action can be bigger than the others.
-                                          onPressed: doNothing,
-                                          backgroundColor: Colors.blue,
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.edit,
-                                          label: 'Edit',
-                                        ),
-                                        SlidableAction(
-                                          onPressed: doNothing,
-                                          backgroundColor: Colors.red,
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.delete,
-                                          label: 'Delete',
-                                        ),
-                                      ],
-                                    ),
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.3,
-                                      child: Card(
-                                        color: Colors.white,
-                                        child: Container(
-                                            child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Image(
-                                              image: AssetImage(
-                                                  'lib/assets/fridge/egg.jpeg'),
-                                              fit: BoxFit.cover,
-                                              height: 80,
-                                              width: 80,
-                                            ),
-                                            Flexible(
-                                              child: RichText(
-                                                overflow: TextOverflow.ellipsis,
-                                                text: TextSpan(
-                                                  text: _ingredientsList[index],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                strutStyle: StrutStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 10),
-                                              child: Flexible(
-                                                child: RichText(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  text: TextSpan(
-                                                    text:
-                                                        _ingredientsAmountList[
-                                                                index]
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  strutStyle: StrutStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )),
+                                  // The end action pane is the one at the right or the bottom side.
+                                  endActionPane: ActionPane(
+                                    motion: DrawerMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        // An action can be bigger than the others.
+                                        onPressed: doNothing,
+                                        backgroundColor: Colors.blue,
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.edit,
+                                        label: 'Edit',
                                       ),
-                                    )));
+                                      SlidableAction(
+                                        onPressed: doNothing,
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.delete,
+                                        label: 'Delete',
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            top: BorderSide(
+                                                width: 1, color: Colors.grey),
+                                            bottom: BorderSide(
+                                                width: 1, color: Colors.grey))),
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    child: Container(
+                                        child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Image(
+                                          image: AssetImage(
+                                              'lib/assets/fridge/egg.jpeg'),
+                                          fit: BoxFit.cover,
+                                          height: 80,
+                                          width: 80,
+                                        ),
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                              text: _ingredientsList[index],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                            strutStyle: StrutStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              text: TextSpan(
+                                                text: _ingredientsAmountList[
+                                                        index]
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24,
+                                                ),
+                                              ),
+                                              strutStyle: StrutStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                                  ),
+                                ));
                           },
                         )
                       : Text('You don\'t have any ingredients yet'),

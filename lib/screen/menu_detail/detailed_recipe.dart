@@ -2,15 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:hewa/config/palette.dart';
+import 'dart:math' as math;
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class DetailedRecipe extends StatefulWidget {
   @override
   _DetailedRecipeState createState() => _DetailedRecipeState();
 }
 
-class _DetailedRecipeState extends State<DetailedRecipe> {
+class TimerPainter extends CustomPainter {
+  TimerPainter(
+      {required this.animation,
+      required this.backgroundColor,
+      required this.color})
+      : super(repaint: animation);
+
+  final Animation<double> animation;
+  final Color backgroundColor, color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // TODO: implement paint
+    Paint paint = Paint()
+      ..color = backgroundColor
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawCircle(size.center(Offset.zero), size.width / 2, paint);
+    paint.color = color;
+    double progress = (1.0 - animation.value) * 2 * math.pi;
+    canvas.drawArc(Offset.zero & size, math.pi * 1.5, -progress, false, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant TimerPainter old) {
+    // TODO: implement shouldRepaint
+    return animation.value != old.animation.value ||
+        color != old.color ||
+        backgroundColor != old.backgroundColor;
+  }
+}
+
+class _DetailedRecipeState extends State<DetailedRecipe>
+    with TickerProviderStateMixin {
   int _n = 1;
   int _ingr = 240;
+  AnimationController? controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 20));
+  }
+
+  String get timerString {
+    Duration duration = controller!.duration! * controller!.value;
+    return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
 
   void add() {
     setState(() {
@@ -72,6 +125,13 @@ class _DetailedRecipeState extends State<DetailedRecipe> {
   }
 
   Widget _getRecipeStep() {
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    controller!.addListener(() {
+      if (controller!.value == 0) {
+        FlutterRingtonePlayer.playRingtone();
+      }
+    });
     return Column(
       children: <Widget>[
         Container(
@@ -97,7 +157,7 @@ class _DetailedRecipeState extends State<DetailedRecipe> {
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: EdgeInsets.only(left: 20),
                   child: Text(
                     'Step 1',
                     style: TextStyle(fontSize: 18),
@@ -131,7 +191,16 @@ class _DetailedRecipeState extends State<DetailedRecipe> {
               ),
             ),
             GFButton(
-              onPressed: () {},
+              onPressed: () {
+                if (controller!.isAnimating) {
+                  controller!.reset();
+                  controller!.reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                } else {
+                  controller!.reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                }
+
+                _openTimer(context, controller);
+              },
               text: '5 min',
               textColor: Colors.black,
               shape: GFButtonShape.pills,
@@ -168,6 +237,66 @@ class _DetailedRecipeState extends State<DetailedRecipe> {
         )
       ],
     );
+  }
+
+  _openTimer(context, controller) {
+    Alert(
+        context: context,
+        title: "Timer",
+        content: Container(
+            height: 200,
+            width: 200,
+            padding: EdgeInsets.only(top: 10),
+            child: Column(children: <Widget>[
+              Expanded(
+                  child: Align(
+                alignment: FractionalOffset.center,
+                child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                            child: AnimatedBuilder(
+                                animation: controller!,
+                                builder: (BuildContext context, Widget? child) {
+                                  return new CustomPaint(
+                                    painter: TimerPainter(
+                                        animation: controller!,
+                                        backgroundColor: Colors.white,
+                                        color: Palette.roseBud),
+                                  );
+                                })),
+                        Align(
+                          alignment: FractionalOffset.center,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AnimatedBuilder(
+                                    animation: controller,
+                                    builder:
+                                        (BuildContext context, Widget? child) {
+                                      return new Text(
+                                        timerString,
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                    })
+                              ]),
+                        )
+                      ],
+                    )),
+              )),
+            ])),
+        buttons: [
+          DialogButton(
+              color: Palette.roseBud,
+              child: Text("Stop"),
+              onPressed: () {
+                Navigator.pop(context);
+              })
+        ]).show();
   }
 
   @override

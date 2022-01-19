@@ -7,6 +7,8 @@ import 'package:hewa/utilities/kitch_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart' as userKitchHelper;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/models/userKitch_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/models/user_model.dart';
 
 List<String> kitchenware = [];
 
@@ -28,6 +30,7 @@ class _KitchenwareState extends State<Kitchenware> {
   bool isSwitched = false;
   String _selectedKitchenware = '';
   FirebaseAuth _auth = FirebaseAuth.instance;
+  String username = '';
   List<Widget> getPickerItems(List<String> list) {
     List<Widget> items = [];
     for (var i in list) {
@@ -69,6 +72,22 @@ class _KitchenwareState extends State<Kitchenware> {
     }
   }
 
+  Future<Null> getSwitch() async {
+    var object =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    if (object.length != 0) {
+      for (var model in object) {
+        username = model.username!;
+        print(model.kitchenwares);
+        if (model.kitchenwares == 1) {
+          setState(() {
+            isSwitched = true;
+          });
+        }
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -77,6 +96,7 @@ class _KitchenwareState extends State<Kitchenware> {
     KitchHelper().initialInsert();
     //ใช้ initialInsert เพื่อinsert เครื่องครัว
     getKitchenware();
+    getSwitch();
     getUserKitchenware();
   }
 
@@ -97,6 +117,17 @@ class _KitchenwareState extends State<Kitchenware> {
                       onChanged: (value) {
                         setState(() {
                           isSwitched = value;
+                          var ing;
+                          if (isSwitched == true) {
+                            ing = 1;
+                          } else {
+                            ing = 0;
+                          }
+                          UserModel userModel = UserModel(
+                              uid: _auth.currentUser!.uid,
+                              username: username,
+                              kitchenwares: ing);
+                          UserHelper().updateIngredients(userModel);
                         });
                       }),
                   Container(

@@ -9,6 +9,8 @@ class IngredHelper {
 
   final String idColumn = 'id';
   final String nameColumn = 'name';
+  final String typeColumn = 'type';
+  final String pictureColumn = 'picture';
 
   IngredHelper() {
     initDatabase();

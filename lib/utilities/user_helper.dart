@@ -13,6 +13,8 @@ class UserHelper {
   final String nameColumn = 'name';
   final String usernameColumn = 'username';
   final String imageColumn = 'image';
+  final String ingredientsColumn = 'ingredients';
+  final String kitchenwaresColumn = 'kitchenwares';
   // final String AllergyID = 'AllergyID';
   // final String AllergyName = 'AllergyName';
   // final String RecipeID = 'RecipeID';
@@ -37,7 +39,7 @@ class UserHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT $imageColumn BLOB)'),
+            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT, $imageColumn BLOB, $ingredientsColumn INTEGER, $kitchenwaresColumn INTEGERS)'),
         version: version);
   }
 
@@ -63,6 +65,34 @@ class UserHelper {
           where: '${uidColumn} = ?', whereArgs: [userModel.uid]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> updateKitchenwares(UserModel userModel) async {
+    Database database = await connectedDatabase();
+    Map<String, dynamic> row = {
+      uidColumn: userModel.uid,
+      usernameColumn: userModel.username,
+      kitchenwaresColumn: userModel.kitchenwares
+    };
+    try {
+      database.update(tableDatabase, row);
+    } catch (e) {
+      print('e updateData ==> ${e.toString()}');
+    }
+  }
+
+  Future<Null> updateIngredients(UserModel userModel) async {
+    Database database = await connectedDatabase();
+    Map<String, dynamic> row = {
+      uidColumn: userModel.uid,
+      usernameColumn: userModel.username,
+      ingredientsColumn: userModel.ingredients
+    };
+    try {
+      database.update(tableDatabase, row);
+    } catch (e) {
+      print('e updateData ==> ${e.toString()}');
     }
   }
 

@@ -44,6 +44,8 @@ dependencies:
   file_picker: ^4.3.2
   sqflite: ^2.0.2
   path_provider: ^2.0.8
+  rflutter_alert: ^2.0.4
+  flutter_ringtone_player: ^3.1.1
 
 dev_dependencies:
   flutter_test:

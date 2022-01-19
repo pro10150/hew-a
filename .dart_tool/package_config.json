@@ -206,6 +206,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_ringtone_player",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_ringtone_player-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_slidable",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_slidable-1.2.0",
       "packageUri": "lib/",
@@ -404,6 +410,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "rflutter_alert",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/rflutter_alert-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "rxdart",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.3",
       "packageUri": "lib/",
@@ -524,7 +536,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-01-17T16:59:51.101552Z",
+  "generated": "2022-01-18T17:33:12.015102Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

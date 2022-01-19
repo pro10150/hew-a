@@ -134,6 +134,10 @@ flutter_plugin_android_lifecycle
 2.12
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/lib/
+flutter_ringtone_player
+2.12
+file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_ringtone_player-3.1.1/
+file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_ringtone_player-3.1.1/lib/
 flutter_slidable
 2.12
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_slidable-1.2.0/
@@ -258,6 +262,10 @@ process
 2.14
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib/
+rflutter_alert
+2.12
+file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/rflutter_alert-2.0.4/
+file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/rflutter_alert-2.0.4/lib/
 rxdart
 2.12
 file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.3/

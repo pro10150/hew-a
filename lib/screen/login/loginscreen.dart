@@ -210,7 +210,7 @@ class LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
 
-    DBHelper().deleteDB();
+    // DBHelper().deleteDB();
     DBHelper().database();
     checkAuth(context);
   }
