@@ -31,16 +31,20 @@ class DBHelper {
     db.execute(
         'CREATE TABLE kitchenwareTABLE (id INTEGER PRIMARY KEY, nameKitc TEXT)');
     db.execute(
-        'CREATE TABLE ingredientTABLE (id INTEGER PRIMARY KEY, name TEXT)');
+        'CREATE TABLE ingredientTABLE (id INTEGER PRIMARY KEY, name TEXT, image TEXT)');
     db.execute(
-        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT)');
+        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT, image TEXT)');
     db.execute(
         'CREATE TABLE userTABLE (uid TEXT PRIMARY KEY, name TEXT,username TEXT, image BLOB, ingredients INTEGER, kitchenwares INTEGER)');
     db.execute(
-        'CREATE TABLE userKitchenwareTABLE(id INTEGER PRIMARY KEY, uid TEXT, kitchenware INTEGER)');
+        'CREATE TABLE userKitchenwareTABLE(id INTEGER PRIMARY KEY, uid TEXT, kitchenware TEXT)');
+    db.execute(
+        'CREATE TABLE userMenuTABLE(id INTEGER PRIMARY KEY, uid TEXT, menuId INTEGER)');
     db.execute(
         'CREATE TABLE followTABLE (id INTEGER PRIMARY KEY, uid TEXT, followedUserID TEXT)');
     db.execute(
         'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER)');
+    db.execute(
+        'CREATE TABLE  reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
   }
 }

@@ -1,10 +1,10 @@
-class ReallergyModel {
-  String? allID;
+class ReAllergyModel {
+  int? allID;
   String? userID;
 
-  ReallergyModel({required this.allID, required this.userID});
+  ReAllergyModel({required this.allID, required this.userID});
 
-  ReallergyModel.fromJson(Map<String, dynamic> json) {
+  ReAllergyModel.fromJson(Map<String, dynamic> json) {
     allID = json['allID'];
     userID = json['userID'];
   }

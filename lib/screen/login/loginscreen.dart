@@ -6,6 +6,9 @@ import 'regscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/launcher.dart';
 import 'package:hewa/utilities/db_helper.dart';
+import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/utilities/kitch_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -209,10 +212,15 @@ class LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future.delayed(const Duration(milliseconds: 600), () {
+      checkAuth(context);
 
-    // DBHelper().deleteDB();
-    DBHelper().database();
-    checkAuth(context);
+      DBHelper().deleteDB();
+      DBHelper().database();
+      MenuHelper().initInsertToSQLite();
+      IngredHelper().initInsertToSQLite();
+      KitchHelper().initialInsert();
+    });
   }
 
   @override

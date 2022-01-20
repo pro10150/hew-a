@@ -43,20 +43,15 @@ class _KitchenwareState extends State<Kitchenware> {
     _kitchenwareList.removeAt(index);
   }
 
-  Future<Null> getKitchenware() async {
-    var object = await KitchHelper().readlDataFromSQLite();
-    print('object length ==> ${object.length}');
-    if (object.length != 0) {
-      if (kitchenware.length == 0) {
-        for (var model in object) {
+  void getKitchenware() {
+    KitchHelper().readlDataFromSQLite().then((value) {
+      if (value.length != 0) {
+        for (var model in value) {
           kitchenware.add(model.nameKitc!);
         }
       }
-
-      print(kitchenware);
-    } else {
-      print('found nothing');
-    }
+    });
+    setState(() {});
   }
 
   Future<Null> getUserKitchenware() async {
@@ -78,7 +73,6 @@ class _KitchenwareState extends State<Kitchenware> {
     if (object.length != 0) {
       for (var model in object) {
         userModel = model as UserModel?;
-        print(model.kitchenwares);
         if (model.kitchenwares == 1) {
           setState(() {
             isSwitched = true;

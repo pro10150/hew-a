@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:io';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/ingred_model.dart';
@@ -10,7 +13,7 @@ class IngredHelper {
   final String idColumn = 'id';
   final String nameColumn = 'name';
   final String typeColumn = 'type';
-  final String pictureColumn = 'picture';
+  final String imageColumn = 'image';
 
   IngredHelper() {
     initDatabase();
@@ -113,13 +116,20 @@ class IngredHelper {
       'Saba'
     ];
 
-    for (var i in id) {
+    ingredient.asMap().forEach((key, value) async {
+      // var name = (key + 1).toString();
+      // var imagePath =
+      //     '/Users/skooter/Desktop/Class/ปี3/se/hew-a/lib/assets/fridge/รูปวัตถุดิบ/' +
+      //         name +
+      //         '.jpg';
+      // File file = File(imagePath);
+      // Uint8List bytes = file.readAsBytesSync();
       Map<String, dynamic> row = {
-        idColumn: id[i] + 1,
-        nameColumn: ingredient[i]
+        nameColumn: value,
+        imageColumn: (key + 1).toString()
       };
       database.insert(tableDatabase, row);
-    }
+    });
   }
 
   Future<Null> updateDataToSQLite(IngredModel ingredModel) async {

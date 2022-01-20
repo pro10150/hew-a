@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'regsrceen.dart';
 // import 'allergies.dart';
 import 'choosekit.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/models/ingred_model.dart';
+import 'package:hewa/models/reAllergy_model.dart';
+import 'package:hewa/utilities/reAllergy_helper.dart';
 
 class Chooseallergies extends StatefulWidget {
   @override
@@ -11,50 +16,33 @@ class Chooseallergies extends StatefulWidget {
 }
 
 class ChooseallergiesState extends State<Chooseallergies> {
-  // MaterialStateProperty<Color> getColor(Color color, Color colorPressed) {
-  //   final getColor = (Set<MaterialState> states) {
-  //     if (states.contains(MaterialState.pressed)) {
-  //       return colorPressed;
-  //     } else {
-  //       return color;
-  //     }
-  //   };
-  //   return MaterialStateProperty.resolveWith(getColor);
-  // }
-  // bool _flag = true;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Widget buildallergiesBtn() {
-    return RaisedButton(
-      onPressed: () {},
-      onLongPress: null,
-      textColor: Colors.white,
-      color: Colors.black,
-      disabledColor: Colors.black,
-      child: Text("Pok"),
-      // onPressed: () {},
-      shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(30.0),
-      ),
-    );
-
-    // ElevatedButton(
-    //   onPressed: () => setState(() => _flag = !_flag),
-    //   child: Text("Meal"),
-    //   style: ElevatedButton.styleFrom(
-    //     onPrimary : Colors.teal, primary: _flag ? Colors.black,// This is what you need!
-    //   ),
-    // );
-
-    //
-
-    //   ElevatedButton(
-    //   style: ButtonStyle(
-    //     foregroundColor: getColor(Colors.white,Colors.black),
-    //     backgroundColor: getColor(Colors.black,Colors.white),
-    //   ),
-    //     onPressed: () {},
-    //     child: Text("Meal")
-    // );
+  Widget buildallergiesBtn(int index) {
+    return Container(
+        padding: EdgeInsets.all(10),
+        child: TextButton(
+          onPressed: () {
+            setState(() {
+              _selected[index] = !_selected[index];
+            });
+          },
+          child: Text(
+            ingredients[index].name!,
+            textAlign: TextAlign.center,
+          ),
+          style: ButtonStyle(
+              foregroundColor: _selected[index] == false
+                  ? MaterialStateProperty.all<Color>(Colors.black)
+                  : MaterialStateProperty.all<Color>(Colors.white),
+              backgroundColor: _selected[index] == false
+                  ? MaterialStateProperty.all<Color>(Colors.white)
+                  : MaterialStateProperty.all<Color>(Colors.red),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.red)))),
+        ));
   }
 
   Widget buildnextBtn() {
@@ -64,6 +52,12 @@ class ChooseallergiesState extends State<Chooseallergies> {
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
+          for (var i = 0; i < _selected.length; i++) {
+            if (_selected[i] == true) {
+              ReAllergyHelper().insertDataToSQLite(ReAllergyModel(
+                  allID: ingredients[i].id, userID: _auth.currentUser!.uid));
+            }
+          }
           var rount = new MaterialPageRoute(
               builder: (BuildContext context) => new Choosekitchenware());
           Navigator.of(context).push(rount);
@@ -80,13 +74,33 @@ class ChooseallergiesState extends State<Chooseallergies> {
     );
   }
 
+  List<IngredModel> ingredients = [];
+  List<bool> _selected = [];
+  void readSQLite() {
+    IngredHelper().readlDataFromSQLite().then((value) {
+      for (var model in value) {
+        ingredients.add(model);
+      }
+      setState(() {
+        _selected = List.generate(ingredients.length, (index) => false);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readSQLite();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+        body: SingleChildScrollView(
+      child: Stack(
         children: <Widget>[
           Container(
-            height: double.infinity,
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: RadialGradient(
@@ -115,44 +129,28 @@ class ChooseallergiesState extends State<Chooseallergies> {
                   ),
                 ),
                 SizedBox(height: 30),
-                Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                        buildallergiesBtn(),
-                      ],
-                    ),
-                    SizedBox(height: 250),
-                    buildnextBtn(),
-                  ],
-                ),
+                MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    child: GridView.builder(
+                      padding: EdgeInsets.only(top: 30, left: 10, right: 10),
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemCount: ingredients.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildallergiesBtn(index);
+                      },
+                    )),
+                buildnextBtn(),
               ],
             ),
           ),
-
         ],
       ),
-    );
+    ));
   }
 }

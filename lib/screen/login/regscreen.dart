@@ -8,6 +8,7 @@ import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/launcher.dart';
+import 'meal.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -185,10 +186,8 @@ class RegisterScreenState extends State<RegisterScreen> {
         elevation: 5,
         onPressed: () {
           signUp();
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Launcher()),
-              ModalRoute.withName('/'));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Mealpre()));
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

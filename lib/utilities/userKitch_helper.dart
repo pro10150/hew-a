@@ -19,7 +19,7 @@ class UserKitchHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $kitchenwareColumn INTEGER)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $kitchenwareColumn TEXT)'),
         version: version);
   }
 

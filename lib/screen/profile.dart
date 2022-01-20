@@ -71,16 +71,17 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ModalRoute.withName('/'));
   }
 
-  late UserModel user;
+  List<UserModel> user = [];
   late var follower = 0;
   late var following = 0;
   late var recipe = 0;
 
   Future<String?> getUsername() async {
-    var object =
-        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
-    setState(() {
-      user = object[0];
+    UserHelper()
+        .readDataFromSQLiteWhereId(_auth.currentUser!.uid)
+        .then((value) {
+      user = value;
+      setState(() {});
     });
   }
 
@@ -107,6 +108,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.initState();
     _scrollViewController = ScrollController();
     controller = TabController(length: 2, vsync: this);
+    // signOut(context);
     getUsername();
     getFollow();
     getRecipe();
@@ -161,9 +163,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                               children: <Widget>[
                                                 Spacer(),
                                                 Text(
-                                                  user.name != null
-                                                      ? '${user.name}'
-                                                      : '${user.username}',
+                                                  user.isNotEmpty == true
+                                                      ? user[0].name != null
+                                                          ? '${user[0].name}'
+                                                          : '${user[0].username}'
+                                                      : 'name',
                                                   style: TextStyle(
                                                       fontSize: 24.0,
                                                       color: Colors.black,
@@ -197,7 +201,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                           radius: 60.0,
                                         ),
                                         Text(
-                                          "@${user.username}",
+                                          user.isNotEmpty == true
+                                              ? "@${user[0].username}"
+                                              : 'username',
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black,

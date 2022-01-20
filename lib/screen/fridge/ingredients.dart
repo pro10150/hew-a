@@ -6,8 +6,11 @@ import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/ingred_model.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 List<String> ingredients = [];
+List<IngredModel> ingredModel = [];
 
 class Ingredients extends StatefulWidget {
   static const routeName = '/';
@@ -59,13 +62,11 @@ class _IngredientsState extends State<Ingredients> {
   Future<Null> readSQLite() async {
     var object = await IngredHelper().readlDataFromSQLite();
     print('object length ==> ${object.length}');
-    if (object.length != 0) {
-      if (ingredients.length == 0) {
-        for (var model in object) {
-          print(model.name);
-          ingredients.add(model.name!);
-        }
-      }
+    ingredients.clear();
+    for (var model in object) {
+      print(model);
+      ingredModel.add(model);
+      ingredients.add(model.name!);
     }
   }
 
@@ -74,11 +75,9 @@ class _IngredientsState extends State<Ingredients> {
     // TODO: implement initState
     super.initState();
     // IngredHelper().deleteAlldata();
-    // DBHelper().database();
     // IngredHelper().initInsertToSQLite();
     readSQLite();
     getSwitch();
-    print(ingredients);
   }
 
   @override
@@ -226,94 +225,136 @@ class _IngredientsState extends State<Ingredients> {
                       ? ListView.builder(
                           itemCount: _ingredientsList.length,
                           itemBuilder: (context, index) {
-                            return Container(
-                                height: MediaQuery.of(context).size.width * 0.3,
-                                child: Slidable(
-                                  key: const ValueKey(0),
+                            var ingredient = ingredModel
+                                .where((element) =>
+                                    element.name == _ingredientsList[index])
+                                .toList();
+                            print(ingredient.first.image);
+                            final ref = FirebaseStorage.instance
+                                .ref()
+                                .child('ingredients')
+                                .child(ingredient[0].image.toString() + '.jpg');
+                            var url = ref.getDownloadURL();
+                            return FutureBuilder(
+                                future: url,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String> snapshot) {
+                                  List<Widget> children;
+                                  if (snapshot.hasData) {
+                                    children = <Widget>[
+                                      Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          child: Slidable(
+                                            key: const ValueKey(0),
 
-                                  // The end action pane is the one at the right or the bottom side.
-                                  endActionPane: ActionPane(
-                                    motion: DrawerMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        // An action can be bigger than the others.
-                                        onPressed: doNothing,
-                                        backgroundColor: Colors.blue,
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.edit,
-                                        label: 'Edit',
-                                      ),
-                                      SlidableAction(
-                                        onPressed: doNothing,
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        label: 'Delete',
-                                      ),
-                                    ],
-                                  ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            top: BorderSide(
-                                                width: 1, color: Colors.grey),
-                                            bottom: BorderSide(
-                                                width: 1, color: Colors.grey))),
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.3,
-                                    child: Container(
-                                        child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Image(
-                                          image: AssetImage(
-                                              'lib/assets/fridge/egg.jpeg'),
-                                          fit: BoxFit.cover,
-                                          height: 80,
-                                          width: 80,
-                                        ),
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            text: TextSpan(
-                                              text: _ingredientsList[index],
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            strutStyle: StrutStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 10),
-                                          child: Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              text: TextSpan(
-                                                text: _ingredientsAmountList[
-                                                        index]
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24,
+                                            // The end action pane is the one at the right or the bottom side.
+                                            endActionPane: ActionPane(
+                                              motion: DrawerMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  // An action can be bigger than the others.
+                                                  onPressed: doNothing,
+                                                  backgroundColor: Colors.blue,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.edit,
+                                                  label: 'Edit',
                                                 ),
-                                              ),
-                                              strutStyle: StrutStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                                SlidableAction(
+                                                  onPressed: doNothing,
+                                                  backgroundColor: Colors.red,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.delete,
+                                                  label: 'Delete',
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    )),
-                                  ),
-                                ));
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      top: BorderSide(
+                                                          width: 1,
+                                                          color: Colors.grey),
+                                                      bottom: BorderSide(
+                                                          width: 1,
+                                                          color: Colors.grey))),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.3,
+                                              child: Container(
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Image(
+                                                    image: NetworkImage(
+                                                        snapshot.data!),
+                                                    fit: BoxFit.cover,
+                                                    height: 80,
+                                                    width: 80,
+                                                  ),
+                                                  Flexible(
+                                                    child: RichText(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      text: TextSpan(
+                                                        text: _ingredientsList[
+                                                            index],
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 24,
+                                                        ),
+                                                      ),
+                                                      strutStyle: StrutStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 10),
+                                                    child: Flexible(
+                                                      child: RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        text: TextSpan(
+                                                          text:
+                                                              _ingredientsAmountList[
+                                                                      index]
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                          ),
+                                                        ),
+                                                        strutStyle: StrutStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )),
+                                            ),
+                                          ))
+                                    ];
+                                  } else {
+                                    children = <Widget>[
+                                      CircularProgressIndicator()
+                                    ];
+                                  }
+                                  return Column(
+                                    children: children,
+                                  );
+                                });
                           },
                         )
                       : Text('You don\'t have any ingredients yet'),

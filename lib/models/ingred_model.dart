@@ -4,19 +4,16 @@ class IngredModel {
   int? id;
   String? name;
   String? type;
-  Uint8List? picture;
+  String? image;
 
   IngredModel(
-      {required this.id,
-      required this.name,
-      required this.type,
-      required this.picture});
+      {required this.id, required this.name, this.type, required this.image});
 
   IngredModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     type = json['type'];
-    picture = json['picture'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -25,7 +22,7 @@ class IngredModel {
     data['id'] = this.id;
     data['name'] = this.name;
     data['type'] = this.type;
-    data['picture'] = this.picture;
+    data['image'] = this.image;
 
     return data;
   }

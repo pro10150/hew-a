@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/services.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/menu_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
 
 class MenuHelper {
   final String nameDatabase = 'Hewa.db';
@@ -11,6 +18,7 @@ class MenuHelper {
   final String nameMenuColumn = 'nameMenu';
   final String mainIngredientColumn = 'mainIngredient';
   final String userIDColumn = 'userID';
+  final String imageColumn = 'image';
 
   MenuHelper() {
     initDatabase();
@@ -19,7 +27,7 @@ class MenuHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt)'),
         version: version);
   }
 
@@ -40,10 +48,10 @@ class MenuHelper {
 
   Future<Null> initInsertToSQLite() async {
     Database database = await connectedDatabase();
-    List<String> menu = [
+    List<String> menus = [
       'ข้าวมันไก่',
       'ข้าวผัดหมู',
-      'กะเพราหมูสับ',
+      'ผัดกะเพราหมูสับ',
       'แกงเขียวหวานไก่',
       'ต้มยำกุ้ง',
       'ไข่พะโล้',
@@ -144,10 +152,16 @@ class MenuHelper {
       53,
       17
     ];
-    menu.asMap().forEach((key, value) {
+    menus.asMap().forEach((key, value) async {
+      // final ref = FirebaseStorage.instance.ref().child('menu/'+value);
+      // var url = ref.getDownloadURL();
+      // var imagePath = '/lib/assets/รูปเมนู/' + value + '.jpeg';
+      // File file = File(imagePath);
+      // Uint8List bytes = file.readAsBytesSync();
       Map<String, dynamic> row = {
-        idColumn: mainIngredient[key],
-        mainIngredientColumn: value
+        nameMenuColumn: value,
+        mainIngredientColumn: mainIngredient[key],
+        imageColumn: value
       };
       database.insert(tableDatabase, row);
     });

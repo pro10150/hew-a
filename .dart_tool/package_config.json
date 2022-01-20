@@ -62,6 +62,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "circular_profile_avatar",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/circular_profile_avatar-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "clock",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0",
       "packageUri": "lib/",
@@ -536,7 +542,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-01-18T17:33:12.015102Z",
+  "generated": "2022-01-20T17:41:28.632687Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }
