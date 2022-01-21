@@ -49,6 +49,8 @@ class _IngredientsState extends State<Ingredients> {
     if (object.length != 0) {
       for (var model in object) {
         userModel = model;
+        userModel!.uid = model.uid;
+        userModel!.username = model.username;
         print(model.ingredients);
         if (model.ingredients == 1) {
           setState(() {

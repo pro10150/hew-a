@@ -124,6 +124,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return [
                   SliverAppBar(
+                    automaticallyImplyLeading: false,
                     pinned: false,
                     backgroundColor: Colors.white,
                     flexibleSpace: FlexibleSpaceBar(

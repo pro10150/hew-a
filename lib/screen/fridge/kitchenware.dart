@@ -72,7 +72,9 @@ class _KitchenwareState extends State<Kitchenware> {
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     if (object.length != 0) {
       for (var model in object) {
-        userModel = model as UserModel?;
+        userModel = model;
+        userModel!.uid = model.uid;
+        userModel!.username = model.username;
         if (model.kitchenwares == 1) {
           setState(() {
             isSwitched = true;

@@ -151,7 +151,7 @@ class _UserInformationState extends State<UserInformation> {
   Widget buildskipBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        Navigator.pushNamed(context, ('/'));
       },
       child: RichText(
         text: TextSpan(children: [
