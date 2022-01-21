@@ -1,5 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hewa/screen/profile/EditProfile.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/screen/profile.dart';
 
 class EditProfile extends StatefulWidget {
   static const routeName = '/';
@@ -13,6 +17,26 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  List<UserModel> user = [];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<String?> getUsername() async {
+    UserHelper()
+        .readDataFromSQLiteWhereId(_auth.currentUser!.uid)
+        .then((value) {
+      user = value;
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +46,22 @@ class _EditProfileState extends State<EditProfile> {
             'Edit Profile',
             textAlign: TextAlign.center,
           ),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.done))],
+          actions: [
+            IconButton(
+                onPressed: () {
+                  // await Firebase.initializeApp().then((value) async {
+                  //   await FirebaseAuth.instance.authStateChanges().listen((event) async{
+                  //     event.updateDataToSQLite()
+                  //    });
+                  // });
+                  // setState(() {
+                  //   print('${user[0].name}');
+                  navigateToProfilePage(context);
+                  //   // UserHelper().updateDataToSQLite();
+                  // });
+                },
+                icon: Icon(Icons.done))
+          ],
         ),
         body: Container(
           child: GestureDetector(
@@ -79,22 +118,30 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
                 TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(12),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: "Name",
-                      hintText: "Johannieieie",
+                      hintText: user.isNotEmpty == true
+                          ? user[0].name != null
+                              ? '${user[0].name}'
+                              : '${user[0].username}'
+                          : 'name',
                       hintStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
                 ),
                 TextField(
+                  controller: usernameController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(12),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: "Username",
-                      hintText: "iamJohannie",
+                      hintText: user.isNotEmpty == true
+                          ? "@${user[0].username}"
+                          : 'username',
                       hintStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -141,4 +188,12 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ));
   }
+}
+
+void navigateToProfilePage(BuildContext context) async {
+  Future.delayed(const Duration(milliseconds: 500), () {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Profile();
+    }));
+  });
 }
