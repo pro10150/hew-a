@@ -1,9 +1,15 @@
 import 'dart:io';
-import 'dart:ui';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hewa/screen/login/meal.dart';
+import 'package:hewa/models/photo_model.dart';
+import 'package:hewa/utilities/photo_helper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:hewa/screen/login/user_image.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -14,15 +20,46 @@ class UserInformation extends StatefulWidget {
 
 class _UserInformationState extends State<UserInformation> {
   int number = 0;
+  String imageUrl = '';
+
+/*   Future<File>? imageFile;
+  Image? image;
+  PhotoHelper? photoHelper;
+  List<Photo>? images;
+  List<int>? readAsBytesSync;
+
+  @override
+  void initState() {
+    super.initState();
+    images = [];
+    photoHelper = PhotoHelper();
+    refreshImages();
+  }
+
+  refreshImages() {
+    photoHelper?.getPhotos().then((imgs) {
+      setState(() {
+        images?.clear();
+        images?.addAll(imgs);
+      });
+    });
+  }
+ */
+/*   pickImageFromGallery() async {
+    ImagePicker picker = ImagePicker();
+    final pickedFile =
+        await picker.getImage(source: ImageSource.gallery).then((imgFile) {
+      String imgString = Utility.base64String(imgFile.readAsBytesSync);
+      Photo photo = Photo(id: 0, photoName: imgString);
+      photoHelper?.save(photo);
+      refreshImages();
+    });
+  } */
 
   Widget builcam() {
     return Container(
-      width: 100.0,
-      height: 100.0,
-      decoration: new BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
+      width: 250.0,
+      height: 250.0,
     );
   }
 
@@ -164,13 +201,13 @@ class _UserInformationState extends State<UserInformation> {
                         SizedBox(height: 120),
                         Stack(children: [
                           Container(
-                              height: 600,
+                              height: 650,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   color: Colors.white24,
                                   borderRadius: BorderRadius.circular(15)),
                               child: Container(
-                                  padding: const EdgeInsets.only(top: 130.0),
+                                  padding: const EdgeInsets.only(top: 210.0),
                                   margin: const EdgeInsets.only(
                                       left: 25.0, right: 25.0),
                                   decoration: BoxDecoration(
@@ -201,20 +238,35 @@ class _UserInformationState extends State<UserInformation> {
                                         // buildSignupBtn()
                                       ]))),
                           SizedBox(
-                            height: 115,
-                            width: 115,
+                            height: 200,
+                            width: 350,
                             child: Stack(
                                 fit: StackFit.expand,
                                 overflow: Overflow.visible,
                                 children: [
-                                  Positioned(
-                                    height: 100,
-                                    width: 100,
-                                    top: -50,
-                                    right: -100,
-                                    child: builcam(),
+                                  // Positioned(
+                                  //   height: 100,
+                                  //   width: 100,
+                                  //   top: -50,
+                                  //   right: -100,
+                                  //   child: builcam(),
+                                  // ),
+                                  SizedBox(height: 20),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      UserImage(
+                                        onFileChanged: (imageUrl) {
+                                          setState(() {
+                                            this.imageUrl = imageUrl;
+                                          });
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  Positioned(
+
+                                  /* Positioned(
                                     top: 5,
                                     right: -110,
                                     child: SizedBox(
@@ -232,7 +284,7 @@ class _UserInformationState extends State<UserInformation> {
                                         child: Icon(Icons.camera),
                                       ),
                                     ),
-                                  ),
+                                  ), */
                                 ]),
                           ),
                         ]),

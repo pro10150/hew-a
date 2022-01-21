@@ -186,8 +186,8 @@ class RegisterScreenState extends State<RegisterScreen> {
         elevation: 5,
         onPressed: () {
           signUp();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Mealpre()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UserInformation()));
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
