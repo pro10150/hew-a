@@ -47,7 +47,7 @@ class LoginScreenState extends State<LoginScreen> {
       print(error);
       scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(
-          error,
+          error.toString(),
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.red,
@@ -215,11 +215,11 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(const Duration(milliseconds: 600), () {
       checkAuth(context);
 
-      DBHelper().deleteDB();
+      // DBHelper().deleteDB();
       DBHelper().database();
-      MenuHelper().initInsertToSQLite();
-      IngredHelper().initInsertToSQLite();
-      KitchHelper().initialInsert();
+      // MenuHelper().initInsertToSQLite();
+      // IngredHelper().initInsertToSQLite();
+      // KitchHelper().initialInsert();
     });
   }
 

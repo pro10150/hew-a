@@ -23,8 +23,6 @@ class MealpreState extends State<Mealpre> {
 
   Widget buildnextBtn() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
-      width: 320,
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
@@ -143,60 +141,64 @@ class MealpreState extends State<Mealpre> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: buildnextBtn(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SingleChildScrollView(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                colors: [
-                  Color(0xffffffff),
-                  Color(0xffff8a65),
-                  Color(0xffe69a83),
-                ],
-                center: Alignment.topRight,
-                radius: 3,
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 50),
-                Container(
-                  color: Colors.transparent,
-                  margin: EdgeInsets.only(top: 50, right: 35.0, left: 33.0),
-                  child: Text(
-                    "Choose your preference",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      Color(0xffffffff),
+                      Color(0xffff8a65),
+                      Color(0xffe69a83),
+                    ],
+                    center: Alignment.topRight,
+                    radius: 3,
                   ),
                 ),
-                SizedBox(height: 30),
-                MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: GridView.builder(
-                      padding: EdgeInsets.only(top: 30, left: 10, right: 10),
-                      primary: false,
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemCount: menu.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return buildmealBtn(index);
-                      },
-                    )),
-                buildnextBtn()
-              ],
-            ),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 50),
+                    Container(
+                        color: Colors.transparent,
+                        margin: EdgeInsets.only(right: 35.0, left: 33.0),
+                        child: Column(children: <Widget>[
+                          Text(
+                            "Choose your preference",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text('Don\'t worry you can update this later')
+                        ])),
+                    SizedBox(height: 30),
+                    MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: GridView.builder(
+                          padding:
+                              EdgeInsets.only(top: 30, left: 10, right: 10),
+                          primary: false,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                          itemCount: menu.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return buildmealBtn(index);
+                          },
+                        )),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }

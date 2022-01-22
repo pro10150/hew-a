@@ -50,7 +50,6 @@ class ChoosekitchenwareState extends State<Choosekitchenware> {
   Widget builddoneBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
-      width: 320,
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
@@ -102,6 +101,8 @@ class ChoosekitchenwareState extends State<Choosekitchenware> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: builddoneBtn(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
           child: Stack(
         children: <Widget>[

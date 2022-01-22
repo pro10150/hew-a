@@ -34,24 +34,49 @@ class RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  signUp() {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  signUp() async {
     String username = usernameController.text.trim();
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     String confirmPassword = confirmController.text.trim();
     if (password == confirmPassword && password.length >= 6) {
-      _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((user) {
-        print('Sign up user successful');
-        UserModel userModel =
-            UserModel(uid: user.user!.uid, username: username);
-        UserHelper();
-        UserHelper().insertDataToSQLite(userModel);
-        readSQLite();
-      }).catchError((error) {
-        print(error.toString());
-      });
+      var object = await UserHelper().readDataFromSQLiteWhereUsername(username);
+      if (object.length == 0) {
+        _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((user) async {
+          print('Sign up user successful');
+          UserModel userModel =
+              UserModel(uid: user.user!.uid, username: username);
+          UserHelper();
+          UserHelper().insertDataToSQLite(userModel);
+          readSQLite();
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => UserInformation()));
+        }).catchError((error) {
+          print(error.toString());
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(error.toString()),
+          ));
+        });
+      } else {
+        print('username has already been used');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Username has already been used')));
+      }
+    } else if (password != confirmPassword) {
+      print('password doesn\' match');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Password does not match'),
+      ));
+    } else if (password.length <= 6) {
+      print('password\' too short');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Your password is too short, ther password should be longer than 6 characters'),
+      ));
     }
   }
 
@@ -186,8 +211,6 @@ class RegisterScreenState extends State<RegisterScreen> {
         elevation: 5,
         onPressed: () {
           signUp();
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => UserInformation()));
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

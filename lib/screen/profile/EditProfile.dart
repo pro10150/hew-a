@@ -33,6 +33,10 @@ class _EditProfileState extends State<EditProfile> {
       print(value);
       setState(() {
         user = value;
+        if (user[0].name != null) {
+          nameController.text = user[0].name!;
+        }
+        usernameController.text = user[0].username!;
       });
     });
   }
@@ -133,11 +137,6 @@ class _EditProfileState extends State<EditProfile> {
                       contentPadding: EdgeInsets.all(12),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: "Name",
-                      hintText: user.isNotEmpty == true
-                          ? user[0].name != null
-                              ? '${user[0].name}'
-                              : '${user[0].username}'
-                          : 'name',
                       hintStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -149,9 +148,6 @@ class _EditProfileState extends State<EditProfile> {
                       contentPadding: EdgeInsets.all(12),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: "Username",
-                      hintText: user.isNotEmpty == true
-                          ? "@${user[0].username}"
-                          : 'username',
                       hintStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -202,8 +198,6 @@ class _EditProfileState extends State<EditProfile> {
 
 void navigateToProfilePage(BuildContext context) async {
   Future.delayed(const Duration(milliseconds: 500), () {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return Launcher();
-    }));
+    Navigator.pop(context);
   });
 }
