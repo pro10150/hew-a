@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/screen/launcher.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/profile.dart';
@@ -19,15 +20,20 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  UserModel? userModel;
   List<UserModel> user = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String?> getUsername() async {
+    print(_auth.currentUser?.uid);
+
     UserHelper()
         .readDataFromSQLiteWhereId(_auth.currentUser!.uid)
         .then((value) {
-      user = value;
-      setState(() {});
+      print(value);
+      setState(() {
+        user = value;
+      });
     });
   }
 
@@ -55,9 +61,13 @@ class _EditProfileState extends State<EditProfile> {
                   //    });
                   // });
                   // setState(() {
-                  //   print('${user[0].name}');
+                  UserModel targetUser = user[0];
+                  targetUser.name = nameController.value.text;
+                  targetUser.username = usernameController.value.text;
+                  _auth.currentUser?.updateDisplayName(targetUser.name);
+                  UserHelper().updateDataToSQLite(targetUser);
                   navigateToProfilePage(context);
-                  //   // UserHelper().updateDataToSQLite();
+                  // UserHelper().updateDataToSQLite();
                   // });
                 },
                 icon: Icon(Icons.done))
@@ -192,8 +202,8 @@ class _EditProfileState extends State<EditProfile> {
 
 void navigateToProfilePage(BuildContext context) async {
   Future.delayed(const Duration(milliseconds: 500), () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Profile();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return Launcher();
     }));
   });
 }
