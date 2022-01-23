@@ -33,7 +33,7 @@ class _EditProfileState extends State<EditProfile> {
       print(value);
       setState(() {
         user = value;
-        if (user[0].name != null) {
+        if (user[0].name != '') {
           nameController.text = user[0].name!;
         }
         usernameController.text = user[0].username!;

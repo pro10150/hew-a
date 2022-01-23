@@ -9,6 +9,7 @@ import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/menu.helper.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
+import 'package:hewa/utilities/user_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -220,6 +221,7 @@ class LoginScreenState extends State<LoginScreen> {
       // MenuHelper().initInsertToSQLite();
       // IngredHelper().initInsertToSQLite();
       // KitchHelper().initialInsert();
+      // UserHelper().initInsert();
     });
   }
 

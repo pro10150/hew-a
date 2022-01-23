@@ -4,7 +4,7 @@ class UserModel {
   String? uid;
   String? name;
   String? username;
-  Uint8List? image;
+  String? image;
   int? ingredients;
   int? kitchenwares;
 

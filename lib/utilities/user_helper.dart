@@ -39,7 +39,7 @@ class UserHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT, $imageColumn BLOB, $ingredientsColumn INTEGER, $kitchenwaresColumn INTEGERS)'),
+            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT, $imageColumn TEXT, $ingredientsColumn INTEGER, $kitchenwaresColumn INTEGERS)'),
         version: version);
   }
 
@@ -51,6 +51,17 @@ class UserHelper {
   Future<Null> insertDataToSQLite(UserModel userModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
     Database database = await connectedDatabase();
+    try {
+      database.insert(tableDatabase, userModel.toJson());
+    } catch (e) {
+      print('e insertData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> initInsert() async {
+    Database database = await connectedDatabase();
+    UserModel userModel =
+        UserModel(uid: 'k2YFM1LkbVaEf4zV4HnhTAmIdRD3', username: 'pro10150');
     try {
       database.insert(tableDatabase, userModel.toJson());
     } catch (e) {
