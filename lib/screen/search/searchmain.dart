@@ -81,7 +81,7 @@ class _SearchContentState extends State<SearchContent> {
                       ),
                     ),
                     Container(
-                        height: 478, //height of TabBarView
+                        height: 603, //height of TabBarView
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(

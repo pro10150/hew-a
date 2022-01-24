@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 List<String> ingredients = [];
 List<IngredModel> ingredModel = [];
+List<String> units = ['-', 'g', 'kg', 'ml', 'l', 'bottles'];
 
 class Ingredients extends StatefulWidget {
   static const routeName = '/';
@@ -29,8 +30,10 @@ class _IngredientsState extends State<Ingredients> {
   List<int> text = [1, 2, 3, 4];
   bool isSwitched = false;
   List<String> _ingredientsList = [];
+  List<String> _unitList = [];
   List<int> _ingredientsAmountList = [];
   String _selectedIngredient = '';
+  String _selectedUnit = '';
   int _selectedIngredientAmount = 0;
   FirebaseAuth _auth = FirebaseAuth.instance;
   UserModel? userModel;
@@ -119,7 +122,8 @@ class _IngredientsState extends State<Ingredients> {
                         onPressed: () {
                           setState(() {
                             _selectedIngredient = ingredients[0];
-                            _selectedIngredientAmount = 10;
+                            _selectedIngredientAmount = 0;
+                            _selectedUnit = units[0];
                           });
                           showCupertinoModalPopup(
                               context: context,
@@ -156,6 +160,7 @@ class _IngredientsState extends State<Ingredients> {
                                                     .add(_selectedIngredient);
                                                 _ingredientsAmountList.add(
                                                     (_selectedIngredientAmount));
+                                                _unitList.add(_selectedUnit);
                                               });
                                               Navigator.pop(context);
                                             },
@@ -198,13 +203,30 @@ class _IngredientsState extends State<Ingredients> {
                                                 });
                                               },
                                               children:
-                                                  new List<Widget>.generate(50,
-                                                      (int index) {
-                                                int amount = (index + 1) * 10;
+                                                  new List<Widget>.generate(
+                                                      1000, (int index) {
+                                                var amount;
+                                                if (index > 0) {
+                                                  amount = index;
+                                                } else {
+                                                  amount = '-';
+                                                }
                                                 return new Center(
                                                   child: new Text('${amount}'),
                                                 );
                                               }),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: CupertinoPicker(
+                                              itemExtent: 32,
+                                              backgroundColor: Colors.white,
+                                              onSelectedItemChanged: (value) {
+                                                setState(() {
+                                                  _selectedUnit = units[value];
+                                                });
+                                              },
+                                              children: getPickerItems(units),
                                             ),
                                           )
                                         ],
@@ -326,10 +348,24 @@ class _IngredientsState extends State<Ingredients> {
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         text: TextSpan(
-                                                          text:
-                                                              _ingredientsAmountList[
-                                                                      index]
-                                                                  .toString(),
+                                                          text: _ingredientsAmountList[
+                                                                      index] >
+                                                                  0
+                                                              ? _ingredientsAmountList[index]
+                                                                              .toString() +
+                                                                          _unitList[
+                                                                              index] !=
+                                                                      '-'
+                                                                  ? _unitList[
+                                                                          index]
+                                                                      .toString()
+                                                                  : ''
+                                                              : '' + _unitList[index] !=
+                                                                      '-'
+                                                                  ? _unitList[
+                                                                          index]
+                                                                      .toString()
+                                                                  : '',
                                                           style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 24,
