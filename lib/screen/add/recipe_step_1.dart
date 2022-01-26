@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:page_transition/page_transition.dart';
 import 'recipe_step_2.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/utilities/kitch_helper.dart';
+import 'package:hewa/models/ingred_model.dart';
+import 'package:hewa/models/kitch_model.dart';
 
 class RecipeStep1 extends StatefulWidget {
   @override
@@ -12,19 +16,11 @@ const List<String> method = ['Bake', 'Boil', 'Fry', 'Multiple'];
 
 const List<String> type = ['Savory', 'Dessert'];
 
-const List<String> kitchenware = ['Pan', 'Microwave', 'Oven'];
+List<String> kitchenware = [];
 
-const List<String> ingredients = [
-  'Pork',
-  'Beef',
-  'Fish',
-  'Bok Choi',
-  'Lettuce',
-  'Cabbage',
-  'Basil',
-  'Spinach',
-  'Garlic'
-];
+List<String> ingredients = [];
+List<IngredModel> ingredModel = [];
+List<String> units = ['-', 'g', 'kg', 'ml', 'l', 'bottles'];
 
 class _RecipeStep1State extends State<RecipeStep1> {
   int _kitchenwareCount = 1;
@@ -41,6 +37,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
       _ingredientsCount = _ingredientsCount + 1;
       _selectedIngredients.add('Select Ingredient');
       _selectedIngredientsCount.add(0);
+      _selectedIngredientsUnit.add('Unit');
     });
   }
 
@@ -57,7 +54,39 @@ class _RecipeStep1State extends State<RecipeStep1> {
   String _selectedType = 'Select type';
   List<String> _selectedKitchenware = ['Select Kitchenware'];
   List<String> _selectedIngredients = ['Select Ingredient'];
+  List<String> _selectedIngredientsUnit = ['Unit'];
   List<int> _selectedIngredientsCount = [0];
+
+  Future<Null> readSQLite() async {
+    var object = await IngredHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    ingredients.clear();
+    for (var model in object) {
+      print(model);
+      ingredModel.add(model);
+      ingredients.add(model.name!);
+    }
+  }
+
+  void getKitchenware() {
+    KitchHelper().readlDataFromSQLite().then((value) {
+      if (value.length != 0) {
+        for (var model in value) {
+          kitchenware.add(model.nameKitc!);
+        }
+      }
+    });
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getKitchenware();
+    readSQLite();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -325,26 +354,98 @@ class _RecipeStep1State extends State<RecipeStep1> {
                               return Column(children: <Widget>[
                                 TextButton(
                                     onPressed: () {
+                                      setState(() {
+                                        if (currentKitchenWare !=
+                                            'Select Ingredient') {
+                                          if (kitchenware.contains(
+                                                  currentKitchenWare) ==
+                                              false) {
+                                            kitchenware.insert(
+                                                0, currentKitchenWare);
+                                          } else {
+                                            kitchenware
+                                                .remove(currentKitchenWare);
+                                            kitchenware.insert(
+                                                0, currentKitchenWare);
+                                          }
+                                        }
+                                      });
                                       showCupertinoModalPopup(
-                                          context: context,
-                                          builder: (_) => Container(
-                                                width: double.infinity,
-                                                height: 250,
+                                        context: context,
+                                        builder: (context) {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xffffffff),
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      color: Color(0xff999999),
+                                                      width: 0.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    CupertinoButton(
+                                                      child: Text('Cancel'),
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 16.0,
+                                                        vertical: 5.0,
+                                                      ),
+                                                    ),
+                                                    CupertinoButton(
+                                                      child: Text('Confirm'),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          kitchenware.remove(
+                                                              currentKitchenWare);
+                                                          _selectedKitchenware[
+                                                                  index] =
+                                                              currentKitchenWare;
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 16.0,
+                                                        vertical: 5.0,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 320.0,
+                                                color: Color(0xfff7f7f7),
                                                 child: CupertinoPicker(
+                                                  itemExtent: 32,
                                                   backgroundColor: Colors.white,
-                                                  itemExtent: 30,
-                                                  children: getPickerItems(
-                                                      kitchenware),
                                                   onSelectedItemChanged:
-                                                      (value) {
+                                                      (int index) {
                                                     setState(() {
-                                                      _selectedKitchenware[
-                                                              index] =
-                                                          kitchenware[value];
+                                                      currentKitchenWare =
+                                                          kitchenware[index];
+                                                      print(currentKitchenWare);
                                                     });
                                                   },
+                                                  children: getPickerItems(
+                                                      kitchenware),
                                                 ),
-                                              ));
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     child: Text(
                                       '$currentKitchenWare',
@@ -371,61 +472,165 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             itemBuilder: (BuildContext context, int index) {
                               String currentIngredients =
                                   _selectedIngredients[index];
+                              String currentIngredientsUnit =
+                                  _selectedIngredientsUnit[index];
                               int currentIngredientsCount =
                                   _selectedIngredientsCount[index];
                               return Column(children: <Widget>[
                                 TextButton(
                                     onPressed: () {
+                                      setState(() {
+                                        print(currentIngredients);
+                                        if (currentIngredients !=
+                                            'Select Ingredient') {
+                                          if (ingredients.contains(
+                                                  currentIngredients) ==
+                                              false) {
+                                            ingredients.insert(
+                                                0, currentIngredients);
+                                          } else {
+                                            ingredients
+                                                .remove(currentIngredients);
+                                            ingredients.insert(
+                                                0, currentIngredients);
+                                          }
+                                        }
+
+                                        currentIngredients = ingredients[0];
+                                        currentIngredientsCount = 0;
+                                        currentIngredientsUnit = units[0];
+                                      });
                                       showCupertinoModalPopup(
                                           context: context,
-                                          builder: (_) => Container(
-                                              height: 200,
-                                              color: Colors.white,
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                      child: CupertinoPicker(
-                                                    scrollController:
-                                                        new FixedExtentScrollController(),
-                                                    itemExtent: 32,
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    onSelectedItemChanged:
-                                                        (value) {
-                                                      setState(() {
-                                                        _selectedIngredients[
-                                                                index] =
-                                                            ingredients[value];
-                                                      });
-                                                    },
-                                                    children: getPickerItems(
-                                                        ingredients),
-                                                  )),
-                                                  Expanded(
-                                                      child: CupertinoPicker(
+                                          builder: (context) {
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xffffffff),
+                                                    border: Border(
+                                                      bottom: BorderSide(
+                                                        color:
+                                                            Color(0xff999999),
+                                                        width: 0.0,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      CupertinoButton(
+                                                          child: Text('Cancel'),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                      CupertinoButton(
+                                                        child: Text('Add'),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            _selectedIngredients[
+                                                                    index] =
+                                                                currentIngredients;
+                                                            _selectedIngredientsCount[
+                                                                    index] =
+                                                                currentIngredientsCount +
+                                                                    1;
+                                                            _selectedIngredientsUnit[
+                                                                    index] =
+                                                                currentIngredientsUnit;
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 16.0,
+                                                          vertical: 5.0,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 320,
+                                                  color: Colors.white,
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                          child:
+                                                              CupertinoPicker(
+                                                        itemExtent: 32,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        onSelectedItemChanged:
+                                                            (value) {
+                                                          setState(() {
+                                                            currentIngredients =
+                                                                ingredients[
+                                                                    value];
+                                                          });
+                                                        },
+                                                        children:
+                                                            getPickerItems(
+                                                                ingredients),
+                                                      )),
+                                                      Expanded(
+                                                        child: CupertinoPicker(
                                                           itemExtent: 32,
                                                           backgroundColor:
                                                               Colors.white,
                                                           onSelectedItemChanged:
                                                               (value) {
                                                             setState(() {
-                                                              _selectedIngredientsCount[
-                                                                      index] =
+                                                              currentIngredientsCount =
                                                                   value;
                                                             });
                                                           },
                                                           children: new List<
                                                                   Widget>.generate(
-                                                              500, (int index) {
+                                                              1000,
+                                                              (int index) {
+                                                            var amount =
+                                                                index + 1;
                                                             return new Center(
                                                               child: new Text(
-                                                                  '${index}'),
+                                                                  '${amount}'),
                                                             );
-                                                          })))
-                                                ],
-                                              )));
+                                                          }),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: CupertinoPicker(
+                                                          itemExtent: 32,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          onSelectedItemChanged:
+                                                              (value) {
+                                                            setState(() {
+                                                              currentIngredientsUnit =
+                                                                  units[value];
+                                                            });
+                                                          },
+                                                          children:
+                                                              getPickerItems(
+                                                                  units),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          });
                                     },
                                     child: Row(
                                       mainAxisAlignment:
@@ -438,6 +643,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                         ),
                                         Text(
                                           '$currentIngredientsCount',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          '$currentIngredientsUnit',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         )

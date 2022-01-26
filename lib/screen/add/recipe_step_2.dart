@@ -16,6 +16,9 @@ const List<String> method = ['Bake', 'Boil', 'Fry', 'Multiple'];
 
 const List<String> type = ['Savory', 'Dessert'];
 
+int _selectedMinute = 0;
+var minute = 0;
+
 class _RecipeStep2State extends State<RecipeStep2> {
   int _count = 1;
   void _addNewStepColumn() {
@@ -39,6 +42,89 @@ class _RecipeStep2State extends State<RecipeStep2> {
         print('No image selected.');
       }
     });
+  }
+
+  buildTimer(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          showCupertinoModalPopup(
+              context: context,
+              builder: (context) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xffffffff),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xff999999),
+                            width: 0.0,
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          CupertinoButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }),
+                          CupertinoButton(
+                            child: Text('Add'),
+                            onPressed: () {
+                              setState(() {
+                                minute = _selectedMinute;
+                                print(minute);
+                              });
+                              Navigator.pop(context);
+                            },
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 5.0,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 320,
+                      color: Colors.white,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: CupertinoPicker(
+                              itemExtent: 32,
+                              backgroundColor: Colors.white,
+                              onSelectedItemChanged: (value) {
+                                setState(() {
+                                  _selectedMinute = value;
+                                });
+                              },
+                              children:
+                                  new List<Widget>.generate(500, (int index) {
+                                var amount;
+                                if (index > 0) {
+                                  amount = index;
+                                } else {
+                                  amount = '-';
+                                }
+                                return new Center(
+                                  child: new Text('${amount}'),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              });
+        },
+        child: minute != 0 ? Text('${minute}') : Text('-'));
   }
 
   List<Widget> extractedChildren = <Widget>[
@@ -311,7 +397,15 @@ class _RecipeStep2State extends State<RecipeStep2> {
                                                 )),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text('Timer'),
+                                        buildTimer(context),
+                                        Text('minute')
+                                      ])
                                 ]);
                           },
                           shrinkWrap: true,

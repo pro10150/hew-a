@@ -8,20 +8,16 @@ import 'package:hewa/config/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
 import 'recipe_step_1.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/models/ingred_model.dart';
 
 class NewMenu extends StatefulWidget {
   @override
   _NewMenuState createState() => _NewMenuState();
 }
 
-const List<String> pickIngredients = [
-  'Pork',
-  'Beef',
-  'Vegan',
-  'Fish',
-  'Shrimp',
-  'Dessert'
-];
+List<String> ingredients = [];
+List<IngredModel> ingredModel = [];
 
 class _NewMenuState extends State<NewMenu> {
   File? _image;
@@ -40,11 +36,12 @@ class _NewMenuState extends State<NewMenu> {
     });
   }
 
-  String _selectedIngredient = 'Select Ingredient';
+  String _confirmedIngredient = 'Select Ingredient';
+  String _selectedIngredient = '';
 
   List<Widget> getPickerItems() {
     List<Widget> items = [];
-    for (var ingredients in pickIngredients) {
+    for (var ingredients in ingredients) {
       items.add(Text(ingredients));
     }
     return items;
@@ -62,11 +59,29 @@ class _NewMenuState extends State<NewMenu> {
                 children: getPickerItems(),
                 onSelectedItemChanged: (value) {
                   setState(() {
-                    _selectedIngredient = pickIngredients[value];
+                    _selectedIngredient = ingredients[value];
                   });
                 },
               ),
             ));
+  }
+
+  Future<Null> readSQLite() async {
+    var object = await IngredHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    ingredients.clear();
+    for (var model in object) {
+      print(model);
+      ingredModel.add(model);
+      ingredients.add(model.name!);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readSQLite();
   }
 
   @override
@@ -213,16 +228,104 @@ class _NewMenuState extends State<NewMenu> {
                                       SizedBox(height: 10),
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text('Ingredient')),
+                                          child: Text('Main ingredient')),
                                       SizedBox(height: 10),
                                       CupertinoButton(
-                                          child: Text(
-                                            '$_selectedIngredient',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          onPressed: () =>
-                                              _showPicker(context)),
+                                        child: Text(
+                                          '$_confirmedIngredient',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _selectedIngredient =
+                                                ingredients[0];
+                                          });
+                                          showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (context) {
+                                                return Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xffffffff),
+                                                        border: Border(
+                                                          bottom: BorderSide(
+                                                            color: Color(
+                                                                0xff999999),
+                                                            width: 0.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          CupertinoButton(
+                                                              child: Text(
+                                                                  'Cancel'),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              }),
+                                                          CupertinoButton(
+                                                            child:
+                                                                Text('confirm'),
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _confirmedIngredient =
+                                                                    _selectedIngredient;
+                                                              });
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 16.0,
+                                                              vertical: 5.0,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      height: 320,
+                                                      color: Colors.white,
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                              child:
+                                                                  CupertinoPicker(
+                                                            itemExtent: 32,
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            onSelectedItemChanged:
+                                                                (value) {
+                                                              setState(() {
+                                                                _selectedIngredient =
+                                                                    ingredients[
+                                                                        value];
+                                                              });
+                                                            },
+                                                            children:
+                                                                getPickerItems(),
+                                                          )),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                      ),
                                       SizedBox(height: 10),
                                       // Align(
                                       //     alignment: Alignment.centerLeft,
