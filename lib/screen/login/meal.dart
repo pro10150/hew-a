@@ -50,10 +50,12 @@ class MealpreState extends State<Mealpre> {
   }
 
   List<MenuModel> menu = [];
+  List<MenuModel> filter = [];
   void readSQLite() {
     MenuHelper().readlDataFromSQLite().then((menus) {
       for (var model in menus) {
         menu.add(model);
+        filter.add(model);
       }
       setState(() {
         _selected = List.generate(menu.length, (index) => false);
@@ -65,7 +67,8 @@ class MealpreState extends State<Mealpre> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    MenuHelper().initInsertToSQLite();
+    // MenuHelper().deleteAlldata();
+    // MenuHelper().initInsertToSQLite();
     readSQLite();
   }
 
@@ -74,7 +77,7 @@ class MealpreState extends State<Mealpre> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menu[index].image! + '.jpeg');
+        .child(filter[index].image! + '.jpeg');
     var url = ref.getDownloadURL();
 
     return FutureBuilder<String>(
@@ -106,7 +109,7 @@ class MealpreState extends State<Mealpre> {
               ),
             ]),
             Text(
-              menu[index].nameMenu!,
+              filter[index].nameMenu!,
               style: TextStyle(fontStyle: FontStyle.normal, fontSize: 14),
               overflow: TextOverflow.ellipsis,
             )
@@ -177,6 +180,23 @@ class MealpreState extends State<Mealpre> {
                           Text('Don\'t worry you can update this later')
                         ])),
                     SizedBox(height: 30),
+                    Container(
+                        padding: EdgeInsets.all(10),
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              filter.clear();
+                              filter.addAll(menu);
+                              filter.retainWhere((element) {
+                                return element.nameMenu!.contains(value);
+                              });
+                            });
+                          },
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Search'),
+                        )),
+                    SizedBox(height: 30),
                     MediaQuery.removePadding(
                         context: context,
                         removeTop: true,
@@ -189,7 +209,7 @@ class MealpreState extends State<Mealpre> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3),
-                          itemCount: menu.length,
+                          itemCount: filter.length,
                           itemBuilder: (BuildContext context, int index) {
                             return buildmealBtn(index);
                           },

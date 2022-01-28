@@ -95,6 +95,7 @@ class _IngredientsState extends State<Ingredients> {
               Column(children: <Widget>[
                 Container(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Container(
                       width: 10,

@@ -73,6 +73,16 @@ class UserMenuHelper {
     }
   }
 
+  Future<Null> deleteDataWhereUser(String uid) async {
+    Database database = await connectedDatabase();
+    try {
+      await database
+          .delete(tableDatabase, where: '$uidColumn = ?', whereArgs: [uid]);
+    } catch (e) {
+      print('e dleete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

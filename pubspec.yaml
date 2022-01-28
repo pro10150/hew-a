@@ -47,7 +47,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   flutter_ringtone_player: ^3.1.1
   circular_profile_avatar: 2.0.5
-
+  filter_list: ^1.0.1
   image_cropper: ^1.4.1
   flutter_image_compress: ^1.1.0
 

@@ -58,7 +58,8 @@ class UserKitchHelper {
     Database database = await connectedDatabase();
     List<UserKitchenwareModel> userKitchenwareModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<Map<String, dynamic>> maps =
+        await database.query(tableDatabase, where: 'uid = ?', whereArgs: [uid]);
     for (var map in maps) {
       UserKitchenwareModel userKitchenwareModel =
           UserKitchenwareModel.fromJson(map);
@@ -75,6 +76,16 @@ class UserKitchHelper {
       await database.delete(tableDatabase,
           where: '$uidColumn = ? AND $kitchenwareColumn = ?',
           whereArgs: [uid, kitchenware]);
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
+  Future<Null> deleteDataWhereUser(String uid) async {
+    Database database = await connectedDatabase();
+    try {
+      await database
+          .delete(tableDatabase, where: '$uidColumn = ?', whereArgs: [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }

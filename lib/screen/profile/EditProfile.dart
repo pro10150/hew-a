@@ -5,6 +5,10 @@ import 'package:hewa/screen/launcher.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/profile.dart';
+import 'package:hewa/screen/login/meal.dart';
+import 'package:hewa/utilities/reAllergy_helper.dart';
+import 'package:hewa/utilities/userKitch_helper.dart';
+import 'package:hewa/utilities/userMenu_helper.dart';
 
 class EditProfile extends StatefulWidget {
   static const routeName = '/';
@@ -39,6 +43,13 @@ class _EditProfileState extends State<EditProfile> {
         usernameController.text = user[0].username!;
       });
     });
+  }
+
+  void deletePreference() {
+    var uid = _auth.currentUser!.uid;
+    ReAllergyHelper().deleteDataWhereUser(uid);
+    UserKitchHelper().deleteDataWhereUser(uid);
+    UserMenuHelper().deleteDataWhereUser(uid);
   }
 
   @override
@@ -166,7 +177,14 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         padding: EdgeInsets.only(
                             bottom: -1, top: -1, right: 42, left: 42),
-                        onPressed: () {},
+                        onPressed: () {
+                          deletePreference();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      new Mealpre()));
+                        },
                         color: Colors.black,
                         child: Text('Update Preference',
                             style: TextStyle(color: Colors.white)))

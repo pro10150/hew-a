@@ -56,9 +56,9 @@ class RegisterScreenState extends State<RegisterScreen> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => UserInformation()));
         }).catchError((error) {
-          print(error.toString());
+          print(error.message.toString());
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(error.toString()),
+            content: Text(error.message.toString()),
           ));
         });
       } else {

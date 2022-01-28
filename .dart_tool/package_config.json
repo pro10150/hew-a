@@ -122,6 +122,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "filter_list",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/filter_list-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "firebase_auth",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.5",
       "packageUri": "lib/",
@@ -554,7 +560,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-01-21T09:55:12.559923Z",
+  "generated": "2022-01-28T08:06:58.714182Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

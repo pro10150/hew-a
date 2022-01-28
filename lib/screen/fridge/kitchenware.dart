@@ -106,8 +106,8 @@ class _KitchenwareState extends State<Kitchenware> {
             Container(
               height: 100,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Container(width: 10),
                   CupertinoSwitch(
                       value: isSwitched,
                       onChanged: (value) {

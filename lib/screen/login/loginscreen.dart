@@ -45,10 +45,11 @@ class LoginScreenState extends State<LoginScreen> {
       print("signed in ${user.additionalUserInfo!.username}");
       checkAuth(context);
     }).catchError((error) {
-      print(error);
+      print(error.message);
+      var e = error.message;
       scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(
-          error.toString(),
+          e,
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.red,
