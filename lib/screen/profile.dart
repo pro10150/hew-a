@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hewa/models/user_model.dart';
@@ -63,6 +65,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late TabController controller;
   late var _scrollViewController;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  File? _imageFile;
+
   void signOut(BuildContext context) {
     _auth.signOut();
     Navigator.pushAndRemoveUntil(
@@ -196,10 +200,18 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                               ]),
                                         ),
                                         CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                          radius: 60,
+                                          backgroundColor: Colors.grey,
+                                          child: ClipOval(
+                                            child: SizedBox(
+                                                height: 500,
+                                                width: 500,
+                                                child: (_imageFile != null)
+                                                    ? Image.file(_imageFile!,
+                                                        fit: BoxFit.fill)
+                                                    : Image.network(
+                                                        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")),
                                           ),
-                                          radius: 60.0,
                                         ),
                                         Text(
                                           user.isNotEmpty == true
