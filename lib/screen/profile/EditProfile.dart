@@ -10,6 +10,19 @@ import 'package:hewa/utilities/reAllergy_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
 import 'package:hewa/utilities/userMenu_helper.dart';
 
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hewa/screen/profile/EditProfile.dart';
+import 'dart:io';
+import 'dart:io' as io;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
+import 'package:hewa/screen/login/round_image.dart';
+
 class EditProfile extends StatefulWidget {
   static const routeName = '/';
 
@@ -52,6 +65,38 @@ class _EditProfileState extends State<EditProfile> {
     UserMenuHelper().deleteDataWhereUser(uid);
   }
 
+  File? _imageFile = null;
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = File(pickedFile!.path);
+    });
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_imageFile!.path);
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('upload')
+        .child('/$fileName');
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': fileName});
+    firebase_storage.UploadTask uploadTask;
+    //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    uploadTask = ref.putFile(io.File(_imageFile!.path), metadata);
+
+    firebase_storage.UploadTask task = await Future.value(uploadTask);
+    Future.value(uploadTask)
+        .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+        .onError((error, stackTrace) =>
+            {print("Upload file path error ${error.toString()} ")});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +127,8 @@ class _EditProfileState extends State<EditProfile> {
                   _auth.currentUser?.updateDisplayName(targetUser.name);
                   UserHelper().updateDataToSQLite(targetUser);
                   navigateToProfilePage(context);
+
+                  uploadImageToFirebase(context);
                   // UserHelper().updateDataToSQLite();
                   // });
                 },
@@ -101,32 +148,25 @@ class _EditProfileState extends State<EditProfile> {
                 Center(
                   child: Stack(
                     children: [
-                      Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 4,
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  color: Colors.grey)
-                            ],
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"))),
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundColor: Colors.grey,
+                        child: ClipOval(
+                          child: SizedBox(
+                              height: 500,
+                              width: 500,
+                              child: (_imageFile != null)
+                                  ? Image.file(_imageFile!, fit: BoxFit.fill)
+                                  : Image.network(
+                                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")),
+                        ),
                       ),
                       Positioned(
                           bottom: 0,
                           right: 0,
                           child: Container(
-                            height: 40,
-                            width: 40,
+                            height: 50,
+                            width: 50,
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     width: 4,
@@ -134,9 +174,14 @@ class _EditProfileState extends State<EditProfile> {
                                         .scaffoldBackgroundColor),
                                 shape: BoxShape.circle,
                                 color: Colors.lightGreen),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.white,
+                            child: IconButton(
+                              icon: Icon(
+                                FontAwesomeIcons.camera,
+                                size: 20.0,
+                              ),
+                              onPressed: () {
+                                pickImage();
+                              },
                             ),
                           ))
                     ],
@@ -211,6 +256,30 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
         ));
+  }
+
+  Widget uploadImageButton(BuildContext context) {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+            margin: const EdgeInsets.only(
+                top: 30, left: 20.0, right: 20.0, bottom: 20.0),
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(30.0)),
+            child: FlatButton(
+              onPressed: () => uploadImageToFirebase(context),
+              child: Text(
+                "Upload Image",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

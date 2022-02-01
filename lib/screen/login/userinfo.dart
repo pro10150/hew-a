@@ -3,13 +3,25 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hewa/screen/login/meal.dart';
 import 'package:hewa/models/photo_model.dart';
 import 'package:hewa/utilities/photo_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hewa/screen/login/user_image.dart';
+import 'dart:io';
+import 'dart:io' as io;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
+import 'package:hewa/screen/login/round_image.dart';
+import 'package:hewa/config/palette.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -20,7 +32,39 @@ class UserInformation extends StatefulWidget {
 
 class _UserInformationState extends State<UserInformation> {
   int number = 0;
-  String imageUrl = '';
+  // String imageUrl = '';
+  DateTime date = DateTime(2022, 12, 24);
+  File? _imageFile = null;
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = File(pickedFile!.path);
+    });
+  }
+
+  Future uploadImageToFirebase() async {
+    String fileName = basename(_imageFile!.path);
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('upload')
+        .child('/$fileName');
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': fileName});
+    firebase_storage.UploadTask uploadTask;
+    //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    uploadTask = ref.putFile(io.File(_imageFile!.path), metadata);
+
+    firebase_storage.UploadTask task = await Future.value(uploadTask);
+    Future.value(uploadTask)
+        .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+        .onError((error, stackTrace) =>
+            {print("Upload file path error ${error.toString()} ")});
+  }
 
 /*   Future<File>? imageFile;
   Image? image;
@@ -94,6 +138,30 @@ class _UserInformationState extends State<UserInformation> {
     );
   }
 
+  // Widget buildDate() {
+  //   return Scaffold(
+  //     body: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         Text(dateTime == null ? 'Nothing has benn picked yet' : _dateTime.toString()),
+  //         RaisedButton(
+  //           child: Text("DD/MM/YY"),
+  //             onPressed: () {
+  //             showDatePicker(context: context,
+  //                 initialDate: DateTime.now(),
+  //                 firstDate: DateTime(1990),
+  //                 lastDate: DateTime(2222)
+  //             ).then((date) {
+  //               setState(() {
+  //                 _dateTime = date;
+  //               });
+  //             });
+  //             }),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget buildbirthday() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,20 +174,63 @@ class _UserInformationState extends State<UserInformation> {
               borderRadius: BorderRadius.circular(50),
               border: Border.all(color: Colors.white)),
           height: 50,
-          child: TextField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(left: 35),
-              hintText: 'DD/MM/YY',
-              hintStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Padding(padding: EdgeInsets.only(left: 35)),
+                  Expanded(
+                    child: Text(
+                      '${date.year}/${date.month}/${date.day}',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 25),
+                      child: SizedBox(
+                        height: 30,
+                        width: 5,
+                        child: ElevatedButton(
+                            child: Text("select",
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+                              DateTime? newDate = await showDatePicker(
+                                context: this.context,
+                                initialDate: date,
+                                firstDate: DateTime(1990),
+                                lastDate: DateTime(2300),
+                              );
+                              if (newDate == null) return;
+                              setState(() {
+                                date = newDate;
+                              });
+                            }),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
+          // child: TextField(
+          //   keyboardType: TextInputType.emailAddress,
+          //   style: TextStyle(color: Colors.black),
+          //   decoration: InputDecoration(
+          //     border: InputBorder.none,
+          //     contentPadding: EdgeInsets.only(left: 35),
+          //     hintText: 'DD/MM/YY',
+          //     hintStyle: TextStyle(
+          //       color: Colors.white,
+          //       fontSize: 16,
+          //       fontWeight: FontWeight.bold,
+          //     ),
+          //   ),
+          // ),
         )
       ],
     );
@@ -134,7 +245,9 @@ class _UserInformationState extends State<UserInformation> {
         onPressed: () {
           var rount = new MaterialPageRoute(
               builder: (BuildContext context) => new Mealpre());
-          Navigator.of(context).push(rount);
+          Navigator.of(this.context).push(rount);
+
+          uploadImageToFirebase();
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -151,7 +264,7 @@ class _UserInformationState extends State<UserInformation> {
   Widget buildskipBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, ('/'));
+        Navigator.popUntil(this.context, ModalRoute.withName('/'));
       },
       child: RichText(
         text: TextSpan(children: [
@@ -198,10 +311,10 @@ class _UserInformationState extends State<UserInformation> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(height: 120),
+                        SizedBox(height: 70),
                         Stack(children: [
                           Container(
-                              height: 650,
+                              height: 700,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   color: Colors.white24,
@@ -213,60 +326,101 @@ class _UserInformationState extends State<UserInformation> {
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                      // crossAxisAlignment:
-                                      // CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'User Info',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                  child: Column(children: <Widget>[
+                                    SizedBox(height: 45),
+                                    Text(
+                                      'User Info',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
 
-                                        SizedBox(height: 20),
-                                        buildname(),
-                                        SizedBox(height: 20),
-                                        buildbirthday(),
-                                        SizedBox(height: 50),
-                                        buildnextBtn(),
-                                        SizedBox(height: 15),
-                                        buildskipBtn(),
-                                        // buildSignupBtn()
-                                      ]))),
+                                    SizedBox(height: 20),
+                                    buildname(),
+                                    SizedBox(height: 20),
+                                    buildbirthday(),
+                                    SizedBox(height: 50),
+                                    buildnextBtn(),
+                                    SizedBox(height: 15),
+                                    buildskipBtn(),
+                                    // buildSignupBtn(),
+                                  ]))),
                           SizedBox(
-                            height: 200,
+                            height: 250,
                             width: 350,
                             child: Stack(
-                                fit: StackFit.expand,
-                                overflow: Overflow.visible,
-                                children: [
-                                  // Positioned(
-                                  //   height: 100,
-                                  //   width: 100,
-                                  //   top: -50,
-                                  //   right: -100,
-                                  //   child: builcam(),
-                                  // ),
-                                  SizedBox(height: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      UserImage(
-                                        onFileChanged: (imageUrl) {
-                                          setState(() {
-                                            this.imageUrl = imageUrl;
-                                          });
-                                        },
+                              fit: StackFit.expand,
+                              overflow: Overflow.visible,
+                              children: [
+                                // Positioned(
+                                //   height: 100,
+                                //   width: 100,
+                                //   top: -50,
+                                //   right: -100,
+                                //   child: builcam(),
+                                // ),
+                                Column(
+                                  children: [
+                                    SizedBox(height: 50),
+                                    CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: Colors.white,
+                                      child: ClipOval(
+                                        child: SizedBox(
+                                            height: 500,
+                                            width: 500,
+                                            child: (_imageFile != null)
+                                                ? Image.file(_imageFile!,
+                                                    fit: BoxFit.fill)
+                                                : FlatButton(
+                                                    onPressed: () {},
+                                                    child: IconButton(
+                                                      icon: Icon(
+                                                        FontAwesomeIcons.user,
+                                                        color:
+                                                            Color(0xffe69a83),
+                                                        size: 35,
+                                                      ),
+                                                      onPressed: () {},
+                                                    ))),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: Container(
+                                          height: 50,
+                                          width: 100,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              pickImage();
+                                            },
+                                            child: Text(
+                                              'select photo',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                ),
 
-                                  /* Positioned(
+                                // UserImage(
+                                //   onFileChanged: (imageUrl) {
+                                //     setState(() {
+                                //       this.imageUrl = imageUrl;
+                                //     });
+                                //   },
+                                // ),
+                              ],
+                            ),
+
+                            /* Positioned(
                                     top: 5,
                                     right: -110,
                                     child: SizedBox(
@@ -285,7 +439,6 @@ class _UserInformationState extends State<UserInformation> {
                                       ),
                                     ),
                                   ), */
-                                ]),
                           ),
                         ]),
                       ]),
@@ -295,6 +448,30 @@ class _UserInformationState extends State<UserInformation> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget uploadImageButton(BuildContext context) {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+            margin: const EdgeInsets.only(
+                top: 30, left: 20.0, right: 20.0, bottom: 20.0),
+            decoration: BoxDecoration(
+                color: Colors.black, borderRadius: BorderRadius.circular(30.0)),
+            child: FlatButton(
+              onPressed: () => uploadImageToFirebase(),
+              child: Text(
+                "Upload Image",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
