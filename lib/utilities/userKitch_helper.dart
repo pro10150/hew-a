@@ -85,7 +85,7 @@ class UserKitchHelper {
     Database database = await connectedDatabase();
     try {
       await database
-          .delete(tableDatabase, where: '$uidColumn = ?', whereArgs: [uid]);
+          .rawDelete('DELETE FROM $tableDatabase WHERE $uidColumn = ?', [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }

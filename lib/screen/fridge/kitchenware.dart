@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/models/userKitch_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/config/palette.dart';
 
 List<String> kitchenware = [];
 
@@ -58,8 +59,8 @@ class _KitchenwareState extends State<Kitchenware> {
     var object = await userKitchHelper.UserKitchHelper()
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
     print('user kitchenware length ==> ${object.length}');
+    _kitchenwareList.clear();
     if (object.length != 0) {
-      _kitchenwareList.clear();
       for (var model in object) {
         _kitchenwareList.add(model.kitchenware!);
         kitchenware.remove(model.kitchenware);
@@ -82,6 +83,10 @@ class _KitchenwareState extends State<Kitchenware> {
         }
       }
     }
+  }
+
+  buildKitchenwareChip(int index) {
+    return ActionChip(label: Text(_kitchenwareList[index]), onPressed: () {});
   }
 
   @override
@@ -216,77 +221,135 @@ class _KitchenwareState extends State<Kitchenware> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 height: MediaQuery.of(context).size.height,
                 child: _kitchenwareList.length != 0
-                    ? ListView.builder(
-                        itemCount: _kitchenwareList.length,
-                        itemBuilder: (context, index) {
-                          String currentKitchenware = _kitchenwareList[index];
-                          return Container(
-                              height: MediaQuery.of(context).size.width * 0.3,
-                              child: Slidable(
-                                key: const ValueKey(0),
+                    ? Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children:
+                            List.generate(_kitchenwareList.length, (index) {
+                          return ActionChip(
+                              label: Text(_kitchenwareList[index]),
+                              onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: const Text('Delete Kitchenware'),
+                                        content: Text(
+                                            'Do you want to delete ${_kitchenwareList[index]}?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('cancel')),
+                                          TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<Color>(
+                                                          Palette.roseBud),
+                                                  shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(18),
+                                                          side: BorderSide(
+                                                              color: Palette
+                                                                  .roseBud)))),
+                                              onPressed: () {
+                                                userKitchHelper
+                                                        .UserKitchHelper()
+                                                    .deleteDataWhere(
+                                                        _auth.currentUser!.uid,
+                                                        _kitchenwareList[
+                                                            index]);
+                                                setState(() {
+                                                  kitchenware.insert(0,
+                                                      _kitchenwareList[index]);
+                                                  _kitchenwareList
+                                                      .removeAt(index);
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ))
+                                        ],
+                                      )));
+                        }))
+                    // ListView.builder(
+                    //     itemCount: _kitchenwareList.length,
+                    //     itemBuilder: (context, index) {
+                    //       String currentKitchenware = _kitchenwareList[index];
+                    //       return buildKitchenwareChip(index);
+                    // return Container(
+                    //     height: MediaQuery.of(context).size.width * 0.3,
+                    //     child: Slidable(
+                    //       key: const ValueKey(0),
 
-                                // The end action pane is the one at the right or the bottom side.
-                                endActionPane: ActionPane(
-                                  motion: DrawerMotion(),
-                                  children: [
-                                    SlidableAction(
-                                      onPressed: (context) {
-                                        userKitchHelper.UserKitchHelper()
-                                            .deleteDataWhere(
-                                                _auth.currentUser!.uid,
-                                                _kitchenwareList[index]);
-                                        setState(() {
-                                          kitchenware
-                                              .add(_kitchenwareList[index]);
-                                          _kitchenwareList.removeAt(index);
-                                        });
-                                      },
-                                      backgroundColor: Colors.red,
-                                      foregroundColor: Colors.white,
-                                      icon: Icons.delete,
-                                      label: 'Delete',
-                                    ),
-                                  ],
-                                ),
-                                child: SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.3,
-                                    width: double.infinity,
-                                    child: Card(
-                                        color: Colors.white,
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              color: Palette.roseBud,
-                                              width: 10,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Expanded(
-                                              child: InkWell(
-                                                  onTap: () {
-                                                    print(_kitchenwareList[
-                                                        index]);
-                                                  },
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                          '$currentKitchenware')
-                                                    ],
-                                                  )),
-                                            )
-                                          ],
-                                        ))),
-                              ));
-                        },
-                      )
+                    //       // The end action pane is the one at the right or the bottom side.
+                    //       endActionPane: ActionPane(
+                    //         motion: DrawerMotion(),
+                    //         children: [
+                    //           SlidableAction(
+                    //             onPressed: (context) {
+                    //               userKitchHelper.UserKitchHelper()
+                    //                   .deleteDataWhere(
+                    //                       _auth.currentUser!.uid,
+                    //                       _kitchenwareList[index]);
+                    //               setState(() {
+                    //                 kitchenware
+                    //                     .add(_kitchenwareList[index]);
+                    //                 _kitchenwareList.removeAt(index);
+                    //               });
+                    //             },
+                    //             backgroundColor: Colors.red,
+                    //             foregroundColor: Colors.white,
+                    //             icon: Icons.delete,
+                    //             label: 'Delete',
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       child: SizedBox(
+                    //           height:
+                    //               MediaQuery.of(context).size.width * 0.3,
+                    //           width: double.infinity,
+                    //           child: Card(
+                    //               color: Colors.white,
+                    //               child: Row(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.center,
+                    //                 children: <Widget>[
+                    //                   Container(
+                    //                     color: Palette.roseBud,
+                    //                     width: 10,
+                    //                   ),
+                    //                   SizedBox(width: 10),
+                    //                   Expanded(
+                    //                     child: InkWell(
+                    //                         onTap: () {
+                    //                           print(_kitchenwareList[
+                    //                               index]);
+                    //                         },
+                    //                         child: Column(
+                    //                           mainAxisAlignment:
+                    //                               MainAxisAlignment
+                    //                                   .center,
+                    //                           crossAxisAlignment:
+                    //                               CrossAxisAlignment
+                    //                                   .start,
+                    //                           children: <Widget>[
+                    //                             Text(
+                    //                                 '$currentKitchenware')
+                    //                           ],
+                    //                         )),
+                    //                   )
+                    //                 ],
+                    //               ))),
+                    //     ));
+                    //   },
+                    // )
                     : Text('You don\'t have any kitchenwares yet'),
               ),
             )

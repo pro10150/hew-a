@@ -46,5 +46,13 @@ class DBHelper {
         'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER)');
     db.execute(
         'CREATE TABLE  reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
+    db.execute(
+        'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
+    db.execute(
+        'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, description TEXT)');
+    db.execute(
+        'CREATE TABLE userIngredientTABLE (id INTEGER PRIMARY KEY, uid TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
+    db.execute(
+        'CREATE TABLE recipeKitchenwareTABLE (id INTEGER PRIMARY KEY, recipeId TEXT,kitchenwareId TEXT)');
   }
 }

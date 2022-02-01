@@ -217,12 +217,12 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(const Duration(milliseconds: 600), () {
       checkAuth(context);
 
-      // DBHelper().deleteDB();
+      DBHelper().deleteDB();
       DBHelper().database();
-      // MenuHelper().initInsertToSQLite();
-      // IngredHelper().initInsertToSQLite();
-      // KitchHelper().initialInsert();
-      // UserHelper().initInsert();
+      MenuHelper().initInsertToSQLite();
+      IngredHelper().initInsertToSQLite();
+      KitchHelper().initialInsert();
+      UserHelper().initInsert();
     });
   }
 

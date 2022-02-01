@@ -50,6 +50,8 @@ dependencies:
   filter_list: ^1.0.1
   image_cropper: ^1.4.1
   flutter_image_compress: ^1.1.0
+  step_progress_indicator: ^1.0.2
+  search_choices: ^2.0.16
 
 dev_dependencies:
   flutter_test:
