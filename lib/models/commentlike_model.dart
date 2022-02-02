@@ -1,18 +1,21 @@
 class CommentLikeModel {
-  String? commentID;
-  String? userID;
+  String? id;
+  String? commentId;
+  String? uid;
 
-  CommentLikeModel({required this.commentID, required this.userID});
+  CommentLikeModel({required this.commentId, required this.uid});
 
   CommentLikeModel.fromJson(Map<String, dynamic> json) {
-    commentID = json['commentID'];
-    userID = json['userID'];
+    id = json['id'];
+    commentId = json['commentId'];
+    uid = json['uid'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['commentID'] = this.commentID;
-    data['userID'] = this.userID;
+    data['id'] = this.id;
+    data['commentId'] = this.commentId;
+    data['uid'] = this.uid;
     return data;
   }
 }

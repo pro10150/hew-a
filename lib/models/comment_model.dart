@@ -1,31 +1,27 @@
 class CommentModel {
-  String? commentID;
   String? text;
-  String? userID;
-  String? recipeID;
+  String? uid;
+  String? recipeId;
   String? date;
 
   CommentModel(
-      {required this.commentID,
-      required this.text,
-      required this.userID,
-      required this.recipeID,
+      {required this.text,
+      required this.uid,
+      required this.recipeId,
       required this.date});
 
   CommentModel.fromJson(Map<String, dynamic> json) {
-    commentID = json['commentID'];
     text = json['text'];
-    userID = json['userID'];
-    recipeID = json['recipeID'];
+    uid = json['uid'];
+    recipeId = json['recipeId'];
     date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['commentID'] = this.commentID;
     data['text'] = this.text;
-    data['userID'] = this.userID;
-    data['recipeID'] = this.recipeID;
+    data['uid'] = this.uid;
+    data['recipeId'] = this.recipeId;
     data['date'] = this.date;
     return data;
   }

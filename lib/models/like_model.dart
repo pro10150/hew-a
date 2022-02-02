@@ -1,22 +1,22 @@
 class LikeModel {
-  String? userID;
-  String? recipeID;
+  String? uid;
+  String? recipeId;
 
   LikeModel({
-    required this.userID,
-    required this.recipeID,
+    required this.uid,
+    required this.recipeId,
   });
 
   LikeModel.fromJson(Map<String, dynamic> json) {
-    userID = json['userID'];
-    recipeID = json['recipeID'];
+    uid = json['uid'];
+    recipeId = json['recipeId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['userID'] = this.userID;
-    data['recipeID'] = this.recipeID;
+    data['uid'] = this.uid;
+    data['recipeId'] = this.recipeId;
 
     return data;
   }

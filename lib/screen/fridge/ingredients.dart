@@ -18,7 +18,7 @@ import 'package:search_choices/search_choices.dart';
 List<String> ingredients = [];
 List<IngredModel> ingredModel = [];
 List<UserIngredModel> userIngredModel = [];
-List<String> units = ['-', 'g', 'kg', 'ml', 'l', 'bottles'];
+List<String> units = ['-', 'g', 'kg', 'tsp', 'tbsp', 'cup', 'ml'];
 
 class Ingredients extends StatefulWidget {
   static const routeName = '/';

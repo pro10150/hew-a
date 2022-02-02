@@ -75,7 +75,10 @@ class KitchHelper {
       'Pastry blender',
       'Thermoemeter',
       'Cheese gater',
-      'Stove'
+      'Stove',
+      'Ladle',
+      'Bowl',
+      'Cooking Grill'
     ];
     for (var kitchenware in kitchenwares) {
       database.execute(
