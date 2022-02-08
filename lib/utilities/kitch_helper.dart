@@ -78,7 +78,20 @@ class KitchHelper {
       'Stove',
       'Ladle',
       'Bowl',
-      'Cooking Grill'
+      'Cooking Grill',
+      'Pestle',
+      'Masher',
+      'Plate',
+      'Plastic wrap',
+      'Deep-fried pot',
+      'Fork',
+      'Cup',
+      'Spoon',
+      'Ladle',
+      'Chopsticks',
+      'Meat Tenderizer',
+      'Spatula',
+      'Tong'
     ];
     for (var kitchenware in kitchenwares) {
       database.execute(

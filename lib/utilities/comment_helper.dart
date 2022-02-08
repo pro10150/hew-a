@@ -11,7 +11,7 @@ class LikeHelper {
   final String uidColumn = 'uid';
   final String recipeIdColumn = 'recipeId';
   final String textColumn = 'text';
-  final String dateColumn = 'column';
+  final String dateColumn = 'date';
 
   LikeHelper() {
     initDatabase();
@@ -20,7 +20,7 @@ class LikeHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $recipeIdColumn INTEGER)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $recipeIdColumn INTEGER, $textColumn TEXT, $dateColumn INTEGER)'),
         version: version);
   }
 

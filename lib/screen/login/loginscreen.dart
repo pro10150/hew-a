@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hewa/models/reStep_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'regscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,10 @@ import 'package:hewa/utilities/menu.helper.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/utilities/recipe_helper.dart';
+import 'package:hewa/utilities/reStep_helper.dart';
+import 'package:hewa/utilities/reIngred_helper.dart';
+import 'package:hewa/utilities/reKitchenware_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -223,6 +228,10 @@ class LoginScreenState extends State<LoginScreen> {
       IngredHelper().initInsertToSQLite();
       KitchHelper().initialInsert();
       UserHelper().initInsert();
+      RecipeHelper().initInsertDataToSqlite();
+      ReStepHelper().initInsertDataToSQLite();
+      ReIngredHelper().initInsertDataToSQLite();
+      ReKitchenwareHelper().initInsertDataToSQLite();
     });
   }
 

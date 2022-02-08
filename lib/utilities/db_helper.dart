@@ -43,9 +43,9 @@ class DBHelper {
     db.execute(
         'CREATE TABLE followTABLE (id INTEGER PRIMARY KEY, uid TEXT, followedUserID TEXT)');
     db.execute(
-        'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER)');
+        'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, menuId INTEGER, recipeName TEXT, description TEXT,  timeMinute INTEGER, method TEXT, type TEXT, calories REAL, protein REAL, carb REAL, fat REAL)');
     db.execute(
-        'CREATE TABLE  reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
+        'CREATE TABLE reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
     db.execute(
         'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
@@ -54,5 +54,11 @@ class DBHelper {
         'CREATE TABLE userIngredientTABLE (id INTEGER PRIMARY KEY, uid TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
         'CREATE TABLE recipeKitchenwareTABLE (id INTEGER PRIMARY KEY, recipeId TEXT,kitchenwareId TEXT)');
+    db.execute(
+        'CREATE TABLE commentTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, text TEXT, date INTEGER)');
+    db.execute(
+        'CREATE TABLE commentLikeTABLE (id INTEGER PRIMARY KEY, uid TEXT, commentId TEXT)');
+    db.execute(
+        'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER)');
   }
 }

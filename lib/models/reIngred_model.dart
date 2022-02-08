@@ -7,8 +7,8 @@ class ReIngredModel {
   ReIngredModel(
       {required this.recipeId,
       required this.ingredientId,
-      required this.amount,
-      required this.unit});
+      this.amount,
+      this.unit});
 
   ReIngredModel.fromJson(Map<String, dynamic> json) {
     recipeId = json['recipeId'];

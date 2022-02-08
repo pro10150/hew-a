@@ -22,27 +22,27 @@
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		XMEQPwXLqjOyjzZXetF4S5N3NJM=
+		SckqtSH/TwcEkCt2asqtgAxx2XI=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/arm64.swiftsourceinfo</key>
 		<data>
-		XMEQPwXLqjOyjzZXetF4S5N3NJM=
+		SckqtSH/TwcEkCt2asqtgAxx2XI=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/i386-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		VY7VuwoQUMGPwIVeJXOTtbROcZY=
+		SuMW2Mq00FS0yQI5YEZiyLUWU+c=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/i386.swiftsourceinfo</key>
 		<data>
-		VY7VuwoQUMGPwIVeJXOTtbROcZY=
+		SuMW2Mq00FS0yQI5YEZiyLUWU+c=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		jcyRlltI994YKmND1V7z87brXs8=
+		C7EhqskbCl4crF9x8dmawfsKxnU=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/Project/x86_64.swiftsourceinfo</key>
 		<data>
-		jcyRlltI994YKmND1V7z87brXs8=
+		C7EhqskbCl4crF9x8dmawfsKxnU=
 		</data>
 		<key>Modules/SwiftyGif.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -136,66 +136,66 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			XMEQPwXLqjOyjzZXetF4S5N3NJM=
+			SckqtSH/TwcEkCt2asqtgAxx2XI=
 			</data>
 			<key>hash2</key>
 			<data>
-			wfAvg23oqySH1FTiyqTQ8HwqXE+Bqi368WJayaQAkLg=
+			KGWcyoiQ3egrYz1/36MBlDFjtyDzUdtyOIvbTsWk7dw=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/Project/arm64.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			XMEQPwXLqjOyjzZXetF4S5N3NJM=
+			SckqtSH/TwcEkCt2asqtgAxx2XI=
 			</data>
 			<key>hash2</key>
 			<data>
-			wfAvg23oqySH1FTiyqTQ8HwqXE+Bqi368WJayaQAkLg=
+			KGWcyoiQ3egrYz1/36MBlDFjtyDzUdtyOIvbTsWk7dw=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/Project/i386-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VY7VuwoQUMGPwIVeJXOTtbROcZY=
+			SuMW2Mq00FS0yQI5YEZiyLUWU+c=
 			</data>
 			<key>hash2</key>
 			<data>
-			48/9rJccDnXUbugpJtlPPGYAa7ND5y1hqG2Zbygevbw=
+			3ZFbB1F3SOaehak6p2RNec6M5tM0wu+en62v2luRq54=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/Project/i386.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VY7VuwoQUMGPwIVeJXOTtbROcZY=
+			SuMW2Mq00FS0yQI5YEZiyLUWU+c=
 			</data>
 			<key>hash2</key>
 			<data>
-			48/9rJccDnXUbugpJtlPPGYAa7ND5y1hqG2Zbygevbw=
+			3ZFbB1F3SOaehak6p2RNec6M5tM0wu+en62v2luRq54=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jcyRlltI994YKmND1V7z87brXs8=
+			C7EhqskbCl4crF9x8dmawfsKxnU=
 			</data>
 			<key>hash2</key>
 			<data>
-			bsKVU8ut6L1dVSarK2BUzpYnXCwPuRN2QJysCT5MPrI=
+			9HTWjApPnGjW4SECs9WVKSeyFu8Ser9tuB0kl5UaHUw=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/Project/x86_64.swiftsourceinfo</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			jcyRlltI994YKmND1V7z87brXs8=
+			C7EhqskbCl4crF9x8dmawfsKxnU=
 			</data>
 			<key>hash2</key>
 			<data>
-			bsKVU8ut6L1dVSarK2BUzpYnXCwPuRN2QJysCT5MPrI=
+			9HTWjApPnGjW4SECs9WVKSeyFu8Ser9tuB0kl5UaHUw=
 			</data>
 		</dict>
 		<key>Modules/SwiftyGif.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>

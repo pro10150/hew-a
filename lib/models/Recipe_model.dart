@@ -1,23 +1,21 @@
 class RecipeModel {
   String? uid;
-  String? nameMenu;
+  int? menuId;
   String? recipeName;
   String? description;
-  int? timeHour;
   int? timeMinute;
   String? method;
   String? type;
-  int? calories;
-  int? protein;
-  int? carb;
-  int? fat;
+  double? calories;
+  double? protein;
+  double? carb;
+  double? fat;
 
   RecipeModel(
       {required this.uid,
-      required this.nameMenu,
-      required this.recipeName,
-      required this.description,
-      required this.timeHour,
+      required this.menuId,
+      this.recipeName,
+      this.description,
       required this.timeMinute,
       required this.method,
       required this.type,
@@ -28,10 +26,9 @@ class RecipeModel {
 
   RecipeModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
-    nameMenu = json['nameMenu'];
+    menuId = json['menuId'];
     recipeName = json['recipeName'];
     description = json['description'];
-    timeHour = json['timeHour'];
     timeMinute = json['timeMinue'];
     method = json['method'];
     type = json['type'];
@@ -44,10 +41,9 @@ class RecipeModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['uid'] = this.uid;
-    data['nameMenu'] = this.nameMenu;
+    data['menuId'] = this.menuId;
     data['recipeName'] = this.recipeName;
     data['description'] = this.description;
-    data['timeHour'] = this.timeHour;
     data['timeMinute'] = this.timeMinute;
     data['method'] = this.method;
     data['type'] = this.type;

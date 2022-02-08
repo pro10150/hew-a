@@ -6,7 +6,7 @@ class ReStepModel {
   ReStepModel(
       {required this.recipeId, required this.step, required this.description});
 
-  ReStepModel.fromJsom(Map<String, dynamic> json) {
+  ReStepModel.fromJson(Map<String, dynamic> json) {
     recipeId = json['recipeId'];
     step = json['step'];
     description = json['description'];

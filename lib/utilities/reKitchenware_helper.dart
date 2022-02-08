@@ -1,8 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:collection/collection.dart';
 import 'package:hewa/models/reKitchenware_model.dart';
 
-class ReIngredHelper {
+class ReKitchenwareHelper {
   final String nameDatabase = 'Hewa.db';
   final String tableDatabase = 'recipeKitchenwareTABLE';
   int version = 1;
@@ -10,7 +11,7 @@ class ReIngredHelper {
   final String idColumn = 'id';
   final String recipeIdColumn = 'recipeId';
   final String kitchenwareIdColumn = 'kitchenwareId';
-  ReIngredHelper() {
+  ReKitchenwareHelper() {
     initDatabase();
   }
 
@@ -30,10 +31,75 @@ class ReIngredHelper {
     Database database = await connectedDatabase();
     try {
       database.insert(tableDatabase, reKitchenwareModel.toJson());
-      print(reKitchenwareModel);
-      print('inserted to reIngredModel');
     } catch (e) {
-      print('e insertData ==>> ${e.toString()}');
+      print('e insertReKitchenwareData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> initInsertDataToSQLite() async {
+    var kitchenwares = [
+      [3, 11, 2, 1, 8, 7],
+      [1, 2, 11, 8, 7],
+      [2, 11, 8, 7],
+      [2, 11, 12, 27],
+      [3, 24, 8, 7],
+      [3, 24, 12, 27, 8, 7],
+      [8, 7, 3, 24],
+      [2, 11],
+      [2, 11, 26],
+      [2, 11, 25],
+      [12, 27],
+      [25],
+      [2, 11, 8, 7],
+      [3, 24, 8, 7],
+      [2, 11, 8, 7],
+      [8, 7, 2, 11],
+      [3, 24, 28],
+      [8, 7, 3, 24],
+      [10],
+      [29],
+      [3, 2, 11],
+      [2, 7, 30, 10],
+      [8, 7, 25, 2, 11],
+      [2, 11],
+      [12, 27, 25, 3, 24],
+      [2, 11],
+      [6, 31],
+      [3, 24, 12, 27],
+      [25, 3, 24],
+      [8, 7, 25],
+      [3, 24, 32, 12, 27, 2, 11],
+      [2, 11],
+      [8, 7, 2, 11],
+      [2, 11, 31],
+      [2, 11, 8, 7],
+      [8, 7, 25, 2, 11],
+      [25, 2, 11],
+      [2, 11, 8, 7],
+      [25, 2, 11, 35, 36, 8, 7],
+      [33, 34, 2, 11, 3, 8, 7],
+      [2, 11, 25],
+      [37, 29, 2, 11, 8, 7],
+      [8, 2, 11],
+      [25, 38, 34, 2, 11],
+      [2, 11, 25],
+      [25, 2, 11, 35, 36, 8, 7],
+      [25, 34, 2, 11],
+      [3, 39, 2, 11],
+      [12, 27, 2, 11, 33],
+      [33, 34]
+    ];
+    try {
+      kitchenwares.forEachIndexed((index, element) {
+        element.forEach((value) {
+          ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
+              recipeId: (index + 1).toString(),
+              kitchenwareId: value.toString());
+          insertDataToSQLite(reKitchenwareModel);
+        });
+      });
+    } catch (e) {
+      print('e initInsertKitchenwareData ==>> ${e.toString()}');
     }
   }
 
