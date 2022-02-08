@@ -371,7 +371,7 @@ class ReStepHelper {
     steps.forEachIndexed((index, element) {
       element.forEachIndexed((i, e) {
         ReStepModel reStepModel = ReStepModel(
-            recipeId: index.toString(), step: i + 1, description: e);
+            recipeId: (index + 1).toString(), step: i + 1, description: e);
         insertDataToSQLite(reStepModel);
       });
     });
