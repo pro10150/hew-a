@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hewa/screen/profile.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hewa/screen/profile/otherPeople.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:share/share.dart';
+import 'package:hewa/screen/comment.dart';
 
 class actionsToolbar extends StatelessWidget {
   Widget _getSocialAction({required String title, required IconData icon}) {
@@ -93,11 +96,41 @@ class actionsToolbar extends StatelessWidget {
               pictureUrl:
                   "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
               context: context),
-          _getSocialAction(title: '15.2k', icon: MdiIcons.heartOutline),
-          _getSocialAction(title: '132', icon: MdiIcons.messageOutline),
-          _getSocialAction(title: 'Share', icon: MdiIcons.shareOutline)
+          RawMaterialButton(
+            onPressed: () {},
+            child: _getSocialAction(
+              title: '15.2k',
+              icon: MdiIcons.heartOutline,
+            ),
+          ),
+          RawMaterialButton(
+            onPressed: () {
+              navigateTocommentPage(context);
+            },
+            child:
+                _getSocialAction(title: '132', icon: MdiIcons.messageOutline),
+          ),
+          RawMaterialButton(
+              onPressed: _shareContent,
+              child: _getSocialAction(
+                  title: 'Share', icon: MdiIcons.shareOutline)),
         ],
       ),
     );
   }
+}
+
+navigateToProfilePage(BuildContext context) {}
+
+void _shareContent() {
+  Share.share('check out my website https://example.com',
+      subject: 'Look what I made!');
+}
+
+void navigateTocommentPage(BuildContext context) async {
+  Future.delayed(const Duration(milliseconds: 500), () {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return commentPage();
+    }));
+  });
 }
