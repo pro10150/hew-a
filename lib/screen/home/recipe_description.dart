@@ -1,9 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:hewa/models/Recipe_model.dart';
+import 'package:hewa/models/ingred_model.dart';
+import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import '../menu_detail/menu_detail.dart';
+import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/models/menu_model.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
 
-class recipeDescription extends StatelessWidget {
+class recipeDescription extends StatefulWidget {
+  @override
+  recipeDescriptionPageState createState() => recipeDescriptionPageState();
+}
+
+// Future<Future<List<MenuModel>>> getMenu() async {
+//   var _MenuHelp = MenuHelper();
+//   Future<List<MenuModel>> Menus = _MenuHelp.readlDataFromSQLite();
+//   return Menus;
+// }
+
+class recipeDescriptionPageState extends State<recipeDescription> {
+  List<MenuModel> menu = [];
+  Future<String?> getMenu() async {
+    MenuHelper().readlDataFromSQLite().then((value) {
+      menu = value;
+      setState(() {});
+    });
+  }
+
+  List<RecipeModel> recipee = [];
+  Future<String?> getRecipe() async {
+    RecipeHelper().readlDataFromSQLite().then((time) => {setState(() {})});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMenu();
+    getRecipe();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -28,7 +65,11 @@ class recipeDescription extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Text(
-                'ผัดกะเพราหมูสับ',
+                menu.isNotEmpty == true
+                    ? menu[0].nameMenu != null
+                        ? '${menu[0].nameMenu}'
+                        : '${menu[0].nameMenu}'
+                    : 'nameMenu',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
             ),
@@ -37,9 +78,17 @@ class recipeDescription extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Icon(MdiIcons.clockOutline, size: 25),
-                  Text('30 min'),
+                  Text(recipee.isNotEmpty == true
+                      ? recipee[0].timeMinute != null
+                          ? '${recipee[0].timeMinute}'
+                          : '${recipee[0].timeMinute}'
+                      : 'N/A'),
                   Icon(MdiIcons.pigVariantOutline),
-                  Text('Pork')
+                  Text(menu.isNotEmpty == true
+                      ? menu[0].mainIngredient != null
+                          ? '${menu[0].mainIngredient}'
+                          : '${menu[0].mainIngredient}'
+                      : 'N/A')
                 ],
               ),
             ),
