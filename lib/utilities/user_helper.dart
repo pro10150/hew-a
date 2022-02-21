@@ -60,13 +60,22 @@ class UserHelper {
 
   Future<Null> initInsert() async {
     Database database = await connectedDatabase();
-    UserModel userModel =
-        UserModel(uid: 'k2YFM1LkbVaEf4zV4HnhTAmIdRD3', username: 'pro10150');
-    try {
-      database.insert(tableDatabase, userModel.toJson());
-    } catch (e) {
-      print('e insertData ==>> ${e.toString()}');
-    }
+    var uids = [
+      'k2YFM1LkbVaEf4zV4HnhTAmIdRD3',
+      'x8cKCoJwnqSJZgklwPSBXLtjEgQ2',
+      'bpSTXKotc2Qo87o6JbImdJl4Wk43',
+      'F4QoZNVQ5kUgZKfdY7etXSI8AFi2',
+      'hb8DLE7if5Se2LNrSLcF2OR1uvy1',
+      'VaipAkcQYfexWPTX16itUC57t1D2'
+    ];
+    uids.forEach((element) {
+      UserModel userModel = UserModel(uid: element, username: 'pro10150');
+      try {
+        database.insert(tableDatabase, userModel.toJson());
+      } catch (e) {
+        print('e insertData ==>> ${e.toString()}');
+      }
+    });
   }
 
   Future<Null> updateDataToSQLite(UserModel userModel) async {

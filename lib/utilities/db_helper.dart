@@ -27,6 +27,10 @@ class DBHelper {
     );
   }
 
+  Future<String> getDbPath() async {
+    return join(await getDatabasesPath(), nameDatabase);
+  }
+
   static void _createDb(Database db) {
     db.execute(
         'CREATE TABLE kitchenwareTABLE (id INTEGER PRIMARY KEY, nameKitc TEXT)');
@@ -60,5 +64,7 @@ class DBHelper {
         'CREATE TABLE commentLikeTABLE (id INTEGER PRIMARY KEY, uid TEXT, commentId TEXT)');
     db.execute(
         'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER)');
+    db.execute(
+        'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER)');
   }
 }

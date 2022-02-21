@@ -80,6 +80,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "comment_box",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/comment_box-0.0.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cross_file",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.2",
       "packageUri": "lib/",
@@ -344,6 +350,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "mime",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/mime-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "octo_image",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/octo_image-1.0.1",
       "packageUri": "lib/",
@@ -448,6 +460,12 @@
     {
       "name": "search_choices",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/search_choices-2.0.16",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "share",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -572,7 +590,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-02-04T18:49:37.109665Z",
+  "generated": "2022-02-21T12:24:56.896758Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

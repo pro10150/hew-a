@@ -15,6 +15,7 @@ import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
 import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
+import 'package:hewa/utilities/view_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -222,16 +223,17 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(const Duration(milliseconds: 600), () {
       checkAuth(context);
 
-      DBHelper().deleteDB();
+      // DBHelper().deleteDB();
       DBHelper().database();
-      MenuHelper().initInsertToSQLite();
-      IngredHelper().initInsertToSQLite();
-      KitchHelper().initialInsert();
-      UserHelper().initInsert();
-      RecipeHelper().initInsertDataToSqlite();
-      ReStepHelper().initInsertDataToSQLite();
-      ReIngredHelper().initInsertDataToSQLite();
-      ReKitchenwareHelper().initInsertDataToSQLite();
+      // MenuHelper().initInsertToSQLite();
+      // IngredHelper().initInsertToSQLite();
+      // KitchHelper().initialInsert();
+      // UserHelper().initInsert();
+      // RecipeHelper().initInsertDataToSqlite();
+      // ReStepHelper().initInsertDataToSQLite();
+      // ReIngredHelper().initInsertDataToSQLite();
+      // ReKitchenwareHelper().initInsertDataToSQLite();
+      // ViewHelper().initInsertDataToSQLite();
     });
   }
 

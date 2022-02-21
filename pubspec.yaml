@@ -53,6 +53,9 @@ dependencies:
   step_progress_indicator: ^1.0.2
   search_choices: ^2.0.16
   collection: ^1.15.0
+  comment_box: ^0.0.17
+  share: ^2.0.4
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
