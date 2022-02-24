@@ -326,6 +326,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "like_button",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/like_button-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11",
       "packageUri": "lib/",
@@ -590,7 +596,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-02-21T12:24:56.896758Z",
+  "generated": "2022-02-24T10:20:16.008323Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

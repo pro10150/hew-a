@@ -7,15 +7,7 @@ import 'regscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/launcher.dart';
 import 'package:hewa/utilities/db_helper.dart';
-import 'package:hewa/utilities/menu.helper.dart';
-import 'package:hewa/utilities/ingred_helper.dart';
-import 'package:hewa/utilities/kitch_helper.dart';
-import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
-import 'package:hewa/utilities/reStep_helper.dart';
-import 'package:hewa/utilities/reIngred_helper.dart';
-import 'package:hewa/utilities/reKitchenware_helper.dart';
-import 'package:hewa/utilities/view_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -225,15 +217,7 @@ class LoginScreenState extends State<LoginScreen> {
 
       // DBHelper().deleteDB();
       DBHelper().database();
-      // MenuHelper().initInsertToSQLite();
-      // IngredHelper().initInsertToSQLite();
-      // KitchHelper().initialInsert();
-      // UserHelper().initInsert();
-      // RecipeHelper().initInsertDataToSqlite();
-      // ReStepHelper().initInsertDataToSQLite();
-      // ReIngredHelper().initInsertDataToSQLite();
-      // ReKitchenwareHelper().initInsertDataToSQLite();
-      // ViewHelper().initInsertDataToSQLite();
+      // DBHelper().initInsert();
     });
   }
 

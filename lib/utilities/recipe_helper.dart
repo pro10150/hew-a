@@ -419,7 +419,7 @@ class RecipeHelper {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
             uid: uid,
-            menuId: menuId[index],
+            menuId: menuId[index] + 1,
             calories: calories[index],
             carb: carb[index],
             protein: protein[index],
@@ -475,6 +475,30 @@ class RecipeHelper {
     List<Map<String, dynamic>> maps = await database.query(tableDatabase,
         where: '$uidColumn = ? AND $recipeNameColumn = ?',
         whereArgs: [id, recipeName]);
+    for (var map in maps) {
+      RecipeModel recipeModel = RecipeModel.fromJson(map);
+      recipeModels.add(recipeModel);
+    }
+    return recipeModels;
+  }
+
+  Future<List<RecipeModel>> getTrending() async {
+    Database database = await connectedDatabase();
+    List<RecipeModel> recipeModels = [];
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        "SELECT * FROM recipeTABLE WHERE id IN ( SELECT distinct recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC);");
+    for (var map in maps) {
+      RecipeModel recipeModel = RecipeModel.fromJson(map);
+      recipeModels.add(recipeModel);
+    }
+    return recipeModels;
+  }
+
+  Future<List<RecipeModel>> getFollowing(String uid) async {
+    Database database = await connectedDatabase();
+    List<RecipeModel> recipeModels = [];
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        "SELECT * FROM recipeTABLE WHERE uid IN (SELECT followedUserId FROM followTABLE WHERE uid = $uid)");
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);

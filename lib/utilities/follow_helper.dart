@@ -12,7 +12,7 @@ class FollowHelper {
   final String idColumn = 'id';
   final String uidColumn = 'uid';
   final String followedUserIDColumn = 'followedUserID';
-  UserHelper() {
+  FollowHelper() {
     initDatabase();
   }
 

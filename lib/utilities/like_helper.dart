@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/like_model.dart';
+import 'package:intl/intl.dart';
 
 class LikeHelper {
   final String nameDatabase = 'Hewa.db';
@@ -10,6 +11,7 @@ class LikeHelper {
   final String idColumn = 'id';
   final String uidColumn = 'uid';
   final String recipeIdColumn = 'recipeId';
+  final String datetimeColumn = 'datetime';
 
   LikeHelper() {
     initDatabase();
@@ -33,6 +35,32 @@ class LikeHelper {
       database.insert(tableDatabase, likeModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> initInsertDataToSQLite() async {
+    Database database = await connectedDatabase();
+    var likeUsers = {
+      'VaipAkcQYfexWPTX16itUC57t1D2': [1, 3, 5, 7, 10],
+      'hb8DLE7if5Se2LNrSLcF2OR1uvy1': [1, 3, 5, 8, 9],
+      'F4QoZNVQ5kUgZKfdY7etXSI8AFi2': [1],
+      'bpSTXKotc2Qo87o6JbImdJl4Wk43': [1, 3, 6, 2],
+      'x8cKCoJwnqSJZgklwPSBXLtjEgQ2': [1, 3]
+    };
+    try {
+      likeUsers.forEach((key, value) {
+        for (var i in value) {
+          Map<String, dynamic> row = {
+            uidColumn: key,
+            recipeIdColumn: i,
+            datetimeColumn:
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+          };
+          database.insert(tableDatabase, row);
+        }
+      });
+    } catch (e) {
+      print('e insert like data ==>> ${e.toString()}');
     }
   }
 

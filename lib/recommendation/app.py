@@ -15,7 +15,7 @@ def index():
     print('yy')
     result = rcm.getRecommendations(databaseLocation, uid)
     # print(result)
-    return jsonify({'uid': uid, 'recommendation': rcm.getRecommendations(databaseLocation=databaseLocation, uid=uid)})
+    return jsonify({'uid': uid, 'recommendation': result})
 
 
 if __name__ == "__main__":

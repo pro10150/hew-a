@@ -1,5 +1,16 @@
+import 'package:hewa/utilities/reStep_helper.dart';
+import 'package:hewa/utilities/recipe_helper.dart';
+import 'package:hewa/utilities/user_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'ingred_helper.dart';
+import 'kitch_helper.dart';
+import 'menu.helper.dart';
+import 'reIngred_helper.dart';
+import 'reKitchenware_helper.dart';
+import 'view_helper.dart';
+import 'like_helper.dart';
 
 class DBHelper {
   final String nameDatabase = 'Hewa.db';
@@ -63,8 +74,21 @@ class DBHelper {
     db.execute(
         'CREATE TABLE commentLikeTABLE (id INTEGER PRIMARY KEY, uid TEXT, commentId TEXT)');
     db.execute(
-        'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER)');
+        'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, datetime TEXT)');
     db.execute(
         'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER)');
+  }
+
+  void initInsert() {
+    MenuHelper().initInsertToSQLite();
+    IngredHelper().initInsertToSQLite();
+    KitchHelper().initialInsert();
+    UserHelper().initInsert();
+    RecipeHelper().initInsertDataToSqlite();
+    ReStepHelper().initInsertDataToSQLite();
+    ReIngredHelper().initInsertDataToSQLite();
+    ReKitchenwareHelper().initInsertDataToSQLite();
+    ViewHelper().initInsertDataToSQLite();
+    LikeHelper().initInsertDataToSQLite();
   }
 }

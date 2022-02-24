@@ -8,7 +8,6 @@ import 'package:share/share.dart';
 import 'package:hewa/screen/comment.dart';
 import 'package:like_button/like_button.dart';
 
-
 class actionsToolbar extends StatelessWidget {
   Widget _getSocialAction({required String title, required IconData icon}) {
     return Container(
@@ -91,7 +90,7 @@ class actionsToolbar extends StatelessWidget {
       width: 100,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end, 
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Column(
             children: [
@@ -100,54 +99,54 @@ class actionsToolbar extends StatelessWidget {
                       "https://secure.gravatar.com/avatar/ef4a9338dca42372f15427cdb4595ef7",
                   context: context),
               LikeButton(
-              size: 50,
-              circleColor:
-                  CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-              bubblesColor: BubblesColor(
-                dotPrimaryColor: Color(0xff33b5e5),
-                dotSecondaryColor: Color(0xff0099cc),
+                size: 50,
+                circleColor: CircleColor(
+                    start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                bubblesColor: BubblesColor(
+                  dotPrimaryColor: Color(0xff33b5e5),
+                  dotSecondaryColor: Color(0xff0099cc),
+                ),
+                likeCount: 100,
+                // countBuilder: (int count, bool isLiked, String text) {
+                //   var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+                //   Widget result;
+                //   if (count == 0) {
+                //     result = Text(
+                //       "love",
+                //       style: TextStyle(color: color),
+                //     );
+                //   } else
+                //     result = Text(
+                //       text,
+                //       style: TextStyle(color: color),
+                //     );
+                //   return result;
+                // },
               ),
-              likeCount: 100,
-              // countBuilder: (int count, bool isLiked, String text) {
-              //   var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
-              //   Widget result;
-              //   if (count == 0) {
-              //     result = Text(
-              //       "love",
-              //       style: TextStyle(color: color),
-              //     );
-              //   } else
-              //     result = Text(
-              //       text,
-              //       style: TextStyle(color: color),
-              //     );
-              //   return result;
-              // },
-          ),
-          // RawMaterialButton(
-          //   onPressed: () {},
-          //   child: _getSocialAction(
-          //     title: '15.2k' ,
-          //     icon: MdiIcons.heartOutline,
-          //   ),
-          //   // onPressed: () async{
-          //   //   if(menu.like.contains(user.uid))
-          //   //     menu.like.remove(user.uid);
-          //   //   else menu.like.add(user.uid);
-          //   //   await DBServices().updatevehicule(menu);
-          //   // }, 
-          // ),
-          RawMaterialButton(
-            onPressed: () {
-              navigateTocommentPage(context);
-            },
-            child:
-                _getSocialAction(title: '132', icon: MdiIcons.messageOutline),
-          ),
-          RawMaterialButton(
-              onPressed: _shareContent,
-              child: _getSocialAction(
-                  title: 'Share', icon: MdiIcons.shareOutline)),
+              // RawMaterialButton(
+              //   onPressed: () {},
+              //   child: _getSocialAction(
+              //     title: '15.2k',
+              //     icon: MdiIcons.heartOutline,
+              //   ),
+              //   // onPressed: () async{
+              //   //   if(menu.like.contains(user.uid))
+              //   //     menu.like.remove(user.uid);
+              //   //   else menu.like.add(user.uid);
+              //   //   await DBServices().updatevehicule(menu);
+              //   // },
+              // ),
+              RawMaterialButton(
+                onPressed: () {
+                  navigateTocommentPage(context);
+                },
+                child: _getSocialAction(
+                    title: '132', icon: MdiIcons.messageOutline),
+              ),
+              RawMaterialButton(
+                  onPressed: _shareContent,
+                  child: _getSocialAction(
+                      title: 'Share', icon: MdiIcons.shareOutline)),
             ],
           ),
         ],
@@ -156,19 +155,18 @@ class actionsToolbar extends StatelessWidget {
   }
 }
 
-
 // LikeButton(
 //       onTap: onLikeButtonTapped,
 //     ),
-Future<bool> onLikeButtonTapped(bool isLiked) async{
-    /// send your request here
-    // final bool success= await sendRequest();
+Future<bool> onLikeButtonTapped(bool isLiked) async {
+  /// send your request here
+  // final bool success= await sendRequest();
 
-    /// if failed, you can do nothing
-    // return success? !isLiked:isLiked;
+  /// if failed, you can do nothing
+  // return success? !isLiked:isLiked;
 
-    return !isLiked;
-  }
+  return !isLiked;
+}
 
 navigateToProfilePage(BuildContext context) {}
 
@@ -178,9 +176,7 @@ void _shareContent() {
 }
 
 void navigateTocommentPage(BuildContext context) async {
-  Future.delayed(const Duration(milliseconds: 500), () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return commentPage();
-    }));
-  });
+  Navigator.push(context, MaterialPageRoute(builder: (context) {
+    return commentPage();
+  }));
 }

@@ -56,6 +56,7 @@ dependencies:
   comment_box: ^0.0.17
   share: ^2.0.4
   http: ^0.13.4
+  like_button: ^2.0.4
 
 dev_dependencies:
   flutter_test:
