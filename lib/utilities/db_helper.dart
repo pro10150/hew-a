@@ -11,6 +11,7 @@ import 'reIngred_helper.dart';
 import 'reKitchenware_helper.dart';
 import 'view_helper.dart';
 import 'like_helper.dart';
+import 'method_helper.dart';
 
 class DBHelper {
   final String nameDatabase = 'Hewa.db';
@@ -77,6 +78,8 @@ class DBHelper {
         'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, datetime TEXT)');
     db.execute(
         'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER)');
+    db.execute(
+        'CREATE TABLE methodTABLE (methodid INTEGER PRIMARY KEY, nameMethod TEXT)');
   }
 
   void initInsert() {
@@ -90,5 +93,6 @@ class DBHelper {
     ReKitchenwareHelper().initInsertDataToSQLite();
     ViewHelper().initInsertDataToSQLite();
     LikeHelper().initInsertDataToSQLite();
+    MethodHelper().initInsertDataToSqlite();
   }
 }

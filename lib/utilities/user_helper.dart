@@ -125,6 +125,11 @@ class UserHelper {
     return userModels;
   }
 
+  Future<List> allUser() async {
+    Database database = await connectedDatabase();
+    return database.query(tableDatabase);
+  }
+
   Future<Null> deleteDataWhereId(String id) async {
     Database database = await connectedDatabase();
     try {
