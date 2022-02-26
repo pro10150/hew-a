@@ -9,6 +9,7 @@ class recipeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Stack(
+        alignment: Alignment.topCenter,
         children: <Widget>[
           GestureDetector(
               onTap: () {

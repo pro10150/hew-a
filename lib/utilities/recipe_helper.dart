@@ -1,6 +1,12 @@
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/recipe_model.dart';
+import 'package:http/http.dart' as http;
+
+import 'db_helper.dart';
 
 class RecipeHelper {
   final String nameDatabase = 'Hewa.db';
@@ -504,6 +510,35 @@ class RecipeHelper {
       recipeModels.add(recipeModel);
     }
     return recipeModels;
+  }
+
+  Future<List<RecipeModel>> getDailyPick() async {
+    Database database = await connectedDatabase();
+    final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
+    final response = await http.get(Uri.parse(
+        'http://127.0.0.1:5000/recommendation?uid=' +
+            FirebaseAuth.instance.currentUser!.uid +
+            "&databaseLocation=" +
+            dbPath));
+
+    final decoded = json.decode(response.body) as Map<String, dynamic>;
+    var uid = decoded['uid'];
+    var recommendation = decoded['recommendation'];
+
+    List<RecipeModel> recipeModels = [];
+    if (recommendation.length > 0) {
+      return getFollowing(uid);
+    } else {
+      List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+          where:
+              '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
+          whereArgs: recommendation);
+      for (var map in maps) {
+        RecipeModel recipeModel = RecipeModel.fromJson(map);
+        recipeModels.add(recipeModel);
+      }
+      return recipeModels;
+    }
   }
 
   Future<Null> deleteDataWhereId(String id) async {

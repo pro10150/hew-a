@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hewa/models/recipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';
@@ -10,6 +12,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/follow_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -75,6 +79,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ModalRoute.withName('/'));
   }
 
+  List<MenuRecipeModel> menuRecipes = [];
+  List<RecipeModel> userRecipes = [];
   List<UserModel> user = [];
   late var follower = 0;
   late var following = 0;
@@ -102,8 +108,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   Future<String?> getRecipe() async {
     var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
+    var mr = await MenuRecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     setState(() {
       recipe = object.length;
+      for (var obj in object) {
+        userRecipes.add(obj);
+      }
+      for (var obj in mr) {
+        menuRecipes.add(obj);
+      }
     });
   }
 
@@ -376,40 +389,33 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 controller: controller,
                 children: [
                   Expanded(
-                      child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: <Widget>[
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes()
-                    ],
-                  )),
+                      child: GridView.builder(
+                          padding:
+                              EdgeInsets.only(top: 30, left: 10, right: 10),
+                          primary: false,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: userRecipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return recipes(menuRecipes[index]);
+                          })),
                   Expanded(
-                      child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: <Widget>[
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                    ],
-                  )),
+                      child: GridView.builder(
+                          padding:
+                              EdgeInsets.only(top: 30, left: 10, right: 10),
+                          primary: false,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: userRecipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return recipes(menuRecipes[index]);
+                          })),
                 ],
               )
 
@@ -427,32 +433,53 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 }
 
 class recipes extends StatelessWidget {
-  const recipes({
-    Key? key,
-  }) : super(key: key);
-
+  recipes(this.menuRecipeModel) {
+    ref = FirebaseStorage.instance
+        .ref()
+        .child('menus')
+        .child(menuRecipeModel.image! + '.jpeg');
+    url = ref.getDownloadURL();
+  }
+  MenuRecipeModel menuRecipeModel;
+  var ref;
+  var url;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          print('Tap');
-        },
-        child: Container(
-          padding: EdgeInsets.all(0),
-          decoration: BoxDecoration(
-              color: Colors.red,
-              image: DecorationImage(
-                  image: NetworkImage(
-                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"))),
-        )
+    return FutureBuilder<String>(
+        future: url,
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              InkWell(
+                  onTap: () {
+                    print('Tap');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(0),
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(snapshot.data!))),
+                  )
 
-        // child: Column(
-        //   children: <Widget>[
-        //     Image.network(
-        //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
-        //   ],
-        // ),
-        );
+                  // child: Column(
+                  //   children: <Widget>[
+                  //     Image.network(
+                  //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
+                  //   ],
+                  // ),
+                  )
+            ];
+          } else {
+            children = <Widget>[CircularProgressIndicator()];
+          }
+          return Column(children: children);
+        });
   }
 }
 

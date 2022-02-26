@@ -1,0 +1,11 @@
+framework module search_choices {
+  umbrella header "search_choices-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module search_choices.Swift {
+    header "search_choices-Swift.h"
+    requires objc
+}

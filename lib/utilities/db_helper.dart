@@ -77,6 +77,8 @@ class DBHelper {
         'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, datetime TEXT)');
     db.execute(
         'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER)');
+    db.execute(
+        'CREATE TABLE menuRecipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER, mainIngredient TEXT, userID TEXT, image TEXT)');
   }
 
   void initInsert() {

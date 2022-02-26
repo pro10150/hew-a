@@ -15,8 +15,9 @@ class recipeDescription extends StatelessWidget {
                 child: MenuDetail(), type: PageTransitionType.rightToLeft));
       },
       child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(left: 10, top: 450),
@@ -35,6 +36,9 @@ class recipeDescription extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Icon(MdiIcons.clockOutline, size: 25),
                   Text('30 min'),

@@ -392,6 +392,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                       ]),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
                           width: 170,
