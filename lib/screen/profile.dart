@@ -79,6 +79,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ModalRoute.withName('/'));
   }
 
+  List<MenuRecipeModel> likeRecipes = [];
   List<MenuRecipeModel> menuRecipes = [];
   List<RecipeModel> userRecipes = [];
   List<UserModel> user = [];
@@ -109,6 +110,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Future<String?> getRecipe() async {
     var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     var mr = await MenuRecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
+    var lr = await MenuRecipeHelper().getLikedRecipe(_auth.currentUser!.uid);
     setState(() {
       recipe = object.length;
       for (var obj in object) {
@@ -116,6 +118,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       }
       for (var obj in mr) {
         menuRecipes.add(obj);
+      }
+      for (var obj in lr) {
+        likeRecipes.add(obj);
       }
     });
   }
@@ -221,9 +226,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                 width: 500,
                                                 child: (_imageFile != null)
                                                     ? Image.file(_imageFile!,
-                                                        fit: BoxFit.fill)
+                                                        fit: BoxFit.contain)
                                                     : Image.network(
-                                                        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")),
+                                                        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                                        fit: BoxFit.contain,
+                                                      )),
                                           ),
                                         ),
                                         Text(
@@ -389,33 +396,43 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 controller: controller,
                 children: [
                   Expanded(
-                      child: GridView.builder(
-                          padding:
-                              EdgeInsets.only(top: 30, left: 10, right: 10),
-                          primary: false,
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemCount: userRecipes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return recipes(menuRecipes[index]);
-                          })),
+                      child: menuRecipes.length > 0
+                          ? GridView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              physics: ScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              itemCount: userRecipes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return recipes(menuRecipes[index]);
+                              })
+                          : Container(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                'You haven\'t create any recipes yet',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))),
                   Expanded(
-                      child: GridView.builder(
-                          padding:
-                              EdgeInsets.only(top: 30, left: 10, right: 10),
-                          primary: false,
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          itemCount: userRecipes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return recipes(menuRecipes[index]);
-                          })),
+                      child: likeRecipes.length > 0
+                          ? GridView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              physics: ScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              itemCount: likeRecipes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return recipes(likeRecipes[index]);
+                              })
+                          : Container(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                'You haven\'t liked something yet',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))),
                 ],
               )
 

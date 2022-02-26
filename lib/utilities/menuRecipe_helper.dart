@@ -61,7 +61,20 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id; where uid = $id');
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id; where recipeTABLE.uid = $id');
+    for (var map in maps) {
+      MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
+      menuRecipeModels.add(menuRecipeModel);
+    }
+    return menuRecipeModels;
+  }
+
+  Future<List<MenuRecipeModel>> getLikedRecipe(String id) async {
+    Database database = await connectedDatabase();
+    List<MenuRecipeModel> menuRecipeModels = [];
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id where recipeTABLE.id = (select recipeId from likeTABLE where uid = ?);',
+        [id]);
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);

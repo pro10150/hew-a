@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="li.jod.search_choices" >
+
+    <uses-sdk android:minSdkVersion="16" />
+    <!-- Required to fetch data from the internet for the futureSearchFn example. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>

@@ -17,6 +17,7 @@ class MenuHelper {
   final String idColumn = 'id';
   final String nameMenuColumn = 'nameMenu';
   final String mainIngredientColumn = 'mainIngredient';
+  final String methodidColumn = 'methodid';
   final String userIDColumn = 'userID';
   final String imageColumn = 'image';
 
@@ -27,7 +28,7 @@ class MenuHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt), $methodidColumn INTEGER'),
         version: version);
   }
 
