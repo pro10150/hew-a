@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home/recipe_content.dart';
 import 'home/daily_pick.dart';
-import 'home/discover.dart';
+import 'home/Discover.dart';
 import 'home/trending.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -27,11 +29,18 @@ class _HomeState extends State<Home> {
   bool trd = false;
   String greetings = '';
   List<dynamic> recommendations = [];
+  List<MenuRecipeModel> menuRecipeModels = [];
+  List<MenuRecipeModel> trendingModels = [];
+  List<MenuRecipeModel> followingModels = [];
+  var auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     // TODO: implement initState
     getPreference();
+    getAllData();
+    getTrending();
+    getFollowing();
     super.initState();
   }
 
@@ -52,6 +61,34 @@ class _HomeState extends State<Home> {
     });
   }
 
+  getAllData() async {
+    var objects = await MenuRecipeHelper().readlDataFromSQLite();
+    for (var object in objects) {
+      print(object);
+      setState(() {
+        menuRecipeModels.add(object);
+      });
+    }
+  }
+
+  getTrending() async {
+    var objects = await MenuRecipeHelper().getTrending();
+    for (var object in objects) {
+      setState(() {
+        trendingModels.add(object);
+      });
+    }
+  }
+
+  getFollowing() async {
+    var objects = await MenuRecipeHelper().getFollowing(auth.currentUser!.uid);
+    for (var object in objects) {
+      setState(() {
+        followingModels.add(object);
+      });
+    }
+  }
+
   @override
   Widget get topSection => Container(
         height: 100,
@@ -70,7 +107,7 @@ class _HomeState extends State<Home> {
                 });
               },
               child: Text(
-                'Discover',
+                'Following',
                 style: dsc
                     ? TextStyle(
                         color: Colors.black,
@@ -120,10 +157,10 @@ class _HomeState extends State<Home> {
 
   Widget get middleSection => Container(
       child: dsc
-          ? discover()
+          ? Discover(followingModels)
           : dp
-              ? dailyPick()
-              : trending());
+              ? DailyPick(menuRecipeModels)
+              : Trending(trendingModels));
 
   Widget build(BuildContext context) {
     return Scaffold(

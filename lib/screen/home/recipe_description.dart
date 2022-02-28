@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import '../menu_detail/menu_detail.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
 
-class recipeDescription extends StatelessWidget {
+class RecipeDescription extends StatelessWidget {
+  RecipeDescription(this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -29,7 +32,7 @@ class recipeDescription extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Text(
-                'ผัดกะเพราหมูสับ',
+                menuRecipeModel.nameMenu!,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
             ),
@@ -40,10 +43,14 @@ class recipeDescription extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Icon(MdiIcons.clockOutline, size: 25),
-                  Text('30 min'),
+                  menuRecipeModel.timeMinute != null
+                      ? Icon(MdiIcons.clockOutline, size: 25)
+                      : Container(),
+                  menuRecipeModel.timeMinute != null
+                      ? Text(menuRecipeModel.timeMinute.toString() + 'min')
+                      : Container(),
                   Icon(MdiIcons.pigVariantOutline),
-                  Text('Pork')
+                  Text(menuRecipeModel.name.toString())
                 ],
               ),
             ),

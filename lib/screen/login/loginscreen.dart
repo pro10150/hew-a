@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   bool isRememberMe = false;
+  bool _passwordVisible = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   TextEditingController emailController = TextEditingController();
@@ -101,17 +102,18 @@ class LoginScreenState extends State<LoginScreen> {
           height: 50,
           child: TextField(
             controller: passwordController,
-            obscureText: true,
+            obscureText: !_passwordVisible,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 35),
-                hintText: 'Password',
-                hintStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                )),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: 35),
+              hintText: 'Password',
+              hintStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         )
       ],
@@ -215,9 +217,10 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(const Duration(milliseconds: 600), () {
       checkAuth(context);
 
-      DBHelper().deleteDB();
+      // DBHelper().deleteDB();
       DBHelper().database();
-      DBHelper().initInsert();
+      // DBHelper().initInsert();
+      _passwordVisible = false;
     });
   }
 

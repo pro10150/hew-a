@@ -13,6 +13,7 @@ class MenuRecipeModel {
   double? protein;
   double? carb;
   double? fat;
+  String? name;
 
   MenuRecipeModel(
       {this.uid,
@@ -28,7 +29,8 @@ class MenuRecipeModel {
       required this.nameMenu,
       required this.mainIngredient,
       this.userID,
-      this.image});
+      this.image,
+      this.name});
 
   MenuRecipeModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -45,6 +47,7 @@ class MenuRecipeModel {
     mainIngredient = json['mainIngredient'];
     userID = json['userID'];
     image = json['image'];
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +66,7 @@ class MenuRecipeModel {
     data['mainIngredient'] = this.mainIngredient;
     data['userID'] = this.userID;
     data['image'] = this.image;
+    data['name'] = this.name;
     return data;
   }
 }

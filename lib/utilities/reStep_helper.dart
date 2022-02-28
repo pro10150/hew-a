@@ -34,7 +34,6 @@ class ReStepHelper {
     Database database = await connectedDatabase();
     try {
       database.insert(tableDatabase, reStepModel.toJson());
-      print('inserted to reStepModel');
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }

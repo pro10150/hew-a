@@ -86,17 +86,27 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late var follower = 0;
   late var following = 0;
   late var recipe = 0;
+  var userProfileRef;
+  var userProfileUrl;
 
-  Future<String?> getUsername() async {
+  Future<void> getUsername() async {
     UserHelper()
         .readDataFromSQLiteWhereId(_auth.currentUser!.uid)
         .then((value) {
-      user = value;
-      setState(() {});
+      setState(() {
+        user = value;
+        if (user[0].image != null) {
+          userProfileRef = FirebaseStorage.instance
+              .ref()
+              .child('upload')
+              .child(user[0].image!);
+          userProfileUrl = userProfileRef.getDownloadURL();
+        }
+      });
     });
   }
 
-  Future<String?> getFollow() async {
+  Future<void> getFollow() async {
     var followerObject =
         await FollowHelper().getFollower(_auth.currentUser!.uid);
     var followingObject =
@@ -107,7 +117,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     });
   }
 
-  Future<String?> getRecipe() async {
+  Future<void> getRecipe() async {
     var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     var mr = await MenuRecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     var lr = await MenuRecipeHelper().getLikedRecipe(_auth.currentUser!.uid);
@@ -224,13 +234,76 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                             child: SizedBox(
                                                 height: 500,
                                                 width: 500,
-                                                child: (_imageFile != null)
-                                                    ? Image.file(_imageFile!,
-                                                        fit: BoxFit.contain)
-                                                    : Image.network(
-                                                        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-                                                        fit: BoxFit.contain,
-                                                      )),
+                                                child: user.isNotEmpty == true
+                                                    ? (user[0].image != null)
+                                                        ? FutureBuilder<String>(
+                                                            future:
+                                                                userProfileUrl,
+                                                            builder: (BuildContext
+                                                                    context,
+                                                                AsyncSnapshot<
+                                                                        String>
+                                                                    snapshot) {
+                                                              List<Widget>
+                                                                  children = [];
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                children =
+                                                                    <Widget>[
+                                                                  CircleAvatar(
+                                                                      radius:
+                                                                          60,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .grey,
+                                                                      child: ClipOval(
+                                                                          child: SizedBox(
+                                                                              height: 500,
+                                                                              width: 500,
+                                                                              child: Image.network(snapshot.data!, fit: BoxFit.fill))))
+                                                                ];
+                                                              } else {
+                                                                children =
+                                                                    <Widget>[
+                                                                  CircularProgressIndicator()
+                                                                ];
+                                                              }
+                                                              return Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children:
+                                                                      children);
+                                                            })
+                                                        : CircleAvatar(
+                                                            radius: 60,
+                                                            backgroundColor:
+                                                                Colors.grey,
+                                                            child: ClipOval(
+                                                                child: SizedBox(
+                                                                    height: 500,
+                                                                    width: 500,
+                                                                    child:
+                                                                        Image
+                                                                            .network(
+                                                                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                                                      fit: BoxFit
+                                                                          .contain,
+                                                                    ))))
+                                                    : CircleAvatar(
+                                                        radius: 60,
+                                                        backgroundColor:
+                                                            Colors.grey,
+                                                        child: ClipOval(
+                                                            child: SizedBox(
+                                                                height: 500,
+                                                                width: 500,
+                                                                child: Image
+                                                                    .network(
+                                                                  "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                                                  fit: BoxFit
+                                                                      .contain,
+                                                                ))))),
                                           ),
                                         ),
                                         Text(
