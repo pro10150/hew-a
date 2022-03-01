@@ -12,7 +12,6 @@ def index():
     databaseLocation = base64.b64decode(
         databaseLocation).decode("utf-8", "ignore")
     print(databaseLocation)
-    print('yy')
     result = rcm.getRecommendations(databaseLocation, uid)
     # print(result)
     return jsonify({'uid': uid, 'recommendation': result})

@@ -34,12 +34,19 @@ class EditProfile extends StatefulWidget {
   }
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+void deletePreference() {
+  var uid = _auth.currentUser!.uid;
+  ReAllergyHelper().deleteDataWhereUser(uid);
+  UserKitchHelper().deleteDataWhereUser(uid);
+  UserMenuHelper().deleteDataWhereUser(uid);
+}
+
 class _EditProfileState extends State<EditProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   UserModel? userModel;
   List<UserModel> user = [];
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String?> getUsername() async {
     print(_auth.currentUser?.uid);
@@ -50,19 +57,12 @@ class _EditProfileState extends State<EditProfile> {
       print(value);
       setState(() {
         user = value;
-        if (user[0].name != '') {
+        if (user[0].name != null) {
           nameController.text = user[0].name!;
         }
         usernameController.text = user[0].username!;
       });
     });
-  }
-
-  void deletePreference() {
-    var uid = _auth.currentUser!.uid;
-    ReAllergyHelper().deleteDataWhereUser(uid);
-    UserKitchHelper().deleteDataWhereUser(uid);
-    UserMenuHelper().deleteDataWhereUser(uid);
   }
 
   File? _imageFile = null;
@@ -127,9 +127,9 @@ class _EditProfileState extends State<EditProfile> {
                   //    });
                   // });
                   // setState(() {
+                  uploadImageToFirebase(context);
                   navigateToProfilePage(context);
 
-                  uploadImageToFirebase(context);
                   // UserHelper().updateDataToSQLite();
                   // });
                 },
@@ -224,12 +224,13 @@ class _EditProfileState extends State<EditProfile> {
                         padding: EdgeInsets.only(
                             bottom: -1, top: -1, right: 42, left: 42),
                         onPressed: () {
-                          deletePreference();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      new Mealpre()));
+                          showConfirmation(context);
+                          // deletePreference();
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (BuildContext context) =>
+                          //             new Mealpre()));
                         },
                         color: Colors.black,
                         child: Text('Update Preference',
@@ -288,4 +289,35 @@ void navigateToProfilePage(BuildContext context) async {
   Future.delayed(const Duration(milliseconds: 500), () {
     Navigator.pop(context);
   });
+}
+
+showConfirmation(BuildContext context) {
+  Widget okButton = TextButton(
+      onPressed: () {
+        deletePreference();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => new Mealpre()));
+      },
+      child: Text("OK"));
+  Widget cancelButton = TextButton(
+      onPressed: () {},
+      child: Text(
+        "Cancel",
+        style: TextStyle(color: Colors.grey[400]),
+      ));
+
+  AlertDialog alert = AlertDialog(
+    title: Text("Confirmation"),
+    content: Text(
+        "All your previous preferences, allergies and kitchenwares will be deleted. Do you want to continue?"),
+    actions: [cancelButton, okButton],
+  );
+
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      });
 }
