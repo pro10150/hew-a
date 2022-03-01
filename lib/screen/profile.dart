@@ -527,7 +527,7 @@ class recipes extends StatelessWidget {
     ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menuRecipeModel.image! + '.jpeg');
+        .child(menuRecipeModel.menuImage! + '.jpeg');
     url = ref.getDownloadURL();
   }
   MenuRecipeModel menuRecipeModel;

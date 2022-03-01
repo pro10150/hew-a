@@ -32,15 +32,16 @@ class _HomeState extends State<Home> {
   List<MenuRecipeModel> menuRecipeModels = [];
   List<MenuRecipeModel> trendingModels = [];
   List<MenuRecipeModel> followingModels = [];
+  List<MenuRecipeModel> dailyPickModels = [];
   var auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     // TODO: implement initState
-    getPreference();
     getAllData();
     getTrending();
     getFollowing();
+    getDailyPcik();
     super.initState();
   }
 
@@ -62,7 +63,7 @@ class _HomeState extends State<Home> {
   }
 
   getAllData() async {
-    var objects = await MenuRecipeHelper().readlDataFromSQLite();
+    var objects = await MenuRecipeHelper().readDataFromSQLite();
     for (var object in objects) {
       print(object);
       setState(() {
@@ -85,6 +86,15 @@ class _HomeState extends State<Home> {
     for (var object in objects) {
       setState(() {
         followingModels.add(object);
+      });
+    }
+  }
+
+  getDailyPcik() async {
+    var objects = await MenuRecipeHelper().getDailyPick();
+    for (var object in objects) {
+      setState(() {
+        dailyPickModels.add(object);
       });
     }
   }

@@ -45,7 +45,7 @@ class MenuRecipeHelper {
     return openDatabase(join(await getDatabasesPath(), nameDatabase));
   }
 
-  Future<List<MenuRecipeModel>> readlDataFromSQLite() async {
+  Future<List<MenuRecipeModel>> readDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
 
@@ -88,11 +88,15 @@ class MenuRecipeHelper {
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
         "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN ( SELECT distinct recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC);");
-    for (var map in maps) {
-      MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
-      menuRecipeModels.add(menuRecipeModel);
+    if (maps.length == 0) {
+      return readDataFromSQLite();
+    } else {
+      for (var map in maps) {
+        MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
+        menuRecipeModels.add(menuRecipeModel);
+      }
+      return menuRecipeModels;
     }
-    return menuRecipeModels;
   }
 
   Future<List<MenuRecipeModel>> getUserRecipe(
@@ -113,12 +117,40 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> recipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.uid IN (SELECT followedUserId FROM followTABLE WHERE uid = $uid)");
+        "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.uid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?)",
+        [uid]);
     for (var map in maps) {
       MenuRecipeModel recipeModel = MenuRecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
     }
     return recipeModels;
+  }
+
+  Future<List<MenuRecipeModel>> getDailyPick() async {
+    Database database = await connectedDatabase();
+    final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
+    final response = await http.get(Uri.parse(
+        'http://127.0.0.1:5000/recommendation?uid=' +
+            FirebaseAuth.instance.currentUser!.uid +
+            "&databaseLocation=" +
+            dbPath));
+
+    final decoded = json.decode(response.body) as Map<String, dynamic>;
+    var uid = decoded['uid'];
+    var recommendation = decoded['recommendation'];
+    List<MenuRecipeModel> menuRecipeModels = [];
+    if (recommendation.length == 0) {
+      return getFollowing(uid);
+    } else {
+      List<Map<String, dynamic>> maps = await database.rawQuery(
+          "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN ?",
+          [recommendation]);
+      for (var map in maps) {
+        MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
+        menuRecipeModels.add(menuRecipeModel);
+      }
+      return menuRecipeModels;
+    }
   }
 
   Future<Null> deleteDataWhereId(String id) async {

@@ -6,13 +6,15 @@ import 'recipe_description.dart';
 import '../menu_detail/menu_detail.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 
+// ignore: must_be_immutable
 class RecipeContent extends StatelessWidget {
   RecipeContent(this.menuRecipeModel) {
     ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menuRecipeModel.image! + '.jpeg');
+        .child(menuRecipeModel.menuImage! + '.jpeg');
     url = ref.getDownloadURL();
+    print(ref);
   }
   var ref;
   var url;
@@ -59,7 +61,9 @@ class RecipeContent extends StatelessWidget {
                           margin: EdgeInsets.only(left: 10),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: CircularProgressIndicator()
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator())
                               // decoration:
                               //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
                               ),

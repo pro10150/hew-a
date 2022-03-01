@@ -19,7 +19,7 @@ class MenuHelper {
   final String mainIngredientColumn = 'mainIngredient';
   final String methodidColumn = 'methodid';
   final String userIDColumn = 'userID';
-  final String imageColumn = 'image';
+  final String imageColumn = 'menuImage';
 
   MenuHelper() {
     initDatabase();

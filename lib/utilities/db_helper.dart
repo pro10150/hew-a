@@ -49,7 +49,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE ingredientTABLE (id INTEGER PRIMARY KEY, name TEXT, image TEXT)');
     db.execute(
-        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT, image TEXT)');
+        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT, menuImage TEXT)');
     db.execute(
         'CREATE TABLE userTABLE (uid TEXT PRIMARY KEY, name TEXT,username TEXT, image TEXT, ingredients INTEGER, kitchenwares INTEGER)');
     db.execute(

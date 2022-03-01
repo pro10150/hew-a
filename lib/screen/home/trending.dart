@@ -10,14 +10,16 @@ class Trending extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         // wrap in Expanded
-        child: TikTokStyleFullPageScroller(
-      contentSize: menuRecipeModels.length,
-      swipePositionThreshold: 0.2,
-      swipeVelocityThreshold: 1000,
-      animationDuration: const Duration(milliseconds: 300),
-      builder: (BuildContext context, int index) {
-        return RecipeContent(menuRecipeModels[index]);
-      },
-    ));
+        child: menuRecipeModels.length > 0
+            ? TikTokStyleFullPageScroller(
+                contentSize: menuRecipeModels.length,
+                swipePositionThreshold: 0.2,
+                swipeVelocityThreshold: 1000,
+                animationDuration: const Duration(milliseconds: 300),
+                builder: (BuildContext context, int index) {
+                  return RecipeContent(menuRecipeModels[index]);
+                },
+              )
+            : CircularProgressIndicator());
   }
 }
