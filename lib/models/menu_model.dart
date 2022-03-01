@@ -5,14 +5,14 @@ class MenuModel {
   String? nameMenu;
   String? mainIngredient;
   String? userID;
-  String? image;
+  String? menuImage;
   int? methodid;
 
   MenuModel(
       {required this.nameMenu,
       required this.mainIngredient,
       this.userID,
-      this.image,
+      this.menuImage,
       this.methodid});
 
   MenuModel.fromJson(Map<String, dynamic> json) {
@@ -20,7 +20,7 @@ class MenuModel {
     nameMenu = json['nameMenu'];
     mainIngredient = json['mainIngredient'];
     userID = json['userID'];
-    image = json['image'];
+    menuImage = json['menuImage'];
     methodid = json['methodid'];
   }
 
@@ -30,7 +30,7 @@ class MenuModel {
     data['nameMenu'] = this.nameMenu;
     data['mainIngredient'] = this.mainIngredient;
     data['userID'] = this.userID;
-    data['image'] = this.image;
+    data['menuImage'] = this.menuImage;
     data['methodid'] = this.methodid;
     return data;
   }

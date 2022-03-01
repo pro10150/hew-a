@@ -77,7 +77,7 @@ class MealpreState extends State<Mealpre> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(filter[index].image! + '.jpeg');
+        .child(filter[index].menuImage! + '.jpeg');
     var url = ref.getDownloadURL();
 
     return FutureBuilder<String>(
