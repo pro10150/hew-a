@@ -1,6 +1,6 @@
 class LikeModel {
   String? uid;
-  String? recipeId;
+  int? recipeId;
 
   LikeModel({
     required this.uid,

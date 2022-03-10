@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/comment_model.dart';
+import 'package:intl/intl.dart';
 
-class LikeHelper {
+class CommentHelper {
   final String nameDatabase = 'Hewa.db';
   final String tableDatabase = 'commentTABLE';
   int version = 1;
@@ -13,7 +16,7 @@ class LikeHelper {
   final String textColumn = 'text';
   final String dateColumn = 'date';
 
-  LikeHelper() {
+  CommentHelper() {
     initDatabase();
   }
 
@@ -35,6 +38,26 @@ class LikeHelper {
       database.insert(tableDatabase, commentModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> initInsert() async {
+    Database database = await connectedDatabase();
+    var uid = "k2YFM1LkbVaEf4zV4HnhTAmIdRD3";
+    var recipeId = "1";
+    var comments = ["1", "2", "3", "4"];
+    try {
+      comments.forEach((element) {
+        Map<String, dynamic> row = {
+          uidColumn: uid,
+          recipeIdColumn: recipeId,
+          textColumn: element,
+          dateColumn: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+        };
+        database.insert(tableDatabase, row);
+      });
+    } catch (e) {
+      print('e insert like data ==>> ${e.toString()}');
     }
   }
 

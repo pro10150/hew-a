@@ -83,8 +83,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: ingredients
+      fonts:
+        - asset: lib/config/ingredients.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
+    - lib/fonts/MyFlutterApp.ttf
+    - lib/config/ingredients.ttf
     - lib/assets/home/food.png
     - lib/assets/fridge/egg.jpeg
     - lib/assets/menu_detail/food.png

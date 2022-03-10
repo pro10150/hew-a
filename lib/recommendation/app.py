@@ -17,5 +17,10 @@ def index():
     return jsonify({'uid': uid, 'recommendation': result})
 
 
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({'greeting': 'Hi'})
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='192.168.1.108', port=5000, debug=True)

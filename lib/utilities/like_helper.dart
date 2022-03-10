@@ -80,7 +80,21 @@ class LikeHelper {
     Database database = await connectedDatabase();
     List<LikeModel> likeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [uid]);
+    for (var map in maps) {
+      LikeModel likeModel = LikeModel.fromJson(map);
+      likeModels.add(likeModel);
+    }
+    return likeModels;
+  }
+
+  Future<List<LikeModel>> readDataFromSQLiteWhereRecipe(String id) async {
+    Database database = await connectedDatabase();
+    List<LikeModel> likeModels = [];
+
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$recipeIdColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       LikeModel likeModel = LikeModel.fromJson(map);
       likeModels.add(likeModel);

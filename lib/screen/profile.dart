@@ -286,7 +286,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                                     child:
                                                                         Image
                                                                             .network(
-                                                                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
                                                                       fit: BoxFit
                                                                           .contain,
                                                                     ))))
@@ -300,7 +300,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                                 width: 500,
                                                                 child: Image
                                                                     .network(
-                                                                  "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                                                  "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
                                                                   fit: BoxFit
                                                                       .contain,
                                                                 ))))),

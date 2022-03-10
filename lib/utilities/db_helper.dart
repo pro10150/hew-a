@@ -12,6 +12,7 @@ import 'reKitchenware_helper.dart';
 import 'view_helper.dart';
 import 'like_helper.dart';
 import 'method_helper.dart';
+import 'comment_helper.dart';
 
 class DBHelper {
   final String nameDatabase = 'Hewa.db';
@@ -59,7 +60,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE followTABLE (id INTEGER PRIMARY KEY, uid TEXT, followedUserID TEXT)');
     db.execute(
-        'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, menuId INTEGER, recipeName TEXT, description TEXT,  timeMinute INTEGER, method TEXT, type TEXT, calories REAL, protein REAL, carb REAL, fat REAL)');
+        'CREATE TABLE recipeTABLE (id INTEGER PRIMARY KEY, recipeUid TEXT, menuId INTEGER, recipeName TEXT, description TEXT,  timeMinute INTEGER, method TEXT, type TEXT, calories REAL, protein REAL, carb REAL, fat REAL)');
     db.execute(
         'CREATE TABLE reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
     db.execute(
@@ -96,5 +97,6 @@ class DBHelper {
     ViewHelper().initInsertDataToSQLite();
     LikeHelper().initInsertDataToSQLite();
     MethodHelper().initInsertDataToSqlite();
+    CommentHelper().initInsert();
   }
 }

@@ -1,11 +1,29 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktoklikescroller/tiktoklikescroller.dart';
+import '../../models/like_model.dart';
+import '../../utilities/like_helper.dart';
 import 'recipe_content.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 
-class Discover extends StatelessWidget {
-  Discover(this.menuRecipeModels);
-  List<MenuRecipeModel> menuRecipeModels;
+class Following extends StatelessWidget {
+  Following(this.menuRecipeModels) {
+    for (var object in menuRecipeModels) {
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('menus')
+          .child(object.menuImage! + '.jpeg');
+      refs.add(ref.getDownloadURL());
+    }
+  }
+
+  getLike(String id) async {
+    return await LikeHelper().readDataFromSQLiteWhereRecipe(id);
+  }
+
+  List<List<LikeModel>> likes = [];
+  List<dynamic> refs = [];
+  List<MenuRecipeModel> menuRecipeModels = [];
 
   void _handleCallbackEvent(ScrollEventType type, {required int currentIndex}) {
     print(
@@ -23,7 +41,7 @@ class Discover extends StatelessWidget {
                 swipeVelocityThreshold: 1000,
                 animationDuration: const Duration(milliseconds: 300),
                 builder: (BuildContext context, int index) {
-                  return RecipeContent(menuRecipeModels[index]);
+                  return RecipeContent(menuRecipeModels[index], refs[index]);
                 },
               )
             : Align(

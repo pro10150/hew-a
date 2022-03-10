@@ -3,6 +3,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:page_transition/page_transition.dart';
 import '../menu_detail/menu_detail.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/config/ingredients_icon.dart';
+import 'package:hewa/config/my_flutter_app_icons.dart';
 
 class RecipeDescription extends StatelessWidget {
   RecipeDescription(this.menuRecipeModel);
@@ -49,7 +51,10 @@ class RecipeDescription extends StatelessWidget {
                   menuRecipeModel.timeMinute != null
                       ? Text(menuRecipeModel.timeMinute.toString() + 'min')
                       : Container(),
-                  Icon(MdiIcons.pigVariantOutline),
+                  Icon(
+                    IngredientsIcon.ingredients,
+                    size: 40,
+                  ),
                   Text(menuRecipeModel.name.toString())
                 ],
               ),

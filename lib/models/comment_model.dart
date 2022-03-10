@@ -1,7 +1,7 @@
 class CommentModel {
   String? text;
   String? uid;
-  String? recipeId;
+  int? recipeId;
   String? date;
 
   CommentModel(

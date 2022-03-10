@@ -62,7 +62,7 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient; where recipeTABLE.uid = $id');
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient; where recipeTABLE.recipeUid = $id');
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);
@@ -87,7 +87,7 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN ( SELECT distinct recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC);");
+        "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId WHERE recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
     if (maps.length == 0) {
       return readDataFromSQLite();
     } else {
@@ -117,7 +117,7 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> recipeModels = [];
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.uid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?)",
+        "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?)",
         [uid]);
     for (var map in maps) {
       MenuRecipeModel recipeModel = MenuRecipeModel.fromJson(map);
@@ -130,7 +130,7 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
     final response = await http.get(Uri.parse(
-        'http://127.0.0.1:5000/recommendation?uid=' +
+        'http://192.168.1.108:5000/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid +
             "&databaseLocation=" +
             dbPath));
@@ -140,11 +140,11 @@ class MenuRecipeHelper {
     var recommendation = decoded['recommendation'];
     List<MenuRecipeModel> menuRecipeModels = [];
     if (recommendation.length == 0) {
-      return getFollowing(uid);
+      return getTrending();
     } else {
       List<Map<String, dynamic>> maps = await database.rawQuery(
-          "SELECT * FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN ?",
-          [recommendation]);
+          "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')})",
+          recommendation);
       for (var map in maps) {
         MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
         menuRecipeModels.add(menuRecipeModel);

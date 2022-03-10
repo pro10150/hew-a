@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'home/discover.dart';
 import 'home/recipe_content.dart';
 import 'home/daily_pick.dart';
-import 'home/Discover.dart';
 import 'home/trending.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,14 +41,14 @@ class _HomeState extends State<Home> {
     getAllData();
     getTrending();
     getFollowing();
-    getDailyPcik();
+    getDailyPick();
     super.initState();
   }
 
   getPreference() async {
     final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
     final response = await http.get(Uri.parse(
-        'http://127.0.0.1:5000/recommendation?uid=' +
+        'http://192.168.1.108:5000/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid +
             "&databaseLocation=" +
             dbPath));
@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  getDailyPcik() async {
+  getDailyPick() async {
     var objects = await MenuRecipeHelper().getDailyPick();
     for (var object in objects) {
       setState(() {
@@ -167,9 +167,9 @@ class _HomeState extends State<Home> {
 
   Widget get middleSection => Container(
       child: dsc
-          ? Discover(followingModels)
+          ? Following(followingModels)
           : dp
-              ? DailyPick(menuRecipeModels)
+              ? DailyPick(dailyPickModels)
               : Trending(trendingModels));
 
   Widget build(BuildContext context) {

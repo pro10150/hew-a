@@ -15,6 +15,7 @@ class RecipeHelper {
 
   final String idColumn = 'id';
   final String uidColumn = 'uid';
+  final String recipeUidColumn = 'recipeUid';
   final String nameMenuColumn = 'nameMenu';
   final String recipeNameColumn = 'recipeName';
   final String descriptionColumn = 'description';
@@ -424,7 +425,7 @@ class RecipeHelper {
     try {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
-            uid: uid,
+            recipeUid: uid,
             menuId: menuId[index] + 1,
             calories: calories[index],
             carb: carb[index],
@@ -445,7 +446,7 @@ class RecipeHelper {
     try {
       database.update(tableDatabase, recipeModel.toJson(),
           where: '${uidColumn} = ? AND ${recipeNameColumn} = ?',
-          whereArgs: [recipeModel.uid, recipeModel.recipeName]);
+          whereArgs: [recipeModel.recipeUid, recipeModel.recipeName]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
@@ -467,7 +468,7 @@ class RecipeHelper {
     Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
     List<Map<String, dynamic>> maps = await database
-        .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+        .query(tableDatabase, where: '$recipeUidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
