@@ -426,6 +426,7 @@ class RecipeHelper {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
             recipeUid: uid,
+            recipeName: "Test",
             menuId: menuId[index] + 1,
             calories: calories[index],
             carb: carb[index],
