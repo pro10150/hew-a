@@ -251,7 +251,7 @@ class _MenuDetailState extends State<MenuDetail> {
                                     ),
                                     context: context,
                                     builder: (BuildContext conext) {
-                                      return DetailedRecipe();
+                                      return DetailedRecipe(menuRecipeModel!);
                                     });
                               },
                               text: 'View Step',

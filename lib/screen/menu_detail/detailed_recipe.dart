@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -6,11 +7,38 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:hewa/config/palette.dart';
 import 'dart:math' as math;
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/models/like_model.dart';
+import 'package:hewa/models/reStep_model.dart';
+import 'package:hewa/models/reIngred_model.dart';
+import 'package:hewa/models/ingred_model.dart';
+import 'package:hewa/models/reIngredIngred_model.dart';
+import 'package:hewa/models/reImageStep_model.dart';
+import 'package:hewa/utilities/like_helper.dart';
+import 'package:hewa/utilities/reStep_helper.dart';
+import 'package:hewa/utilities/reIngred_helper.dart';
+import 'package:hewa/utilities/ingred_helper.dart';
+import 'package:hewa/utilities/reIngredIngred_helper.dart';
+import 'package:hewa/utilities/reImageStep_helper.dart';
 
+// ignore: must_be_immutable
 class DetailedRecipe extends StatefulWidget {
+  DetailedRecipe(this.tempMenuRecipeModel) {
+    menuRecipeModel = tempMenuRecipeModel;
+  }
+  MenuRecipeModel tempMenuRecipeModel;
   @override
   _DetailedRecipeState createState() => _DetailedRecipeState();
 }
+
+MenuRecipeModel? menuRecipeModel;
+List<ReIngredModel> reIngredModels = [];
+List<ReIngredIngredModel> reIngredIngredModels = [];
+List<double> _ingr = [];
+List<IngredModel> ingredModels = [];
+List<ReStepModel> reStepModels = [];
+List<List<ReImageStepModel>> reImageStepModels = [];
+List<List<String>> urls = [];
 
 class TimerPainter extends CustomPainter {
   TimerPainter(
@@ -49,13 +77,55 @@ class TimerPainter extends CustomPainter {
 class _DetailedRecipeState extends State<DetailedRecipe>
     with TickerProviderStateMixin {
   int _n = 1;
-  int _ingr = 240;
   AnimationController? controller;
+
+  getRecipeSteps() async {
+    var objects = await ReStepHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id.toString());
+    for (var object in objects) {
+      var images = await ReImageStepHelper().readDataFromSQLiteWhereStep(
+          int.parse(object.recipeId!), object.recipeId);
+      List<String> tempUrls = [];
+      for (var image in images) {
+        var ref =
+            FirebaseStorage.instance.ref().child('steps').child(image.name!);
+        String tempURL = await ref.getDownloadURL();
+        tempUrls.add(tempURL);
+      }
+      setState(() {
+        if (tempUrls.length > 0) {
+          urls.add(tempUrls);
+        }
+        reImageStepModels.add(images);
+        reStepModels.add(object);
+      });
+    }
+  }
+
+  getRecipeIngred() async {
+    setState(() {
+      reIngredIngredModels = [];
+    });
+    var objects = await ReIngredIngredHelper()
+        .readDataFromSQLiteWhereRecipeId(menuRecipeModel!.id.toString());
+    for (var object in objects) {
+      setState(() {
+        reIngredIngredModels.add(object);
+        if (object.amount != null) {
+          _ingr.add(object.amount!);
+        } else {
+          _ingr.add(0);
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getRecipeSteps();
+    getRecipeIngred();
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 20));
   }
@@ -77,32 +147,40 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     });
   }
 
-  Widget _getIngredients() {
+  Widget _getIngredients(
+      ReIngredIngredModel reIngredIngredModel, double amount) {
     return Container(
+      width: 100,
       margin: EdgeInsets.all(10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(MdiIcons.pigVariantOutline),
-          Row(children: <Widget>[
-            Text(
-              'Pork',
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            Flexible(
+                child: Text(
+              reIngredIngredModel.name!,
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 10),
-            ),
+            )),
             SizedBox(
               width: 2,
             ),
-            Text(
-              (_ingr * _n).toStringAsFixed(0),
-              style: TextStyle(fontSize: 10),
-            ),
-            SizedBox(
-              width: 2,
-            ),
-            Text(
-              'g',
-              style: TextStyle(fontSize: 10),
-            )
           ]),
+          amount > 0
+              ? Text(
+                  (amount * _n).toStringAsFixed(0),
+                  style: TextStyle(fontSize: 10),
+                )
+              : Container(),
+          SizedBox(
+            width: 2,
+          ),
+          reIngredIngredModel.unit != null
+              ? Text(
+                  reIngredIngredModel.unit!,
+                  style: TextStyle(fontSize: 10),
+                )
+              : Container(),
           Text(
             'คุณมีไม่พอ',
             style: TextStyle(color: Colors.red, fontSize: 10),
@@ -113,18 +191,25 @@ class _DetailedRecipeState extends State<DetailedRecipe>
   }
 
   Widget _getIngredientsRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
       children: <Widget>[
-        _getIngredients(),
-        _getIngredients(),
-        _getIngredients(),
-        _getIngredients()
+        GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 1,
+            ),
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: reIngredIngredModels.length,
+            itemBuilder: (context, index) {
+              return _getIngredients(reIngredIngredModels[index], _ingr[index]);
+            })
       ],
     );
   }
 
-  Widget _getRecipeStep() {
+  Widget _getRecipeStep(ReStepModel reStepModel, int index,
+      List<ReImageStepModel> images, List<String> imageUrls) {
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 5));
     controller!.addListener(() {
@@ -159,7 +244,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
               child: Container(
                   margin: EdgeInsets.only(left: 20),
                   child: Text(
-                    'Step 1',
+                    'Step ' + reStepModel.step.toString(),
                     style: TextStyle(fontSize: 18),
                   )),
             ),
@@ -174,8 +259,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                     child: RichText(
                       overflow: TextOverflow.visible,
                       text: TextSpan(
-                        text:
-                            'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+                        text: reStepModel.description,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -190,51 +274,62 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                 ],
               ),
             ),
-            GFButton(
-              onPressed: () {
-                if (controller!.isAnimating) {
-                  controller!.reset();
-                  controller!.reverse(from: controller!.value == 0.0 ? 1.0 : 0);
-                } else {
-                  controller!.reverse(from: controller!.value == 0.0 ? 1.0 : 0);
-                }
+            reStepModel.minute != null
+                ? GFButton(
+                    onPressed: () {
+                      if (controller!.isAnimating) {
+                        controller!.reset();
+                        controller!
+                            .reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                      } else {
+                        controller!
+                            .reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                      }
 
-                _openTimer(context, controller);
-              },
-              text: '5 min',
-              textColor: Colors.black,
-              shape: GFButtonShape.pills,
-              type: GFButtonType.outline2x,
-              color: Colors.black,
-            )
+                      _openTimer(context, controller);
+                    },
+                    text: reStepModel.minute.toString() + ' min',
+                    textColor: Colors.black,
+                    shape: GFButtonShape.pills,
+                    type: GFButtonType.outline2x,
+                    color: Colors.black,
+                  )
+                : Container()
           ]),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 9,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(40),
-            child: Image(
-              image: AssetImage('lib/assets/menu_detail/recipe.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        )
+        images.length > 0
+            ? GridView.builder(
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 9,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image(
+                        image: NetworkImage(imageUrls[index]),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                })
+            : Container()
       ],
     );
   }
@@ -376,19 +471,18 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                         ],
                       ),
                       margin: EdgeInsets.all(20),
-                      child: Column(children: <Widget>[
+                      child: Wrap(children: <Widget>[
                         SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Container(
-                              margin: EdgeInsets.only(left: 10),
+                              margin: EdgeInsets.only(left: 10, top: 20),
                               child: Text(
                                 'You need',
                                 style: TextStyle(fontSize: 24),
                               )),
                         ),
                         _getIngredientsRow(),
-                        _getIngredientsRow()
                       ]),
                     ),
                     Row(
@@ -444,7 +538,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                 children: <Widget>[
                                   Column(children: <Widget>[
                                     Text('Calories'),
-                                    Text('260')
+                                    Text(menuRecipeModel!.calories.toString())
                                   ]),
                                   SizedBox(
                                     width: 20,
@@ -452,7 +546,8 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                   Column(
                                     children: <Widget>[
                                       Text('Protein'),
-                                      Text('15 g')
+                                      Text(menuRecipeModel!.protein.toString() +
+                                          ' g')
                                     ],
                                   )
                                 ],
@@ -465,7 +560,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                 children: <Widget>[
                                   Column(children: <Widget>[
                                     Text('Fat'),
-                                    Text('9 g')
+                                    Text(menuRecipeModel!.fat.toString() + ' g')
                                   ]),
                                   SizedBox(
                                     width: 20,
@@ -473,7 +568,8 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                   Column(
                                     children: <Widget>[
                                       Text('Carbs'),
-                                      Text('15 g')
+                                      Text(menuRecipeModel!.carb.toString() +
+                                          ' g')
                                     ],
                                   )
                                 ],
@@ -526,7 +622,11 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                     size: 60,
                                   ),
                                   SizedBox(height: 10),
-                                  Text('30 min')
+                                  menuRecipeModel!.timeMinute != null
+                                      ? Text(menuRecipeModel!.timeMinute
+                                              .toString() +
+                                          ' min')
+                                      : Text('N/A')
                                 ],
                               )
                             ],
@@ -539,9 +639,14 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                         child: Text('Recipe detail',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18))),
-                    _getRecipeStep(),
-                    _getRecipeStep(),
-                    _getRecipeStep(),
+                    ListView.builder(
+                        itemCount: reStepModels.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return _getRecipeStep(reStepModels[index], index,
+                              reImageStepModels[index], urls[index]);
+                        })
                   ],
                 ),
               ),
