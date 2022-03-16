@@ -191,7 +191,10 @@ class _commentPage extends State<commentPage> {
                               size: 30, color: Palette.roseBud),
                         );
                       } else {
-                        return CircularProgressIndicator();
+                        return Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     })
                 : CommentBox(

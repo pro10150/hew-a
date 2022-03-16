@@ -17,7 +17,8 @@ class RecipeDescription extends StatelessWidget {
         Navigator.push(
             context,
             PageTransition(
-                child: MenuDetail(), type: PageTransitionType.rightToLeft));
+                child: MenuDetail(menuRecipeModel),
+                type: PageTransitionType.rightToLeft));
       },
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,12 +46,10 @@ class RecipeDescription extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  menuRecipeModel.timeMinute != null
-                      ? Icon(MdiIcons.clockOutline, size: 25)
-                      : Container(),
+                  Icon(MdiIcons.clockOutline, size: 25),
                   menuRecipeModel.timeMinute != null
                       ? Text(menuRecipeModel.timeMinute.toString() + 'min')
-                      : Container(),
+                      : Text('N/A'),
                   Icon(
                     IngredientsIcon.ingredients,
                     size: 40,

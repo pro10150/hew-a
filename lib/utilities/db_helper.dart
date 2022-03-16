@@ -66,7 +66,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
-        'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, description TEXT)');
+        'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, minute INTEGER, description TEXT)');
     db.execute(
         'CREATE TABLE userIngredientTABLE (id INTEGER PRIMARY KEY, uid TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
@@ -83,6 +83,10 @@ class DBHelper {
         'CREATE TABLE menuRecipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER, mainIngredient TEXT, userID TEXT, image TEXT)');
     db.execute(
         'CREATE TABLE methodTABLE (methodid INTEGER PRIMARY KEY, nameMethod TEXT)');
+    db.execute(
+        'CREATE TABLE reImageTABLE (id INTEGER PRIMARY KEY, name TEXT, recipeId INTEGER)');
+    db.execute(
+        'CREATE TABLE reImageStepTABLE (id INTEGER PRIMARY KEY, recipeId INTEGER, stepId INTEGER, name TEXT)');
   }
 
   void initInsert() {
