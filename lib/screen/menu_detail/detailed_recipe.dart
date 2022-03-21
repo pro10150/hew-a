@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hewa/screen/fridge/ingredients.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -14,12 +16,14 @@ import 'package:hewa/models/reIngred_model.dart';
 import 'package:hewa/models/ingred_model.dart';
 import 'package:hewa/models/reIngredIngred_model.dart';
 import 'package:hewa/models/reImageStep_model.dart';
+import 'package:hewa/models/userIngred_model.dart';
 import 'package:hewa/utilities/like_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
 import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/utilities/reIngredIngred_helper.dart';
 import 'package:hewa/utilities/reImageStep_helper.dart';
+import 'package:hewa/utilities/userIngred_helper.dart';
 
 // ignore: must_be_immutable
 class DetailedRecipe extends StatefulWidget {
@@ -31,12 +35,14 @@ class DetailedRecipe extends StatefulWidget {
   _DetailedRecipeState createState() => _DetailedRecipeState();
 }
 
+var _auth = FirebaseAuth.instance;
 MenuRecipeModel? menuRecipeModel;
 List<ReIngredModel> reIngredModels = [];
 List<ReIngredIngredModel> reIngredIngredModels = [];
 List<double> _ingr = [];
 List<IngredModel> ingredModels = [];
 List<ReStepModel> reStepModels = [];
+List<UserIngredModel> userIngredModels = [];
 List<List<ReImageStepModel>> reImageStepModels = [];
 List<List<String>> urls = [];
 
@@ -79,7 +85,22 @@ class _DetailedRecipeState extends State<DetailedRecipe>
   int _n = 1;
   AnimationController? controller;
 
+  getUserIngred() async {
+    var objects = await UserIngredHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    for (var object in objects) {
+      setState(() {
+        userIngredModels.add(object);
+      });
+    }
+  }
+
   getRecipeSteps() async {
+    setState(() {
+      urls = [];
+      reStepModels = [];
+      reImageStepModels = [];
+    });
     var objects = await ReStepHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id.toString());
     for (var object in objects) {
@@ -95,8 +116,14 @@ class _DetailedRecipeState extends State<DetailedRecipe>
       setState(() {
         if (tempUrls.length > 0) {
           urls.add(tempUrls);
+        } else {
+          urls.add([]);
         }
-        reImageStepModels.add(images);
+        if (images.length > 0) {
+          reImageStepModels.add(images);
+        } else {
+          reImageStepModels.add([]);
+        }
         reStepModels.add(object);
       });
     }
@@ -126,6 +153,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     super.initState();
     getRecipeSteps();
     getRecipeIngred();
+    getUserIngred();
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 20));
   }
@@ -149,6 +177,43 @@ class _DetailedRecipeState extends State<DetailedRecipe>
 
   Widget _getIngredients(
       ReIngredIngredModel reIngredIngredModel, double amount) {
+    bool isHave = false;
+    bool isEnough = false;
+    bool isDiffType = false;
+    for (var userIngredModel in userIngredModels) {
+      if (reIngredIngredModel.id == userIngredModel.ingredientId) {
+        isHave = true;
+        if (reIngredIngredModel.amount != null ||
+            userIngredModel.amount != null) {
+          if (reIngredIngredModel.amount != null &&
+              userIngredModel.amount != null) {
+            if (reIngredIngredModel.unit != null &&
+                userIngredModel.unit != null) {
+              if (reIngredIngredModel.unit == "cup" ||
+                  reIngredIngredModel.unit == "kg") {
+                if (userIngredModel.unit == "cup" ||
+                    userIngredModel.unit == "kg") {
+                  if (userIngredModel.unit == reIngredIngredModel.unit) {
+                    if (reIngredIngredModel.amount! <=
+                        userIngredModel.amount!) {
+                      isEnough = true;
+                    }
+                  } else {
+                    isDiffType = true;
+                  }
+                }
+              }
+            } else if (reIngredIngredModel.amount! <= userIngredModel.amount!) {
+              isEnough = true;
+            }
+          } else {
+            isEnough = true;
+          }
+        } else {
+          isEnough = true;
+        }
+      }
+    }
     return Container(
       width: 100,
       margin: EdgeInsets.all(10),
@@ -181,10 +246,17 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                   style: TextStyle(fontSize: 10),
                 )
               : Container(),
-          Text(
-            'คุณมีไม่พอ',
-            style: TextStyle(color: Colors.red, fontSize: 10),
-          )
+          isHave == false
+              ? Text(
+                  'คุณไม่มี',
+                  style: TextStyle(color: Colors.red, fontSize: 10),
+                )
+              : isEnough == false
+                  ? Text(
+                      'คุณมีไม่พอ',
+                      style: TextStyle(color: Colors.red, fontSize: 10),
+                    )
+                  : Container()
         ],
       ),
     );

@@ -57,6 +57,7 @@ dependencies:
   share: ^2.0.4
   http: ^0.13.4
   like_button: ^2.0.4
+  dio: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -89,6 +90,7 @@ flutter:
         - asset: lib/config/ingredients.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
+    - lib/assets/Hewa.db
     - lib/fonts/MyFlutterApp.ttf
     - lib/config/ingredients.ttf
     - lib/assets/home/food.png

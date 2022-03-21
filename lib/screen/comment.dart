@@ -6,12 +6,13 @@ import 'package:hewa/config/palette.dart';
 import 'package:hewa/models/comment_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
+import 'package:intl/intl.dart';
 
 class commentPage extends StatefulWidget {
-  commentPage(this.comments);
-  List<CommentModel> comments;
+  commentPage(this.objects);
+  List<CommentModel> objects;
   @override
-  _commentPage createState() => _commentPage(comments);
+  _commentPage createState() => _commentPage(objects);
 }
 
 class _commentPage extends State<commentPage> {
@@ -21,38 +22,6 @@ class _commentPage extends State<commentPage> {
   UserModel? currentUser;
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
-  List filedata = [
-    {
-      'name': 'Adeleye Ayodeji',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'I love to code'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-    {
-      'name': 'Biggi Man',
-      'pic': 'https://picsum.photos/300/30',
-      'message': 'Very cool'
-    },
-  ];
   var _auth = FirebaseAuth.instance;
   getUser() async {
     for (var comment in comments) {
@@ -69,61 +38,114 @@ class _commentPage extends State<commentPage> {
   }
 
   Widget commentChild(data) {
-    return ListView.builder(
-        itemCount: comments.length,
-        itemBuilder: (context, index) {
-          var url;
-          if (users[index].image != null) {
-            var ref = FirebaseStorage.instance
-                .ref()
-                .child('upload')
-                .child(users[index].image!);
-            url = ref.getDownloadURL();
-          }
-
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {
-                  // Display the image in large form.
-                  print("Comment Clicked");
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: new BoxDecoration(
-                      borderRadius: new BorderRadius.all(Radius.circular(50))),
-                  child: url != null
-                      ? FutureBuilder<String>(
-                          future: url,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      NetworkImage(snapshot.data!));
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                        )
-                      : CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                              "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
-                ),
-              ),
-              title: Text(
-                users[index].name != null || users[index].name == ""
-                    ? users[index].name!
-                    : users[index].username!,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(comments[index].text!),
+    List<Widget> children = [];
+    for (var index = 0; index < comments.length; index++) {
+      var url;
+      if (users[index].image != null) {
+        var ref = FirebaseStorage.instance
+            .ref()
+            .child('upload')
+            .child(users[index].image!);
+        url = ref.getDownloadURL();
+      }
+      children.add(Padding(
+        padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+        child: ListTile(
+          leading: GestureDetector(
+            onTap: () async {
+              // Display the image in large form.
+              print("Comment Clicked");
+            },
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: new BoxDecoration(
+                  borderRadius: new BorderRadius.all(Radius.circular(50))),
+              child: url != null
+                  ? FutureBuilder<String>(
+                      future: url,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(snapshot.data!));
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    )
+                  : CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
             ),
-          );
-        });
+          ),
+          title: Text(
+            users[index].name != null || users[index].name == ""
+                ? users[index].name!
+                : users[index].username!,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(comments[index].text!),
+        ),
+      ));
+    }
+    return ListView(children: children);
+    // return ListView.builder(
+    //     itemCount: data.length,
+    //     itemBuilder: (context, index) {
+    //       var url;
+    //       if (users[index].image != null) {
+    //         var ref = FirebaseStorage.instance
+    //             .ref()
+    //             .child('upload')
+    //             .child(users[index].image!);
+    //         url = ref.getDownloadURL();
+    //       }
+
+    //       return Padding(
+    //         padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+    //         child: ListTile(
+    //           leading: GestureDetector(
+    //             onTap: () async {
+    //               // Display the image in large form.
+    //               print("Comment Clicked");
+    //             },
+    //             child: Container(
+    //               height: 50.0,
+    //               width: 50.0,
+    //               decoration: new BoxDecoration(
+    //                   borderRadius: new BorderRadius.all(Radius.circular(50))),
+    //               child: url != null
+    //                   ? FutureBuilder<String>(
+    //                       future: url,
+    //                       builder: (context, snapshot) {
+    //                         if (snapshot.hasData) {
+    //                           return CircleAvatar(
+    //                               radius: 50,
+    //                               backgroundImage:
+    //                                   NetworkImage(snapshot.data!));
+    //                         } else {
+    //                           return CircularProgressIndicator();
+    //                         }
+    //                       },
+    //                     )
+    //                   : CircleAvatar(
+    //                       radius: 50,
+    //                       backgroundImage: NetworkImage(
+    //                           "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
+    //             ),
+    //           ),
+    //           title: Text(
+    //             users[index].name != null || users[index].name == ""
+    //                 ? users[index].name!
+    //                 : users[index].username!,
+    //             style: TextStyle(fontWeight: FontWeight.bold),
+    //           ),
+    //           subtitle: Text(comments[index].text!),
+    //         ),
+    //       );
+    //     });
   }
 
   @override
@@ -161,7 +183,7 @@ class _commentPage extends State<commentPage> {
                       if (snapshot.hasData) {
                         return CommentBox(
                           userImage: snapshot.data,
-                          child: commentChild(filedata),
+                          child: commentChild(comments),
                           labelText: 'Write a comment...',
                           withBorder: false,
                           errorText: 'Comment cannot be blank',
@@ -169,13 +191,13 @@ class _commentPage extends State<commentPage> {
                             if (formKey.currentState!.validate()) {
                               print(commentController.text);
                               setState(() {
-                                var value = {
-                                  'name': 'New User',
-                                  'pic':
-                                      'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
-                                  'message': commentController.text
-                                };
-                                filedata.insert(0, value);
+                                var value = CommentModel(
+                                    text: commentController.text,
+                                    uid: _auth.currentUser!.uid,
+                                    recipeId: comments[0].recipeId,
+                                    date: DateFormat('yyyy-MM-dd HH:mm:ss')
+                                        .format(DateTime.now()));
+                                comments.add(value);
                               });
                               commentController.clear();
                               FocusScope.of(context).unfocus();
@@ -199,8 +221,8 @@ class _commentPage extends State<commentPage> {
                     })
                 : CommentBox(
                     userImage:
-                        "https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400",
-                    child: commentChild(filedata),
+                        "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                    child: commentChild(comments),
                     labelText: 'Write a comment...',
                     withBorder: false,
                     errorText: 'Comment cannot be blank',
@@ -208,13 +230,13 @@ class _commentPage extends State<commentPage> {
                       if (formKey.currentState!.validate()) {
                         print(commentController.text);
                         setState(() {
-                          var value = {
-                            'name': 'New User',
-                            'pic':
-                                'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
-                            'message': commentController.text
-                          };
-                          filedata.insert(0, value);
+                          var value = CommentModel(
+                              text: commentController.text,
+                              uid: _auth.currentUser!.uid,
+                              recipeId: comments[0].recipeId,
+                              date: DateFormat('yyyy-MM-dd HH:mm:ss')
+                                  .format(DateTime.now()));
+                          comments.add(value);
                         });
                         commentController.clear();
                         FocusScope.of(context).unfocus();

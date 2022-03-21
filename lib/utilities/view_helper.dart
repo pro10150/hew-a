@@ -35,7 +35,8 @@ class ViewHelper {
   Future<Null> insertDataToSQLite(ViewModel viewModel) async {
     Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, viewModel.toJson());
+      database.insert(tableDatabase, viewModel.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -334,6 +335,13 @@ class ViewHelper {
       viewModels.add(viewModel);
     }
     return viewModels;
+  }
+
+  Future<List<Map<String, dynamic>>> readlDataFromSQLiteAsJSON() async {
+    Database database = await connectedDatabase();
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    return maps;
   }
 
   Future<List<ViewModel>> readDataFromSQLiteWhereUser(String uid) async {

@@ -10,7 +10,13 @@ import 'dart:convert';
 import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/models/view_model.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/userKitch_model.dart';
+import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/utilities/userKitch_helper.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -27,12 +33,15 @@ class _HomeState extends State<Home> {
   bool dsc = false;
   bool dp = true;
   bool trd = false;
+  var _auth = FirebaseAuth.instance;
   String greetings = '';
   List<dynamic> recommendations = [];
   List<MenuRecipeModel> menuRecipeModels = [];
   List<MenuRecipeModel> trendingModels = [];
   List<MenuRecipeModel> followingModels = [];
   List<MenuRecipeModel> dailyPickModels = [];
+  List<UserKitchenwareModel> userKitchenwareModels = [];
+  UserModel? userModel;
   var auth = FirebaseAuth.instance;
 
   @override
@@ -43,6 +52,24 @@ class _HomeState extends State<Home> {
     getFollowing();
     getDailyPick();
     super.initState();
+  }
+
+  getUser() async {
+    var objects =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    setState(() {
+      userModel = objects.first;
+    });
+  }
+
+  getUserKitchenware() async {
+    var objects = await UserKitchHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    for (var object in objects) {
+      setState(() {
+        userKitchenwareModels.add(object);
+      });
+    }
   }
 
   getPreference() async {

@@ -41,7 +41,7 @@ class ReIngredIngredHelper {
     List<ReIngredIngredModel> reIngredIngredModels = [];
 
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select *,recipeIngredientTABLE.id as id from ingredientTABLE inner join recipeIngredientTABLE on ingredientTABLE.id = recipeIngredientTABLE.recipeId; ');
+        'select *,ingredientTABLE.id as id from ingredientTABLE inner join recipeIngredientTABLE on ingredientTABLE.id = recipeIngredientTABLE.recipeId; ');
     for (var map in maps) {
       ReIngredIngredModel reIngredIngredModel =
           ReIngredIngredModel.fromJson(map);
@@ -56,7 +56,7 @@ class ReIngredIngredHelper {
     List<ReIngredIngredModel> reIngredIngredModels = [];
 
     List<Map<String, dynamic>> maps = await database.rawQuery(
-        'SELECT *,recipeIngredientTABLE.id as id FROM ingredientTABLE INNER join recipeIngredientTABLE ON ingredientTABLE.id = recipeIngredientTABLE.ingredientId WHERE recipeIngredientTABLE.recipeId = $recipeId;');
+        'SELECT *,ingredientTABLE.id as id FROM ingredientTABLE INNER join recipeIngredientTABLE ON ingredientTABLE.id = recipeIngredientTABLE.ingredientId WHERE recipeIngredientTABLE.recipeId = $recipeId;');
     for (var map in maps) {
       ReIngredIngredModel reIngredIngredModel =
           ReIngredIngredModel.fromJson(map);
