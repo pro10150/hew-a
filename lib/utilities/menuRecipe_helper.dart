@@ -5,8 +5,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 import 'db_helper.dart';
+import 'view_helper.dart';
 
 class MenuRecipeHelper {
   final String nameDatabase = 'Hewa.db';
@@ -129,13 +131,15 @@ class MenuRecipeHelper {
   Future<List<MenuRecipeModel>> getDailyPick() async {
     Database database = await connectedDatabase();
     final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
-    final response = await http.get(Uri.parse(
+    final objects = await ViewHelper().readlDataFromSQLite();
+    print(objects.runtimeType);
+    var dio = Dio();
+    final response = await dio.post(
         'http://192.168.1.108:5000/recommendation?uid=' +
-            FirebaseAuth.instance.currentUser!.uid +
-            "&databaseLocation=" +
-            dbPath));
+            FirebaseAuth.instance.currentUser!.uid,
+        data: objects);
 
-    final decoded = json.decode(response.body) as Map<String, dynamic>;
+    final decoded = response.data as Map<String, dynamic>;
     var uid = decoded['uid'];
     var recommendation = decoded['recommendation'];
     List<MenuRecipeModel> menuRecipeModels = [];

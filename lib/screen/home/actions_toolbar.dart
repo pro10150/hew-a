@@ -365,6 +365,6 @@ void navigateTocommentPage(
                 child: commentPage(comments)));
       });
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //   return commentPage();
+  //   return commentPage(comments);
   // }));
 }

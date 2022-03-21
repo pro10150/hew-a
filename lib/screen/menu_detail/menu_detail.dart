@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
@@ -7,6 +8,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:getwidget/getwidget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'detailed_recipe.dart';
+import 'package:hewa/config/palette.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
@@ -15,6 +17,8 @@ import 'package:hewa/models/kitch_model.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
 import 'package:hewa/models/reImage_model.dart';
 import 'package:hewa/utilities/reImage_helper.dart';
+import 'package:hewa/models/userKitch_model.dart';
+import 'package:hewa/utilities/userKitch_helper.dart';
 
 class MenuDetail extends StatefulWidget {
   MenuDetail(this.object) {
@@ -26,10 +30,12 @@ class MenuDetail extends StatefulWidget {
   _MenuDetailState createState() => _MenuDetailState();
 }
 
+var _auth = FirebaseAuth.instance;
 MenuRecipeModel? menuRecipeModel;
 UserModel? userModel;
 List<String> urls = [];
 List<KitchenwareModel> kitchenwareModels = [];
+List<UserKitchenwareModel> userKitchenwareModels = [];
 
 class _MenuDetailState extends State<MenuDetail> {
   Widget _getRecipePicture({required String pictureUrl}) {
@@ -42,6 +48,16 @@ class _MenuDetailState extends State<MenuDetail> {
         width: 300,
       ),
     );
+  }
+
+  getUserKitchenware() async {
+    var objects = await UserKitchHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    setState(() {
+      for (var object in objects) {
+        userKitchenwareModels.add(object);
+      }
+    });
   }
 
   getImageURL() async {
@@ -70,7 +86,22 @@ class _MenuDetailState extends State<MenuDetail> {
   }
 
   Widget _getKitchenware({required String kitchenware}) {
-    return Chip(label: Text(kitchenware));
+    bool isOwn = false;
+    if (userModel!.kitchenwares == 1) {
+      for (var userKitchenwareModel in userKitchenwareModels) {
+        if (userKitchenwareModel.kitchenware == kitchenware) isOwn = true;
+      }
+    }
+
+    return isOwn != true
+        ? Chip(label: Text(kitchenware))
+        : Chip(
+            label: Text(
+              kitchenware,
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Palette.roseBud,
+          );
   }
 
   getUserRecipe() async {
@@ -132,6 +163,7 @@ class _MenuDetailState extends State<MenuDetail> {
     getUserRecipe();
     getImageURL();
     getReKitchenware();
+    getUserKitchenware();
   }
 
   @override
