@@ -1,6 +1,7 @@
 class ReStepModel {
   String? recipeId;
   int? step;
+  int? minute;
   String? description;
 
   ReStepModel(
@@ -9,6 +10,7 @@ class ReStepModel {
   ReStepModel.fromJson(Map<String, dynamic> json) {
     recipeId = json['recipeId'];
     step = json['step'];
+    minute = json['minute'];
     description = json['description'];
   }
 
@@ -17,6 +19,7 @@ class ReStepModel {
 
     data['recipeId'] = this.recipeId;
     data['step'] = this.step;
+    data['minute'] = this.minute;
     data['description'] = this.description;
 
     return data;

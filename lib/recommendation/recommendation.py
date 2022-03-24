@@ -48,13 +48,10 @@ def get_recommendations(view_data):
         return recommendations
 
 
-def getRecommendations(databaseLocation, uid):
-    con = sqlite3.connect(databaseLocation)
-    query = """SELECT * FROM viewTABLE"""
-    df = pd.read_sql_query(query, con)
+def getRecommendations(json, uid):
+    df = pd.DataFrame.from_dict(json)
 
     dataPrep = df[['uid', 'recipeId', 'isView']]
-    con.close()
     try:
         result = get_recommendations(dataPrep).loc[[uid], :].values.tolist()[0]
     except:

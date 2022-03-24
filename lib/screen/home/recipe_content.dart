@@ -22,7 +22,7 @@ class RecipeContent extends StatelessWidget {
                 Navigator.push(
                     context,
                     PageTransition(
-                        child: MenuDetail(),
+                        child: MenuDetail(menuRecipeModel),
                         type: PageTransitionType.leftToRight));
               },
               child: Container(

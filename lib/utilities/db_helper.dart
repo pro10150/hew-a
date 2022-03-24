@@ -33,6 +33,7 @@ class DBHelper {
   }
 
   Future<Database> database() async {
+    print(join(await getDatabasesPath(), nameDatabase));
     return openDatabase(
       join(await getDatabasesPath(), nameDatabase),
       onCreate: (db, version) => {_createDb(db)},
@@ -66,7 +67,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
-        'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, description TEXT)');
+        'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, minute INTEGER, description TEXT)');
     db.execute(
         'CREATE TABLE userIngredientTABLE (id INTEGER PRIMARY KEY, uid TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
@@ -78,11 +79,15 @@ class DBHelper {
     db.execute(
         'CREATE TABLE likeTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, datetime TEXT)');
     db.execute(
-        'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER)');
+        'CREATE TABLE viewTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, isView INTEGER, UNIQUE(uid, recipeId))');
     db.execute(
         'CREATE TABLE menuRecipeTABLE (id INTEGER PRIMARY KEY, uid TEXT, nameMenu TEXT, recipeName TEXT, description TEXT, timeHour INTEGER, timeMinute INTEGER, method TEXT, type TEXT, calories INTEGER, protein INTEGER, carb INTEGER, fat INTEGER, mainIngredient TEXT, userID TEXT, image TEXT)');
     db.execute(
         'CREATE TABLE methodTABLE (methodid INTEGER PRIMARY KEY, nameMethod TEXT)');
+    db.execute(
+        'CREATE TABLE reImageTABLE (id INTEGER PRIMARY KEY, name TEXT, recipeId INTEGER)');
+    db.execute(
+        'CREATE TABLE reImageStepTABLE (id INTEGER PRIMARY KEY, recipeId INTEGER, stepId INTEGER, name TEXT)');
   }
 
   void initInsert() {
