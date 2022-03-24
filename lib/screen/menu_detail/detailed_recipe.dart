@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hewa/screen/fridge/ingredients.dart';
+import 'package:hewa/screen/menu_detail/menu_detail.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -175,45 +176,83 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     });
   }
 
+  bool compareUnit(ReIngredIngredModel reIngred, UserIngredModel userIngred) {
+    bool isEnough = false;
+    if (reIngred.unit == "cup") {
+      if (userIngred.unit == "cup") {
+        if (reIngred.amount! <= userIngred.amount!) {
+          isEnough = true;
+        }
+      } else if (userIngred.unit == "tbsp") {
+        var reAmount = reIngred.amount! * 16;
+        if (reAmount <= userIngred.amount!) {
+          isEnough = true;
+        }
+      }
+    } else if (reIngred.unit == "tbsp") {
+      if (userIngred.unit == "cup") {
+        var reAmount = reIngred.amount! * 0.0625;
+        if (reAmount <= userIngred.amount!) {
+          isEnough = true;
+        }
+      }
+    } else if (reIngred.unit == "g") {
+      if (userIngred.unit == "kg") {
+        var reAmount = reIngred.amount! * 100;
+        if (reAmount <= userIngred.amount!) {
+          isEnough = true;
+        }
+      }
+    } else if (reIngred.unit == "kg") {
+      if (userIngred.unit == "g") {
+        var reAmount = reIngred.amount! * 0.001;
+        if (reAmount <= userIngred.amount!) {
+          isEnough = true;
+        }
+      }
+    }
+    if (userIngred.unit == reIngred.unit) {
+      if (reIngred.amount! <= userIngred.amount!) {
+        isEnough = true;
+      }
+    }
+    return isEnough;
+  }
+
   Widget _getIngredients(
       ReIngredIngredModel reIngredIngredModel, double amount) {
     bool isHave = false;
     bool isEnough = false;
     bool isDiffType = false;
-    for (var userIngredModel in userIngredModels) {
-      if (reIngredIngredModel.id == userIngredModel.ingredientId) {
-        isHave = true;
-        if (reIngredIngredModel.amount != null ||
-            userIngredModel.amount != null) {
-          if (reIngredIngredModel.amount != null &&
+    if (userModel!.ingredients == 1) {
+      for (var userIngredModel in userIngredModels) {
+        if (reIngredIngredModel.id == userIngredModel.ingredientId) {
+          isHave = true;
+          if (reIngredIngredModel.amount != null ||
               userIngredModel.amount != null) {
-            if (reIngredIngredModel.unit != null &&
-                userIngredModel.unit != null) {
-              if (reIngredIngredModel.unit == "cup" ||
-                  reIngredIngredModel.unit == "kg") {
-                if (userIngredModel.unit == "cup" ||
-                    userIngredModel.unit == "kg") {
-                  if (userIngredModel.unit == reIngredIngredModel.unit) {
-                    if (reIngredIngredModel.amount! <=
-                        userIngredModel.amount!) {
-                      isEnough = true;
-                    }
-                  } else {
-                    isDiffType = true;
-                  }
-                }
+            if (reIngredIngredModel.amount != null &&
+                userIngredModel.amount != null) {
+              if (reIngredIngredModel.unit != null &&
+                  userIngredModel.unit != null) {
+                isEnough = compareUnit(reIngredIngredModel, userIngredModel);
+              } else if (reIngredIngredModel.amount! <=
+                  userIngredModel.amount!) {
+                isEnough = true;
               }
-            } else if (reIngredIngredModel.amount! <= userIngredModel.amount!) {
+            } else {
               isEnough = true;
             }
           } else {
             isEnough = true;
           }
-        } else {
-          isEnough = true;
         }
       }
+    } else {
+      isHave = true;
+      isEnough = true;
+      isDiffType = true;
     }
+
     return Container(
       width: 100,
       margin: EdgeInsets.all(10),
@@ -233,7 +272,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
           ]),
           amount > 0
               ? Text(
-                  (amount * _n).toStringAsFixed(0),
+                  (amount * _n).toString(),
                   style: TextStyle(fontSize: 10),
                 )
               : Container(),
