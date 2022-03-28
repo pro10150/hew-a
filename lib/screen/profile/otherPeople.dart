@@ -1,15 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/utilities/follow_helper.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
 
 class OtherProfile extends StatefulWidget {
+  final String url;
+  final String uid;
   static const routeName = '/';
 
-  const OtherProfile({Key? key}) : super(key: key);
+  const OtherProfile(this.url, this.uid, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _OtherProfileState();
+    return _OtherProfileState(url, uid);
   }
 }
 
@@ -35,14 +45,63 @@ class UpperClipper extends CustomClipper<Path> {
 
 class _OtherProfileState extends State<OtherProfile>
     with SingleTickerProviderStateMixin {
+  _OtherProfileState(this.url, this.uid);
+  String url;
+  String uid;
+  bool isFollowed = false;
+  UserModel? user;
+  var _auth = FirebaseAuth.instance;
+  List<FollowModel> followings = [];
+  List<FollowModel> followers = [];
+  List<MenuRecipeModel> menuRecipeModels = [];
   late TabController controller;
   late var _scrollViewController;
+
+  getUser() async {
+    var objects = await UserHelper().readDataFromSQLiteWhereId(uid);
+    setState(() {
+      user = objects.first;
+    });
+  }
+
+  getFollows() async {
+    var objects = await FollowHelper().getFollower(uid);
+    for (var object in objects) {
+      setState(() {
+        followers.add(object);
+      });
+    }
+    objects = await FollowHelper().getFollowing(uid);
+    for (var object in objects) {
+      setState(() {
+        followings.add(object);
+      });
+      if (object.followedUserID == uid) {
+        setState(() {
+          isFollowed = true;
+        });
+      }
+    }
+  }
+
+  getRecipes() async {
+    var objects = await MenuRecipeHelper().getAllUserRecipe(uid);
+    for (var object in objects) {
+      setState(() {
+        menuRecipeModels.add(object);
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUser();
+    getFollows();
+    getRecipes();
     _scrollViewController = ScrollController();
-    controller = TabController(length: 2, vsync: this);
+    controller = TabController(length: 1, vsync: this);
   }
 
   @override
@@ -85,25 +144,33 @@ class _OtherProfileState extends State<OtherProfile>
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: <Widget>[
-                                        Text(""),
-                                        Text(""),
-                                        Text(
-                                          "Johannieieie",
-                                          style: TextStyle(
-                                              fontSize: 24.0,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(" "),
+                                        Spacer(),
+                                        user!.name != null
+                                            ? Text(
+                                                user!.name!,
+                                                style: TextStyle(
+                                                    fontSize: 24.0,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                user!.username!,
+                                                style: TextStyle(
+                                                    fontSize: 24.0,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                         CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                            "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                                            url,
                                           ),
                                           radius: 60.0,
                                         ),
                                         Text(" "),
                                         Text(
-                                          "@iamJohannie",
+                                          "@" + user!.username!,
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black,
@@ -127,7 +194,8 @@ class _OtherProfileState extends State<OtherProfile>
                                                             .center,
                                                     children: <Widget>[
                                                       Text(
-                                                        "520",
+                                                        followings.length
+                                                            .toString(),
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -152,7 +220,8 @@ class _OtherProfileState extends State<OtherProfile>
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
-                                                        "116",
+                                                        followers.length
+                                                            .toString(),
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -177,7 +246,8 @@ class _OtherProfileState extends State<OtherProfile>
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
-                                                        "6",
+                                                        menuRecipeModels.length
+                                                            .toString(),
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -209,26 +279,30 @@ class _OtherProfileState extends State<OtherProfile>
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
-                                            RaisedButton(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.0),
-                                              ),
-                                              color: Colors.black,
-                                              textColor: Colors.white,
-                                              padding: EdgeInsets.only(
-                                                  bottom: 0,
-                                                  top: 0,
-                                                  right: 42,
-                                                  left: 42),
-                                              onPressed: () => {},
-                                              child: Text(
-                                                "follow",
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                            ),
+                                            _auth.currentUser!.uid != uid
+                                                ? RaisedButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                    ),
+                                                    color: Colors.black,
+                                                    textColor: Colors.white,
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 0,
+                                                        top: 0,
+                                                        right: 42,
+                                                        left: 42),
+                                                    onPressed: () => {},
+                                                    child: Text(
+                                                      "follow",
+                                                      style: TextStyle(
+                                                        fontSize: 18.0,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(),
                                           ],
                                         ))
                                       ],
@@ -248,9 +322,7 @@ class _OtherProfileState extends State<OtherProfile>
                       tabs: [
                         Tab(
                           icon: Icon(Icons.menu_book),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.favorite),
+                          text: "My recipe",
                         ),
                       ],
                       controller: controller,
@@ -262,40 +334,24 @@ class _OtherProfileState extends State<OtherProfile>
                 controller: controller,
                 children: [
                   Expanded(
-                      child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: <Widget>[
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes()
-                    ],
-                  )),
-                  Expanded(
-                      child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: <Widget>[
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                      recipes(),
-                    ],
-                  )),
+                      child: menuRecipeModels.length > 0
+                          ? GridView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              physics: ScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              itemCount: menuRecipeModels.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return recipes(menuRecipeModels[index]);
+                              })
+                          : Container(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                'You haven\'t create any recipes yet',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))),
                 ],
               )
 
@@ -313,32 +369,54 @@ class _OtherProfileState extends State<OtherProfile>
 }
 
 class recipes extends StatelessWidget {
-  const recipes({
-    Key? key,
-  }) : super(key: key);
-
+  recipes(this.menuRecipeModel) {
+    ref = FirebaseStorage.instance
+        .ref()
+        .child('menus')
+        .child(menuRecipeModel.menuImage! + '.jpeg');
+    url = ref.getDownloadURL();
+  }
+  MenuRecipeModel menuRecipeModel;
+  var ref;
+  var url;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          print('Tap');
-        },
-        child: Container(
-          padding: EdgeInsets.all(0),
-          decoration: BoxDecoration(
-              color: Colors.red,
-              image: DecorationImage(
-                  image: NetworkImage(
-                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"))),
-        )
+    return FutureBuilder<String>(
+        future: url,
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              InkWell(
+                  onTap: () {
+                    print('Tap');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(0),
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(snapshot.data!))),
+                  )
 
-        // child: Column(
-        //   children: <Widget>[
-        //     Image.network(
-        //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
-        //   ],
-        // ),
-        );
+                  // child: Column(
+                  //   children: <Widget>[
+                  //     Image.network(
+                  //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
+                  //   ],
+                  // ),
+                  ),
+              Text(menuRecipeModel.nameMenu!)
+            ];
+          } else {
+            children = <Widget>[CircularProgressIndicator()];
+          }
+          return Column(children: children);
+        });
   }
 }
 

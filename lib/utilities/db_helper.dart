@@ -91,11 +91,13 @@ class DBHelper {
     db.execute(
         'CREATE TABLE reImageStepTABLE (id INTEGER PRIMARY KEY, recipeId INTEGER, stepId INTEGER, name TEXT)');
     db.execute(
-        'CREATE TABLE reportTABLE (id INTEGER PRIMARY KEY, uid TEXT, type INTEGER, reportedUid TEXT, reportedRecipeId INTEGER, about INTEGER, text TEXT)');
+        'CREATE TABLE reportTABLE (id INTEGER PRIMARY KEY, uid TEXT, type INTEGER, reportedUid TEXT, reportedRecipeId INTEGER, about INTEGER, text TEXT, date TEXT)');
     db.execute(
         'CREATE TABLE reportTypeTABLE (id INTEGER PRIMARY KEY, typeName TEXT)');
     db.execute(
         'CREATE TABLE reportAboutTABLE (id INTEGER PRIMARY KEY, aboutName Text, aboutType INTEGER)');
+    db.execute(
+        'CREATE TABLE reportImageTABLE (id INTEGER PRIMARY KEY, reportId INTEGER, imagePath TEXT)');
   }
 
   void initInsert() {

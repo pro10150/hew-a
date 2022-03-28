@@ -110,6 +110,22 @@ class ReportHelper {
     return reportModels;
   }
 
+  Future<ReportModel> readDataFromSQLiteWhereDateReportedUid(
+      String uid, String date) async {
+    Database database = await connectedDatabase();
+    ReportModel? reportModel;
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    // List<Map<String, dynamic>> maps = await database
+    //     .query(tableDatabase, where: '$dateColumn = ?', whereArgs: [date]);
+    for (var map in maps) {
+      ReportModel object = ReportModel.fromJson(map);
+      if (object.date == date) {
+        reportModel = object;
+      }
+    }
+    return reportModel!;
+  }
+
   Future<List<ReportModel>> getAllRecipeReport() async {
     Database database = await connectedDatabase();
     List<ReportModel> reportModels = [];
