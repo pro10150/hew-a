@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
     getTrending();
     getFollowing();
     getDailyPick();
+    getUser();
     super.initState();
   }
 
@@ -59,6 +60,7 @@ class _HomeState extends State<Home> {
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     setState(() {
       userModel = objects.first;
+      print(userModel!.uid);
     });
   }
 
@@ -193,11 +195,13 @@ class _HomeState extends State<Home> {
       );
 
   Widget get middleSection => Container(
-      child: dsc
-          ? Following(followingModels)
+      child: 
+      userModel != null ?
+      dsc
+          ? Following(followingModels, userModel!)
           : dp
-              ? DailyPick(dailyPickModels)
-              : Trending(trendingModels));
+              ? DailyPick(dailyPickModels, userModel!)
+              : Trending(trendingModels, userModel!): Container());
 
   Widget build(BuildContext context) {
     return Scaffold(

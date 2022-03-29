@@ -13,6 +13,8 @@ import 'view_helper.dart';
 import 'like_helper.dart';
 import 'method_helper.dart';
 import 'comment_helper.dart';
+import 'reportAbout_helper.dart';
+import 'reportType_helper.dart';
 
 class DBHelper {
   final String nameDatabase = 'Hewa.db';
@@ -88,6 +90,14 @@ class DBHelper {
         'CREATE TABLE reImageTABLE (id INTEGER PRIMARY KEY, name TEXT, recipeId INTEGER)');
     db.execute(
         'CREATE TABLE reImageStepTABLE (id INTEGER PRIMARY KEY, recipeId INTEGER, stepId INTEGER, name TEXT)');
+    db.execute(
+        'CREATE TABLE reportTABLE (id INTEGER PRIMARY KEY, uid TEXT, type INTEGER, reportedUid TEXT, reportedRecipeId INTEGER, about INTEGER, text TEXT, date TEXT)');
+    db.execute(
+        'CREATE TABLE reportTypeTABLE (id INTEGER PRIMARY KEY, typeName TEXT)');
+    db.execute(
+        'CREATE TABLE reportAboutTABLE (id INTEGER PRIMARY KEY, aboutName Text, aboutType INTEGER)');
+    db.execute(
+        'CREATE TABLE reportImageTABLE (id INTEGER PRIMARY KEY, reportId INTEGER, imagePath TEXT)');
   }
 
   void initInsert() {
@@ -103,5 +113,7 @@ class DBHelper {
     LikeHelper().initInsertDataToSQLite();
     MethodHelper().initInsertDataToSqlite();
     CommentHelper().initInsert();
+    ReportAboutHelper().initInsert();
+    ReportTypeHelper().initInsert();
   }
 }

@@ -5,9 +5,10 @@ import '../../models/like_model.dart';
 import '../../utilities/like_helper.dart';
 import 'recipe_content.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/models/user_model.dart';
 
 class Following extends StatelessWidget {
-  Following(this.menuRecipeModels) {
+  Following(this.menuRecipeModels, this.userModel) {
     for (var object in menuRecipeModels) {
       var ref = FirebaseStorage.instance
           .ref()
@@ -24,6 +25,7 @@ class Following extends StatelessWidget {
   List<List<LikeModel>> likes = [];
   List<dynamic> refs = [];
   List<MenuRecipeModel> menuRecipeModels = [];
+  UserModel userModel;
 
   void _handleCallbackEvent(ScrollEventType type, {required int currentIndex}) {
     print(
@@ -41,7 +43,8 @@ class Following extends StatelessWidget {
                 swipeVelocityThreshold: 1000,
                 animationDuration: const Duration(milliseconds: 300),
                 builder: (BuildContext context, int index) {
-                  return RecipeContent(menuRecipeModels[index], refs[index]);
+                  return RecipeContent(
+                      menuRecipeModels[index], refs[index], userModel);
                 },
               )
             : Align(
