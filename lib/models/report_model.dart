@@ -33,7 +33,7 @@ class ReportModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['uid'] = this.uid;
-    data['type'] = this.uid;
+    data['type'] = this.type;
     data['reportedUid'] = this.reportedUid;
     data['reportedRecipeId'] = this.reportedRecipeId;
     data['about'] = this.about;

@@ -4,10 +4,11 @@ import 'package:hewa/models/menuRecipe_model.dart';
 import 'recipe_content.dart';
 import 'package:tiktoklikescroller/tiktoklikescroller.dart';
 import 'package:hewa/models/like_model.dart';
+import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/like_helper.dart';
 
 class DailyPick extends StatelessWidget {
-  DailyPick(this.menuRecipeModels) {
+  DailyPick(this.menuRecipeModels, this.userModel) {
     for (var object in menuRecipeModels) {
       var ref = FirebaseStorage.instance
           .ref()
@@ -25,6 +26,7 @@ class DailyPick extends StatelessWidget {
   List<List<LikeModel>> likes = [];
   List<dynamic> refs = [];
   List<MenuRecipeModel> menuRecipeModels = [];
+  UserModel userModel;
   @override
   Widget build(BuildContext context) {
     for (var object in likes) {
@@ -39,7 +41,8 @@ class DailyPick extends StatelessWidget {
                 swipeVelocityThreshold: 1000,
                 animationDuration: const Duration(milliseconds: 300),
                 builder: (BuildContext context, int index) {
-                  return RecipeContent(menuRecipeModels[index], refs[index]);
+                  return RecipeContent(
+                      menuRecipeModels[index], refs[index], userModel);
                 },
               )
             : CircularProgressIndicator());
