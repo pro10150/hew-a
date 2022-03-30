@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hewa/screen/login/loginscreen.dart';
 import 'report_detail.dart';
 
 class userReport extends StatefulWidget {
@@ -9,6 +11,16 @@ class userReport extends StatefulWidget {
 }
 
 class _userReportState extends State<userReport> {
+  var _auth = FirebaseAuth.instance;
+
+  void signOut(BuildContext context) {
+    _auth.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +33,7 @@ class _userReportState extends State<userReport> {
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),
-              onPressed: () => print("logout"),
+              onPressed: () => signOut(context),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
