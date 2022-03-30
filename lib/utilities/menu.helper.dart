@@ -162,7 +162,7 @@ class MenuHelper {
       Map<String, dynamic> row = {
         nameMenuColumn: value,
         mainIngredientColumn: mainIngredient[key],
-        imageColumn: value
+        imageColumn: value + ".jpeg"
       };
       database.insert(tableDatabase, row);
     });

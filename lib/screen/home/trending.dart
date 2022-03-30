@@ -14,7 +14,7 @@ class Trending extends StatelessWidget {
       var ref = FirebaseStorage.instance
           .ref()
           .child('menus')
-          .child(object.menuImage! + '.jpeg');
+          .child(object.menuImage!);
       refs.add(ref.getDownloadURL());
     }
   }
