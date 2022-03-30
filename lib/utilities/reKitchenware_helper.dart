@@ -36,6 +36,12 @@ class ReKitchenwareHelper {
     }
   }
 
+  Future<int> insert(ReKitchenwareModel reKitchenwareModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, reKitchenwareModel.toJson());
+    return results;
+  }
+
   Future<Null> initInsertDataToSQLite() async {
     var kitchenwares = [
       [3, 11, 2, 1, 8, 7],
@@ -93,8 +99,7 @@ class ReKitchenwareHelper {
       kitchenwares.forEachIndexed((index, element) {
         element.forEach((value) {
           ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-              recipeId: (index + 1).toString(),
-              kitchenwareId: value.toString());
+              recipeId: (index + 1).toString(), kitchenwareId: value);
           insertDataToSQLite(reKitchenwareModel);
         });
       });

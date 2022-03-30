@@ -1,15 +1,26 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-
+import 'dart:io' as io;
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/models/menu_model.dart';
+import 'package:hewa/utilities/menu.helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
+import '../../models/menuRecipe_model.dart';
+import 'package:path/path.dart' as p;
 import 'recipe_step_1.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/models/ingred_model.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class NewMenu extends StatefulWidget {
   @override
@@ -20,6 +31,21 @@ List<String> ingredients = [];
 List<IngredModel> ingredModel = [];
 
 class _NewMenuState extends State<NewMenu> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // TextEditingController menuController = TextEditingController();
+  // TextEditingController descController = TextEditingController();
+
+  // _NewMenuState(MenuModel? menuModel);
+
+  // MenuRecipeHelper? menuRecipeHelper;
+  // MenuRecipeModel? menuRecipeModel;
+  // MenuHelper? menuHelper;
+  // MenuModel? menuModel;
+  // IngredModel? ingredModel;
+
+  // menuController.text = menuRecipeModel?.nameMenu!;
+  // descController.text = menuRecipeModel?.description;
+
   File? _image;
   final picker = ImagePicker();
 
@@ -38,6 +64,7 @@ class _NewMenuState extends State<NewMenu> {
 
   String _confirmedIngredient = 'Select Ingredient';
   String _selectedIngredient = '';
+  List<MenuModel> menu = [];
 
   List<Widget> getPickerItems() {
     List<Widget> items = [];
@@ -45,6 +72,36 @@ class _NewMenuState extends State<NewMenu> {
       items.add(Text(ingredients));
     }
     return items;
+  }
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = p.basename(_image!.path);
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('menus')
+        .child('/$fileName');
+
+    final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': fileName});
+    firebase_storage.UploadTask uploadTask;
+    //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    uploadTask = ref.putFile(io.File(_image!.path), metadata);
+    MenuModel targetMenu = menu[0];
+    print(menu[0]);
+    targetMenu.nameMenu = menuController.value.text;
+    targetMenu.menuImage = fileName;
+    print(menu[0].menuImage);
+    _auth.currentUser?.updateDisplayName(targetMenu.nameMenu);
+    MenuHelper().updateDataToSQLite(targetMenu);
+
+    firebase_storage.UploadTask task = await Future.value(uploadTask);
+    Future.value(uploadTask)
+        .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+        .onError((error, stackTrace) =>
+            {print("Upload file path error ${error.toString()} ")});
+
+    print(fileName);
   }
 
   void _showPicker(BuildContext ctx) {
@@ -77,11 +134,91 @@ class _NewMenuState extends State<NewMenu> {
     }
   }
 
+  // createMenu() async{
+  //   String namemenu = menuController.text;
+  //   String descmenu = descController.text;
+  //   MenuUserModel menuUserModel = MenuUserModel(nameMenu:  namemenu, description: descmenu);
+  //   var response = await MenuUserHelper().insertDataToSQLite(menuUserModel);
+  //   if (response != 0) {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Insert data success : ${response}")));
+  //   }else {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something Wrong!')));
+  //   }
+  //   // menuUserModel?.nameMenu = menuController.text;
+  //   // menuUserModel?.description = descController.text;
+  //
+  //
+  //   // var result = await menuRecipeHelper?.insertDataToSQLite(menuRecipeModel!);
+  //   // print('inserted success: $result');
+  //
+  //
+  //   // MenuRecipeHelper menuRecipeHelper = MenuRecipeHelper();
+  //   // menuRecipeHelper.insert(menuRecipeModel!);
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => RecipeStep1()));
+  //
+  // }
+
+  final _formKey = new GlobalKey<FormState>();
+
+  final menuController = TextEditingController();
+  final descController = TextEditingController();
+  final mainIngreController = TextEditingController();
+
+  createMenus() async {
+    String namemenu = menuController.text;
+    String descmenu = descController.text;
+
+    MenuModel menuModel = MenuModel(
+        nameMenu: namemenu,
+        mainIngredient: ingredModel
+            .where((element) => element.name == _selectedIngredient)
+            .first
+            .id,
+        descMenu: descmenu);
+    int result;
+    result = await MenuHelper().insert(menuModel);
+
+    if (result != 0) {
+      setState(() {
+        print('Success');
+        menu.add(menuModel);
+      });
+    } else {
+      print('Failed');
+    }
+
+    uploadImageToFirebase(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+  }
+
+  Widget buildnextBtn() {
+    return RaisedButton(
+      // onPressed: () {},
+      onPressed: () {
+        // createMenus();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+      },
+      textColor: Colors.white,
+      color: Colors.black,
+      disabledColor: Colors.black,
+      child: Text("NEXT"),
+      // onPressed: () {},
+      padding: EdgeInsets.all(10),
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(30.0),
+      ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     readSQLite();
+    // menuUserHelper = MenuUserHelper();
   }
 
   @override
@@ -89,7 +226,7 @@ class _NewMenuState extends State<NewMenu> {
     print(_image);
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 40),
+        margin: EdgeInsets.only(top: 22),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -100,8 +237,8 @@ class _NewMenuState extends State<NewMenu> {
               SingleChildScrollView(
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50)),
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
                   child: Container(
                     width: double.infinity,
                     color: Palette.roseBud,
@@ -116,50 +253,67 @@ class _NewMenuState extends State<NewMenu> {
                           margin: EdgeInsets.only(top: 30, left: 20, right: 20),
                           child: ClipRRect(
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              topRight: Radius.circular(50),
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25),
                             ),
                             child: Container(
                               color: Color(0xffF4F6F6),
                               width: double.infinity,
                               child: Container(
                                   margin: EdgeInsets.only(
-                                      top: 30, left: 40, right: 40, bottom: 10),
+                                      top: 30, left: 25, right: 25, bottom: 10),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text('Menu')),
+                                          child: Text(
+                                            'Menu',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )),
                                       SizedBox(height: 10),
                                       TextField(
+                                          key: _formKey,
+                                          controller: menuController,
+                                          keyboardType: TextInputType.name,
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
+                                                borderSide: BorderSide.none,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
                                               filled: true,
                                               hintText: 'Menu',
                                               fillColor: Colors.white)),
-                                      SizedBox(height: 10),
+                                      SizedBox(height: 15),
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text('Description')),
+                                          child: Text('Description',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       SizedBox(height: 10),
                                       TextField(
+                                          controller: descController,
+                                          keyboardType: TextInputType.name,
                                           maxLines: 5,
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
+                                                borderSide: BorderSide.none,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
                                               filled: true,
                                               hintText: 'Description',
                                               fillColor: Colors.white)),
-                                      SizedBox(height: 10),
+                                      SizedBox(height: 15),
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text('Add Image')),
+                                          child: Text('Add Image',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       Column(children: <Widget>[
                                         SizedBox(height: 10),
                                         Row(
@@ -225,10 +379,13 @@ class _NewMenuState extends State<NewMenu> {
                                           ],
                                         )
                                       ]),
-                                      SizedBox(height: 10),
+                                      SizedBox(height: 15),
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text('Main ingredient')),
+                                          child: Text('Main ingredient',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                       SizedBox(height: 10),
                                       CupertinoButton(
                                         child: Text(
@@ -267,14 +424,22 @@ class _NewMenuState extends State<NewMenu> {
                                                         children: <Widget>[
                                                           CupertinoButton(
                                                               child: Text(
-                                                                  'Cancel'),
+                                                                  'Cancel',
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
                                                               onPressed: () {
                                                                 Navigator.pop(
                                                                     context);
                                                               }),
                                                           CupertinoButton(
-                                                            child:
-                                                                Text('confirm'),
+                                                            child: Text(
+                                                                'confirm',
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
                                                             onPressed: () {
                                                               setState(() {
                                                                 _confirmedIngredient =
@@ -313,6 +478,8 @@ class _NewMenuState extends State<NewMenu> {
                                                                 _selectedIngredient =
                                                                     ingredients[
                                                                         value];
+                                                                print(
+                                                                    _selectedIngredient);
                                                               });
                                                             },
                                                             children:
@@ -374,23 +541,24 @@ class _NewMenuState extends State<NewMenu> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: <Widget>[
-                                            TextButton(
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Text('Next'),
-                                                    Icon(
-                                                        Icons.arrow_forward_ios)
-                                                  ],
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                          child: RecipeStep1(),
-                                                          type:
-                                                              PageTransitionType
-                                                                  .rightToLeft));
-                                                })
+                                            // TextButton(
+                                            //     child: Row(
+                                            //       children: <Widget>[
+                                            //         Text('Next'),
+                                            //         Icon(
+                                            //             Icons.arrow_forward_ios)
+                                            //       ],
+                                            //     ),
+                                            //     onPressed: () {
+                                            //       Navigator.push(
+                                            //           context,
+                                            //           PageTransition(
+                                            //               child: RecipeStep1(),
+                                            //               type:
+                                            //                   PageTransitionType
+                                            //                       .rightToLeft));
+                                            //     })
+                                            buildnextBtn(),
                                           ])
                                     ],
                                   )),

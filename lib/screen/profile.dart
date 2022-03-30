@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hewa/models/recipe_model.dart';
+import 'package:hewa/models/Recipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';

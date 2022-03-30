@@ -16,6 +16,7 @@ class MenuHelper {
 
   final String idColumn = 'id';
   final String nameMenuColumn = 'nameMenu';
+  final String descMenuColumn = 'descMenu';
   final String mainIngredientColumn = 'mainIngredient';
   final String methodidColumn = 'methodid';
   final String userIDColumn = 'userID';
@@ -28,7 +29,7 @@ class MenuHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt), $methodidColumn INTEGER'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt), $methodidColumn INTEGER'),
         version: version);
   }
 
@@ -172,7 +173,13 @@ class MenuHelper {
     Database database = await connectedDatabase();
     try {
       database.update(tableDatabase, menuModel.toJson(),
-          where: '${idColumn} = ?', whereArgs: [menuModel.id]);
+          where:
+              '${nameMenuColumn} = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
+          whereArgs: [
+            menuModel.nameMenu,
+            menuModel.descMenu,
+            menuModel.mainIngredient
+          ]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
@@ -188,6 +195,12 @@ class MenuHelper {
       menuModels.add(menuModel);
     }
     return menuModels;
+  }
+
+  Future<int> insert(MenuModel menuModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, menuModel.toJson());
+    return results;
   }
 
   Future<List<MenuModel>> readDataFromSQLiteWhereId(String id) async {

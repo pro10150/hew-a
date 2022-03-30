@@ -39,6 +39,12 @@ class ReIngredHelper {
     }
   }
 
+  Future<int> insert(ReIngredModel reIngredModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, reIngredModel.toJson());
+    return results;
+  }
+
   Future<Null> initInsertDataToSQLite() async {
     var ingred = [
       {"recipeId": 1, "ingredId": 3},

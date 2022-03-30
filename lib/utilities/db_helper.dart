@@ -32,9 +32,13 @@ class DBHelper {
     await deleteDatabase(join(await getDatabasesPath(), nameDatabase));
   }
 
+
   Future<Database> database() async {
+    String dbPath = join(await getDatabasesPath(), nameDatabase);
+    print('db location : '+dbPath);
     return openDatabase(
-      join(await getDatabasesPath(), nameDatabase),
+      // join(await getDatabasesPath(), nameDatabase),
+      dbPath,
       onCreate: (db, version) => {_createDb(db)},
       version: 1,
     );

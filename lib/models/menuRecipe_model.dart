@@ -3,7 +3,7 @@ class MenuRecipeModel {
   String? uid;
   String? recipeUid;
   String? nameMenu;
-  String? mainIngredient;
+  int? mainIngredient;
   String? userID;
   String? menuImage;
   String? recipeName;

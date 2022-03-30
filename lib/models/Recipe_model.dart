@@ -1,5 +1,6 @@
 class RecipeModel {
-  String? recipeUid;
+  String? id;
+  String? uid;
   int? menuId;
   String? recipeName;
   String? description;
@@ -12,7 +13,8 @@ class RecipeModel {
   double? fat;
 
   RecipeModel(
-      {required this.recipeUid,
+      {this.id,
+      required this.uid,
       required this.menuId,
       this.recipeName,
       this.description,
@@ -25,7 +27,8 @@ class RecipeModel {
       required this.fat});
 
   RecipeModel.fromJson(Map<String, dynamic> json) {
-    recipeUid = json['recipeUid'];
+    id = json['id'];
+    uid = json['uid'];
     menuId = json['menuId'];
     recipeName = json['recipeName'];
     description = json['description'];
@@ -40,7 +43,8 @@ class RecipeModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['recipeUid'] = this.recipeUid;
+    data['id'] = this.id;
+    data['uid'] = this.uid;
     data['menuId'] = this.menuId;
     data['recipeName'] = this.recipeName;
     data['description'] = this.description;

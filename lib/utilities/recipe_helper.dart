@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:hewa/models/recipe_model.dart';
+import 'package:hewa/models/Recipe_model.dart';
 import 'package:http/http.dart' as http;
 
 import 'db_helper.dart';
@@ -15,7 +15,6 @@ class RecipeHelper {
 
   final String idColumn = 'id';
   final String uidColumn = 'uid';
-  final String recipeUidColumn = 'recipeUid';
   final String nameMenuColumn = 'nameMenu';
   final String recipeNameColumn = 'recipeName';
   final String descriptionColumn = 'description';
@@ -425,7 +424,7 @@ class RecipeHelper {
     try {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
-            recipeUid: uid,
+            uid: uid,
             menuId: menuId[index] + 1,
             calories: calories[index],
             carb: carb[index],
@@ -446,10 +445,16 @@ class RecipeHelper {
     try {
       database.update(tableDatabase, recipeModel.toJson(),
           where: '${uidColumn} = ? AND ${recipeNameColumn} = ?',
-          whereArgs: [recipeModel.recipeUid, recipeModel.recipeName]);
+          whereArgs: [recipeModel.uid, recipeModel.recipeName]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
+  }
+
+  Future<int> insert(RecipeModel recipeModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, recipeModel.toJson());
+    return results;
   }
 
   Future<List<RecipeModel>> readlDataFromSQLite() async {
@@ -468,7 +473,7 @@ class RecipeHelper {
     Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
     List<Map<String, dynamic>> maps = await database
-        .query(tableDatabase, where: '$recipeUidColumn = ?', whereArgs: [id]);
+        .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
