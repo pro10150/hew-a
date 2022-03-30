@@ -70,12 +70,12 @@ class _userReportState extends State<userReport> {
                 ),
               ),
             ),
-              Expanded(
-                child: _buildListReport(context),
-              ),
-            ],
+            Expanded(
+              child: _buildListReport(context),
             ),
-          ),
+          ],
+        ),
+      ),
       //ข้างล่าง
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xffffab91),
@@ -85,43 +85,36 @@ class _userReportState extends State<userReport> {
               Icons.people,
               color: Colors.white,
             ),
-            title: Text(
-              "User",
-              style: TextStyle(color: Colors.white),
-            ),
+            label: "User",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.people,
               color: Colors.white,
             ),
-            title: Text(
-              "Recipe",
-              style: TextStyle(color: Colors.white),
-            ),
+            label: "Recipe",
           ),
         ],
       ),
     );
   }
-  Widget _buildListReport(BuildContext context){
-  return ListView.builder(
-      itemCount: 10, 
-      itemBuilder: (_, index){
+
+  Widget _buildListReport(BuildContext context) {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (_, index) {
         return Card(
           child: ListTile(
             title: Text("iwanttosleep10hrchallenge"),
             subtitle: Text("somethinpullfromDB"),
             leading: CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                  "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")
-                  ),
+                radius: 50,
+                backgroundImage: NetworkImage(
+                    "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")),
             trailing: Icon(Icons.arrow_forward),
-            onTap: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => reportDetail()));
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => reportDetail()));
             },
           ),
         );

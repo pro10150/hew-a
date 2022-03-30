@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -211,20 +209,25 @@ class _reportDetailState extends State<reportDetail> {
                                                     content: Container(),
                                                     actions: <Widget>[
                                                       RaisedButton(
-                                        color: Colors.grey[200],
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 10),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                        child: Text(
-                                          "Dissmiss report",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16),
-                                        ),
-                                        onPressed: () {},
-                                      ),
+                                                        color: Colors.grey[200],
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 15,
+                                                                vertical: 10),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50)),
+                                                        child: Text(
+                                                          "Dissmiss report",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16),
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
                                                     ]);
                                               });
                                         },

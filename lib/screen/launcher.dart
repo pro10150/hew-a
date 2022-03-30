@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -7,6 +8,9 @@ import 'package:hewa/screen/fridge.dart';
 import 'package:hewa/screen/profile.dart';
 import 'package:hewa/screen/search.dart';
 import 'package:hewa/screen/add.dart';
+import 'package:hewa/screen/report/navbar.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
 
 class Launcher extends StatefulWidget {
   static const routeName = '/';
@@ -21,6 +25,7 @@ class Launcher extends StatefulWidget {
 
 class _LauncherState extends State<Launcher> {
   int _selectedIndex = 0;
+  var _auth = FirebaseAuth.instance;
   final List<Widget> _pageWidget = <Widget>[
     const Home(),
     const Search(),
@@ -40,10 +45,28 @@ class _LauncherState extends State<Launcher> {
     BottomNavigationBarItem(icon: Icon(MdiIcons.account), label: 'Profile'),
   ];
 
+  getAdmin() async {
+    var userModel =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    if (userModel.first.isAdmin == 1) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ReportLauncher()));
+      });
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAdmin();
   }
 
   @override

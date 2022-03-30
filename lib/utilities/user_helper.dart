@@ -15,6 +15,7 @@ class UserHelper {
   final String imageColumn = 'image';
   final String ingredientsColumn = 'ingredients';
   final String kitchenwaresColumn = 'kitchenwares';
+  final String isAdminColumn = 'isColumn';
   // final String AllergyID = 'AllergyID';
   // final String AllergyName = 'AllergyName';
   // final String RecipeID = 'RecipeID';
@@ -76,6 +77,13 @@ class UserHelper {
         print('e insertData ==>> ${e.toString()}');
       }
     });
+    UserModel userModel = UserModel(
+        uid: "j3I1vMW7xLPCnT3t1L3zUyEw0Ne2", username: "admin", isAdmin: 1);
+    try {
+      database.insert(tableDatabase, userModel.toJson());
+    } catch (e) {
+      print('e insertData ==>> ${e.toString()}');
+    }
   }
 
   Future<Null> updateDataToSQLite(UserModel userModel) async {
