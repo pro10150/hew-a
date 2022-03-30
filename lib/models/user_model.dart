@@ -7,6 +7,7 @@ class UserModel {
   String? image;
   int? ingredients;
   int? kitchenwares;
+  int? isAdmin;
 
   UserModel(
       {required this.uid,
@@ -14,7 +15,8 @@ class UserModel {
       required this.username,
       this.image,
       this.ingredients,
-      this.kitchenwares});
+      this.kitchenwares,
+      this.isAdmin});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -23,6 +25,7 @@ class UserModel {
     image = json['image'];
     ingredients = json['ingredients'];
     kitchenwares = json['kitchenwares'];
+    isAdmin = json['isAdmin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -33,6 +36,7 @@ class UserModel {
     data['image'] = this.image;
     data['ingredients'] = this.ingredients;
     data['kitchenwares'] = this.kitchenwares;
+    data['isAdmin'] = this.isAdmin;
 
     return data;
   }

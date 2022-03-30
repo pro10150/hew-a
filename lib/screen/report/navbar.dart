@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'user_report.dart';
 
-class luncher extends StatefulWidget {
-  static const routeName='/';
-  const luncher({ Key? key }) : super(key: key);
+class ReportLauncher extends StatefulWidget {
+  static const routeName = '/';
+  const ReportLauncher({Key? key}) : super(key: key);
 
   @override
-  _luncherState createState() => _luncherState();
+  _ReportLauncher createState() => _ReportLauncher();
 }
 
-class _luncherState extends State<luncher> {
+class _ReportLauncher extends State<ReportLauncher> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: userReport()
-    );
+    return Container(child: userReport());
   }
 }

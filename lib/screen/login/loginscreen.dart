@@ -6,8 +6,11 @@ import 'package:page_transition/page_transition.dart';
 import 'regscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hewa/screen/launcher.dart';
+import 'package:hewa/screen/report/navbar.dart';
+import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
+import 'package:hewa/utilities/user_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/';
@@ -25,11 +28,22 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future checkAuth(BuildContext context) async {
     if (_auth.currentUser != null) {
+      // List<UserModel> userModel =
+      //     await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+      // print(userModel.first.isAdmin);
+      // if (userModel.first.isAdmin == 1) {
+      //   print("isAdmin");
+      //   Future.delayed(const Duration(milliseconds: 500), () {
+      //     Navigator.pushReplacement(
+      //         context, MaterialPageRoute(builder: (context) => Launcher()));
+      //   });
+      // } else {
       print('Already signed-in with');
       Future.delayed(const Duration(milliseconds: 500), () {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Launcher()));
       });
+      // }
     }
   }
 
@@ -217,9 +231,9 @@ class LoginScreenState extends State<LoginScreen> {
     Future.delayed(const Duration(milliseconds: 600), () {
       checkAuth(context);
 
-      // DBHelper().deleteDB();
+      DBHelper().deleteDB();
       DBHelper().database();
-      // DBHelper().initInsert();
+      DBHelper().initInsert();
       _passwordVisible = false;
     });
   }
