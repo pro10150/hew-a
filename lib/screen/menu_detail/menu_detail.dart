@@ -19,6 +19,8 @@ import 'package:hewa/models/reImage_model.dart';
 import 'package:hewa/utilities/reImage_helper.dart';
 import 'package:hewa/models/userKitch_model.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
+import 'package:hewa/models/view_model.dart';
+import 'package:hewa/utilities/view_helper.dart';
 
 class MenuDetail extends StatefulWidget {
   MenuDetail(this.object) {
@@ -116,7 +118,7 @@ class _MenuDetailState extends State<MenuDetail> {
     var ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menuRecipeModel!.menuImage! + '.jpeg');
+        .child(menuRecipeModel!.menuImage!);
     var url = await ref.getDownloadURL();
     setState(() {
       urls.add(url);
@@ -275,6 +277,11 @@ class _MenuDetailState extends State<MenuDetail> {
                           children: <Widget>[
                             GFButton(
                               onPressed: () {
+                                ViewModel viewModel = ViewModel(
+                                    uid: _auth.currentUser!.uid,
+                                    recipeId: menuRecipeModel!.id!,
+                                    isView: 1);
+                                ViewHelper().insertDataToSQLite(viewModel);
                                 showModalBottomSheet<void>(
                                     isScrollControlled: true,
                                     backgroundColor: Colors.transparent,
