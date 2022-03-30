@@ -455,9 +455,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       tabs: [
                         Tab(
                           icon: Icon(Icons.menu_book),
+                          text: "My recipe",
                         ),
                         Tab(
                           icon: Icon(Icons.favorite),
+                          text: "Favorite",
                         ),
                       ],
                       controller: controller,
@@ -527,7 +529,7 @@ class recipes extends StatelessWidget {
     ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menuRecipeModel.menuImage! + '.jpeg');
+        .child(menuRecipeModel.menuImage!);
     url = ref.getDownloadURL();
   }
   MenuRecipeModel menuRecipeModel;
@@ -563,7 +565,8 @@ class recipes extends StatelessWidget {
                   //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
                   //   ],
                   // ),
-                  )
+                  ),
+              Text(menuRecipeModel.nameMenu!)
             ];
           } else {
             children = <Widget>[CircularProgressIndicator()];

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/commentLike_model.dart';
@@ -16,14 +19,16 @@ class LikeHelper {
   }
 
   Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    await openDatabase(join(appDocDir.path, nameDatabase),
         onCreate: (db, version) => db.execute(
             'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $commentIdColumn TEXT)'),
         version: version);
   }
 
   Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    return openDatabase(join(appDocDir.path, nameDatabase));
   }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส

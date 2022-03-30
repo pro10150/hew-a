@@ -1,12 +1,15 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:hewa/screen/menu_detail/menu_detail.dart';
 import 'package:hewa/screen/profile.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hewa/screen/profile/otherPeople.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hewa/screen/comment.dart';
+import 'report.dart';
 import 'package:like_button/like_button.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
@@ -18,15 +21,17 @@ import 'package:hewa/models/comment_model.dart';
 import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
+import 'package:hewa/models/user_model.dart';
 
 class ActionsToolbar extends StatelessWidget {
-  ActionsToolbar(this.menuRecipeModel);
+  ActionsToolbar(this.menuRecipeModel, this.userModel);
   MenuRecipeModel menuRecipeModel;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLiked = false;
   late Future<List<LikeModel>> likes;
   late Future<List<CommentModel>> comments;
-  Future<List<UserModel>>? userModel;
+  Future<List<UserModel>>? userModels;
+  UserModel userModel;
   Future<String>? url;
   getLike() {
     var objects = LikeHelper()
@@ -43,7 +48,7 @@ class ActionsToolbar extends StatelessWidget {
   getUserProfile() {
     var user =
         UserHelper().readDataFromSQLiteWhereId(menuRecipeModel.recipeUid!);
-    userModel = user;
+    userModels = user;
   }
 
   like() {
@@ -138,7 +143,7 @@ class ActionsToolbar extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return OtherProfile();
+              return OtherProfile(url, menuRecipeModel.recipeUid!);
             }));
           },
           child: Container(
@@ -189,7 +194,7 @@ class ActionsToolbar extends StatelessWidget {
           Column(
             children: [
               FutureBuilder<List<UserModel>>(
-                  future: userModel,
+                  future: userModels,
                   builder: (context, snapshot) {
                     List<Widget> children = [];
                     if (snapshot.hasData) {
@@ -322,7 +327,9 @@ class ActionsToolbar extends StatelessWidget {
                     return Column(children: children);
                   }),
               RawMaterialButton(
-                  onPressed: _shareContent,
+                  onPressed: () {
+                    _shareContent(context, userModel, menuRecipeModel);
+                  },
                   child: _getSocialAction(
                       title: 'Share', icon: MdiIcons.shareOutline)),
             ],
@@ -344,9 +351,113 @@ Future<bool> changedata(status) async {
 
 navigateToProfilePage(BuildContext context) {}
 
-void _shareContent() {
-  Share.share('check out my website https://example.com',
-      subject: 'Look what I made!');
+void _shareContent(BuildContext context, UserModel userModel,
+    MenuRecipeModel menuRecipeModel) {
+  showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(40.0),
+      ),
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (BuildContext context,
+            StateSetter setModalState /*You can rename this!*/) {
+          return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Text("Menu",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+            Container(
+                margin: EdgeInsets.only(top: 30, bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.facebook,
+                          size: 50,
+                        ),
+                        label: Container()),
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.instagram,
+                          size: 50,
+                        ),
+                        label: Container()),
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.twitter,
+                          size: 50,
+                        ),
+                        label: Container()),
+                    TextButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(FontAwesomeIcons.twitch, size: 50),
+                        label: Container()),
+                  ],
+                )),
+            const Divider(
+              color: Colors.grey,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20, left: 20),
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Column(children: [
+                  MaterialButton(
+                    onPressed: () {
+                      print(userModel.username);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ReportPage(userModel, menuRecipeModel)),
+                      );
+                    },
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    child: Icon(
+                      Icons.flag,
+                      size: 24,
+                    ),
+                    padding: EdgeInsets.all(16),
+                    shape: CircleBorder(),
+                  ),
+                  Text("Report")
+                ]),
+                Column(children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: Colors.pink,
+                    textColor: Colors.white,
+                    child: Icon(
+                      FontAwesomeIcons.heartBroken,
+                      size: 24,
+                    ),
+                    padding: EdgeInsets.all(16),
+                    shape: CircleBorder(),
+                  ),
+                  Text("Not Interested")
+                ])
+              ]),
+            ),
+          ]);
+        });
+      });
+  // Share.share('check out my website https://example.com',
+  //     subject: 'Look what I made!');
 }
 
 void navigateTocommentPage(
@@ -365,6 +476,6 @@ void navigateTocommentPage(
                 child: commentPage(comments)));
       });
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //   return commentPage();
+  //   return commentPage(comments);
   // }));
 }

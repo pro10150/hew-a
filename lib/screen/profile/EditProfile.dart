@@ -90,7 +90,8 @@ class _EditProfileState extends State<EditProfile> {
     //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     uploadTask = ref.putFile(io.File(_imageFile!.path), metadata);
     UserModel targetUser = user[0];
-    targetUser.name = nameController.value.text;
+    if (nameController.value.text != "")
+      targetUser.name = nameController.value.text;
     targetUser.username = usernameController.value.text;
     targetUser.image = fileName;
     _auth.currentUser?.updateDisplayName(targetUser.name);

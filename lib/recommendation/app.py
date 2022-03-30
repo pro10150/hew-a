@@ -5,21 +5,30 @@ import base64
 app = Flask(__name__)
 
 
-@app.route('/recommendation', methods=['GET'])
+@app.route('/recommendation', methods=['POST'])
 def index():
     uid = request.args.get('uid')
-    databaseLocation = request.args.get('databaseLocation')
-    databaseLocation = base64.b64decode(
-        databaseLocation).decode("utf-8", "ignore")
-    print(databaseLocation)
-    result = rcm.getRecommendations(databaseLocation, uid)
-    # print(result)
+    data = request.get_json()
+    result = rcm.getRecommendations(data, uid)
+    print(result)
     return jsonify({'uid': uid, 'recommendation': result})
 
 
 @app.route('/test', methods=['GET'])
 def test():
     return jsonify({'greeting': 'Hi'})
+
+
+@app.route('/post_test', methods=['POST'])
+def post_test():
+    return jsonify({'greeting': 'Hi'})
+
+
+@app.route('/get_recommendation', methods=['POST'])
+def get_recommendation():
+    data = request.form
+    print(type(data))
+    return jsonify
 
 
 if __name__ == "__main__":
