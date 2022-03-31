@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/Recipe_model.dart';
@@ -15,6 +16,7 @@ class RecipeHelper {
 
   final String idColumn = 'id';
   final String uidColumn = 'uid';
+  final String recipeUidColumn = 'recipeUid';
   final String nameMenuColumn = 'nameMenu';
   final String recipeNameColumn = 'recipeName';
   final String descriptionColumn = 'description';
@@ -51,6 +53,12 @@ class RecipeHelper {
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
+  }
+
+  Future<int> insert(RecipeModel recipeModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, recipeModel.toJson());
+    return results;
   }
 
   Future<Null> initInsertDataToSqlite() async {
@@ -424,7 +432,8 @@ class RecipeHelper {
     try {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
-            uid: uid,
+            recipeUid: uid,
+            recipeName: "Test",
             menuId: menuId[index] + 1,
             calories: calories[index],
             carb: carb[index],
@@ -445,16 +454,10 @@ class RecipeHelper {
     try {
       database.update(tableDatabase, recipeModel.toJson(),
           where: '${uidColumn} = ? AND ${recipeNameColumn} = ?',
-          whereArgs: [recipeModel.uid, recipeModel.recipeName]);
+          whereArgs: [recipeModel.recipeUid, recipeModel.recipeName]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
-  }
-
-  Future<int> insert(RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
-    var results = database.insert(tableDatabase, recipeModel.toJson());
-    return results;
   }
 
   Future<List<RecipeModel>> readlDataFromSQLite() async {
@@ -473,7 +476,7 @@ class RecipeHelper {
     Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
     List<Map<String, dynamic>> maps = await database
-        .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+        .query(tableDatabase, where: '$recipeUidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
@@ -537,7 +540,7 @@ class RecipeHelper {
     } else {
       List<Map<String, dynamic>> maps = await database.query(tableDatabase,
           where:
-              '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
+          '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
           whereArgs: recommendation);
       for (var map in maps) {
         RecipeModel recipeModel = RecipeModel.fromJson(map);

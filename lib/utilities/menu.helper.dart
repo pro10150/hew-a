@@ -29,7 +29,7 @@ class MenuHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt), $methodidColumn INTEGER'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT, $methodidColumn INTEGER'),
         version: version);
   }
 
@@ -169,16 +169,15 @@ class MenuHelper {
     });
   }
 
+
   Future<Null> updateDataToSQLite(MenuModel menuModel) async {
     Database database = await connectedDatabase();
     try {
       database.update(tableDatabase, menuModel.toJson(),
           where:
-              '${nameMenuColumn} = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
+              '$idColumn = ?',
           whereArgs: [
-            menuModel.nameMenu,
-            menuModel.descMenu,
-            menuModel.mainIngredient
+            menuModel.id,
           ]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
@@ -196,6 +195,27 @@ class MenuHelper {
     }
     return menuModels;
   }
+
+  Future<List<MenuModel>> readDataFromSQLiteMenu(MenuModel menuModel) async {
+    Database database = await connectedDatabase();
+    List<MenuModel> menuModels = [];
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where:
+        '$nameMenuColumn = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
+        whereArgs: [
+          menuModel.nameMenu,
+          menuModel.descMenu,
+          menuModel.mainIngredient
+        ]
+    );
+    for (var map in maps) {
+      MenuModel menuModel = MenuModel.fromJson(map);
+      menuModels.add(menuModel);
+    }
+    return menuModels;
+  }
+
 
   Future<int> insert(MenuModel menuModel) async {
     Database database = await connectedDatabase();

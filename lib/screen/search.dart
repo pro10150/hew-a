@@ -93,7 +93,7 @@ class _SearchState extends State<Search> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(filter[index].menuImage! + '.jpeg');
+        .child(filter[index].menuImage!);
     var url = ref.getDownloadURL();
 
     return FutureBuilder<String>(

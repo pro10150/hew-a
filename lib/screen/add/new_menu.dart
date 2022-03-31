@@ -30,6 +30,7 @@ class NewMenu extends StatefulWidget {
 List<String> ingredients = [];
 List<IngredModel> ingredModel = [];
 
+
 class _NewMenuState extends State<NewMenu> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // TextEditingController menuController = TextEditingController();
@@ -46,21 +47,29 @@ class _NewMenuState extends State<NewMenu> {
   // menuController.text = menuRecipeModel?.nameMenu!;
   // descController.text = menuRecipeModel?.description;
 
-  File? _image;
+  File? _image = null;
   final picker = ImagePicker();
 
-  Future getImage() async {
-    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      if (pickedFile != null) {
-        print(pickedFile);
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
+      _image = File(pickedFile!.path);
     });
   }
+
+  // Future getImage() async {
+  //   XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       print(pickedFile);
+  //       _image = File(pickedFile.path);
+  //     } else {
+  //       print('No image selected.');
+  //     }
+  //   });
+  // }
 
   String _confirmedIngredient = 'Select Ingredient';
   String _selectedIngredient = '';
@@ -87,12 +96,14 @@ class _NewMenuState extends State<NewMenu> {
     firebase_storage.UploadTask uploadTask;
     //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     uploadTask = ref.putFile(io.File(_image!.path), metadata);
-    MenuModel targetMenu = menu[0];
+    var objects = await MenuHelper().readDataFromSQLiteMenu(menu[0]);
+    MenuModel targetMenu = objects.first;
     print(menu[0]);
-    targetMenu.nameMenu = menuController.value.text;
+    print(targetMenu.mainIngredient.runtimeType);
+    // targetMenu.nameMenu = menuController.value.text;
     targetMenu.menuImage = fileName;
     print(menu[0].menuImage);
-    _auth.currentUser?.updateDisplayName(targetMenu.nameMenu);
+    // _auth.currentUser?.updateDisplayName(targetMenu.nameMenu);
     MenuHelper().updateDataToSQLite(targetMenu);
 
     firebase_storage.UploadTask task = await Future.value(uploadTask);
@@ -197,9 +208,9 @@ class _NewMenuState extends State<NewMenu> {
     return RaisedButton(
       // onPressed: () {},
       onPressed: () {
-        // createMenus();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+        createMenus();
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
       },
       textColor: Colors.white,
       color: Colors.black,
@@ -320,7 +331,7 @@ class _NewMenuState extends State<NewMenu> {
                                           children: <Widget>[
                                             InkWell(
                                               onTap: () {
-                                                getImage();
+                                                pickImage();
                                               },
                                               child: _image != null
                                                   ? ClipRRect(

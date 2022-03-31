@@ -115,7 +115,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     // String desc2menu = desc2Controller.text;
 
     RecipeModel recipeModel = RecipeModel(
-        uid: _auth.currentUser!.uid,
+        recipeUid: _auth.currentUser!.uid,
         recipeName: recipemenu,
         description: desc1menu,
         menuId: menuModel!.id,
@@ -141,7 +141,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
   createKits() async {
     for (var i = 0; i < _selectedKitchenware.length; i++) {
       ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-          recipeId: recipeModel!.id,
+          recipeId: '',
           kitchenwareId: kitchenwareModel
               .where((element) => element.nameKitc == _selectedKitchenware[i])
               .first
@@ -164,7 +164,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
     for (var i = 0; i < _selectedIngredients.length; i++) {
       ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: recipeModel!.id,
+          recipeId: '',
           ingredientId: ingredModel
               .where((element) => element.name == _selectedIngredients[i])
               .first
@@ -3487,23 +3487,23 @@ class _DynamicWidgetState extends State<DynamicWidget> {
     });
   }
 
-  createReStep() async {
-    String descStep = descStepController.text;
-
-    ReStepModel reStepModel = ReStepModel(
-        recipeId: recipeModel!.id,
-        step: stepModel!.step,
-        description: descStep);
-
-    int resulStep;
-    resulStep = await ReStepHelper().insert(reStepModel);
-
-    if (resulStep != 0) {
-      print('Success');
-    } else {
-      print('Failed');
-    }
-  }
+  // createReStep() async {
+  //   String descStep = descStepController.text;
+  //
+  //   ReStepModel reStepModel = ReStepModel(
+  //       recipeId: recipeModel!.id,
+  //       step: stepModel!.step,
+  //       description: descStep);
+  //
+  //   int resulStep;
+  //   resulStep = await ReStepHelper().insert(reStepModel);
+  //
+  //   if (resulStep != 0) {
+  //     print('Success');
+  //   } else {
+  //     print('Failed');
+  //   }
+  // }
 
   // Future uploadImageToFirebase(BuildContext context) async {
   //   String fileName = p.basename(_image!.path);
