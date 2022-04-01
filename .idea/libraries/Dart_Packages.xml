@@ -317,6 +317,13 @@
             </list>
           </value>
         </entry>
+        <entry key="get">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="getwidget">
           <value>
             <list>
@@ -740,6 +747,7 @@
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_slidable-1.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_switch-0.3.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.2.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/get-4.6.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/getwidget-2.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib" />

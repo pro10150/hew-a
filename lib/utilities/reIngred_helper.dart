@@ -587,7 +587,7 @@ class ReIngredHelper {
     try {
       ingred.forEachIndexed((index, element) {
         ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: element['recipeId'].toString(),
+          recipeId: element['recipeId'] as int,
           ingredientId: element['ingredId'] as int,
         );
         if (element['amount'] != null) {
@@ -627,6 +627,17 @@ class ReIngredHelper {
       reIngredModels.add(reIngredModel);
     }
     return reIngredModels;
+  }
+
+  Future<Null> updateDataToSQLite(ReIngredModel reIngredModel) async {
+    Database database = await connectedDatabase();
+    try {
+      database.update(tableDatabase, reIngredModel.toJson(),
+          where: '${recipeIdColumn} = ? AND ${ingredientIdColumn} = ?',
+          whereArgs: [reIngredModel.recipeId, reIngredModel.ingredientId]);
+    } catch (e) {
+      print('e updataData ==>> ${e.toString()}');
+    }
   }
 
   Future<Null> deleteDataWhere(String recipeId, String kitchenware) async {

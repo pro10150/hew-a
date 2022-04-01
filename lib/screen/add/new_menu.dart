@@ -94,16 +94,13 @@ class _NewMenuState extends State<NewMenu> {
         contentType: 'image/jpeg',
         customMetadata: {'picked-file-path': fileName});
     firebase_storage.UploadTask uploadTask;
-    //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     uploadTask = ref.putFile(io.File(_image!.path), metadata);
     var objects = await MenuHelper().readDataFromSQLiteMenu(menu[0]);
     MenuModel targetMenu = objects.first;
     print(menu[0]);
     print(targetMenu.mainIngredient.runtimeType);
-    // targetMenu.nameMenu = menuController.value.text;
     targetMenu.menuImage = fileName;
     print(menu[0].menuImage);
-    // _auth.currentUser?.updateDisplayName(targetMenu.nameMenu);
     MenuHelper().updateDataToSQLite(targetMenu);
 
     firebase_storage.UploadTask task = await Future.value(uploadTask);
@@ -145,30 +142,6 @@ class _NewMenuState extends State<NewMenu> {
     }
   }
 
-  // createMenu() async{
-  //   String namemenu = menuController.text;
-  //   String descmenu = descController.text;
-  //   MenuUserModel menuUserModel = MenuUserModel(nameMenu:  namemenu, description: descmenu);
-  //   var response = await MenuUserHelper().insertDataToSQLite(menuUserModel);
-  //   if (response != 0) {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Insert data success : ${response}")));
-  //   }else {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something Wrong!')));
-  //   }
-  //   // menuUserModel?.nameMenu = menuController.text;
-  //   // menuUserModel?.description = descController.text;
-  //
-  //
-  //   // var result = await menuRecipeHelper?.insertDataToSQLite(menuRecipeModel!);
-  //   // print('inserted success: $result');
-  //
-  //
-  //   // MenuRecipeHelper menuRecipeHelper = MenuRecipeHelper();
-  //   // menuRecipeHelper.insert(menuRecipeModel!);
-  //   Navigator.push(context,
-  //       MaterialPageRoute(builder: (context) => RecipeStep1()));
-  //
-  // }
 
   final _formKey = new GlobalKey<FormState>();
 
@@ -208,9 +181,9 @@ class _NewMenuState extends State<NewMenu> {
     return RaisedButton(
       // onPressed: () {},
       onPressed: () {
-        createMenus();
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+        // createMenus();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RecipeStep1()));
       },
       textColor: Colors.white,
       color: Colors.black,

@@ -5,7 +5,7 @@ class ReStepModel {
   String? description;
 
   ReStepModel(
-      {required this.recipeId, required this.step, required this.description});
+      {required this.recipeId, required this.step, required this.description, this.minute});
 
   ReStepModel.fromJson(Map<String, dynamic> json) {
     recipeId = json['recipeId'];

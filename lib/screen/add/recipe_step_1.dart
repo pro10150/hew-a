@@ -3,11 +3,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hewa/models/Recipe_model.dart';
 import 'package:hewa/models/menu_model.dart';
 import 'package:hewa/models/reKitchenware_model.dart';
 import 'package:hewa/models/reStep_model.dart';
 import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
@@ -19,7 +22,7 @@ import 'dart:io' as io;
 import '../../config/palette.dart';
 import 'recipe_step_2.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
-import 'package:hewa/models/Kitch_model.dart';
+import 'package:hewa/models/kitch_model.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
 import 'package:hewa/models/ingred_model.dart';
 import 'package:hewa/utilities/reIngred_helper.dart';
@@ -36,6 +39,8 @@ import 'dart:io';
 import 'dart:core';
 
 class RecipeStep1 extends StatefulWidget {
+  RecipeStep1({Key? key}) : super(key: key);
+
   @override
   _RecipeStep1State createState() => _RecipeStep1State();
 }
@@ -93,7 +98,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
   ReKitchenwareModel? reKitchenwareModel;
   ReKitchenwareHelper? reKitchenwareHelper;
 
-  ReIngredHelper? reIngredHelper;
+
   ReIngredModel? reIngredModel;
 
   MenuHelper? menuHelper;
@@ -139,6 +144,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
   }
 
   createKits() async {
+
+    // print(kitchenwareModel.length);
+
     for (var i = 0; i < _selectedKitchenware.length; i++) {
       ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
           recipeId: '',
@@ -149,12 +157,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
       int resultkitc;
       resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
 
+
       if (resultkitc != 0) {
         print('Success');
       } else {
         print('Failed');
       }
     }
+
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
@@ -164,7 +174,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
     for (var i = 0; i < _selectedIngredients.length; i++) {
       ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: '',
+          recipeId: menuModel!.id,
           ingredientId: ingredModel
               .where((element) => element.name == _selectedIngredients[i])
               .first
@@ -193,6 +203,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
   double _selectedIngredientAmount = 0;
 
   int _widgetId = 1;
+  bool flagEdit = false;
+  bool flagRemove = false;
+  TextEditingController editAmountController = TextEditingController();
 
   Widget _addIngredient() {
     flagAdd = false;
@@ -237,6 +250,165 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     ]),
         ])),
       );
+    });
+  }
+
+  Widget _editIngredient(int index) {
+    flagEdit = false;
+    flagRemove = false;
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Text('Edit ingredient'),
+        content: SingleChildScrollView(
+            child: ListBody(children: <Widget>[
+              Center(),
+              renderEditWidget(),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    TextButton(
+                        onPressed: () {
+                          print('deleted');
+                          flagRemove = true;
+                          Navigator.pop(context);
+                        },
+                        child: Text('Delete')),
+                    TextButton(
+                      onPressed: () {
+                        print(_selectedUnit);
+                        print(editAmountController.text);
+                        flagEdit = true;
+                        Navigator.pop(context);
+                      },
+                      child: Text('Done'),
+                    )
+                  ])
+            ])),
+      );
+    });
+  }
+
+  buildEditWidget(int index) {
+    setState(() {
+      editAmountController.text = reingredModel[index].amount!.toString();
+    });
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => _editIngredient(index))
+        .then((value) => setState(() {
+      if (flagEdit == true) {
+        reingredModel[index].unit = _selectedUnit;
+        reingredModel[index].amount =
+            double.parse(editAmountController.text);
+        ReIngredHelper().updateDataToSQLite(reingredModel[index]);
+      }
+      if (flagRemove == true) {
+        ReIngredHelper().deleteDataWhere(_auth.currentUser!.uid,
+            reingredModel[index].ingredientId.toString());
+        setState(() {
+          reingredModel.removeAt(index);
+        });
+      }
+    }));
+  }
+
+  Widget renderEditWidget() {
+    var ingredient = ingredModel
+        .where((element) => element.name == _selectedIngredient)
+        .toList();
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('ingredients')
+        .child(ingredient[0].image.toString() + '.jpg');
+    var url = ref.getDownloadURL();
+    return StatefulBuilder(builder: (context, setState) {
+      return FutureBuilder(
+          future: url,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            List<Widget> children;
+            if (snapshot.hasData) {
+              children = <Widget>[
+                CircleAvatar(
+                    radius: 28,
+                    backgroundImage: NetworkImage(
+                      snapshot.data!,
+                    )),
+                Center(
+                    child: ActionChip(
+                      label: Text(_selectedIngredient),
+                      onPressed: () {},
+                    )),
+                TextField(
+                  controller: editAmountController,
+                  decoration: InputDecoration(hintText: 'Amount'),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+                  ],
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                ),
+                CupertinoButton(
+                    child: Text(
+                        _selectedUnit != '' ? _selectedUnit : 'Select unit'),
+                    onPressed: () {
+                      showCupertinoDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (context) => Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xffffffff),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xff999999),
+                                      width: 0.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    CupertinoButton(
+                                      child: Text('Close'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0,
+                                        vertical: 5.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 320.0,
+                                color: Color(0xfff7f7f7),
+                                child: CupertinoPicker(
+                                  itemExtent: 32,
+                                  backgroundColor: Colors.white,
+                                  onSelectedItemChanged: (int index) {
+                                    setState(() {
+                                      _selectedUnit = units[index];
+                                    });
+                                  },
+                                  children: getPickerItems(units),
+                                ),
+                              )
+                            ],
+                          ));
+                    })
+              ];
+            } else {
+              children = <Widget>[CircularProgressIndicator()];
+            }
+            return Column(
+              children: children,
+            );
+          });
     });
   }
 
@@ -382,7 +554,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                         .id,
                     amount: _selectedIngredientAmount,
                     unit: _selectedUnit == '-' ? '' : _selectedUnit,
-                    recipeId: '');
+                    recipeId: null);
                 int resultIngre;
                 resultIngre = await ReIngredHelper().insert(reIngredModel);
 
@@ -428,149 +600,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
         onPressed: () {});
   }
 
-  // buildAddWidget() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) => _addIngredient())
-  //       .then((value) => setState(() async {
-  //     if (flagAdd == true) {
-  //       for (var i = 0; i < _selectedIngredients.length; i++) {
-  //         ReIngredModel reIngredModel = ReIngredModel(
-  //             ingredientId: ingredModel
-  //                 .where((element) => element.name == _selectedIngredients[i])
-  //                 .first
-  //                 .id,
-  //             amount: _selectedIngredientsCount[i],
-  //             unit: _Unit == '-' ? '' : _Unit, recipeId: '');
-  //
-  //         int resultIngre;
-  //         resultIngre = await ReIngredHelper().insert(reIngredModel);
-  //
-  //         if (resultIngre != 0) {
-  //           print('Success');
-  //         } else {
-  //           print('Failed');
-  //         }
-  //       }
-  //     }
-  //   }));
-  // }
-  //
-  //
-  // Widget _addIngredient() {
-  //   flagAdd = false;
-  //   return StatefulBuilder(builder: (context, setState) {
-  //     return AlertDialog(
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-  //       title: Text('Add new ingredient'),
-  //       content: SingleChildScrollView(
-  //           child: ListBody(children: <Widget>[
-  //             Center(),
-  //             _renderWidget(),
-  //             _widgetId == 1
-  //                 ? TextButton(
-  //                 onPressed: () {
-  //                   print('$_selectedIngredients');
-  //                   setState(() {
-  //                     _updateWidget();
-  //                   });
-  //                 },
-  //                 child: Text('Next'))
-  //                 : Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //                 children: <Widget>[
-  //                   TextButton(
-  //                       onPressed: () {
-  //                         print('$_selectedIngredients');
-  //                         setState(() {
-  //                           _updateWidget();
-  //                         });
-  //                       },
-  //                       child: Text('Back')),
-  //                   TextButton(
-  //                     onPressed: () {
-  //                       print(_selectedIngredients);
-  //                       print(_selectedIngredientsCount);
-  //                       print(_selectedIngredientsUnit);
-  //                       flagAdd = true;
-  //                       Navigator.pop(context);
-  //                     },
-  //                     child: Text('Add'),
-  //                   )
-  //                 ]),
-  //           ])),
-  //     );
-  //   });
-  // }
-  //
-  // Widget renderAutoComplete() {
-  //   return StatefulBuilder(builder: (context, setState) {
-  //     return Autocomplete<String>(onSelected: (String selection) {
-  //       _selectedIngredients = selection as List<String>;
-  //     }, optionsBuilder: (TextEditingValue textEditingValue) {
-  //       if (textEditingValue.text == '') {
-  //         return const Iterable.empty();
-  //       }
-  //       return ingredients.where(
-  //             (element) {
-  //           return element
-  //               .toLowerCase()
-  //               .contains(textEditingValue.text.toLowerCase());
-  //         },
-  //       );
-  //     });
-  //   });
-  // }
-  //
-  //
-  //
-  // void _updateWidget() {
-  //   setState(() {
-  //     _widgetId = _widgetId == 1 ? 2 : 1;
-  //   });
-  // }
-  //
-  // Widget _renderWidget() {
-  //   if (_widgetId == 1) {
-  //     return renderAutoComplete();
-  //   } else {
-  //     return renderAutoComplete();
-  //   }
-  // }
-
-  //page2
-  // createSteps() async {
-  //   String descstep = descstepController.text;
-  //
-  //   ReStepModel reStepModel = ReStepModel(recipeId: stepModel!.recipeID,
-  //       step: stepModel!.step, description: descstep);
-  //   int resultstep;
-  //   resultstep = await ReStepHelper().insert(reStepModel);
-  //
-  //   if (resultstep != 0) {
-  //     print('Success');
-  //   } else {
-  //     print('Failed');
-  //   }
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => RecipeStep1()));
-  // }
-
-  // createImages() async {
-  //   //images
-  //
-  //   MenuModel menuModel = MenuModel(nameMenu: '', mainIngredient: '');
-  //   int result;
-  //   result = await MenuHelper().insert(menuModel);
-  //
-  //   if (result != 0) {
-  //     print('Success');
-  //   } else {
-  //     print('Failed');
-  //   }
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => RecipeStep1()));
-  // }
 
   void addNewKitchenware() {
     setState(() {
@@ -600,10 +629,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
   String _selectedMethod = 'Select method';
   String _selectedType = 'Select type';
 
-  String _selectedKitchenwares = '';
 
   List<String> _selectedKitchenware = ['Select Kitchenware'];
-  List<String> _selectedIngredients = ['Select Ingredient'];
+  List<String> _selectedIngredients = [];
   List<String> _selectedIngredientsUnit = ['Unit'];
   List<double> _selectedIngredientsCount = [0];
 
@@ -615,6 +643,18 @@ class _RecipeStep1State extends State<RecipeStep1> {
       print(model);
       ingredModel.add(model);
       ingredients.add(model.name!);
+    }
+  }
+
+
+  Future<Null> readSQLiteKitch() async {
+    var object = await KitchHelper().readlDataFromSQLite();
+    print('object length ==> ${object.length}');
+    kitchenware.clear();
+    for (var model in object) {
+      print(model);
+      kitchenwareModel.add(model);
+      kitchenware.add(model.nameKitc!);
     }
   }
 
@@ -961,18 +1001,29 @@ class _RecipeStep1State extends State<RecipeStep1> {
     );
   }
 
+  buildIngredChip(int index) {
+    return ActionChip(label: Text(_selectedIngredients[index]), onPressed: () {});
+  }
+
   List<DynamicWidget> listDynamic = [];
 
   addDynamic(int index) {
     listDynamic.add(DynamicWidget());
   }
 
+  // submitStep() {
+  //   listDynamic.forEach((widget) => (widget.dynamicWidgetState.createReStep()));
+  //   setState(() {});
+  //
+  // }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getKitchenware();
+    // getKitchenware();
     readSQLite();
+    readSQLiteKitch();
   }
 
   int _index = 0;
@@ -1044,13 +1095,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     child: const Text('BACK'),
                                   ),
                                   RaisedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_index <= 1) {
                                         setState(() {
                                           _index += 1;
                                         });
                                       }
-                                      // createSteps();
+                                      _DynamicWidgetState.to.createReStep();
+                                      // submitStep();
                                     },
                                     textColor: Colors.white,
                                     color: Colors.black,
@@ -1486,161 +1538,180 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             Column(
                               children: <Widget>[
                                 SizedBox(height: 15),
-                                ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: reingredModel.length,
-                                  itemBuilder: (_, index) {
-                                    return buildIngredBtn(index);
-                                  },
-                                  // return Column(
-                                  //     mainAxisAlignment: MainAxisAlignment.start,
-                                  //     children: <Widget>[
-                                  //       Align(
-                                  //           alignment: Alignment.centerLeft,
-                                  //           child: Text(
-                                  //             'Step $count',
-                                  //             style: TextStyle(
-                                  //                 fontWeight: FontWeight.bold,
-                                  //                 fontSize: 20),
-                                  //           )),
-                                  //       SizedBox(height: 10),
-                                  //       Align(
-                                  //           alignment: Alignment.centerLeft,
-                                  //           child: Text('Description',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))),
-                                  //       SizedBox(height: 15),
-                                  //       TextField(
-                                  //           maxLines: 5,
-                                  //           decoration: InputDecoration(
-                                  //               border: OutlineInputBorder(
-                                  //                 borderSide: BorderSide.none,
-                                  //                 borderRadius: BorderRadius.circular(15),
-                                  //               ),
-                                  //               filled: true,
-                                  //               hintText: 'Description',
-                                  //               fillColor: Colors.white)),
-                                  //       SizedBox(height: 15),
-                                  //       Row(
-                                  //         mainAxisAlignment:
-                                  //         MainAxisAlignment.spaceEvenly,
-                                  //         children: [
-                                  //           // InkWell(
-                                  //           //   onTap: () {
-                                  //           //     getImage();
-                                  //           //   },
-                                  //           //   child: _image != null
-                                  //           //       ? ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Image.file(_image!),
-                                  //           //           ))
-                                  //           //       : ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Icon(Icons.add),
-                                  //           //           )),
-                                  //           // ),
-                                  //           // InkWell(
-                                  //           //   onTap: () {
-                                  //           //     getImage();
-                                  //           //   },
-                                  //           //   child: _image != null
-                                  //           //       ? ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Image.file(_image!),
-                                  //           //           ))
-                                  //           //       : ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Icon(Icons.add),
-                                  //           //           )),
-                                  //           // ),
-                                  //         ],
-                                  //       ),
-                                  //       SizedBox(height: 20),
-                                  //       Row(
-                                  //         mainAxisAlignment:
-                                  //         MainAxisAlignment.spaceEvenly,
-                                  //         children: [
-                                  //           InkWell(
-                                  //             onTap: () {
-                                  //               getImage();
-                                  //             },
-                                  //             child: _image != null
-                                  //                 ? ClipRRect(
-                                  //                 borderRadius:
-                                  //                 BorderRadius.circular(10),
-                                  //                 child: Container(
-                                  //                   width: 120,
-                                  //                   height: 120,
-                                  //                   color: Colors.white,
-                                  //                   child: Image.file(_image!),
-                                  //                 ))
-                                  //                 : ClipRRect(
-                                  //                 borderRadius:
-                                  //                 BorderRadius.circular(10),
-                                  //                 child: Container(
-                                  //                   width: 120,
-                                  //                   height: 120,
-                                  //                   color: Colors.white,
-                                  //                   child: Icon(Icons.add),
-                                  //                 )),
-                                  //           ),
-                                  //           // InkWell(
-                                  //           //   onTap: () {
-                                  //           //     getImage();
-                                  //           //   },
-                                  //           //   child: _image != null
-                                  //           //       ? ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Image.file(_image!),
-                                  //           //           ))
-                                  //           //       : ClipRRect(
-                                  //           //           borderRadius:
-                                  //           //               BorderRadius.circular(10),
-                                  //           //           child: Container(
-                                  //           //             width: 120,
-                                  //           //             height: 120,
-                                  //           //             color: Colors.white,
-                                  //           //             child: Icon(Icons.add),
-                                  //           //           )),
-                                  //           // ),
-                                  //         ],
-                                  //       ),
-                                  //       SizedBox(height: 25),
-                                  //       Row(
-                                  //           mainAxisAlignment:
-                                  //           MainAxisAlignment.spaceBetween,
-                                  //           children: <Widget>[
-                                  //             Text('Timer',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold)),
-                                  //             buildTimer(context),
-                                  //             Text('minute',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))
-                                  //           ])
-                                  //     ]);
-
-                                  shrinkWrap: true,
+                                Container(
+                                  child: Container(
+                                    height: 150,
+                                    child: _selectedIngredients.length != 0
+                                        ? Wrap(
+                                        spacing: 6,
+                                        runSpacing: 6,
+                                        children:
+                                        List.generate(_selectedIngredients.length, (index) {
+                                          return ActionChip(
+                                              label: Text(_selectedIngredients[index]),
+                                              onPressed: () {});
+                                        }))
+                                        : Text(_selectedIngredient),
+                                  ),
                                 ),
+
+
+                                // SizedBox(height: 15),
+                                // ListView.builder(
+                                //   physics: NeverScrollableScrollPhysics(),
+                                //   itemCount: reingredModel.length,
+                                //   itemBuilder: (_, index) {
+                                //     return buildIngredBtn(index);
+                                //   },
+                                //   // return Column(
+                                //   //     mainAxisAlignment: MainAxisAlignment.start,
+                                //   //     children: <Widget>[
+                                //   //       Align(
+                                //   //           alignment: Alignment.centerLeft,
+                                //   //           child: Text(
+                                //   //             'Step $count',
+                                //   //             style: TextStyle(
+                                //   //                 fontWeight: FontWeight.bold,
+                                //   //                 fontSize: 20),
+                                //   //           )),
+                                //   //       SizedBox(height: 10),
+                                //   //       Align(
+                                //   //           alignment: Alignment.centerLeft,
+                                //   //           child: Text('Description',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))),
+                                //   //       SizedBox(height: 15),
+                                //   //       TextField(
+                                //   //           maxLines: 5,
+                                //   //           decoration: InputDecoration(
+                                //   //               border: OutlineInputBorder(
+                                //   //                 borderSide: BorderSide.none,
+                                //   //                 borderRadius: BorderRadius.circular(15),
+                                //   //               ),
+                                //   //               filled: true,
+                                //   //               hintText: 'Description',
+                                //   //               fillColor: Colors.white)),
+                                //   //       SizedBox(height: 15),
+                                //   //       Row(
+                                //   //         mainAxisAlignment:
+                                //   //         MainAxisAlignment.spaceEvenly,
+                                //   //         children: [
+                                //   //           // InkWell(
+                                //   //           //   onTap: () {
+                                //   //           //     getImage();
+                                //   //           //   },
+                                //   //           //   child: _image != null
+                                //   //           //       ? ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Image.file(_image!),
+                                //   //           //           ))
+                                //   //           //       : ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Icon(Icons.add),
+                                //   //           //           )),
+                                //   //           // ),
+                                //   //           // InkWell(
+                                //   //           //   onTap: () {
+                                //   //           //     getImage();
+                                //   //           //   },
+                                //   //           //   child: _image != null
+                                //   //           //       ? ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Image.file(_image!),
+                                //   //           //           ))
+                                //   //           //       : ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Icon(Icons.add),
+                                //   //           //           )),
+                                //   //           // ),
+                                //   //         ],
+                                //   //       ),
+                                //   //       SizedBox(height: 20),
+                                //   //       Row(
+                                //   //         mainAxisAlignment:
+                                //   //         MainAxisAlignment.spaceEvenly,
+                                //   //         children: [
+                                //   //           InkWell(
+                                //   //             onTap: () {
+                                //   //               getImage();
+                                //   //             },
+                                //   //             child: _image != null
+                                //   //                 ? ClipRRect(
+                                //   //                 borderRadius:
+                                //   //                 BorderRadius.circular(10),
+                                //   //                 child: Container(
+                                //   //                   width: 120,
+                                //   //                   height: 120,
+                                //   //                   color: Colors.white,
+                                //   //                   child: Image.file(_image!),
+                                //   //                 ))
+                                //   //                 : ClipRRect(
+                                //   //                 borderRadius:
+                                //   //                 BorderRadius.circular(10),
+                                //   //                 child: Container(
+                                //   //                   width: 120,
+                                //   //                   height: 120,
+                                //   //                   color: Colors.white,
+                                //   //                   child: Icon(Icons.add),
+                                //   //                 )),
+                                //   //           ),
+                                //   //           // InkWell(
+                                //   //           //   onTap: () {
+                                //   //           //     getImage();
+                                //   //           //   },
+                                //   //           //   child: _image != null
+                                //   //           //       ? ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Image.file(_image!),
+                                //   //           //           ))
+                                //   //           //       : ClipRRect(
+                                //   //           //           borderRadius:
+                                //   //           //               BorderRadius.circular(10),
+                                //   //           //           child: Container(
+                                //   //           //             width: 120,
+                                //   //           //             height: 120,
+                                //   //           //             color: Colors.white,
+                                //   //           //             child: Icon(Icons.add),
+                                //   //           //           )),
+                                //   //           // ),
+                                //   //         ],
+                                //   //       ),
+                                //   //       SizedBox(height: 25),
+                                //   //       Row(
+                                //   //           mainAxisAlignment:
+                                //   //           MainAxisAlignment.spaceBetween,
+                                //   //           children: <Widget>[
+                                //   //             Text('Timer',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold)),
+                                //   //             buildTimer(context),
+                                //   //             Text('minute',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))
+                                //   //           ])
+                                //   //     ]);
+                                //
+                                //   shrinkWrap: true,
+                                // ),
                                 // ListView.builder(
                                 //   shrinkWrap: true,
                                 //   physics: NeverScrollableScrollPhysics(),
@@ -2198,8 +2269,15 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 //   }),
                                 IconButton(
                                     onPressed: () {
+                                      setState(() {
+                                        _selectedIngredient = ingredients[0];
+                                        _selectedIngredientAmount = 0;
+                                        _selectedUnit = '';
+                                        _widgetId = 1;
+                                      });
+                                      print(_selectedIngredientsCount);
                                       buildAddWidget();
-                                      addNewIngredients();
+                                      // addNewIngredients();
                                     },
                                     icon: Icon(Icons.add)),
                               ],
@@ -2788,636 +2866,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
             ],
           ),
         ),
-
-        //   body : SingleChildScrollView(
-        //   child: Column(
-        //   mainAxisSize: MainAxisSize.min,
-        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-        //   children: <Widget>[
-        //     // Row(
-        //     //   mainAxisAlignment: MainAxisAlignment.center,
-        //     //   children: <Widget>[
-        //     //     SizedBox(width: 20),
-        //     //     ClipRRect(
-        //     //       borderRadius: BorderRadius.circular(20.0),
-        //     //       child: Image(
-        //     //         image: AssetImage('lib/assets/home/food.png'),
-        //     //         fit: BoxFit.cover,
-        //     //         height: 300,
-        //     //         width: 300,
-        //     //       ),
-        //     //       // decoration:
-        //     //       //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-        //     //     )
-        //     //   ],
-        //     // ),
-        //     SizedBox(height: 25),
-        //     Column(
-        //         children: <Widget>[
-        //       Row(
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           children: <Widget>[
-        //             Container(
-        //               width: 50,
-        //               height: 50,
-        //               decoration: BoxDecoration(
-        //                   color: Colors.black, shape: BoxShape.circle),
-        //               child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.center,
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   children: <Widget>[
-        //                     Text('1', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))
-        //                   ]),
-        //             ),
-        //             Container(
-        //               width: 50,
-        //               height: 2,
-        //               color: Colors.black,
-        //             ),
-        //             Container(
-        //               width: 50,
-        //               height: 50,
-        //               decoration: BoxDecoration(
-        //                   color: Colors.grey[200], shape: BoxShape.circle),
-        //               child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.center,
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   children: <Widget>[
-        //                     Text(
-        //                       '2',
-        //                       style: TextStyle(fontWeight: FontWeight.bold),
-        //                     )
-        //                   ]),
-        //             ),
-        //             Container(
-        //               width: 50,
-        //               height: 2,
-        //               color: Colors.black,
-        //             ),
-        //             Container(
-        //               width: 50,
-        //               height: 50,
-        //               decoration: BoxDecoration(
-        //                   color: Colors.grey[200], shape: BoxShape.circle),
-        //               child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.center,
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   children: <Widget>[
-        //                     Text(
-        //                       '3',
-        //                       style: TextStyle(fontWeight: FontWeight.bold),
-        //                     )
-        //                   ]),
-        //             ),
-        //           ]),
-        //       Container(
-        //           margin: EdgeInsets.all(25),
-        //           child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.start,
-        //             children: <Widget>[
-        //               SizedBox(height: 20),
-        //               Align(
-        //                   alignment: Alignment.centerLeft,
-        //                   child: Text('Recipe',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
-        //               SizedBox(height: 10),
-        //               TextField(
-        //                 controller: recipeController,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Recipe',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 35),
-        //               Align(
-        //                   alignment: Alignment.centerLeft,
-        //                   child: Text('Description',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-        //               SizedBox(height: 10),
-        //               TextField(
-        //                 controller: descController,
-        //                   maxLines: 5,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Description',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 10),
-        //               Row(children: <Widget>[
-        //                 CupertinoButton(
-        //                     child: Text('Select time:',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-        //                     onPressed: () {
-        //                       showModalBottomSheet(
-        //                           context: context,
-        //                           builder: (BuildContext context) {
-        //                             return Container(
-        //                                 height: 200,
-        //                                 color: Colors.white,
-        //                                 child: Row(
-        //                                     crossAxisAlignment:
-        //                                     CrossAxisAlignment.start,
-        //                                     children: <Widget>[
-        //                                       Expanded(
-        //                                         child: CupertinoPicker(
-        //                                             scrollController:
-        //                                             new FixedExtentScrollController(
-        //                                               initialItem:
-        //                                               _selectedHour,
-        //                                             ),
-        //                                             itemExtent: 32.0,
-        //                                             backgroundColor:
-        //                                             Colors.white,
-        //                                             onSelectedItemChanged:
-        //                                                 (int index) {
-        //                                               setState(() {
-        //                                                 _selectedHour = index;
-        //                                               });
-        //                                             },
-        //                                             children: new List<
-        //                                                 Widget>.generate(
-        //                                                 24, (int index) {
-        //                                               return new Center(
-        //                                                 child: new Text(
-        //                                                     '${index}'),
-        //                                               );
-        //                                             })),
-        //                                       ),
-        //                                       Expanded(
-        //                                         child: CupertinoPicker(
-        //                                             scrollController:
-        //                                             new FixedExtentScrollController(
-        //                                               initialItem:
-        //                                               _selectedMinute,
-        //                                             ),
-        //                                             itemExtent: 32.0,
-        //                                             backgroundColor:
-        //                                             Colors.white,
-        //                                             onSelectedItemChanged:
-        //                                                 (int index) {
-        //                                               setState(() {
-        //                                                 _selectedMinute =
-        //                                                     index;
-        //                                               });
-        //                                             },
-        //                                             children: new List<
-        //                                                 Widget>.generate(
-        //                                                 60, (int index) {
-        //                                               return new Center(
-        //                                                 child: new Text(
-        //                                                     '${index}'),
-        //                                               );
-        //                                             })),
-        //                                       ),
-        //                                     ]));
-        //                           });
-        //                     }),
-        //                 Text(
-        //                   '${_selectedHour}:${_selectedMinute}',
-        //                   style: TextStyle(fontSize: 16.0),
-        //                 )
-        //               ]),
-        //               Row(children: <Widget>[
-        //                 CupertinoButton(
-        //                     child: Text('Select method:',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-        //                     onPressed: () {
-        //                       showCupertinoModalPopup(
-        //                           context: context,
-        //                           builder: (_) => Container(
-        //                             width: double.infinity,
-        //                             height: 250,
-        //                             child: CupertinoPicker(
-        //                               backgroundColor: Colors.white,
-        //                               itemExtent: 30,
-        //                               children: getPickerItems(method),
-        //                               onSelectedItemChanged: (value) {
-        //                                 setState(() {
-        //                                   _selectedMethod = method[value];
-        //                                 });
-        //                               },
-        //                             ),
-        //                           ));
-        //                     }),
-        //                 Text(
-        //                   '${_selectedMethod}',
-        //                   style: TextStyle(fontSize: 16.0),
-        //                 )
-        //               ]),
-        //               Row(children: <Widget>[
-        //                 CupertinoButton(
-        //                     child: Text('Select type:',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-        //                     onPressed: () {
-        //                       showCupertinoModalPopup(
-        //                           context: context,
-        //                           builder: (_) => Container(
-        //                             width: double.infinity,
-        //                             height: 250,
-        //                             child: CupertinoPicker(
-        //                               backgroundColor: Colors.white,
-        //                               itemExtent: 30,
-        //                               children: getPickerItems(type),
-        //                               onSelectedItemChanged: (value) {
-        //                                 setState(() {
-        //                                   _selectedType = type[value];
-        //                                 });
-        //                               },
-        //                             ),
-        //                           ));
-        //                     }),
-        //                 Text(
-        //                   '${_selectedType}',
-        //                   style: TextStyle(fontSize: 16.0),
-        //                 ),
-        //               ]),
-        //               SizedBox(height: 35),
-        //               Align(
-        //                   alignment: Alignment.centerLeft,
-        //                   child: Text('Kitchenware',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-        //               Column(children: <Widget>[
-        //                 SizedBox(height: 15),
-        //                 ListView.builder(
-        //                   shrinkWrap: true,
-        //                   physics: NeverScrollableScrollPhysics(),
-        //                   itemCount: _kitchenwareCount,
-        //                   itemBuilder: (BuildContext context, int index) {
-        //                     String currentKitchenWare =
-        //                     _selectedKitchenware[index];
-        //                     return Column(children: <Widget>[
-        //                       TextButton(
-        //                           onPressed: () {
-        //                             setState(() {
-        //                               if (currentKitchenWare !=
-        //                                   'Select Ingredient') {
-        //                                 if (kitchenware.contains(
-        //                                     currentKitchenWare) ==
-        //                                     false) {
-        //                                   kitchenware.insert(
-        //                                       0, currentKitchenWare);
-        //                                 } else {
-        //                                   kitchenware
-        //                                       .remove(currentKitchenWare);
-        //                                   kitchenware.insert(
-        //                                       0, currentKitchenWare);
-        //                                 }
-        //                               }
-        //                             });
-        //                             showCupertinoModalPopup(
-        //                               context: context,
-        //                               builder: (context) {
-        //                                 return Column(
-        //                                   mainAxisAlignment:
-        //                                   MainAxisAlignment.end,
-        //                                   children: <Widget>[
-        //                                     Container(
-        //                                       decoration: BoxDecoration(
-        //                                         color: Color(0xffffffff),
-        //                                         border: Border(
-        //                                           bottom: BorderSide(
-        //                                             color: Color(0xff999999),
-        //                                             width: 0.0,
-        //                                           ),
-        //                                         ),
-        //                                       ),
-        //                                       child: Row(
-        //                                         mainAxisAlignment:
-        //                                         MainAxisAlignment
-        //                                             .spaceBetween,
-        //                                         children: <Widget>[
-        //                                           CupertinoButton(
-        //                                             child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-        //                                             onPressed: () {
-        //                                               Navigator.pop(context);
-        //                                             },
-        //                                             padding: const EdgeInsets
-        //                                                 .symmetric(
-        //                                               horizontal: 16.0,
-        //                                               vertical: 5.0,
-        //                                             ),
-        //                                           ),
-        //                                           CupertinoButton(
-        //                                             child: Text('Confirm',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-        //                                             onPressed: () {
-        //                                               setState(() {
-        //                                                 kitchenware.remove(
-        //                                                     currentKitchenWare);
-        //                                                 _selectedKitchenware[
-        //                                                 index] =
-        //                                                     currentKitchenWare;
-        //                                               });
-        //                                               Navigator.pop(context);
-        //                                             },
-        //                                             padding: const EdgeInsets
-        //                                                 .symmetric(
-        //                                               horizontal: 16.0,
-        //                                               vertical: 5.0,
-        //                                             ),
-        //                                           )
-        //                                         ],
-        //                                       ),
-        //                                     ),
-        //                                     Container(
-        //                                       height: 320.0,
-        //                                       color: Color(0xfff7f7f7),
-        //                                       child: CupertinoPicker(
-        //                                         itemExtent: 32,
-        //                                         backgroundColor: Colors.white,
-        //                                         onSelectedItemChanged:
-        //                                             (int index) {
-        //                                           setState(() {
-        //                                             currentKitchenWare =
-        //                                             kitchenware[index];
-        //                                             print(currentKitchenWare);
-        //                                           });
-        //                                         },
-        //                                         children: getPickerItems(
-        //                                             kitchenware),
-        //                                       ),
-        //                                     )
-        //                                   ],
-        //                                 );
-        //                               },
-        //                             );
-        //                           },
-        //                           child: Text(
-        //                             '$currentKitchenWare',
-        //                             style: TextStyle(
-        //                                 fontWeight: FontWeight.bold),
-        //                           ))
-        //                     ]);
-        //                   },
-        //                 ),
-        //                 IconButton(
-        //                     onPressed: () {
-        //                       addNewKitchenware();
-        //                     },
-        //                     icon: Icon(Icons.add))
-        //               ]),
-        //               SizedBox(height: 35),
-        //               Align(
-        //                   alignment: Alignment.centerLeft,
-        //                   child: Text('Ingredients',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-        //               Column(children: <Widget>[
-        //                 SizedBox(height: 15),
-        //                 ListView.builder(
-        //                   shrinkWrap: true,
-        //                   physics: NeverScrollableScrollPhysics(),
-        //                   itemCount: _ingredientsCount,
-        //                   itemBuilder: (BuildContext context, int index) {
-        //                     String currentIngredients =
-        //                     _selectedIngredients[index];
-        //                     String currentIngredientsUnit =
-        //                     _selectedIngredientsUnit[index];
-        //                     int currentIngredientsCount =
-        //                     _selectedIngredientsCount[index];
-        //                     return Column(children: <Widget>[
-        //                       TextButton(
-        //                           onPressed: () {
-        //                             setState(() {
-        //                               print(currentIngredients);
-        //                               if (currentIngredients !=
-        //                                   'Select Ingredient') {
-        //                                 if (ingredients.contains(
-        //                                     currentIngredients) ==
-        //                                     false) {
-        //                                   ingredients.insert(
-        //                                       0, currentIngredients);
-        //                                 } else {
-        //                                   ingredients
-        //                                       .remove(currentIngredients);
-        //                                   ingredients.insert(
-        //                                       0, currentIngredients);
-        //                                 }
-        //                               }
-        //
-        //                               currentIngredients = ingredients[0];
-        //                               currentIngredientsCount = 0;
-        //                               currentIngredientsUnit = units[0];
-        //                             });
-        //                             showCupertinoModalPopup(
-        //                                 context: context,
-        //                                 builder: (context) {
-        //                                   return Column(
-        //                                     mainAxisAlignment:
-        //                                     MainAxisAlignment.end,
-        //                                     children: <Widget>[
-        //                                       Container(
-        //                                         decoration: BoxDecoration(
-        //                                           color: Color(0xffffffff),
-        //                                           border: Border(
-        //                                             bottom: BorderSide(
-        //                                               color:
-        //                                               Color(0xff999999),
-        //                                               width: 0.0,
-        //                                             ),
-        //                                           ),
-        //                                         ),
-        //                                         child: Row(
-        //                                           mainAxisAlignment:
-        //                                           MainAxisAlignment
-        //                                               .spaceBetween,
-        //                                           children: <Widget>[
-        //                                             CupertinoButton(
-        //                                                 child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-        //                                                 onPressed: () {
-        //                                                   Navigator.pop(
-        //                                                       context);
-        //                                                 }),
-        //                                             CupertinoButton(
-        //                                               child: Text('Add',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-        //                                               onPressed: () {
-        //                                                 setState(() {
-        //                                                   _selectedIngredients[
-        //                                                   index] =
-        //                                                       currentIngredients;
-        //                                                   _selectedIngredientsCount[
-        //                                                   index] =
-        //                                                       currentIngredientsCount +
-        //                                                           1;
-        //                                                   _selectedIngredientsUnit[
-        //                                                   index] =
-        //                                                       currentIngredientsUnit;
-        //                                                 });
-        //                                                 Navigator.pop(
-        //                                                     context);
-        //                                               },
-        //                                               padding:
-        //                                               const EdgeInsets
-        //                                                   .symmetric(
-        //                                                 horizontal: 16.0,
-        //                                                 vertical: 5.0,
-        //                                               ),
-        //                                             )
-        //                                           ],
-        //                                         ),
-        //                                       ),
-        //                                       Container(
-        //                                         height: 320,
-        //                                         color: Colors.white,
-        //                                         child: Row(
-        //                                           crossAxisAlignment:
-        //                                           CrossAxisAlignment
-        //                                               .start,
-        //                                           children: <Widget>[
-        //                                             Expanded(
-        //                                                 child:
-        //                                                 CupertinoPicker(
-        //                                                   itemExtent: 32,
-        //                                                   backgroundColor:
-        //                                                   Colors.white,
-        //                                                   onSelectedItemChanged:
-        //                                                       (value) {
-        //                                                     setState(() {
-        //                                                       currentIngredients =
-        //                                                       ingredients[
-        //                                                       value];
-        //                                                     });
-        //                                                   },
-        //                                                   children:
-        //                                                   getPickerItems(
-        //                                                       ingredients),
-        //                                                 )),
-        //                                             Expanded(
-        //                                               child: CupertinoPicker(
-        //                                                 itemExtent: 32,
-        //                                                 backgroundColor:
-        //                                                 Colors.white,
-        //                                                 onSelectedItemChanged:
-        //                                                     (value) {
-        //                                                   setState(() {
-        //                                                     currentIngredientsCount =
-        //                                                         value;
-        //                                                   });
-        //                                                 },
-        //                                                 children: new List<
-        //                                                     Widget>.generate(
-        //                                                     1000,
-        //                                                         (int index) {
-        //                                                       var amount =
-        //                                                           index + 1;
-        //                                                       return new Center(
-        //                                                         child: new Text(
-        //                                                             '${amount}'),
-        //                                                       );
-        //                                                     }),
-        //                                               ),
-        //                                             ),
-        //                                             Expanded(
-        //                                               child: CupertinoPicker(
-        //                                                 itemExtent: 32,
-        //                                                 backgroundColor:
-        //                                                 Colors.white,
-        //                                                 onSelectedItemChanged:
-        //                                                     (value) {
-        //                                                   setState(() {
-        //                                                     currentIngredientsUnit =
-        //                                                     units[value];
-        //                                                   });
-        //                                                 },
-        //                                                 children:
-        //                                                 getPickerItems(
-        //                                                     units),
-        //                                               ),
-        //                                             )
-        //                                           ],
-        //                                         ),
-        //                                       )
-        //                                     ],
-        //                                   );
-        //                                 });
-        //                           },
-        //                           child: Row(
-        //                             mainAxisAlignment:
-        //                             MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Text(
-        //                                 '$currentIngredients',
-        //                                 style: TextStyle(
-        //                                     fontWeight: FontWeight.bold),
-        //                               ),
-        //                               Text(
-        //                                 '$currentIngredientsCount',
-        //                                 style: TextStyle(
-        //                                     fontWeight: FontWeight.bold),
-        //                               ),
-        //                               Text(
-        //                                 '$currentIngredientsUnit',
-        //                                 style: TextStyle(
-        //                                     fontWeight: FontWeight.bold),
-        //                               )
-        //                             ],
-        //                           ))
-        //                     ]);
-        //                   },
-        //                 ),
-        //                 IconButton(
-        //                     onPressed: () {
-        //                       addNewIngredients();
-        //                     },
-        //                     icon: Icon(Icons.add))
-        //               ]),
-        //               SizedBox(height: 35),
-        //               Align(
-        //                   alignment: Alignment.centerLeft,
-        //                   child: Text('Nutritions facts',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20))),
-        //               SizedBox(height: 20),
-        //               TextField(
-        //                 controller: calController,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Calories',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 10),
-        //               TextField(
-        //                 controller: proteinController,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Protein',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 10),
-        //               TextField(
-        //                 controller: carboController,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Carbohydrates',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 10),
-        //               TextField(
-        //                 controller: fatController,
-        //                   decoration: InputDecoration(
-        //                       border: OutlineInputBorder(
-        //                         borderSide: BorderSide.none,
-        //                         borderRadius: BorderRadius.circular(15),
-        //                       ),
-        //                       filled: true,
-        //                       hintText: 'Fat',
-        //                       fillColor: Colors.white)),
-        //               SizedBox(height: 30),
-        //               Row(
-        //                   mainAxisAlignment: MainAxisAlignment.end,
-        //                   children: <Widget>[
-        //                     buildnextBtn(),
-        //                   ]),
-        //             ],
-        //           )),
-        //     ])
-        //   ],
-        // ),
-        //   ),
       ),
     );
 
@@ -3425,45 +2873,23 @@ class _RecipeStep1State extends State<RecipeStep1> {
     //   ),
     // ),
   }
-  // _row(int index) {
-  //   return ConstrainedBox(
-  //     constraints: const BoxConstraints
-  //         .tightFor(width: 70, height: 40),
-  //     child: TextField(
-  //       controller: _amountController,
-  //       keyboardType: TextInputType
-  //           .numberWithOptions(decimal: true),
-  //       textAlign: TextAlign.center,
-  //       decoration: InputDecoration(
-  //         hintText: 'Amount',
-  //         labelStyle: TextStyle(
-  //           color: Colors.black,
-  //         ),
-  //         enabledBorder: UnderlineInputBorder(
-  //           borderSide: BorderSide(
-  //               color: Colors.black),
-  //         ),
-  //       ),
-  //       onChanged: (val) {
-  //         _onUpdate(index, val);
-  //       },
-  //     ),
-  //   );
-  //
-  // }
-  // _onUpdate(int index, String val) async {
-  //   Map<String, dynamic> json = {'id' :index, 'value': val};
-  //   _values!.add(json);
-  // }
 }
 
 class DynamicWidget extends StatefulWidget {
+
+
+
+
   @override
   State<DynamicWidget> createState() => _DynamicWidgetState();
+
 }
 
 class _DynamicWidgetState extends State<DynamicWidget> {
+  static _DynamicWidgetState  get to => Get.lazyPut(()=>_DynamicWidgetState());
+
   final descStepController = new TextEditingController();
+  final timeStepController = new TextEditingController();
 
   StepModel? stepModel;
   RecipeModel? recipeModel;
@@ -3487,49 +2913,25 @@ class _DynamicWidgetState extends State<DynamicWidget> {
     });
   }
 
-  // createReStep() async {
-  //   String descStep = descStepController.text;
-  //
-  //   ReStepModel reStepModel = ReStepModel(
-  //       recipeId: recipeModel!.id,
-  //       step: stepModel!.step,
-  //       description: descStep);
-  //
-  //   int resulStep;
-  //   resulStep = await ReStepHelper().insert(reStepModel);
-  //
-  //   if (resulStep != 0) {
-  //     print('Success');
-  //   } else {
-  //     print('Failed');
-  //   }
-  // }
+  createReStep() async {
+    String descStep = descStepController.text;
+    int timeStep = int.parse(timeStepController.text);
 
-  // Future uploadImageToFirebase(BuildContext context) async {
-  //   String fileName = p.basename(_image!.path);
-  //   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-  //       .ref()
-  //       .child('steps')
-  //       .child('/$fileName');
-  //
-  //   final metadata = firebase_storage.SettableMetadata(
-  //       contentType: 'image/jpeg',
-  //       customMetadata: {'picked-file-path': fileName});
-  //   firebase_storage.UploadTask uploadTask;
-  //   //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
-  //   uploadTask = ref.putFile(io.File(_image!.path), metadata);
-  //   ReStepModel targetStep = menu[0];
-  //   targetStep.recipeId = menuController.value.text;
-  //   targetStep. = fileName;
-  //   _auth.currentUser?.updateDisplayName(targetMenu.nameMenu);
-  //   MenuHelper().updateDataToSQLite(targetMenu);
-  //
-  //   firebase_storage.UploadTask task = await Future.value(uploadTask);
-  //   Future.value(uploadTask)
-  //       .then((value) => {print("Upload file path ${value.ref.fullPath}")})
-  //       .onError((error, stackTrace) =>
-  //   {print("Upload file path error ${error.toString()} ")});
-  // }
+    ReStepModel reStepModel = ReStepModel(
+        recipeId: '',
+        step: null,
+        description: descStep,
+        minute: timeStep);
+
+    int resulStep;
+    resulStep = await ReStepHelper().insert(reStepModel);
+
+    if (resulStep != 0) {
+      print('Success');
+    } else {
+      print('Failed');
+    }
+  }
 
   buildTimer(BuildContext context) {
     return TextButton(
@@ -3630,7 +3032,7 @@ class _DynamicWidgetState extends State<DynamicWidget> {
               alignment: Alignment.centerLeft,
               child: Text('Description',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-          SizedBox(height: 15),
+          SizedBox(height: 20),
           TextField(
               controller: descStepController,
               maxLines: 5,
@@ -3665,18 +3067,45 @@ class _DynamicWidgetState extends State<DynamicWidget> {
                       child: Icon(Icons.add),
                     )),
           ),
+          SizedBox(height: 30),
           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Timer',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                buildTimer(context),
-                Text('minute',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                SizedBox(height: 150),
-              ]),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Time',
+                  style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(width: 20),
+              Container(
+                width: 100,
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  controller: timeStepController,
+                  decoration: InputDecoration(
+                    hintText: '-',
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Text('Minute',
+                  style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ],
+          ),
+
+          SizedBox(height: 60),
+          // Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: <Widget>[
+          //       Text('Timer',
+          //           style:
+          //               TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          //       buildTimer(context),
+          //       Text('minute',
+          //           style:
+          //               TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          //       SizedBox(height: 150),
+          //     ]),
         ],
       ),
     );
