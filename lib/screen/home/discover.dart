@@ -81,7 +81,7 @@ class _FollowingState extends State<Following> {
 
   @override
   Widget build(BuildContext context) {
-    print(recommendedUserModels.length);
+    print(menuRecipeModels.length);
     return Expanded(
         // wrap in Expanded
         child: menuRecipeModels.length > 0

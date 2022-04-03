@@ -168,11 +168,11 @@ class MenuRecipeHelper {
     List<Map<String, dynamic>> maps = [];
     if (reAllergyModels.length > 0) {
       maps = await database.rawQuery(
-          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE recipeTABLE.recipeUid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?) and allid is null",
+          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?) and allid is null",
           [uid]);
     } else {
       maps = await database.rawQuery(
-          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?)",
+          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?)",
           [uid]);
     }
     for (var map in maps) {

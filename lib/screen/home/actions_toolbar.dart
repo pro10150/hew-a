@@ -234,11 +234,11 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
     getLike();
     getComment();
     getFollow();
+    getUserProfile();
   }
 
   @override
   Widget build(BuildContext context) {
-    getUserProfile();
     return Container(
       width: 100,
       child: Column(
