@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hewa/screen/profile/otherPeople.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
+import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hewa/screen/comment.dart';
 import 'report.dart';
@@ -23,20 +24,32 @@ import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
 
-class ActionsToolbar extends StatelessWidget {
+class ActionsToolbar extends StatefulWidget {
   ActionsToolbar(this.menuRecipeModel, this.userModel);
+  MenuRecipeModel menuRecipeModel;
+  UserModel userModel;
+  @override
+  _ActionsToolbarState createState() =>
+      _ActionsToolbarState(menuRecipeModel, userModel);
+}
+
+class _ActionsToolbarState extends State<ActionsToolbar> {
+  _ActionsToolbarState(this.menuRecipeModel, this.userModel);
   MenuRecipeModel menuRecipeModel;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLiked = false;
-  late Future<List<LikeModel>> likes;
+  List<LikeModel> likes = [];
   late Future<List<CommentModel>> comments;
   Future<List<UserModel>>? userModels;
   UserModel userModel;
   Future<String>? url;
-  getLike() {
-    var objects = LikeHelper()
+  getLike() async {
+    var objects = await LikeHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    likes = objects;
+    setState(() {
+      likes = objects;
+    });
+    getIsLike(likes);
   }
 
   getComment() {
@@ -52,15 +65,23 @@ class ActionsToolbar extends StatelessWidget {
   }
 
   like() {
+    LikeModel likeModel = LikeModel(
+        recipeId: menuRecipeModel.id,
+        uid: _auth.currentUser!.uid,
+        datetime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()));
     if (isLiked == false) {
-      LikeModel likeModel =
-          LikeModel(recipeId: menuRecipeModel.id, uid: menuRecipeModel.uid);
       LikeHelper().insertDataToSQLite(likeModel);
       isLiked = true;
+      setState(() {
+        likes.add(likeModel);
+      });
     } else {
       LikeHelper().deleteDataWhere(
           _auth.currentUser!.uid, menuRecipeModel.id.toString());
       isLiked = false;
+      setState(() {
+        likes.removeAt(likes.length - 1);
+      });
     }
     print(isLiked);
   }
@@ -69,7 +90,9 @@ class ActionsToolbar extends StatelessWidget {
     String uid = _auth.currentUser!.uid;
     for (var like in likes) {
       if (uid == like.uid) {
-        isLiked = true;
+        setState(() {
+          isLiked = true;
+        });
         break;
       }
     }
@@ -181,8 +204,14 @@ class ActionsToolbar extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     getLike();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     getComment();
     getUserProfile();
     return Container(
@@ -237,62 +266,18 @@ class ActionsToolbar extends StatelessWidget {
                       children: children,
                     );
                   }),
-              FutureBuilder<List<LikeModel>>(
-                  future: likes,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List<Widget> children = [];
-                    if (snapshot.hasData) {
-                      getIsLike(snapshot.data);
-                      print(isLiked);
-                      children = [
-                        GestureDetector(
-                            child: LikeButton(
-                          onTap: (isLiked) {
-                            return changedata(
-                              isLiked,
-                            );
-                          },
-                          countPostion: CountPostion.bottom,
-                          size: 50,
-                          circleColor: CircleColor(
-                              start: Colors.black, end: Color(0xff0099cc)),
-                          bubblesColor: BubblesColor(
-                            dotPrimaryColor: Color(0xff33b5e5),
-                            dotSecondaryColor: Color(0xff0099cc),
-                          ),
-                          likeCount: snapshot.data.length,
-                          likeCountAnimationType: LikeCountAnimationType.all,
-                          likeBuilder: (bool isLike) {
-                            isLike = isLiked;
-                            print(isLike);
-                            return Icon(
-                              isLike ? MdiIcons.heart : MdiIcons.heartOutline,
-                              color: isLike ? Palette.roseBud : Colors.black,
-                              size: 50,
-                            );
-                          },
-                          // countBuilder: (int count, bool isLiked, String text) {
-                          //   var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
-                          //   Widget result;
-                          //   if (count == 0) {
-                          //     result = Text(
-                          //       "love",
-                          //       style: TextStyle(color: color),
-                          //     );
-                          //   } else
-                          //     result = Text(
-                          //       text,
-                          //       style: TextStyle(color: color),
-                          //     );
-                          //   return result;
-                          // },
-                        ))
-                      ];
-                    } else {
-                      children = [CircularProgressIndicator()];
-                    }
-                    return Column(children: children);
-                  }),
+              GestureDetector(
+                  onTap: () {
+                    like();
+                  },
+                  child: Column(children: [
+                    Icon(
+                      isLiked ? MdiIcons.heart : MdiIcons.heartOutline,
+                      color: isLiked ? Palette.roseBud : Colors.black,
+                      size: 50,
+                    ),
+                    Text(likes.length.toString())
+                  ])),
               // RawMaterialButton(
               //   onPressed: () {},
               //   child: _getSocialAction(
@@ -469,11 +454,15 @@ void navigateTocommentPage(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Container(
-            height: MediaQuery.of(context).size.height * 0.75,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: commentPage(comments)));
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Container(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: commentPage(comments, setModalState)));
+          },
+        );
       });
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
   //   return commentPage(comments);

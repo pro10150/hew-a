@@ -6,8 +6,16 @@ import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/config/ingredients_icon.dart';
 import 'package:hewa/config/my_flutter_app_icons.dart';
 
-class RecipeDescription extends StatelessWidget {
+class RecipeDescription extends StatefulWidget {
   RecipeDescription(this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
+  @override
+  _RecipeDescriptionState createState() =>
+      _RecipeDescriptionState(menuRecipeModel);
+}
+
+class _RecipeDescriptionState extends State<RecipeDescription> {
+  _RecipeDescriptionState(this.menuRecipeModel);
   MenuRecipeModel menuRecipeModel;
   @override
   Widget build(BuildContext context) {

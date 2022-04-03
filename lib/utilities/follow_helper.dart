@@ -93,6 +93,18 @@ class FollowHelper {
     }
   }
 
+  Future<Null> deleteDataWhereUidAndFollow(
+      String uid, String followedUid) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase,
+          where: '$uidColumn = ? AND $followedUserIDColumn = ?',
+          whereArgs: [uid, followedUid]);
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

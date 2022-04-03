@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'follow_helper.dart';
 
 class UserHelper {
   final String nameDatabase = 'Hewa.db';
@@ -113,6 +115,26 @@ class UserHelper {
     List<UserModel> userModels = [];
     List<Map<String, dynamic>> maps = await database
         .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      UserModel userModel = UserModel.fromJson(map);
+      userModels.add(userModel);
+    }
+    return userModels;
+  }
+
+  Future<List<UserModel>> getUserTop5(String uid) async {
+    Database database = await connectedDatabase();
+    List<UserModel> userModels = [];
+    List<Map<String, dynamic>> maps;
+    var objects = await FollowHelper().readlDataFromSQLite();
+    if (objects.length > 0) {
+      maps = await database.rawQuery(
+          'SELECT * FROM userTABLE INNER JOIN followTABLE ON userTABLE.uid = followTABLE.uid WHERE userTABLE.uid NOT LIKE "%?%" AND usertable.uid IN (SELECT uid FROM followTABLE GROUP BY uid ORDER BY count(uid) DESC) GROUP BY followTABLE.uid ORDER BY count(followTABLE.uid) DESC;',
+          [uid]);
+    } else {
+      maps = await database.query(tableDatabase,
+          limit: 6, where: '$uidColumn NOT LIKE "%?%"', whereArgs: [uid]);
+    }
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
       userModels.add(userModel);

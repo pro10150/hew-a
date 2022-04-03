@@ -9,14 +9,16 @@ import 'package:hewa/utilities/user_helper.dart';
 import 'package:intl/intl.dart';
 
 class commentPage extends StatefulWidget {
-  commentPage(this.objects);
+  commentPage(this.objects, this.setModalState);
   List<CommentModel> objects;
+  StateSetter setModalState;
   @override
-  _commentPage createState() => _commentPage(objects);
+  _commentPage createState() => _commentPage(objects, setModalState);
 }
 
 class _commentPage extends State<commentPage> {
-  _commentPage(this.comments);
+  _commentPage(this.comments, this.setModalState);
+  StateSetter setModalState;
   List<CommentModel> comments;
   List<UserModel> users = [];
   UserModel? currentUser;
@@ -26,13 +28,13 @@ class _commentPage extends State<commentPage> {
   getUser() async {
     for (var comment in comments) {
       var object = await UserHelper().readDataFromSQLiteWhereId(comment.uid!);
-      setState(() {
+      setModalState(() {
         users.add(object[0]);
       });
     }
     var object =
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
-    setState(() {
+    setModalState(() {
       currentUser = object.first;
     });
   }

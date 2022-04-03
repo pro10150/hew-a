@@ -7,8 +7,18 @@ import '../menu_detail/menu_detail.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 
-class RecipeContent extends StatelessWidget {
+class RecipeContent extends StatefulWidget {
   RecipeContent(this.menuRecipeModel, this.url, this.userModel);
+  MenuRecipeModel menuRecipeModel;
+  var url;
+  UserModel userModel;
+  @override
+  _RecipeContentState createState() =>
+      _RecipeContentState(menuRecipeModel, url, userModel);
+}
+
+class _RecipeContentState extends State<RecipeContent> {
+  _RecipeContentState(this.menuRecipeModel, this.url, this.userModel);
   MenuRecipeModel menuRecipeModel;
   var likes;
   var url;
