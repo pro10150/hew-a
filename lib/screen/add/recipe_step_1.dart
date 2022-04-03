@@ -8,10 +8,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hewa/models/Recipe_model.dart';
 import 'package:hewa/models/menu_model.dart';
 import 'package:hewa/models/reImageStep_model.dart';
+import 'package:hewa/models/reIngredIngred_model.dart';
 import 'package:hewa/models/reKitchenware_model.dart';
 import 'package:hewa/models/reStep_model.dart';
+import 'package:hewa/models/userIngred_model.dart';
 import 'package:hewa/utilities/menu.helper.dart';
 import 'package:hewa/utilities/reImageStep_helper.dart';
+import 'package:hewa/utilities/reIngredIngred_helper.dart';
 import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
@@ -22,6 +25,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as p;
 import 'dart:io' as io;
 import '../../config/palette.dart';
+import '../menu_detail/detailed_recipe.dart';
 import 'recipe_step_2.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/models/kitch_model.dart';
@@ -62,6 +66,7 @@ List<KitchenwareModel> kitchenwareModel = [];
 List<String> ingredients = [];
 List<ReIngredModel> reingredModel = [];
 List<ReStepModel> reStepModel = [];
+List<ReStepModel> reStepModels = [];
 List<IngredModel> ingredModel = [];
 List<String> units = ['-', 'g', 'kg', 'ml', 'l', 'bottles'];
 
@@ -686,6 +691,116 @@ class _RecipeStep1State extends State<RecipeStep1> {
     );
   }
 
+
+  Widget _getRecipeStep(ReStepModel reStepModel, int index,
+      List<ReImageStepModel> images, List<String> imageUrls) {
+
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 9,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          margin: EdgeInsets.all(20),
+          child: Column(children: <Widget>[
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Text(
+                    'Step ' + reStepModel.step.toString(),
+                    style: TextStyle(fontSize: 18),
+                  )),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: RichText(
+                      overflow: TextOverflow.visible,
+                      text: TextSpan(
+                        text: reStepModel.description,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      strutStyle: StrutStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            reStepModel.minute != null
+                ? GFButton(
+              onPressed: () {},
+              text: reStepModel.minute.toString() + ' min',
+              textColor: Colors.black,
+              shape: GFButtonShape.pills,
+              type: GFButtonType.outline2x,
+              color: Colors.black,
+            )
+                : Container()
+          ]),
+        ),
+        images.length > 0
+            ? GridView.builder(
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 9,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image(
+                    image: NetworkImage(imageUrls[index]),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            })
+            : Container()
+      ],
+    );
+  }
+
   addReStep() async {
 
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
@@ -719,6 +834,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
     }
     uploadImageToFirebase(context);
   }
+
+
+
 
 
   List<ReStepModel> steps = [];
@@ -864,7 +982,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   List<dynamic> _Stepimage = [];
 
-  File? _image = null;
   final picker = ImagePicker();
 
   Future getImage(int index) async {
@@ -985,7 +1102,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
   ];
 
   int _n = 1;
-  int _ingr = 240;
+  List<double> _ingr = [];
 
   void add() {
     setState(() {
@@ -999,6 +1116,25 @@ class _RecipeStep1State extends State<RecipeStep1> {
     setState(() {
       if (_n != 1) _n--;
     });
+  }
+
+
+  getRecipeIngred() async {
+    setState(() {
+      reIngredIngredModels = [];
+    });
+    var objects = await ReIngredIngredHelper()
+        .readDataFromSQLiteWhereRecipeId(menuRecipeModel!.id.toString());
+    for (var object in objects) {
+      setState(() {
+        reIngredIngredModels.add(object);
+        if (object.amount != null) {
+          _ingr.add(object.amount!);
+        } else {
+          _ingr.add(0);
+        }
+      });
+    }
   }
 
   Widget builddoneBtn() {
@@ -1020,150 +1156,140 @@ class _RecipeStep1State extends State<RecipeStep1> {
     );
   }
 
-  Widget _getIngredients() {
-    return Container(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Icon(MdiIcons.pigVariantOutline),
-          Row(children: <Widget>[
-            Text(
-              '$_selectedIngredients',
-              style: TextStyle(fontSize: 10),
-            ),
-            SizedBox(
-              width: 2,
-            ),
-            Text(
-              // '$amountController',
-              (_ingr * _n).toStringAsFixed(0),
-              style: TextStyle(fontSize: 10),
-            ),
-            SizedBox(
-              width: 2,
-            ),
-            Text(
-              '$_selectedIngredientsUnit',
-              style: TextStyle(fontSize: 10),
-            )
-          ]),
-          // Text(
-          //   'คุณมีไม่พอ',
-          //   style: TextStyle(color: Colors.red, fontSize: 10),
-          // )
-        ],
-      ),
-    );
-  }
 
-  Widget _getIngredientsRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        _getIngredients(),
-      ],
-    );
-  }
+  // Widget _getRecipeStep() {
+  //   return Column(
+  //     children: <Widget>[
+  //       Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(20),
+  //               topRight: Radius.circular(20),
+  //               bottomLeft: Radius.circular(20),
+  //               bottomRight: Radius.circular(20)),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.5),
+  //               spreadRadius: 3,
+  //               blurRadius: 9,
+  //               offset: Offset(0, 3), // changes position of shadow
+  //             ),
+  //           ],
+  //         ),
+  //         margin: EdgeInsets.all(15),
+  //         child: Column(children: <Widget>[
+  //           SizedBox(height: 10),
+  //           Align(
+  //             alignment: Alignment.centerLeft,
+  //             child: Container(
+  //                 margin: EdgeInsets.only(left: 10),
+  //                 child: Text(
+  //                   'Step 1',
+  //                   style: TextStyle(fontSize: 18),
+  //                 )),
+  //           ),
+  //           Container(
+  //             margin: EdgeInsets.all(5),
+  //             child: Row(
+  //               children: <Widget>[
+  //                 Container(
+  //                   width: 20,
+  //                 ),
+  //                 Flexible(
+  //                   // child: RichText(
+  //                   //   overflow: TextOverflow.visible,
+  //                   //   text: TextSpan(
+  //                   //     text:
+  //                   //     'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
+  //                   //     style: TextStyle(
+  //                   //       color: Colors.black,
+  //                   //       fontSize: 16,
+  //                   //     ),
+  //                   //   ),
+  //                   //   strutStyle: StrutStyle(
+  //                   //     fontSize: 18,
+  //                   //     fontWeight: FontWeight.bold,
+  //                   //   ),
+  //                   // ),
+  //                   child: Text('${desc2Controller.text}'),
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //           GFButton(
+  //             onPressed: () {},
+  //             text: '5 min',
+  //             textColor: Colors.black,
+  //             shape: GFButtonShape.pills,
+  //             type: GFButtonType.outline2x,
+  //             color: Colors.black,
+  //           )
+  //         ]),
+  //       ),
+  //       SizedBox(height: 5),
+  //       Container(
+  //         decoration: BoxDecoration(
+  //           color: Colors.white,
+  //           borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(20),
+  //               topRight: Radius.circular(20),
+  //               bottomLeft: Radius.circular(20),
+  //               bottomRight: Radius.circular(20)),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.5),
+  //               spreadRadius: 3,
+  //               blurRadius: 9,
+  //               offset: Offset(0, 3), // changes position of shadow
+  //             ),
+  //           ],
+  //         ),
+  //         margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+  //         child: ClipRRect(
+  //           borderRadius: BorderRadius.circular(20),
+  //           child: Image(
+  //             image: AssetImage('lib/assets/menu_detail/recipe.png'),
+  //             fit: BoxFit.cover,
+  //           ),
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
-  Widget _getRecipeStep() {
-    return Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 9,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          margin: EdgeInsets.all(15),
-          child: Column(children: <Widget>[
-            SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Step 1',
-                    style: TextStyle(fontSize: 18),
-                  )),
-            ),
-            Container(
-              margin: EdgeInsets.all(5),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 20,
-                  ),
-                  Flexible(
-                    // child: RichText(
-                    //   overflow: TextOverflow.visible,
-                    //   text: TextSpan(
-                    //     text:
-                    //     'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-                    //     style: TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 16,
-                    //     ),
-                    //   ),
-                    //   strutStyle: StrutStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
-                    child: Text('${desc2Controller.text}'),
-                  )
-                ],
-              ),
-            ),
-            GFButton(
-              onPressed: () {},
-              text: '5 min',
-              textColor: Colors.black,
-              shape: GFButtonShape.pills,
-              type: GFButtonType.outline2x,
-              color: Colors.black,
-            )
-          ]),
-        ),
-        SizedBox(height: 5),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 9,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image(
-              image: AssetImage('lib/assets/menu_detail/recipe.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        )
-      ],
-    );
+  getRecipeSteps() async {
+    setState(() {
+      urls = [];
+      reStepModels = [];
+      reImageStepModels = [];
+    });
+    var objects = await ReStepHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id.toString());
+    for (var object in objects) {
+      var images = await ReImageStepHelper().readDataFromSQLiteWhereStep(
+          int.parse(object.recipeId!), object.recipeId);
+      List<String> tempUrls = [];
+      for (var image in images) {
+        var ref =
+        FirebaseStorage.instance.ref().child('steps').child(image.name!);
+        String tempURL = await ref.getDownloadURL();
+        tempUrls.add(tempURL);
+      }
+      setState(() {
+        if (tempUrls.length > 0) {
+          urls.add(tempUrls);
+        } else {
+          urls.add([]);
+        }
+        if (images.length > 0) {
+          reImageStepModels.add(images);
+        } else {
+          reImageStepModels.add([]);
+        }
+        reStepModels.add(object);
+      });
+    }
   }
 
   buildIngredChip(int index) {
@@ -1186,6 +1312,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
     readSQLiteKitch();
     readSQLiteMenu();
     readSQLiteRecipe();
+    getRecipeSteps();
+
   }
 
   int _index = 0;
@@ -1916,25 +2044,15 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   alignment: Alignment.centerLeft,
                   child: SingleChildScrollView(
                       child: Column(children: <Widget>[
-                    // SizedBox(height: 25),
+                        Text('${recipeController.text}',
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                    SizedBox(height: 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(width: 20),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image(
-                            image: AssetImage('lib/assets/home/food.png'),
-                            fit: BoxFit.cover,
-                            height: 300,
-                            width: 300,
-                          ),
-                          // decoration:
-                          //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                        )
                       ],
                     ),
-                    SizedBox(height: 25),
                     SingleChildScrollView(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
@@ -1964,20 +2082,41 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     ),
                                   ],
                                 ),
-                                margin: EdgeInsets.all(5),
+                                margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
                                   SizedBox(height: 10),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Container(
-                                        margin: EdgeInsets.only(left: 10),
+                                        margin: EdgeInsets.only(left: 20),
                                         child: Text(
                                           'You need',
-                                          style: TextStyle(fontSize: 24),
+                                          style: TextStyle(fontSize: 20),
                                         )),
                                   ),
+                                  ListView.builder(
+                                      itemCount: _selectedIngredients.length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Chip(
+                                                      label: Text('${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
+                                                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
+                                                      ),
+                                                    ),
+                                          ],
+                                          ),
+                                        ]));
+                                      }),
+
                                   // _getIngredientsRow(),
-                                  _getIngredientsRow()
                                 ]),
                               ),
                               SizedBox(height: 5),
@@ -1985,7 +2124,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 children: <Widget>[
                                   Container(
                                     width: 170,
-                                    height: 180,
+                                    height: 250,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.only(
@@ -2034,7 +2173,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           children: <Widget>[
                                             Column(children: <Widget>[
                                               Text('Calories'),
-                                              Text('${calController.text}')
+                                              Chip(
+                                                label: Text('${calController.text}',
+                                                    style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
+                                              ),
+
                                             ]),
                                             SizedBox(
                                               width: 20,
@@ -2042,8 +2185,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             Column(
                                               children: <Widget>[
                                                 Text('Protein'),
-                                                Text(
-                                                    '${proteinController.text}')
+                                                Chip(
+                                                  label: Text(
+                                                      '${proteinController.text}',
+                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                ),
+
                                               ],
                                             )
                                           ],
@@ -2057,7 +2204,10 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           children: <Widget>[
                                             Column(children: <Widget>[
                                               Text('Fat'),
-                                              Text('${fatController.text}')
+                                              Chip(
+                                                  label:Text('${fatController.text}',
+                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))),
+
                                             ]),
                                             SizedBox(
                                               width: 20,
@@ -2065,7 +2215,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             Column(
                                               children: <Widget>[
                                                 Text('Carbs'),
-                                                Text('${carboController.text}')
+                                                Chip(
+                                                  label:Text('${carboController.text}',
+                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                ),
+
                                               ],
                                             )
                                           ],
@@ -2077,7 +2231,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     ),
                                   ),
                                   Container(
-                                    height: 180,
+                                    height: 250,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.only(
@@ -2103,7 +2257,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           alignment: Alignment.centerLeft,
                                           child: Container(
                                               margin: EdgeInsets.only(
-                                                  left: 10, right: 10),
+                                                  left: 10, right: 10,top: 30),
                                               child: Text(
                                                 'Estimated time',
                                                 style: TextStyle(fontSize: 18),
@@ -2119,7 +2273,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                               size: 60,
                                             ),
                                             SizedBox(height: 10),
-                                            Text('30 min')
+                                            Chip(
+                                              label:Text('${_selectedHour * 60 + _selectedMinute}',
+                                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                                            ),
+
                                           ],
                                         )
                                       ],
@@ -2127,15 +2285,114 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                   )
                                 ],
                               ),
-                              SizedBox(height: 15),
+                              SizedBox(height: 30),
                               Align(
                                   alignment: Alignment.center,
                                   child: Text('Recipe detail',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20))),
-                              _getRecipeStep(),
-                              SizedBox(height: 15),
+                                          fontSize: 22))),
+                              SizedBox(height: 10),
+                              ListView.builder(
+                                  itemCount: _count,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Chip(
+                                                backgroundColor: color,
+                                                label: Text(
+                                                  'Step ${index+1}',
+                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                ),
+                                              )),
+                                          SizedBox(height: 10),
+                                          Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text('Description',
+                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+                                          SizedBox(height: 20),
+                                      Container(
+                                        height: 200,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 3,
+                                              blurRadius: 9,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        margin: EdgeInsets.all(10),
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Container(
+                                                    margin: EdgeInsets.all(15),
+                                                    child: Text('${_descStepControllers[index].text}',
+                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                      ),
+                                          SizedBox(height: 40),
+                                          InkWell(
+                                            onTap: () {},
+                                            child: _Stepimage[index] != null
+                                                ? ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Container(
+                                                  width: 120,
+                                                  height: 120,
+                                                  color: Colors.white,
+                                                  child: Image.file(_Stepimage[index]),
+                                                ))
+                                                : Container(),
+                                          ),
+                                          SizedBox(height: 30),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text('Time',
+                                                  style:
+                                                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                              SizedBox(width: 20),
+                                              Container(
+                                                width: 100,
+                                                child: Chip(
+                                                  shadowColor: color,
+                                                  label: Text('${_timeStepControllers[index].text}',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                ),
+                                              ),
+                                              SizedBox(width: 20),
+                                              Text('Minute',
+                                                  style:
+                                                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                            ],
+                                          ),
+                                          SizedBox(height: 60),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+
                               // Row(
                               //     mainAxisAlignment: MainAxisAlignment.end,
                               //     children: <Widget>[
