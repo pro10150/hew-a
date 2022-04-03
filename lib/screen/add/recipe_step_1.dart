@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hewa/models/Recipe_model.dart';
 import 'package:hewa/models/menu_model.dart';
+import 'package:hewa/models/reImageStep_model.dart';
 import 'package:hewa/models/reKitchenware_model.dart';
 import 'package:hewa/models/reStep_model.dart';
 import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/utilities/reImageStep_helper.dart';
 import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
@@ -37,12 +39,17 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:core';
+import 'package:hewa/screen/add/DynamicWidget.dart';
 
 class RecipeStep1 extends StatefulWidget {
-  RecipeStep1({Key? key}) : super(key: key);
+
+  MenuModel menuModel;
+
+  RecipeStep1(this.menuModel);
+
 
   @override
-  _RecipeStep1State createState() => _RecipeStep1State();
+  _RecipeStep1State createState() => _RecipeStep1State(menuModel);
 }
 
 const List<String> method = ['Bake', 'Boil', 'Fry', 'Multiple'];
@@ -63,12 +70,6 @@ var minute = 0;
 
 class _RecipeStep1State extends State<RecipeStep1> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // TextEditingController recipeController = TextEditingController();
-  // TextEditingController descController = TextEditingController();
-  // TextEditingController calController = TextEditingController();
-  // TextEditingController proteinController = TextEditingController();
-  // TextEditingController carboController = TextEditingController();
-  // TextEditingController fatController = TextEditingController();
 
   final _formKey = new GlobalKey<FormState>();
 
@@ -84,11 +85,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
   final descstepController = TextEditingController();
   final _amountController = TextEditingController();
 
+
   RecipeHelper? recipeHelper;
   RecipeModel? recipeModel;
-
-  // ReKitchenwareHelper? reKitchenwareHelper;
-  // ReKitchenwareModel? reKitchenwareModel;
 
   StepModel? stepModel;
 
@@ -102,13 +101,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
   ReIngredModel? reIngredModel;
 
   MenuHelper? menuHelper;
-  MenuModel? menuModel;
-  // MenuRecipeModel? menuRecipeModel;
+  MenuModel menuModel;
+  _RecipeStep1State(this.menuModel);
+
+
   int _kitchenwareCount = 1;
   int _ingredientsCount = 1;
 
-  // List<String> kitchenwares = [];
-  // List<KitchenwareModel> kitchenwareModel = [];
 
   createRecipes() async {
     String recipemenu = recipeController.text;
@@ -119,12 +118,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
     double fatmenu = double.parse(fatController.text);
     // String desc2menu = desc2Controller.text;
 
-    RecipeModel recipeModel = RecipeModel(
+     recipeModel = RecipeModel(
         recipeUid: _auth.currentUser!.uid,
         recipeName: recipemenu,
         description: desc1menu,
-        menuId: menuModel!.id,
-        timeMinute: _selectedHour,
+        menuId: menuModel.id,
+        timeMinute: _selectedHour * 60 + _selectedMinute,
         method: _selectedMethod,
         type: _selectedType,
         calories: calmenu,
@@ -132,7 +131,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
         carb: carbomenu,
         fat: fatmenu);
     int resultrec;
-    resultrec = await RecipeHelper().insert(recipeModel);
+    resultrec = await RecipeHelper().insert(recipeModel!);
 
     if (resultrec != 0) {
       print('Success');
@@ -145,28 +144,29 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   createKits() async {
 
-    // print(kitchenwareModel.length);
-
-    for (var i = 0; i < _selectedKitchenware.length; i++) {
-      ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-          recipeId: '',
-          kitchenwareId: kitchenwareModel
-              .where((element) => element.nameKitc == _selectedKitchenware[i])
-              .first
-              .id);
-      int resultkitc;
-      resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
+    print(kitchenwareModel.length);
+    
+    var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+    print(object.first.id);
 
 
-      if (resultkitc != 0) {
-        print('Success');
-      } else {
-        print('Failed');
+      for (var i = 0; i < _selectedKitchenware.length; i++) {
+        ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
+            recipeId: object.first.id.toString(),
+            kitchenwareId: kitchenwareModel
+                .where((element) => element.nameKitc == _selectedKitchenware[i])
+                .first
+                .id);
+        int resultkitc;
+        resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
+
+
+        if (resultkitc != 0) {
+          print('Success');
+        } else {
+          print('Failed');
+        }
       }
-    }
-
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
 
   createIngres() async {
@@ -174,7 +174,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
     for (var i = 0; i < _selectedIngredients.length; i++) {
       ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: menuModel!.id,
+          recipeId: null,
           ingredientId: ingredModel
               .where((element) => element.name == _selectedIngredients[i])
               .first
@@ -205,7 +205,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
   int _widgetId = 1;
   bool flagEdit = false;
   bool flagRemove = false;
-  TextEditingController editAmountController = TextEditingController();
+  final editAmountController = TextEditingController();
+
 
   Widget _addIngredient() {
     flagAdd = false;
@@ -215,10 +216,10 @@ class _RecipeStep1State extends State<RecipeStep1> {
         title: Text('Add new ingredient'),
         content: SingleChildScrollView(
             child: ListBody(children: <Widget>[
-          Center(),
-          _renderWidget(),
-          _widgetId == 1
-              ? TextButton(
+              Center(),
+              _renderWidget(),
+              _widgetId == 1
+                  ? TextButton(
                   onPressed: () {
                     print('$_selectedIngredient');
                     setState(() {
@@ -226,29 +227,37 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     });
                   },
                   child: Text('Next'))
-              : Row(
+                  : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                      TextButton(
-                          onPressed: () {
-                            print('$_selectedIngredient');
-                            setState(() {
-                              _updateWidget();
-                            });
-                          },
-                          child: Text('Back')),
-                      TextButton(
+                    TextButton(
                         onPressed: () {
+                          print('$_selectedIngredient');
+                          setState(() {
+                            _updateWidget();
+                          });
+                        },
+                        child: Text('Back')),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
                           print(_selectedIngredient);
                           print(_selectedIngredientAmount);
                           print(_selectedUnit);
                           flagAdd = true;
-                          Navigator.pop(context);
-                        },
-                        child: Text('Add'),
-                      )
-                    ]),
-        ])),
+
+                          ingredients.remove(_selectedIngredient);
+                          _selectedIngredients.add(_selectedIngredient);
+                          _selectedIngredientsCount.add((_selectedIngredientAmount));
+                          _selectedIngredientsUnit.add(_selectedUnit);
+                        });
+
+                        Navigator.pop(context);
+                      },
+                      child: Text('Add'),
+                    )
+                  ]),
+            ])),
       );
     });
   }
@@ -289,28 +298,23 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
-  buildEditWidget(int index) {
-    setState(() {
-      editAmountController.text = reingredModel[index].amount!.toString();
+  Widget renderAutoComplete() {
+    return StatefulBuilder(builder: (context, setState) {
+      return Autocomplete<String>(onSelected: (String selection) {
+        _selectedIngredient = selection;
+      }, optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable.empty();
+        }
+        return ingredients.where(
+              (element) {
+            return element
+                .toLowerCase()
+                .contains(textEditingValue.text.toLowerCase());
+          },
+        );
+      });
     });
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => _editIngredient(index))
-        .then((value) => setState(() {
-      if (flagEdit == true) {
-        reingredModel[index].unit = _selectedUnit;
-        reingredModel[index].amount =
-            double.parse(editAmountController.text);
-        ReIngredHelper().updateDataToSQLite(reingredModel[index]);
-      }
-      if (flagRemove == true) {
-        ReIngredHelper().deleteDataWhere(_auth.currentUser!.uid,
-            reingredModel[index].ingredientId.toString());
-        setState(() {
-          reingredModel.removeAt(index);
-        });
-      }
-    }));
   }
 
   Widget renderEditWidget() {
@@ -412,25 +416,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
-  Widget renderAutoComplete() {
-    return StatefulBuilder(builder: (context, setState) {
-      return Autocomplete<String>(onSelected: (String selection) {
-        _selectedIngredient = selection;
-      }, optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable.empty();
-        }
-        return ingredients.where(
-          (element) {
-            return element
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase());
-          },
-        );
-      });
-    });
-  }
-
   Widget renderIngredientChip() {
     var ingredient = ingredModel
         .where((element) => element.name == _selectedIngredient)
@@ -447,11 +432,16 @@ class _RecipeStep1State extends State<RecipeStep1> {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[
+                CircleAvatar(
+                    radius: 28,
+                    backgroundImage: NetworkImage(
+                      snapshot.data!,
+                    )),
                 Center(
                     child: ActionChip(
-                  label: Text(_selectedIngredient),
-                  onPressed: () {},
-                )),
+                      label: Text(_selectedIngredient),
+                      onPressed: () {},
+                    )),
                 TextField(
                   onChanged: (value) {
                     _selectedIngredientAmount = double.parse(value);
@@ -470,51 +460,51 @@ class _RecipeStep1State extends State<RecipeStep1> {
                           context: context,
                           barrierDismissible: true,
                           builder: (context) => Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffffffff),
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Color(0xff999999),
-                                          width: 0.0,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        CupertinoButton(
-                                          child: Text('Close'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0,
-                                            vertical: 5.0,
-                                          ),
-                                        ),
-                                      ],
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xffffffff),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xff999999),
+                                      width: 0.0,
                                     ),
                                   ),
-                                  Container(
-                                    height: 320.0,
-                                    color: Color(0xfff7f7f7),
-                                    child: CupertinoPicker(
-                                      itemExtent: 32,
-                                      backgroundColor: Colors.white,
-                                      onSelectedItemChanged: (int index) {
-                                        setState(() {
-                                          _selectedUnit = units[index];
-                                        });
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    CupertinoButton(
+                                      child: Text('Close'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
                                       },
-                                      children: getPickerItems(units),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0,
+                                        vertical: 5.0,
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ));
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 320.0,
+                                color: Color(0xfff7f7f7),
+                                child: CupertinoPicker(
+                                  itemExtent: 32,
+                                  backgroundColor: Colors.white,
+                                  onSelectedItemChanged: (int index) {
+                                    setState(() {
+                                      _selectedUnit = units[index];
+                                    });
+                                  },
+                                  children: getPickerItems(units),
+                                ),
+                              )
+                            ],
+                          ));
                     })
               ];
             } else {
@@ -539,65 +529,237 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   buildAddWidget() {
     showDialog(
-            context: context,
-            builder: (BuildContext context) => _addIngredient())
+        context: context,
+        builder: (BuildContext context) => _addIngredient())
         .then((value) => setState(() async {
-              if (flagAdd == true) {
-                ingredients.remove(_selectedIngredient);
-                _selectedIngredients.add(_selectedIngredient);
-                _selectedIngredientsCount.add((_selectedIngredientAmount));
-                _selectedIngredientsUnit.add(_selectedUnit);
-                ReIngredModel reIngredModel = ReIngredModel(
-                    ingredientId: ingredModel
-                        .where((element) => element.name == _selectedIngredient)
-                        .first
-                        .id,
-                    amount: _selectedIngredientAmount,
-                    unit: _selectedUnit == '-' ? '' : _selectedUnit,
-                    recipeId: null);
-                int resultIngre;
-                resultIngre = await ReIngredHelper().insert(reIngredModel);
+      if (flagAdd == true) {
+        // ingredients.remove(_selectedIngredient);
+        // _selectedIngredients.add(_selectedIngredient);
+        // _selectedIngredientsCount.add((_selectedIngredientAmount));
+        // _selectedIngredientsUnit.add(_selectedUnit);
 
-                if (resultIngre != 0) {
-                  print('Success');
-                } else {
-                  print('Failed');
-                }
-              }
-            }));
+        var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+        print(object.first.id);
+
+        ReIngredModel reIngred = ReIngredModel(
+            ingredientId: ingredModel
+                .where((element) => element.name == _selectedIngredient)
+                .first
+                .id,
+            amount: _selectedIngredientAmount,
+            unit: _selectedUnit == '-' ? '' : _selectedUnit,
+            recipeId: object.first.id);
+
+        int resultIngred;
+        resultIngred = await ReIngredHelper().insert(reIngred);
+
+        setState(() {
+          reingredModel.add(reIngred);
+        });
+
+
+        if (resultIngred != 0) {
+          print('Success');
+        } else {
+          print('Failed');
+        }
+
+      }
+    }));
   }
 
-  Widget buildIngredBtn(int index) {
-    var ingredient = ingredModel
-        .where((element) => element.id == reingredModel[index].ingredientId)
-        .toList();
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child('ingredients')
-        .child(ingredient[0].image.toString() + '.jpg');
-    var url = ref.getDownloadURL();
-    String format(double n) {
-      return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
+  buildEditWidget(int index) {
+    setState(() {
+      editAmountController.text = reingredModel[index].amount!.toString();
+    });
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => _editIngredient(index))
+        .then((value) => setState(() {
+      if (flagEdit == true) {
+        reingredModel[index].unit = _selectedUnit;
+        reingredModel[index].amount =
+            double.parse(editAmountController.text);
+
+        setState(() {
+          _selectedIngredientsCount[index] = double.parse(editAmountController.text);
+          _selectedIngredientsUnit[index] = _selectedUnit;
+        });
+
+
+        ReIngredHelper().updateDataToSQLite(reingredModel[index]);
+      }
+      if (flagRemove == true) {
+        ReIngredHelper().deleteDataWhere(_auth.currentUser!.uid,
+            reingredModel[index].ingredientId.toString());
+        setState(() {
+          reingredModel.removeAt(index);
+        });
+      }
+    }));
+  }
+
+  List<TextEditingController> _descStepControllers = [];
+  List<TextEditingController> _timeStepControllers = [];
+
+  buildRestep(int index) {
+    return Container(
+      child: Column(
+        children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Step ${index+1}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+          SizedBox(height: 10),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Description',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+          SizedBox(height: 20),
+          TextField(
+              controller: _descStepControllers[index],
+              maxLines: 5,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  filled: true,
+                  hintText: 'Description',
+                  fillColor: Colors.white)),
+          SizedBox(height: 40),
+          InkWell(
+            onTap: () {
+              getImage(index);
+            },
+            child: _Stepimage[index] != null
+                ? ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.white,
+                  child: Image.file(_Stepimage[index]),
+                ))
+                : ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.white,
+                  child: Icon(Icons.add),
+                )),
+          ),
+          SizedBox(height: 30),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Time',
+                  style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(width: 20),
+              Container(
+                width: 100,
+                child: TextField(
+                  controller: _timeStepControllers[index],
+                  keyboardType: TextInputType.numberWithOptions(
+                      decimal: true),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: '-',
+                  ),
+                ),
+              ),
+              SizedBox(width: 20),
+              Text('Minute',
+                  style:
+                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ],
+          ),
+
+          SizedBox(height: 60),
+        ],
+      ),
+    );
+  }
+
+  addReStep() async {
+
+    var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+    print(object.first.id);
+
+    for( int i = 0; i < _count;i++) {
+
+
+      String descStep = _descStepControllers[i].value.text;
+      int? timeStep = int.tryParse(_timeStepControllers[i].value.text);
+
+      ReStepModel reStepModel = ReStepModel(
+          recipeId: object.first.id.toString(),
+          step: i + 1,
+          description: descStep,
+          minute: timeStep);
+
+      int result;
+      result = await ReStepHelper().insert(reStepModel);
+
+      if (result != 0) {
+        setState(() {
+          steps.add(reStepModel);
+        });
+        print(descStep);
+        print(timeStep);
+        print('Success');
+      } else {
+        print('Failed');
+      }
     }
+    uploadImageToFirebase(context);
+  }
 
-    String amount = format(reingredModel[index].amount!);
 
-    return ActionChip(
-        label: Row(
-          children: [
-            Text(ingredient[0].name!),
-            // Text(ingredient.first.name!),
-            Text(
-              double.parse(amount) == 0
-                  ? ''
-                  : amount + ' ' + reingredModel[index].unit!,
-              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 14),
-              overflow: TextOverflow.ellipsis,
-            ),
-            // Text(reingredModel[index].amount!.toString()),
-          ],
-        ),
-        onPressed: () {});
+  List<ReStepModel> steps = [];
+  List<ReImageStepModel> reimages = [];
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    for (int i=0; i < _count; i++) {
+      if(_Stepimage[i] != null)  {
+        String fileName = p.basename(_Stepimage[i].path);
+        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('steps')
+            .child('/$fileName');
+
+        final metadata = firebase_storage.SettableMetadata(
+            contentType: 'image/jpeg',
+            customMetadata: {'picked-file-path': fileName});
+        firebase_storage.UploadTask uploadTask;
+        uploadTask = ref.putFile(io.File(_Stepimage[i].path), metadata);
+
+        var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+        print(object.first.id);
+
+        var objects = await ReStepHelper().readDataFromSQLiteRestep(steps[i]);
+        ReStepModel targetReStep = objects.first;
+        ReImageStepModel reImageStepModel = ReImageStepModel(
+            recipeId: object.first.id,
+            stepId: targetReStep.id,
+            name: fileName);
+
+        ReImageStepHelper().insertDataToSQLite(reImageStepModel);
+
+        firebase_storage.UploadTask task = await Future.value(uploadTask);
+        Future.value(uploadTask)
+            .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+            .onError((error, stackTrace) =>
+        {print("Upload file path error ${error.toString()} ")});
+
+        print(fileName);
+      }
+    }
   }
 
 
@@ -632,8 +794,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   List<String> _selectedKitchenware = ['Select Kitchenware'];
   List<String> _selectedIngredients = [];
-  List<String> _selectedIngredientsUnit = ['Unit'];
-  List<double> _selectedIngredientsCount = [0];
+  List<String> _selectedIngredientsUnit = [];
+  List<double> _selectedIngredientsCount = [];
 
   Future<Null> readSQLite() async {
     var object = await IngredHelper().readlDataFromSQLite();
@@ -645,6 +807,25 @@ class _RecipeStep1State extends State<RecipeStep1> {
       ingredients.add(model.name!);
     }
   }
+
+  Future<Null> readSQLiteMenu() async {
+    var object = await MenuHelper().readDataFromSQLiteMenu(menuModel);
+    print('object length ==> ${object.length}');
+    setState(() {
+      menuModel = object.first;
+      print(object.first.id);
+    });
+  }
+
+  Future<Null> readSQLiteRecipe() async {
+    var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+    print('object length ==> ${object.length}');
+    setState(() {
+      recipeModel = object.first;
+      print(object.first.id);
+    });
+  }
+
 
 
   Future<Null> readSQLiteKitch() async {
@@ -669,30 +850,10 @@ class _RecipeStep1State extends State<RecipeStep1> {
     setState(() {});
   }
 
-  Widget buildnextBtn() {
-    return RaisedButton(
-      // onPressed: () {},
-      onPressed: () {
-        Navigator.push(
-            context,
-            PageTransition(
-                child: RecipeStep2(), type: PageTransitionType.rightToLeft));
-      },
-      textColor: Colors.white,
-      color: Colors.black,
-      disabledColor: Colors.black,
-      child: Text("NEXT"),
-      // onPressed: () {},
-      padding: EdgeInsets.all(10),
-      shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(30.0),
-      ),
-    );
-  }
 
   static const color = const Color(0xffffab91);
 
-  int _count = 1;
+  int _count = 0;
 
   void _addNewStepColumn() {
     setState(() {
@@ -701,16 +862,18 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
+  List<dynamic> _Stepimage = [];
+
   File? _image = null;
   final picker = ImagePicker();
 
-  Future getImage() async {
+  Future getImage(int index) async {
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         print(pickedFile);
-        _image = File(pickedFile.path);
+        _Stepimage[index] = File(pickedFile.path);
       } else {
         print('No image selected.');
       }
@@ -829,6 +992,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
       _n++;
     });
   }
+
+
 
   void minus() {
     setState(() {
@@ -1008,14 +1173,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
   List<DynamicWidget> listDynamic = [];
 
   addDynamic(int index) {
-    listDynamic.add(DynamicWidget());
+    listDynamic.add(DynamicWidget(index, recipeModel!));
   }
 
-  // submitStep() {
-  //   listDynamic.forEach((widget) => (widget.dynamicWidgetState.createReStep()));
-  //   setState(() {});
-  //
-  // }
 
   @override
   void initState() {
@@ -1024,6 +1184,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
     // getKitchenware();
     readSQLite();
     readSQLiteKitch();
+    readSQLiteMenu();
+    readSQLiteRecipe();
   }
 
   int _index = 0;
@@ -1064,9 +1226,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 _index += 1;
                               });
                             }
-                            // createRecipes();
-                            createKits();
-                            // createIngres();
+                            createRecipes();
                           },
                           textColor: Colors.white,
                           color: Colors.black,
@@ -1078,7 +1238,46 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             borderRadius: new BorderRadius.circular(30.0),
                           ),
                         )
-                      : _index == 1
+                  : _index == 1
+                  ? Container(
+                    child: Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            if (_index > 0) {
+                              setState(() {
+                                _index -= 1;
+                              });
+                            }
+                          },
+                          child: const Text('BACK'),
+                        ),
+                        RaisedButton(
+                          onPressed: () async {
+                            if (_index <= 1) {
+                              setState(() {
+                                _index += 1;
+                              });
+                            }
+                            createKits();
+                          },
+                          textColor: Colors.white,
+                          color: Colors.black,
+                          disabledColor: Colors.black,
+                          child: Text("NEXT"),
+                          // onPressed: () {},
+                          padding: EdgeInsets.all(10),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius:
+                            new BorderRadius.circular(30.0),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                      : _index == 2
                           ? Container(
                               child: Row(
                                 mainAxisAlignment:
@@ -1096,12 +1295,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                   ),
                                   RaisedButton(
                                     onPressed: () async {
-                                      if (_index <= 1) {
+                                      if (_index <= 2) {
                                         setState(() {
                                           _index += 1;
                                         });
                                       }
-                                      _DynamicWidgetState.to.createReStep();
+                                      // DynamicWidget(_count, recipeModel!).method();
+                                      addReStep();
                                       // submitStep();
                                     },
                                     textColor: Colors.white,
@@ -1118,7 +1318,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 ],
                               ),
                             )
-                          : _index >= 2
+                          : _index >= 3
                               ? Container(
                                   child: Row(
                                     mainAxisAlignment:
@@ -1178,7 +1378,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
               }
             },
             onStepContinue: () {
-              if (_index <= 0) {
+              if (_index <= 2) {
                 setState(() {
                   _index += 1;
                 });
@@ -1384,908 +1584,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             SizedBox(height: 35),
                             Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text('Kitchenware',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20))),
-                            Column(children: <Widget>[
-                              SizedBox(height: 15),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: _kitchenwareCount,
-                                itemBuilder: (BuildContext context, int index) {
-                                  String currentKitchenWare =
-                                      _selectedKitchenware[index];
-                                  return Column(children: <Widget>[
-                                    TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            if (currentKitchenWare !=
-                                                'Select Kitchenware') {
-                                              if (kitchenware.contains(
-                                                      currentKitchenWare) ==
-                                                  false) {
-                                                kitchenware.insert(
-                                                    0, currentKitchenWare);
-                                              } else {
-                                                kitchenware
-                                                    .remove(currentKitchenWare);
-                                                kitchenware.insert(
-                                                    0, currentKitchenWare);
-                                              }
-                                            }
-                                          });
-                                          showCupertinoModalPopup(
-                                            context: context,
-                                            builder: (context) {
-                                              return Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: <Widget>[
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xffffffff),
-                                                      border: Border(
-                                                        bottom: BorderSide(
-                                                          color:
-                                                              Color(0xff999999),
-                                                          width: 0.0,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        CupertinoButton(
-                                                          child: Text('Cancel',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      20)),
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                            horizontal: 16.0,
-                                                            vertical: 5.0,
-                                                          ),
-                                                        ),
-                                                        CupertinoButton(
-                                                          child: Text('Confirm',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      20)),
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              kitchenware.remove(
-                                                                  currentKitchenWare);
-                                                              _selectedKitchenware[
-                                                                      index] =
-                                                                  currentKitchenWare;
-                                                            });
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                            horizontal: 16.0,
-                                                            vertical: 5.0,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    height: 320.0,
-                                                    color: Color(0xfff7f7f7),
-                                                    child: CupertinoPicker(
-                                                      itemExtent: 32,
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      onSelectedItemChanged:
-                                                          (int index) {
-                                                        setState(() {
-                                                          currentKitchenWare =
-                                                              kitchenware[
-                                                                  index];
-                                                          print(
-                                                              currentKitchenWare);
-                                                        });
-                                                      },
-                                                      children: getPickerItems(
-                                                          kitchenware),
-                                                    ),
-                                                  )
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Text(
-                                          '$currentKitchenWare',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                  ]);
-                                },
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    addNewKitchenware();
-                                  },
-                                  icon: Icon(Icons.add)),
-                            ]),
-                            SizedBox(height: 35),
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Ingredients',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20))),
-
-                            Column(
-                              children: <Widget>[
-                                SizedBox(height: 15),
-                                Container(
-                                  child: Container(
-                                    height: 150,
-                                    child: _selectedIngredients.length != 0
-                                        ? Wrap(
-                                        spacing: 6,
-                                        runSpacing: 6,
-                                        children:
-                                        List.generate(_selectedIngredients.length, (index) {
-                                          return ActionChip(
-                                              label: Text(_selectedIngredients[index]),
-                                              onPressed: () {});
-                                        }))
-                                        : Text(_selectedIngredient),
-                                  ),
-                                ),
-
-
-                                // SizedBox(height: 15),
-                                // ListView.builder(
-                                //   physics: NeverScrollableScrollPhysics(),
-                                //   itemCount: reingredModel.length,
-                                //   itemBuilder: (_, index) {
-                                //     return buildIngredBtn(index);
-                                //   },
-                                //   // return Column(
-                                //   //     mainAxisAlignment: MainAxisAlignment.start,
-                                //   //     children: <Widget>[
-                                //   //       Align(
-                                //   //           alignment: Alignment.centerLeft,
-                                //   //           child: Text(
-                                //   //             'Step $count',
-                                //   //             style: TextStyle(
-                                //   //                 fontWeight: FontWeight.bold,
-                                //   //                 fontSize: 20),
-                                //   //           )),
-                                //   //       SizedBox(height: 10),
-                                //   //       Align(
-                                //   //           alignment: Alignment.centerLeft,
-                                //   //           child: Text('Description',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))),
-                                //   //       SizedBox(height: 15),
-                                //   //       TextField(
-                                //   //           maxLines: 5,
-                                //   //           decoration: InputDecoration(
-                                //   //               border: OutlineInputBorder(
-                                //   //                 borderSide: BorderSide.none,
-                                //   //                 borderRadius: BorderRadius.circular(15),
-                                //   //               ),
-                                //   //               filled: true,
-                                //   //               hintText: 'Description',
-                                //   //               fillColor: Colors.white)),
-                                //   //       SizedBox(height: 15),
-                                //   //       Row(
-                                //   //         mainAxisAlignment:
-                                //   //         MainAxisAlignment.spaceEvenly,
-                                //   //         children: [
-                                //   //           // InkWell(
-                                //   //           //   onTap: () {
-                                //   //           //     getImage();
-                                //   //           //   },
-                                //   //           //   child: _image != null
-                                //   //           //       ? ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Image.file(_image!),
-                                //   //           //           ))
-                                //   //           //       : ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Icon(Icons.add),
-                                //   //           //           )),
-                                //   //           // ),
-                                //   //           // InkWell(
-                                //   //           //   onTap: () {
-                                //   //           //     getImage();
-                                //   //           //   },
-                                //   //           //   child: _image != null
-                                //   //           //       ? ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Image.file(_image!),
-                                //   //           //           ))
-                                //   //           //       : ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Icon(Icons.add),
-                                //   //           //           )),
-                                //   //           // ),
-                                //   //         ],
-                                //   //       ),
-                                //   //       SizedBox(height: 20),
-                                //   //       Row(
-                                //   //         mainAxisAlignment:
-                                //   //         MainAxisAlignment.spaceEvenly,
-                                //   //         children: [
-                                //   //           InkWell(
-                                //   //             onTap: () {
-                                //   //               getImage();
-                                //   //             },
-                                //   //             child: _image != null
-                                //   //                 ? ClipRRect(
-                                //   //                 borderRadius:
-                                //   //                 BorderRadius.circular(10),
-                                //   //                 child: Container(
-                                //   //                   width: 120,
-                                //   //                   height: 120,
-                                //   //                   color: Colors.white,
-                                //   //                   child: Image.file(_image!),
-                                //   //                 ))
-                                //   //                 : ClipRRect(
-                                //   //                 borderRadius:
-                                //   //                 BorderRadius.circular(10),
-                                //   //                 child: Container(
-                                //   //                   width: 120,
-                                //   //                   height: 120,
-                                //   //                   color: Colors.white,
-                                //   //                   child: Icon(Icons.add),
-                                //   //                 )),
-                                //   //           ),
-                                //   //           // InkWell(
-                                //   //           //   onTap: () {
-                                //   //           //     getImage();
-                                //   //           //   },
-                                //   //           //   child: _image != null
-                                //   //           //       ? ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Image.file(_image!),
-                                //   //           //           ))
-                                //   //           //       : ClipRRect(
-                                //   //           //           borderRadius:
-                                //   //           //               BorderRadius.circular(10),
-                                //   //           //           child: Container(
-                                //   //           //             width: 120,
-                                //   //           //             height: 120,
-                                //   //           //             color: Colors.white,
-                                //   //           //             child: Icon(Icons.add),
-                                //   //           //           )),
-                                //   //           // ),
-                                //   //         ],
-                                //   //       ),
-                                //   //       SizedBox(height: 25),
-                                //   //       Row(
-                                //   //           mainAxisAlignment:
-                                //   //           MainAxisAlignment.spaceBetween,
-                                //   //           children: <Widget>[
-                                //   //             Text('Timer',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold)),
-                                //   //             buildTimer(context),
-                                //   //             Text('minute',style: TextStyle(fontSize:16,fontWeight: FontWeight.bold))
-                                //   //           ])
-                                //   //     ]);
-                                //
-                                //   shrinkWrap: true,
-                                // ),
-                                // ListView.builder(
-                                //   shrinkWrap: true,
-                                //   physics: NeverScrollableScrollPhysics(),
-                                //   itemCount: _ingredientsCount,
-                                //   itemBuilder: (BuildContext context, int index) {
-                                //     // String currentIngredients =
-                                //     // _selectedIngredients[index];
-                                //     // String currentIngredientsUnit =
-                                //     // _selectedIngredientsUnit[index];
-                                //     // // int currentIngredientsCount =
-                                //     // //  _selectedIngredientsCount[index];
-                                //
-                                //     //ingrediens
-                                //     return Column(children: <Widget>[
-                                //       // IconButton(
-                                //       //     onPressed: () {
-                                //       //       setState(() {
-                                //       //         _selectedIngredient = ingredients[0];
-                                //       //         _selectedIngredientAmount = 0;
-                                //       //         _selectedUnit = '';
-                                //       //         _widgetId = 1;
-                                //       //       });
-                                //       //       print( _selectedIngredient);
-                                //       //       print( _selectedIngredientAmount);
-                                //       //       print(_selectedUnit);
-                                //       //       buildAddWidget();
-                                //       //     },
-                                //       //     icon: Icon(Icons.add)),
-                                //       SizedBox(height: 10),
-                                //       Container(
-                                //         child: Container(
-                                //           padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                //           height: 50,
-                                //           child: reingredModel.length != 0
-                                //               ? buildIngredBtn(index)
-                                //               : Text('Select Ingredient'),
-                                //         ),
-                                //       ),
-                                //
-                                //         // ListView.builder(
-                                //         //   shrinkWrap: true,
-                                //         //   physics: NeverScrollableScrollPhysics(),
-                                //         //   itemCount: _ingredientsCount,
-                                //         //   itemBuilder: (BuildContext context, int index) {
-                                //         //     String currentIngredients =
-                                //         //     _selectedIngredients[index];
-                                //         //     String currentIngredientsUnit =
-                                //         //     _selectedIngredientsUnit[index];
-                                //         //     int currentIngredientsCount =
-                                //         //     _selectedIngredientsCount[index];
-                                //         //     return
-                                //         //     // return Column(children: <Widget>[
-                                //         //     //   SizedBox(height: 15),
-                                //         //     //   ListView.builder(
-                                //         //     //     shrinkWrap: true,
-                                //         //     //     physics: NeverScrollableScrollPhysics(),
-                                //         //     //     itemCount: _ingredientsCount,
-                                //         //     //     itemBuilder: (BuildContext context, int index) {
-                                //         //     //       String currentIngredients =
-                                //         //     //       _selectedIngredients[index];
-                                //         //     //       String currentIngredientsUnit =
-                                //         //     //       _selectedIngredientsUnit[index];
-                                //         //     //       int currentIngredientsCount =
-                                //         //     //       _selectedIngredientsCount[index];
-                                //         //     //       return Column(children: <Widget>[
-                                //         //     //         TextButton(
-                                //         //     //             onPressed: () {
-                                //         //     //               setState(() {
-                                //         //     //                 print(currentIngredients);
-                                //         //     //                 if (currentIngredients !=
-                                //         //     //                     'Select Ingredient') {
-                                //         //     //                   if (ingredients.contains(
-                                //         //     //                       currentIngredients) ==
-                                //         //     //                       false) {
-                                //         //     //                     ingredients.insert(
-                                //         //     //                         0, currentIngredients);
-                                //         //     //                   } else {
-                                //         //     //                     ingredients
-                                //         //     //                         .remove(currentIngredients);
-                                //         //     //                     ingredients.insert(
-                                //         //     //                         0, currentIngredients);
-                                //         //     //                   }
-                                //         //     //                 }
-                                //         //     //
-                                //         //     //                 currentIngredients = ingredients[0];
-                                //         //     //                 currentIngredientsCount = 0;
-                                //         //     //                 currentIngredientsUnit = units[0];
-                                //         //     //               });
-                                //         //     //               showCupertinoModalPopup(
-                                //         //     //                   context: context,
-                                //         //     //                   builder: (context) {
-                                //         //     //                     return Column(
-                                //         //     //                       mainAxisAlignment:
-                                //         //     //                       MainAxisAlignment.end,
-                                //         //     //                       children: <Widget>[
-                                //         //     //                         Container(
-                                //         //     //                           decoration: BoxDecoration(
-                                //         //     //                             color:
-                                //         //     //                             Color(0xffffffff),
-                                //         //     //                             border: Border(
-                                //         //     //                               bottom: BorderSide(
-                                //         //     //                                 color: Color(
-                                //         //     //                                     0xff999999),
-                                //         //     //                                 width: 0.0,
-                                //         //     //                               ),
-                                //         //     //                             ),
-                                //         //     //                           ),
-                                //         //     //                           child: Row(
-                                //         //     //                             mainAxisAlignment:
-                                //         //     //                             MainAxisAlignment
-                                //         //     //                                 .spaceBetween,
-                                //         //     //                             children: <Widget>[
-                                //         //     //                               CupertinoButton(
-                                //         //     //                                   child: Text(
-                                //         //     //                                       'Cancel',
-                                //         //     //                                       style: TextStyle(
-                                //         //     //                                           fontWeight:
-                                //         //     //                                           FontWeight
-                                //         //     //                                               .bold,
-                                //         //     //                                           fontSize:
-                                //         //     //                                           20)),
-                                //         //     //                                   onPressed: () {
-                                //         //     //                                     Navigator.pop(
-                                //         //     //                                         context);
-                                //         //     //                                   }),
-                                //         //     //                               CupertinoButton(
-                                //         //     //                                 child: Text('Add',
-                                //         //     //                                     style: TextStyle(
-                                //         //     //                                         fontWeight:
-                                //         //     //                                         FontWeight
-                                //         //     //                                             .bold,
-                                //         //     //                                         fontSize:
-                                //         //     //                                         20)),
-                                //         //     //                                 onPressed: () {
-                                //         //     //                                   setState(() {
-                                //         //     //                                     _selectedIngredients[
-                                //         //     //                                     index] =
-                                //         //     //                                         currentIngredients;
-                                //         //     //                                     _selectedIngredientsCount[
-                                //         //     //                                     index] =
-                                //         //     //                                         currentIngredientsCount +
-                                //         //     //                                             1;
-                                //         //     //                                     _selectedIngredientsUnit[
-                                //         //     //                                     index] =
-                                //         //     //                                         currentIngredientsUnit;
-                                //         //     //                                   });
-                                //         //     //                                   Navigator.pop(
-                                //         //     //                                       context);
-                                //         //     //                                 },
-                                //         //     //                                 padding:
-                                //         //     //                                 const EdgeInsets
-                                //         //     //                                     .symmetric(
-                                //         //     //                                   horizontal: 16.0,
-                                //         //     //                                   vertical: 5.0,
-                                //         //     //                                 ),
-                                //         //     //                               )
-                                //         //     //                             ],
-                                //         //     //                           ),
-                                //         //     //                         ),
-                                //         //     //                         Container(
-                                //         //     //                           height: 320,
-                                //         //     //                           color: Colors.white,
-                                //         //     //                           child: Row(
-                                //         //     //                             crossAxisAlignment:
-                                //         //     //                             CrossAxisAlignment
-                                //         //     //                                 .start,
-                                //         //     //                             children: <Widget>[
-                                //         //     //                               Expanded(
-                                //         //     //                                   child:
-                                //         //     //                                   CupertinoPicker(
-                                //         //     //                                     itemExtent: 32,
-                                //         //     //                                     backgroundColor:
-                                //         //     //                                     Colors.white,
-                                //         //     //                                     onSelectedItemChanged:
-                                //         //     //                                         (value) {
-                                //         //     //                                       setState(() {
-                                //         //     //                                         currentIngredients =
-                                //         //     //                                         ingredients[
-                                //         //     //                                         value];
-                                //         //     //                                       });
-                                //         //     //                                     },
-                                //         //     //                                     children:
-                                //         //     //                                     getPickerItems(
-                                //         //     //                                         ingredients),
-                                //         //     //                                   )),
-                                //         //     //                               Expanded(
-                                //         //     //                                 child:
-                                //         //     //                                 CupertinoPicker(
-                                //         //     //                                   itemExtent: 32,
-                                //         //     //                                   backgroundColor:
-                                //         //     //                                   Colors.white,
-                                //         //     //                                   onSelectedItemChanged:
-                                //         //     //                                       (value) {
-                                //         //     //                                     setState(() {
-                                //         //     //                                       currentIngredientsCount =
-                                //         //     //                                           value;
-                                //         //     //                                     });
-                                //         //     //                                   },
-                                //         //     //                                   children: new List<
-                                //         //     //                                       Widget>.generate(
-                                //         //     //                                       1000,
-                                //         //     //                                           (int index) {
-                                //         //     //                                         var amount =
-                                //         //     //                                             index + 1;
-                                //         //     //                                         return new Center(
-                                //         //     //                                           child: new Text(
-                                //         //     //                                               '${amount}'),
-                                //         //     //                                         );
-                                //         //     //                                       }),
-                                //         //     //                                 ),
-                                //         //     //                               ),
-                                //         //     //                               Expanded(
-                                //         //     //                                 child:
-                                //         //     //                                 CupertinoPicker(
-                                //         //     //                                   itemExtent: 32,
-                                //         //     //                                   backgroundColor:
-                                //         //     //                                   Colors.white,
-                                //         //     //                                   onSelectedItemChanged:
-                                //         //     //                                       (value) {
-                                //         //     //                                     setState(() {
-                                //         //     //                                       currentIngredientsUnit =
-                                //         //     //                                       units[
-                                //         //     //                                       value];
-                                //         //     //                                     });
-                                //         //     //                                   },
-                                //         //     //                                   children:
-                                //         //     //                                   getPickerItems(
-                                //         //     //                                       units),
-                                //         //     //                                 ),
-                                //         //     //                               )
-                                //         //     //                             ],
-                                //         //     //                           ),
-                                //         //     //                         )
-                                //         //     //                       ],
-                                //         //     //                     );
-                                //         //     //                   });
-                                //         //     //             },
-                                //         //     //             child: Row(
-                                //         //     //               mainAxisAlignment:
-                                //         //     //               MainAxisAlignment.spaceBetween,
-                                //         //     //               children: [
-                                //         //     //                 Text(
-                                //         //     //                   '$currentIngredients',
-                                //         //     //                   style: TextStyle(
-                                //         //     //                       fontWeight: FontWeight.bold),
-                                //         //     //                 ),
-                                //         //     //                 Text(
-                                //         //     //                   '$currentIngredientsCount',
-                                //         //     //                   style: TextStyle(
-                                //         //     //                       fontWeight: FontWeight.bold),
-                                //         //     //                 ),
-                                //         //     //                 Text(
-                                //         //     //                   '$currentIngredientsUnit',
-                                //         //     //                   style: TextStyle(
-                                //         //     //                       fontWeight: FontWeight.bold),
-                                //         //     //                 )
-                                //         //     //               ],
-                                //         //     //             ))
-                                //         //     //       ]);
-                                //         //     //     },
-                                //         //     //   ),
-                                //         //     //   IconButton(
-                                //         //     //       onPressed: () {
-                                //         //     //         addNewIngredients();
-                                //         //     //       },
-                                //         //     //       icon: Icon(Icons.add))
-                                //         //     // ]);
-                                //
-                                //
-                                //       // TextButton(
-                                //       //     onPressed: () {
-                                //       //       setState(() {
-                                //       //         if (currentIngredients !=
-                                //       //             'Select Ingredient') {
-                                //       //           if (ingredients.contains(
-                                //       //               currentIngredients) ==
-                                //       //               false) {
-                                //       //             ingredients.insert(
-                                //       //                 0, currentIngredients);
-                                //       //           } else {
-                                //       //             ingredients
-                                //       //                 .remove(currentIngredients);
-                                //       //             ingredients.insert(
-                                //       //                 0, currentIngredients);
-                                //       //           }
-                                //       //         }
-                                //       //       });
-                                //       //       showCupertinoModalPopup(
-                                //       //         context: context,
-                                //       //         builder: (context) {
-                                //       //           return Column(
-                                //       //             mainAxisAlignment:
-                                //       //             MainAxisAlignment.end,
-                                //       //             children: <Widget>[
-                                //       //               Container(
-                                //       //                 decoration: BoxDecoration(
-                                //       //                   color: Color(0xffffffff),
-                                //       //                   border: Border(
-                                //       //                     bottom: BorderSide(
-                                //       //                       color:
-                                //       //                       Color(0xff999999),
-                                //       //                       width: 0.0,
-                                //       //                     ),
-                                //       //                   ),
-                                //       //                 ),
-                                //       //                 child: Row(
-                                //       //                   mainAxisAlignment:
-                                //       //                   MainAxisAlignment
-                                //       //                       .spaceBetween,
-                                //       //                   children: <Widget>[
-                                //       //                     CupertinoButton(
-                                //       //                       child: Text('Cancel',
-                                //       //                           style: TextStyle(
-                                //       //                               fontWeight:
-                                //       //                               FontWeight
-                                //       //                                   .bold,
-                                //       //                               fontSize:
-                                //       //                               20)),
-                                //       //                       onPressed: () {
-                                //       //                         Navigator.pop(
-                                //       //                             context);
-                                //       //                       },
-                                //       //                       padding:
-                                //       //                       const EdgeInsets
-                                //       //                           .symmetric(
-                                //       //                         horizontal: 16.0,
-                                //       //                         vertical: 5.0,
-                                //       //                       ),
-                                //       //                     ),
-                                //       //                     CupertinoButton(
-                                //       //                       child: Text('Confirm',
-                                //       //                           style: TextStyle(
-                                //       //                               fontWeight:
-                                //       //                               FontWeight
-                                //       //                                   .bold,
-                                //       //                               fontSize:
-                                //       //                               20)),
-                                //       //                       onPressed: () {
-                                //       //                         setState(() {
-                                //       //                           ingredients
-                                //       //                               .remove(
-                                //       //                               currentIngredients);
-                                //       //                           _selectedIngredients[
-                                //       //                           index] =
-                                //       //                               currentIngredients;
-                                //       //                         });
-                                //       //                         Navigator.pop(
-                                //       //                             context);
-                                //       //                       },
-                                //       //                       padding:
-                                //       //                       const EdgeInsets
-                                //       //                           .symmetric(
-                                //       //                         horizontal: 16.0,
-                                //       //                         vertical: 5.0,
-                                //       //                       ),
-                                //       //                     )
-                                //       //                   ],
-                                //       //                 ),
-                                //       //               ),
-                                //       //               Container(
-                                //       //                 height: 320.0,
-                                //       //                 color: Color(0xfff7f7f7),
-                                //       //                 child: CupertinoPicker(
-                                //       //                   itemExtent: 32,
-                                //       //                   backgroundColor:
-                                //       //                   Colors.white,
-                                //       //                   onSelectedItemChanged:
-                                //       //                       (int index) {
-                                //       //                     setState(() {
-                                //       //                       currentIngredients =
-                                //       //                       ingredients[
-                                //       //                       index];
-                                //       //                       print(
-                                //       //                           currentIngredients);
-                                //       //                     });
-                                //       //                   },
-                                //       //                   children: getPickerItems(
-                                //       //                       ingredients),
-                                //       //                 ),
-                                //       //               )
-                                //       //             ],
-                                //       //           );
-                                //       //         },
-                                //       //       );
-                                //       //     },
-                                //       //     child: Text(
-                                //       //       '$currentIngredients',
-                                //       //       style: TextStyle(
-                                //       //           fontWeight: FontWeight.bold),
-                                //       //     )),
-                                //       // Expanded(
-                                //       //   child: ListView.builder(
-                                //       //     physics: NeverScrollableScrollPhysics(),
-                                //       //     itemCount: listAmount.length,
-                                //       //     itemBuilder: (_, index) {
-                                //       //       return listAmount[index];
-                                //       //     },
-                                //       //     shrinkWrap: true,
-                                //       //   ),
-                                //       // ),
-                                //       // SizedBox(width: 20),
-                                //       // TextButton(
-                                //       //     onPressed: () {
-                                //       //       setState(() {
-                                //       //         print(currentIngredients);
-                                //       //         if (currentIngredients !=
-                                //       //             'Units') {
-                                //       //           if (ingredients.contains(
-                                //       //               currentIngredients) ==
-                                //       //               false) {
-                                //       //             ingredients.insert(
-                                //       //                 0, currentIngredients);
-                                //       //           } else {
-                                //       //             ingredients
-                                //       //                 .remove(currentIngredients);
-                                //       //             ingredients.insert(
-                                //       //                 0, currentIngredients);
-                                //       //           }
-                                //       //         }
-                                //       //
-                                //       //         currentIngredients = ingredients[0];
-                                //       //         // currentIngredientsCount = 0;
-                                //       //         currentIngredientsUnit = units[0];
-                                //       //       });
-                                //       //       showCupertinoModalPopup(
-                                //       //           context: context,
-                                //       //           builder: (context) {
-                                //       //             return Column(
-                                //       //               mainAxisAlignment:
-                                //       //               MainAxisAlignment.end,
-                                //       //               children: <Widget>[
-                                //       //                 Container(
-                                //       //                   decoration: BoxDecoration(
-                                //       //                     color:
-                                //       //                     Color(0xffffffff),
-                                //       //                     border: Border(
-                                //       //                       bottom: BorderSide(
-                                //       //                         color: Color(
-                                //       //                             0xff999999),
-                                //       //                         width: 0.0,
-                                //       //                       ),
-                                //       //                     ),
-                                //       //                   ),
-                                //       //                   child: Row(
-                                //       //                     mainAxisAlignment:
-                                //       //                     MainAxisAlignment
-                                //       //                         .spaceBetween,
-                                //       //                     children: <Widget>[
-                                //       //                       CupertinoButton(
-                                //       //                           child: Text(
-                                //       //                               'Cancel',
-                                //       //                               style: TextStyle(
-                                //       //                                   fontWeight:
-                                //       //                                   FontWeight
-                                //       //                                       .bold,
-                                //       //                                   fontSize:
-                                //       //                                   20)),
-                                //       //                           onPressed: () {
-                                //       //                             Navigator.pop(
-                                //       //                                 context);
-                                //       //                           }),
-                                //       //                       CupertinoButton(
-                                //       //                         child: Text('Add',
-                                //       //                             style: TextStyle(
-                                //       //                                 fontWeight:
-                                //       //                                 FontWeight
-                                //       //                                     .bold,
-                                //       //                                 fontSize:
-                                //       //                                 20)),
-                                //       //                         onPressed: () {
-                                //       //                           setState(() {
-                                //       //                             _selectedIngredients[
-                                //       //                             index] =
-                                //       //                                 currentIngredients;
-                                //       //                             // _selectedIngredientsCount[
-                                //       //                             // index] =
-                                //       //                             //     currentIngredientsCount +
-                                //       //                             //         1;
-                                //       //                             _selectedIngredientsUnit[
-                                //       //                             index] =
-                                //       //                                 currentIngredientsUnit;
-                                //       //                           });
-                                //       //                           Navigator.pop(
-                                //       //                               context);
-                                //       //                         },
-                                //       //                         padding:
-                                //       //                         const EdgeInsets
-                                //       //                             .symmetric(
-                                //       //                           horizontal: 16.0,
-                                //       //                           vertical: 5.0,
-                                //       //                         ),
-                                //       //                       )
-                                //       //                     ],
-                                //       //                   ),
-                                //       //                 ),
-                                //       //                 Container(
-                                //       //                   height: 320,
-                                //       //                   color: Colors.white,
-                                //       //                   child: Row(
-                                //       //                     crossAxisAlignment:
-                                //       //                     CrossAxisAlignment
-                                //       //                         .start,
-                                //       //                     children: <Widget>[
-                                //       //                       Expanded(
-                                //       //                         child:
-                                //       //                         CupertinoPicker(
-                                //       //                           itemExtent: 32,
-                                //       //                           backgroundColor:
-                                //       //                           Colors.white,
-                                //       //                           onSelectedItemChanged:
-                                //       //                               (value) {
-                                //       //                             setState(() {
-                                //       //                               currentIngredientsUnit =
-                                //       //                               units[
-                                //       //                               value];
-                                //       //                             });
-                                //       //                           },
-                                //       //                           children:
-                                //       //                           getPickerItems(
-                                //       //                               units),
-                                //       //                         ),
-                                //       //                       )
-                                //       //                     ],
-                                //       //                   ),
-                                //       //                 )
-                                //       //               ],
-                                //       //             );
-                                //       //           });
-                                //       //     },
-                                //       //     child: Row(
-                                //       //       mainAxisAlignment:
-                                //       //       MainAxisAlignment.spaceBetween,
-                                //       //       children: [
-                                //       //         // Text(
-                                //       //         //   '$currentIngredients',
-                                //       //         //   style: TextStyle(
-                                //       //         //       fontWeight: FontWeight.bold),
-                                //       //         // ),
-                                //       //         // Text(
-                                //       //         //   // '$currentIngredientsCount',
-                                //       //         //   '',
-                                //       //         //   style: TextStyle(
-                                //       //         //       fontWeight: FontWeight.bold),
-                                //       //         // ),
-                                //       //         Text(
-                                //       //           '$currentIngredientsUnit',
-                                //       //           style: TextStyle(
-                                //       //               fontWeight: FontWeight.bold),
-                                //       //         )
-                                //       //       ],
-                                //       //     )),
-                                //       ],
-                                //
-                                //     );
-                                //   }),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _selectedIngredient = ingredients[0];
-                                        _selectedIngredientAmount = 0;
-                                        _selectedUnit = '';
-                                        _widgetId = 1;
-                                      });
-                                      print(_selectedIngredientsCount);
-                                      buildAddWidget();
-                                      // addNewIngredients();
-                                    },
-                                    icon: Icon(Icons.add)),
-                              ],
-                            ),
-
-                            SizedBox(height: 35),
-                            Align(
-                                alignment: Alignment.centerLeft,
                                 child: Text('Nutritions facts',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -2343,12 +1641,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     hintText: 'Fat',
                                     fillColor: Colors.white)),
                             SizedBox(height: 20),
-                            // SizedBox(height: 30),
-                            // Row(
-                            //     mainAxisAlignment: MainAxisAlignment.end,
-                            //     children: <Widget>[
-                            //       buildnextBtn(),
-                            //     ]),
                           ],
                         ),
                       ),
@@ -2356,6 +1648,210 @@ class _RecipeStep1State extends State<RecipeStep1> {
               ),
               Step(
                 isActive: _index >= 1,
+                  title: Text(
+                    '',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  content: Container(
+                    child: Column(
+                      children: [
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Kitchenware',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20))),
+                        Column(children: <Widget>[
+                          SizedBox(height: 15),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _kitchenwareCount,
+                            itemBuilder: (BuildContext context, int index) {
+                              String currentKitchenWare =
+                              _selectedKitchenware[index];
+                              return Column(children: <Widget>[
+                                TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (currentKitchenWare !=
+                                            'Select Kitchenware') {
+                                          if (kitchenware.contains(
+                                              currentKitchenWare) ==
+                                              false) {
+                                            kitchenware.insert(
+                                                0, currentKitchenWare);
+                                          } else {
+                                            kitchenware
+                                                .remove(currentKitchenWare);
+                                            kitchenware.insert(
+                                                0, currentKitchenWare);
+                                          }
+                                        }
+                                      });
+                                      showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) {
+                                          return Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xffffffff),
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      color:
+                                                      Color(0xff999999),
+                                                      width: 0.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: <Widget>[
+                                                    CupertinoButton(
+                                                      child: Text('Cancel',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                              fontSize:
+                                                              20)),
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                            context);
+                                                      },
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 16.0,
+                                                        vertical: 5.0,
+                                                      ),
+                                                    ),
+                                                    CupertinoButton(
+                                                      child: Text('Confirm',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                              fontSize:
+                                                              20)),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          kitchenware.remove(
+                                                              currentKitchenWare);
+                                                          _selectedKitchenware[
+                                                          index] =
+                                                              currentKitchenWare;
+                                                        });
+                                                        Navigator.pop(
+                                                            context);
+                                                      },
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 16.0,
+                                                        vertical: 5.0,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 320.0,
+                                                color: Color(0xfff7f7f7),
+                                                child: CupertinoPicker(
+                                                  itemExtent: 32,
+                                                  backgroundColor:
+                                                  Colors.white,
+                                                  onSelectedItemChanged:
+                                                      (int index) {
+                                                    setState(() {
+                                                      currentKitchenWare =
+                                                      kitchenware[
+                                                      index];
+                                                      print(
+                                                          currentKitchenWare);
+                                                    });
+                                                  },
+                                                  children: getPickerItems(
+                                                      kitchenware),
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Text(
+                                      '$currentKitchenWare',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ))
+                              ]);
+                            },
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                addNewKitchenware();
+                              },
+                              icon: Icon(Icons.add)),
+                        ]),
+                        SizedBox(height: 35),
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Ingredients',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20))),
+                        Column(
+                          children: <Widget>[
+                            SizedBox(height: 35),
+                            Container(
+                              child: Container(
+                                height: 300,
+                                child: _selectedIngredients.length != 0
+                                    ? Wrap(
+                                    spacing: 6,
+                                    runSpacing: 6,
+                                    children:
+                                    List.generate(_selectedIngredients.length, (index) {
+                                      return ActionChip(
+                                          label:
+                                          Text('${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'),
+                                          onPressed: () {
+                                            buildEditWidget(index);
+                                          });
+                                    }))
+
+                                    : Text('Select Ingredient',
+                                style: TextStyle(color: color),),
+                              ),
+                            ),
+
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedIngredient = ingredients[0];
+                                    _selectedIngredientAmount = 0;
+                                    _selectedUnit = '';
+                                    _widgetId = 1;
+                                  });
+                                  print(_selectedIngredientsCount);
+                                  buildAddWidget();
+                                },
+                                icon: Icon(Icons.add)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+              ),
+              Step(
+                isActive: _index >= 2,
                 title: Text(
                   '',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -2366,20 +1862,21 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   children: <Widget>[
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: listDynamic.length,
+                      itemCount: _count,
                       itemBuilder: (context, int index) {
-                        return Container(
-                          child: listDynamic[index],
-                        );
+                        return buildRestep(index);
                       },
                       shrinkWrap: true,
                     ),
                     InkWell(
                       onTap: () {
                         setState(() {
-                          addDynamic(_count);
-                          print(_count);
+                          // addDynamic(_count);
                           _count++;
+                          print(_count);
+                          _descStepControllers.add(TextEditingController());
+                          _timeStepControllers.add(TextEditingController());
+                          _Stepimage.add(null);
                         });
                       },
                       child: Container(
@@ -2408,220 +1905,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     SizedBox(height: 15),
                   ],
                 )),
-
-                // content: Container(
-                //     alignment: Alignment.centerLeft,
-                //     child: SingleChildScrollView(
-                //       child: Container(
-                //         // margin: EdgeInsets.all(3),
-                //           child: Column(
-                //             mainAxisAlignment: MainAxisAlignment.start,
-                //             children: <Widget>[
-                //               ListView.builder(
-                //                 physics: NeverScrollableScrollPhysics(),
-                //                 itemCount: _count,
-                //                 itemBuilder: (BuildContext context, int index) {
-                //                   int count = index + 1;
-                //                   return Column(
-                //                       mainAxisAlignment: MainAxisAlignment.start,
-                //                       children: <Widget>[
-                //                         Align(
-                //                             alignment: Alignment.centerLeft,
-                //                             child: Text(
-                //                               'Step $count',
-                //                               style: TextStyle(
-                //                                   fontWeight: FontWeight.bold,
-                //                                   fontSize: 20),
-                //                             )),
-                //                         SizedBox(height: 10),
-                //                         Align(
-                //                             alignment: Alignment.centerLeft,
-                //                             child: Text('Description',
-                //                                 style: TextStyle(
-                //                                     fontSize: 16,
-                //                                     fontWeight: FontWeight.bold))),
-                //                         SizedBox(height: 15),
-                //                         TextField(
-                //                             controller: descstepController,
-                //                             maxLines: 5,
-                //                             decoration: InputDecoration(
-                //                                 border: OutlineInputBorder(
-                //                                   borderSide: BorderSide.none,
-                //                                   borderRadius:
-                //                                   BorderRadius.circular(15),
-                //                                 ),
-                //                                 filled: true,
-                //                                 hintText: 'Description',
-                //                                 fillColor: Colors.white)),
-                //                         SizedBox(height: 15),
-                //                         Row(
-                //                           mainAxisAlignment:
-                //                           MainAxisAlignment.spaceEvenly,
-                //                           children: [
-                //                             // InkWell(
-                //                             //   onTap: () {
-                //                             //     getImage();
-                //                             //   },
-                //                             //   child: _image != null
-                //                             //       ? ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Image.file(_image!),
-                //                             //           ))
-                //                             //       : ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Icon(Icons.add),
-                //                             //           )),
-                //                             // ),
-                //                             // InkWell(
-                //                             //   onTap: () {
-                //                             //     getImage();
-                //                             //   },
-                //                             //   child: _image != null
-                //                             //       ? ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Image.file(_image!),
-                //                             //           ))
-                //                             //       : ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Icon(Icons.add),
-                //                             //           )),
-                //                             // ),
-                //                           ],
-                //                         ),
-                //                         SizedBox(height: 20),
-                //                         Row(
-                //                           mainAxisAlignment:
-                //                           MainAxisAlignment.spaceEvenly,
-                //                           children: [
-                //                             InkWell(
-                //                               onTap: () {
-                //                                 getImage();
-                //                               },
-                //                               child: _image != null
-                //                                   ? ClipRRect(
-                //                                   borderRadius:
-                //                                   BorderRadius.circular(10),
-                //                                   child: Container(
-                //                                     width: 120,
-                //                                     height: 120,
-                //                                     color: Colors.white,
-                //                                     child: Image.file(_image!),
-                //                                   ))
-                //                                   : ClipRRect(
-                //                                   borderRadius:
-                //                                   BorderRadius.circular(10),
-                //                                   child: Container(
-                //                                     width: 120,
-                //                                     height: 120,
-                //                                     color: Colors.white,
-                //                                     child: Icon(Icons.add),
-                //                                   )),
-                //                             ),
-                //                             // InkWell(
-                //                             //   onTap: () {
-                //                             //     getImage();
-                //                             //   },
-                //                             //   child: _image != null
-                //                             //       ? ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Image.file(_image!),
-                //                             //           ))
-                //                             //       : ClipRRect(
-                //                             //           borderRadius:
-                //                             //               BorderRadius.circular(10),
-                //                             //           child: Container(
-                //                             //             width: 120,
-                //                             //             height: 120,
-                //                             //             color: Colors.white,
-                //                             //             child: Icon(Icons.add),
-                //                             //           )),
-                //                             // ),
-                //                           ],
-                //                         ),
-                //                         SizedBox(height: 25),
-                //                         Row(
-                //                             mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                             children: <Widget>[
-                //                               Text('Timer',
-                //                                   style: TextStyle(
-                //                                       fontSize: 16,
-                //                                       fontWeight: FontWeight.bold)),
-                //                               buildTimer(context),
-                //                               Text('minute',
-                //                                   style: TextStyle(
-                //                                       fontSize: 16,
-                //                                       fontWeight: FontWeight.bold))
-                //                             ])
-                //                       ]);
-                //                 },
-                //                 shrinkWrap: true,
-                //               ),
-                //               InkWell(
-                //                 onTap: () {
-                //                   _addNewStepColumn();
-                //                   print(_count);
-                //                 },
-                //                 child: Container(
-                //                   decoration: BoxDecoration(
-                //                     color: Colors.white,
-                //                     borderRadius: BorderRadius.only(
-                //                         topLeft: Radius.circular(10),
-                //                         topRight: Radius.circular(10),
-                //                         bottomLeft: Radius.circular(10),
-                //                         bottomRight: Radius.circular(10)),
-                //                     boxShadow: [
-                //                       BoxShadow(
-                //                         color: Colors.grey.withOpacity(0.5),
-                //                         spreadRadius: 3,
-                //                         blurRadius: 9,
-                //                         offset: Offset(
-                //                             0, 3), // changes position of shadow
-                //                       ),
-                //                     ],
-                //                   ),
-                //                   width: double.infinity,
-                //                   height: 50,
-                //                   child: Icon(Icons.add),
-                //                 ),
-                //               ),
-                //               SizedBox(height: 20),
-                //               // Row(
-                //               //     mainAxisAlignment: MainAxisAlignment.end,
-                //               //     children: <Widget>[
-                //               //       buildnextBtn(),
-                //               //     ]),
-                //             ],
-                //           )),
-                //     )),
               ),
               Step(
-                isActive: _index >= 2,
+                isActive: _index >= 3,
                 title: Text(
                   '',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -2875,239 +2161,3 @@ class _RecipeStep1State extends State<RecipeStep1> {
   }
 }
 
-class DynamicWidget extends StatefulWidget {
-
-
-
-
-  @override
-  State<DynamicWidget> createState() => _DynamicWidgetState();
-
-}
-
-class _DynamicWidgetState extends State<DynamicWidget> {
-  static _DynamicWidgetState  get to => Get.lazyPut(()=>_DynamicWidgetState());
-
-  final descStepController = new TextEditingController();
-  final timeStepController = new TextEditingController();
-
-  StepModel? stepModel;
-  RecipeModel? recipeModel;
-
-  File? _image;
-
-  final picker = ImagePicker();
-
-  int? index;
-
-  Future getImage() async {
-    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        print(pickedFile);
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
-  createReStep() async {
-    String descStep = descStepController.text;
-    int timeStep = int.parse(timeStepController.text);
-
-    ReStepModel reStepModel = ReStepModel(
-        recipeId: '',
-        step: null,
-        description: descStep,
-        minute: timeStep);
-
-    int resulStep;
-    resulStep = await ReStepHelper().insert(reStepModel);
-
-    if (resulStep != 0) {
-      print('Success');
-    } else {
-      print('Failed');
-    }
-  }
-
-  buildTimer(BuildContext context) {
-    return TextButton(
-        onPressed: () {
-          showCupertinoModalPopup(
-              context: context,
-              builder: (context) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xffffffff),
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xff999999),
-                            width: 0.0,
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          CupertinoButton(
-                              child: Text('Cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              }),
-                          CupertinoButton(
-                            child: Text('Add'),
-                            onPressed: () {
-                              setState(() {
-                                minute = _selectedMinute;
-                                print(minute);
-                              });
-                              Navigator.pop(context);
-                            },
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 5.0,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 320,
-                      color: Colors.white,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: CupertinoPicker(
-                              itemExtent: 32,
-                              backgroundColor: Colors.white,
-                              onSelectedItemChanged: (value) {
-                                setState(() {
-                                  _selectedMinute = value;
-                                });
-                              },
-                              children:
-                                  new List<Widget>.generate(500, (int index) {
-                                var amount;
-                                if (index > 0) {
-                                  amount = index;
-                                } else {
-                                  amount = '-';
-                                }
-                                return new Center(
-                                  child: new Text('${amount}'),
-                                );
-                              }),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              });
-        },
-        child: minute != 0 ? Text('${minute}') : Text('-'));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Step $index',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              )),
-          SizedBox(height: 10),
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Text('Description',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-          SizedBox(height: 20),
-          TextField(
-              controller: descStepController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  filled: true,
-                  hintText: 'Description',
-                  fillColor: Colors.white)),
-          SizedBox(height: 40),
-          InkWell(
-            onTap: () {
-              getImage();
-            },
-            child: _image != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      color: Colors.white,
-                      child: Image.file(_image!),
-                    ))
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      color: Colors.white,
-                      child: Icon(Icons.add),
-                    )),
-          ),
-          SizedBox(height: 30),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Time',
-                  style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(width: 20),
-              Container(
-                width: 100,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  controller: timeStepController,
-                  decoration: InputDecoration(
-                    hintText: '-',
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Text('Minute',
-                  style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            ],
-          ),
-
-          SizedBox(height: 60),
-          // Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: <Widget>[
-          //       Text('Timer',
-          //           style:
-          //               TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          //       buildTimer(context),
-          //       Text('minute',
-          //           style:
-          //               TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          //       SizedBox(height: 150),
-          //     ]),
-        ],
-      ),
-    );
-  }
-}

@@ -12,6 +12,7 @@ class MenuModel {
   MenuModel(
       {required this.nameMenu,
       required this.mainIngredient,
+        this.id,
       this.descMenu,
       this.userID,
       this.menuImage,

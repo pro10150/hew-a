@@ -17,6 +17,7 @@ class RecipeModel {
         required this.menuId,
         this.recipeName,
         this.description,
+        this.id,
         required this.timeMinute,
         required this.method,
         required this.type,
@@ -37,6 +38,7 @@ class RecipeModel {
     protein = json['protein'];
     carb = json['carb'];
     fat = json['carb'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +54,7 @@ class RecipeModel {
     data['protein'] = this.protein;
     data['carb'] = this.carb;
     data['fat'] = this.fat;
+    data['id'] = this.id;
     return data;
   }
 }

@@ -17,7 +17,7 @@ class RecipeHelper {
   final String idColumn = 'id';
   final String uidColumn = 'uid';
   final String recipeUidColumn = 'recipeUid';
-  final String nameMenuColumn = 'nameMenu';
+  final String menuIdColumn = 'menuId';
   final String recipeNameColumn = 'recipeName';
   final String descriptionColumn = 'description';
   final String timeHourColumn = 'timeHour';
@@ -36,7 +36,7 @@ class RecipeHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $menuIdColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
         version: version);
   }
 
@@ -468,6 +468,27 @@ class RecipeHelper {
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
+    }
+    return recipeModels;
+  }
+
+  Future<List<RecipeModel>> readDataFromSQLiteRecipe(RecipeModel recipeModel) async {
+    Database database = await connectedDatabase();
+    List<RecipeModel> recipeModels = [];
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where:
+        '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
+        whereArgs: [
+          recipeModel.menuId,
+          recipeModel.recipeName,
+          recipeModel.recipeUid
+        ]
+    );
+    for (var map in maps) {
+      RecipeModel recipeModel = RecipeModel.fromJson(map);
+      recipeModels.add(recipeModel);
+      print(map);
     }
     return recipeModels;
   }

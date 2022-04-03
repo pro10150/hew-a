@@ -174,16 +174,16 @@ class _NewMenuState extends State<NewMenu> {
 
     uploadImageToFirebase(context);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+        context, MaterialPageRoute(builder: (context) => RecipeStep1(menuModel)));
   }
 
   Widget buildnextBtn() {
     return RaisedButton(
       // onPressed: () {},
       onPressed: () {
-        // createMenus();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RecipeStep1()));
+        createMenus();
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => RecipeStep1(menuModel)));
       },
       textColor: Colors.white,
       color: Colors.black,
