@@ -2310,12 +2310,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                                 ),
                                               )),
-                                          SizedBox(height: 10),
+                                          SizedBox(height: 20),
                                           Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text('Description',
                                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
-                                          SizedBox(height: 20),
+                                          SizedBox(height: 15),
                                       Container(
                                         height: 200,
                                         decoration: BoxDecoration(

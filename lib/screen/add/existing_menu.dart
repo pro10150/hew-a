@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hewa/models/menu_model.dart';
+import 'package:hewa/utilities/menu.helper.dart';
 import 'package:page_transition/page_transition.dart';
 import 'recipe_step_1.dart';
 
@@ -9,6 +11,8 @@ class ExistingMenu extends StatefulWidget {
 
 class _ExistingMenuState extends State<ExistingMenu> {
   late TextEditingController _controller;
+  MenuHelper? menuHelper;
+  MenuModel? menuModel;
 
   void initState() {
     super.initState();
@@ -49,11 +53,11 @@ class _ExistingMenuState extends State<ExistingMenu> {
                   margin: EdgeInsets.all(20),
                   child: TextField(
                       onSubmitted: (_) {
-                        // Navigator.push(
-                        //     context,
-                        //     PageTransition(
-                        //         child: RecipeStep1(),
-                        //         type: PageTransitionType.rightToLeft));
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: RecipeStep1(menuModel!),
+                                type: PageTransitionType.rightToLeft));
                       },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
