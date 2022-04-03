@@ -23,6 +23,8 @@ import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'package:hewa/utilities/follow_helper.dart';
 
 class ActionsToolbar extends StatefulWidget {
   ActionsToolbar(this.menuRecipeModel, this.userModel);
@@ -38,11 +40,26 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
   MenuRecipeModel menuRecipeModel;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLiked = false;
+  bool isFollowed = false;
   List<LikeModel> likes = [];
-  late Future<List<CommentModel>> comments;
+  List<CommentModel> commentModels = [];
   Future<List<UserModel>>? userModels;
+  List<FollowModel> followModels = [];
   UserModel userModel;
   Future<String>? url;
+
+  getFollow() async {
+    var objects = await FollowHelper().getFollower(menuRecipeModel.recipeUid!);
+    for (var object in objects) {
+      setState(() {
+        followModels.add(object);
+        if (object.followedUserID == _auth.currentUser!.uid) {
+          isFollowed = true;
+        }
+      });
+    }
+  }
+
   getLike() async {
     var objects = await LikeHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
@@ -52,10 +69,10 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
     getIsLike(likes);
   }
 
-  getComment() {
-    var objects = CommentHelper()
+  getComment() async {
+    var objects = await CommentHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    comments = objects;
+    commentModels = objects;
   }
 
   getUserProfile() {
@@ -119,9 +136,6 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
 
   Widget _getFollowAction(
       {required String pictureUrl, required BuildContext context}) {
-    print(menuRecipeModel.recipeUid);
-    print(_auth.currentUser!.uid);
-    print(menuRecipeModel.userID == _auth.currentUser!.uid);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       width: 60,
@@ -129,7 +143,9 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
       child: Stack(children: [
         _getProfilePicture(context, pictureUrl),
         menuRecipeModel.recipeUid != _auth.currentUser!.uid
-            ? _getPlusIcon()
+            ? isFollowed
+                ? Container()
+                : _getPlusIcon()
             : Container()
       ]),
     );
@@ -146,7 +162,15 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
       left: ((ActionWidgetSize / 2) - (PlusIconSize / 2)),
       child: GestureDetector(
           onTap: () {
-            print("eee");
+            FollowModel followModel = FollowModel(
+                uid: menuRecipeModel.recipeUid,
+                followedUserID: _auth.currentUser!.uid);
+            FollowHelper().insertDataToSQLite(followModel);
+            setState(() {
+              print("followed");
+              followModels.add(followModel);
+              isFollowed = true;
+            });
           },
           child: Container(
             width: PlusIconSize,
@@ -208,11 +232,12 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
     // TODO: implement initState
     super.initState();
     getLike();
+    getComment();
+    getFollow();
   }
 
   @override
   Widget build(BuildContext context) {
-    getComment();
     getUserProfile();
     return Container(
       width: 100,
@@ -236,12 +261,12 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
                         children = [
                           FutureBuilder<String>(
                               future: url,
-                              builder: (context, snapshot) {
+                              builder: (context, urlSnapshot) {
                                 List<Widget> children = [];
-                                if (snapshot.hasData) {
+                                if (urlSnapshot.hasData) {
                                   children = [
                                     _getFollowAction(
-                                        pictureUrl: snapshot.data!,
+                                        pictureUrl: urlSnapshot.data!,
                                         context: context)
                                   ];
                                 } else {
@@ -252,13 +277,14 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
                                 );
                               })
                         ];
+                      } else {
+                        children = [
+                          _getFollowAction(
+                              pictureUrl:
+                                  "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                              context: context)
+                        ];
                       }
-                      children = [
-                        _getFollowAction(
-                            pictureUrl:
-                                "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                            context: context)
-                      ];
                     } else {
                       children = [CircularProgressIndicator()];
                     }
@@ -291,26 +317,14 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
               //   //   await DBServices().updatevehicule(menu);
               //   // },
               // ),
-              FutureBuilder<List<CommentModel>>(
-                  future: comments,
-                  builder: (context, snapshot) {
-                    List<Widget> children = <Widget>[];
-                    if (snapshot.hasData) {
-                      children = [
-                        RawMaterialButton(
-                          onPressed: () {
-                            navigateTocommentPage(context, snapshot.data!);
-                          },
-                          child: _getSocialAction(
-                              title: snapshot.data!.length.toString(),
-                              icon: MdiIcons.messageOutline),
-                        )
-                      ];
-                    } else {
-                      children = [CircularProgressIndicator()];
-                    }
-                    return Column(children: children);
-                  }),
+              RawMaterialButton(
+                onPressed: () {
+                  navigateTocommentPage(context, commentModels);
+                },
+                child: _getSocialAction(
+                    title: commentModels.length.toString(),
+                    icon: MdiIcons.messageOutline),
+              ),
               RawMaterialButton(
                   onPressed: () {
                     _shareContent(context, userModel, menuRecipeModel);
@@ -446,25 +460,23 @@ void _shareContent(BuildContext context, UserModel userModel,
 }
 
 void navigateTocommentPage(
-    BuildContext context, List<CommentModel> comments) async {
+    BuildContext context, List<CommentModel> commentModels) async {
   showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setModalState) {
-            return Container(
-                height: MediaQuery.of(context).size.height * 0.75,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: commentPage(comments, setModalState)));
-          },
-        );
-      });
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+    ),
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: commentPage(commentModels)));
+    },
+  );
+
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //   return commentPage(comments);
+  //   return commentPage(commentModels);
   // }));
 }

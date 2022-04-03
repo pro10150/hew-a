@@ -103,21 +103,10 @@ class MenuRecipeHelper {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = [];
-    List<ReAllergyModel> reAllergyModels = [];
-    var objects = await ReAllergyHelper()
-        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
-    for (var object in objects) {
-      reAllergyModels.add(object);
-    }
-    if (reAllergyModels.length > 0) {
-      maps = await database.rawQuery(
-          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = "${_auth.currentUser!.uid}") on menutable.mainIngredient = allid where recipeTABLE.id = (select recipeId from likeTABLE where uid = ?) and allid is null;',
-          [id]);
-    } else {
-      maps = await database.rawQuery(
-          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = (select recipeId from likeTABLE where uid = ?);',
-          [id]);
-    }
+    maps = await database.rawQuery(
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id in (select recipeId from likeTABLE where uid = ?);',
+        [id]);
+
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);
