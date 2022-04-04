@@ -12,7 +12,7 @@ class MenuModel {
   MenuModel(
       {required this.nameMenu,
       required this.mainIngredient,
-        this.id,
+      this.id,
       this.descMenu,
       this.userID,
       this.menuImage,
@@ -24,7 +24,7 @@ class MenuModel {
     descMenu = json['descMenu'];
     mainIngredient = json['mainIngredient'];
     userID = json['userID'];
-    menuImage = json['image'];
+    menuImage = json['menuImage'];
     methodid = json['methodid'];
   }
 
