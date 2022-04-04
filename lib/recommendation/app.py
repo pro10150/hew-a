@@ -32,4 +32,4 @@ def get_recommendation():
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.31.117', port=5000, debug=True)
+    app.run(host='192.168.1.108', port=5000, debug=True)

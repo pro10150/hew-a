@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hewa/models/Recipe_model.dart';
+import 'package:hewa/models/recipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
 import 'package:page_transition/page_transition.dart';
@@ -123,9 +123,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     var lr = await MenuRecipeHelper().getLikedRecipe(_auth.currentUser!.uid);
     setState(() {
       recipe = object.length;
-      for (var obj in object) {
-        userRecipes.add(obj);
-      }
       for (var obj in mr) {
         menuRecipes.add(obj);
       }
@@ -479,7 +476,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2),
-                              itemCount: userRecipes.length,
+                              itemCount: menuRecipes.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return recipes(menuRecipes[index]);
                               })
