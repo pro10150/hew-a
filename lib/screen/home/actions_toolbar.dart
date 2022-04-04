@@ -7,7 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hewa/screen/profile/otherPeople.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
-import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hewa/screen/comment.dart';
 import 'report.dart';
@@ -26,47 +25,21 @@ import 'package:hewa/models/user_model.dart';
 import 'package:hewa/models/follow_model.dart';
 import 'package:hewa/utilities/follow_helper.dart';
 
-class ActionsToolbar extends StatefulWidget {
+class ActionsToolbar extends StatelessWidget {
   ActionsToolbar(this.menuRecipeModel, this.userModel);
-  MenuRecipeModel menuRecipeModel;
-  UserModel userModel;
-  @override
-  _ActionsToolbarState createState() =>
-      _ActionsToolbarState(menuRecipeModel, userModel);
-}
-
-class _ActionsToolbarState extends State<ActionsToolbar> {
-  _ActionsToolbarState(this.menuRecipeModel, this.userModel);
   MenuRecipeModel menuRecipeModel;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLiked = false;
-  bool isFollowed = false;
-  List<LikeModel> likes = [];
-  List<CommentModel> commentModels = [];
+  late Future<List<LikeModel>> likes;
+  late Future<List<CommentModel>> comments;
   Future<List<UserModel>>? userModels;
   List<FollowModel> followModels = [];
   UserModel userModel;
   Future<String>? url;
-
-  getFollow() async {
-    var objects = await FollowHelper().getFollower(menuRecipeModel.recipeUid!);
-    for (var object in objects) {
-      setState(() {
-        followModels.add(object);
-        if (object.followedUserID == _auth.currentUser!.uid) {
-          isFollowed = true;
-        }
-      });
-    }
-  }
-
-  getLike() async {
-    var objects = await LikeHelper()
+  getLike() {
+    var objects = LikeHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    setState(() {
-      likes = objects;
-    });
-    getIsLike(likes);
+    likes = objects;
   }
 
   getComment() async {
@@ -82,23 +55,15 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
   }
 
   like() {
-    LikeModel likeModel = LikeModel(
-        recipeId: menuRecipeModel.id,
-        uid: _auth.currentUser!.uid,
-        datetime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()));
     if (isLiked == false) {
+      LikeModel likeModel =
+          LikeModel(recipeId: menuRecipeModel.id, uid: menuRecipeModel.uid);
       LikeHelper().insertDataToSQLite(likeModel);
       isLiked = true;
-      setState(() {
-        likes.add(likeModel);
-      });
     } else {
       LikeHelper().deleteDataWhere(
           _auth.currentUser!.uid, menuRecipeModel.id.toString());
       isLiked = false;
-      setState(() {
-        likes.removeAt(likes.length - 1);
-      });
     }
     print(isLiked);
   }
@@ -107,9 +72,7 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
     String uid = _auth.currentUser!.uid;
     for (var like in likes) {
       if (uid == like.uid) {
-        setState(() {
-          isLiked = true;
-        });
+        isLiked = true;
         break;
       }
     }
@@ -161,17 +124,7 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
       bottom: 0,
       left: ((ActionWidgetSize / 2) - (PlusIconSize / 2)),
       child: GestureDetector(
-          onTap: () {
-            FollowModel followModel = FollowModel(
-                uid: menuRecipeModel.recipeUid,
-                followedUserID: _auth.currentUser!.uid);
-            FollowHelper().insertDataToSQLite(followModel);
-            setState(() {
-              print("followed");
-              followModels.add(followModel);
-              isFollowed = true;
-            });
-          },
+          onTap: () {},
           child: Container(
             width: PlusIconSize,
             height: PlusIconSize,
@@ -228,17 +181,10 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  Widget build(BuildContext context) {
     getLike();
     getComment();
-    getFollow();
     getUserProfile();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       width: 100,
       child: Column(
@@ -292,18 +238,62 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
                       children: children,
                     );
                   }),
-              GestureDetector(
-                  onTap: () {
-                    like();
-                  },
-                  child: Column(children: [
-                    Icon(
-                      isLiked ? MdiIcons.heart : MdiIcons.heartOutline,
-                      color: isLiked ? Palette.roseBud : Colors.black,
-                      size: 50,
-                    ),
-                    Text(likes.length.toString())
-                  ])),
+              FutureBuilder<List<LikeModel>>(
+                  future: likes,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    List<Widget> children = [];
+                    if (snapshot.hasData) {
+                      getIsLike(snapshot.data);
+                      print(isLiked);
+                      children = [
+                        GestureDetector(
+                            child: LikeButton(
+                          onTap: (isLiked) {
+                            return changedata(
+                              isLiked,
+                            );
+                          },
+                          countPostion: CountPostion.bottom,
+                          size: 50,
+                          circleColor: CircleColor(
+                              start: Colors.black, end: Color(0xff0099cc)),
+                          bubblesColor: BubblesColor(
+                            dotPrimaryColor: Color(0xff33b5e5),
+                            dotSecondaryColor: Color(0xff0099cc),
+                          ),
+                          likeCount: snapshot.data.length,
+                          likeCountAnimationType: LikeCountAnimationType.all,
+                          likeBuilder: (bool isLike) {
+                            isLike = isLiked;
+                            print(isLike);
+                            return Icon(
+                              isLike ? MdiIcons.heart : MdiIcons.heartOutline,
+                              color: isLike ? Palette.roseBud : Colors.black,
+                              size: 50,
+                            );
+                          },
+                          // countBuilder: (int count, bool isLiked, String text) {
+                          //   var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+                          //   Widget result;
+                          //   if (count == 0) {
+                          //     result = Text(
+                          //       "love",
+                          //       style: TextStyle(color: color),
+                          //     );
+                          //   } else
+                          //     result = Text(
+                          //       text,
+                          //       style: TextStyle(color: color),
+                          //     );
+                          //   return result;
+                          // },
+                        ))
+                      ];
+                    } else {
+                      children = [CircularProgressIndicator()];
+                    }
+                    return Column(children: children);
+                  }),
               // RawMaterialButton(
               //   onPressed: () {},
               //   child: _getSocialAction(
@@ -462,20 +452,18 @@ void _shareContent(BuildContext context, UserModel userModel,
 void navigateTocommentPage(
     BuildContext context, List<CommentModel> commentModels) async {
   showModalBottomSheet(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    isScrollControlled: true,
-    context: context,
-    builder: (context) {
-      return Container(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: commentPage(commentModels)));
-    },
-  );
-
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Container(
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: commentPage(comments)));
+      });
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
   //   return commentPage(commentModels);
   // }));
