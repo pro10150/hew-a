@@ -22,6 +22,8 @@ import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'package:hewa/utilities/follow_helper.dart';
 
 class ActionsToolbar extends StatelessWidget {
   ActionsToolbar(this.menuRecipeModel, this.userModel);
@@ -31,6 +33,7 @@ class ActionsToolbar extends StatelessWidget {
   late Future<List<LikeModel>> likes;
   late Future<List<CommentModel>> comments;
   Future<List<UserModel>>? userModels;
+  List<FollowModel> followModels = [];
   UserModel userModel;
   Future<String>? url;
   getLike() {
@@ -39,10 +42,10 @@ class ActionsToolbar extends StatelessWidget {
     likes = objects;
   }
 
-  getComment() {
-    var objects = CommentHelper()
+  getComment() async {
+    var objects = await CommentHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    comments = objects;
+    commentModels = objects;
   }
 
   getUserProfile() {
@@ -96,9 +99,6 @@ class ActionsToolbar extends StatelessWidget {
 
   Widget _getFollowAction(
       {required String pictureUrl, required BuildContext context}) {
-    print(menuRecipeModel.recipeUid);
-    print(_auth.currentUser!.uid);
-    print(menuRecipeModel.userID == _auth.currentUser!.uid);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       width: 60,
@@ -106,7 +106,9 @@ class ActionsToolbar extends StatelessWidget {
       child: Stack(children: [
         _getProfilePicture(context, pictureUrl),
         menuRecipeModel.recipeUid != _auth.currentUser!.uid
-            ? _getPlusIcon()
+            ? isFollowed
+                ? Container()
+                : _getPlusIcon()
             : Container()
       ]),
     );
@@ -122,9 +124,7 @@ class ActionsToolbar extends StatelessWidget {
       bottom: 0,
       left: ((ActionWidgetSize / 2) - (PlusIconSize / 2)),
       child: GestureDetector(
-          onTap: () {
-            print("eee");
-          },
+          onTap: () {},
           child: Container(
             width: PlusIconSize,
             height: PlusIconSize,
@@ -207,12 +207,12 @@ class ActionsToolbar extends StatelessWidget {
                         children = [
                           FutureBuilder<String>(
                               future: url,
-                              builder: (context, snapshot) {
+                              builder: (context, urlSnapshot) {
                                 List<Widget> children = [];
-                                if (snapshot.hasData) {
+                                if (urlSnapshot.hasData) {
                                   children = [
                                     _getFollowAction(
-                                        pictureUrl: snapshot.data!,
+                                        pictureUrl: urlSnapshot.data!,
                                         context: context)
                                   ];
                                 } else {
@@ -223,13 +223,14 @@ class ActionsToolbar extends StatelessWidget {
                                 );
                               })
                         ];
+                      } else {
+                        children = [
+                          _getFollowAction(
+                              pictureUrl:
+                                  "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                              context: context)
+                        ];
                       }
-                      children = [
-                        _getFollowAction(
-                            pictureUrl:
-                                "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                            context: context)
-                      ];
                     } else {
                       children = [CircularProgressIndicator()];
                     }
@@ -306,26 +307,14 @@ class ActionsToolbar extends StatelessWidget {
               //   //   await DBServices().updatevehicule(menu);
               //   // },
               // ),
-              FutureBuilder<List<CommentModel>>(
-                  future: comments,
-                  builder: (context, snapshot) {
-                    List<Widget> children = <Widget>[];
-                    if (snapshot.hasData) {
-                      children = [
-                        RawMaterialButton(
-                          onPressed: () {
-                            navigateTocommentPage(context, snapshot.data!);
-                          },
-                          child: _getSocialAction(
-                              title: snapshot.data!.length.toString(),
-                              icon: MdiIcons.messageOutline),
-                        )
-                      ];
-                    } else {
-                      children = [CircularProgressIndicator()];
-                    }
-                    return Column(children: children);
-                  }),
+              RawMaterialButton(
+                onPressed: () {
+                  navigateTocommentPage(context, commentModels);
+                },
+                child: _getSocialAction(
+                    title: commentModels.length.toString(),
+                    icon: MdiIcons.messageOutline),
+              ),
               RawMaterialButton(
                   onPressed: () {
                     _shareContent(context, userModel, menuRecipeModel);
@@ -461,7 +450,7 @@ void _shareContent(BuildContext context, UserModel userModel,
 }
 
 void navigateTocommentPage(
-    BuildContext context, List<CommentModel> comments) async {
+    BuildContext context, List<CommentModel> commentModels) async {
   showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
@@ -476,6 +465,6 @@ void navigateTocommentPage(
                 child: commentPage(comments)));
       });
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //   return commentPage(comments);
+  //   return commentPage(commentModels);
   // }));
 }
