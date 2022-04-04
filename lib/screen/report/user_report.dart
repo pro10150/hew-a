@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/screen/login/loginscreen.dart';
 import 'report_detail.dart';
+import 'package:hewa/models/report_model.dart';
+import 'package:hewa/utilities/report_helper.dart';
 
 class userReport extends StatefulWidget {
   const userReport({Key? key}) : super(key: key);
@@ -13,6 +15,19 @@ class userReport extends StatefulWidget {
 class _userReportState extends State<userReport> {
   var _auth = FirebaseAuth.instance;
 
+  ReportHelper? reportHelper;
+  ReportModel? reportModel;
+
+  List<ReportModel> userReport = [];
+
+  void readSQLite() {
+    ReportHelper().readlDataFromSQLite().then((userRe) {
+      for (var model in userRe) {
+        userReport.add(model);
+      }
+    });
+  }
+
   void signOut(BuildContext context) {
     _auth.signOut();
     Navigator.pushAndRemoveUntil(
@@ -22,30 +37,55 @@ class _userReportState extends State<userReport> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readSQLite();
+  }
+
+  Widget builduserReportBtn(int index) {
+    return FutureBuilder<String>(
+      // future: url,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        List<Widget> children;
+        if (snapshot.hasData) {
+          children = <Widget>[
+            Text(
+              userReport[index].reportedUid!,
+              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
+              overflow: TextOverflow.ellipsis,
+            )
+          ];
+        } else {
+          children = <Widget>[CircularProgressIndicator()];
+        }
+        return Column(children: children);
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
-              child: Text(
-                "Logout",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              onPressed: () => signOut(context),
-            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "Recipe Report",
+                  "User Report",
+                  textAlign: TextAlign.end,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
+            IconButton(
+                onPressed: () => signOut(context),
+                icon: Icon(Icons.logout)),
           ],
         ),
         backgroundColor: Color(0xffffab91),
@@ -89,29 +129,39 @@ class _userReportState extends State<userReport> {
         ),
       ),
       //ข้างล่าง
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xffffab91),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.people,
-              color: Colors.white,
-            ),
-            label: "User",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.people,
-              color: Colors.white,
-            ),
-            label: "Recipe",
-          ),
-        ],
-      ),
     );
   }
 
   Widget _buildListReport(BuildContext context) {
+    // return Expanded(
+    //   child: userReport.isNotEmpty
+    //       ? ListView.builder(
+    //       itemCount: userReport.length,
+    //       itemBuilder: (context, index) {
+    //         return Card(
+    //           color: Colors.white,
+    //           margin: EdgeInsets.all(3),
+    //           child: ListTile(
+    //             leading: Icon(
+    //               Icons.perm_identity,
+    //               size: 40,
+    //             ),
+    //             title: Text('${userReport[index].reportedUid}'),
+    //             subtitle: Text('Follow : 0'),
+    //             trailing: IconButton(
+    //               onPressed: () {},
+    //               icon: Icon(Icons.more_vert),
+    //             ),
+    //           ),
+    //         );
+    //       })
+    //       : Text(
+    //     'Not found',
+    //     textAlign: TextAlign.center,
+    //     style: TextStyle(
+    //         fontSize: 20, fontWeight: FontWeight.w500),
+    //   ),
+    // );
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (_, index) {
