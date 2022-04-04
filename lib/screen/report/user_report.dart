@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
 import 'report_detail.dart';
+=======
+import 'package:hewa/screen/report/report_detail.dart';
+>>>>>>> Stashed changes
 
 class userReport extends StatefulWidget {
   const userReport({Key? key}) : super(key: key);
@@ -104,7 +108,11 @@ class _userReportState extends State<userReport> {
       ),
     );
   }
+<<<<<<< Updated upstream
   Widget _buildListReport(BuildContext context){
+=======
+  ListView _buildListReport(BuildContext context){
+>>>>>>> Stashed changes
   return ListView.builder(
       itemCount: 10, 
       itemBuilder: (_, index){

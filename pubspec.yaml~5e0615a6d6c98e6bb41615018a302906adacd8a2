@@ -1,0 +1,250 @@
+name: hewa
+description: An SE project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.14.0 <3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  font_awesome_flutter: 9.2.0
+  material_design_icons_flutter: 5.0.6595
+  page_transition: "^2.0.4"
+  animate_icons: 2.0.0
+  flutter_switch: ^0.3.2
+  tiktoklikescroller: 0.1.8
+  cached_network_image: ^3.2.0
+  flutter_advanced_switch: ^3.0.0
+  flutter_slidable: ^1.2.0
+  getwidget: ^2.0.4
+  image_picker: ^0.8.4+4
+  firebase_core: ^1.11.0
+  firebase_auth: ^3.3.5
+  firebase_storage: ^10.2.5
+  file_picker: ^4.3.2
+  sqflite: ^2.0.2
+  path_provider: ^2.0.8
+  rflutter_alert: ^2.0.4
+  flutter_ringtone_player: ^3.1.1
+  circular_profile_avatar: 2.0.5
+  filter_list: ^1.0.1
+  image_cropper: ^1.4.1
+  flutter_image_compress: ^1.1.0
+  step_progress_indicator: ^1.0.2
+  search_choices: ^2.0.16
+  collection: ^1.15.0
+  comment_box: ^0.0.17
+  share: ^2.0.4
+  http: ^0.13.4
+  like_button: ^2.0.4
+  dio: ^4.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_launcher_icons: "^0.9.0"
+
+flutter_icons:
+  image_path: "assets/icon/Icon-App.png"
+  android: "launcher_icon"
+  ios: true
+  adaptive_icon_background: "assets/icon/icon-background.png"
+  adaptive_icon_foreground: "assets/icon/icon-original.png"
+  # optionally, as transparency is not allowed on app store
+  # remove_alpha_ios: true
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  fonts:
+    - family: ingredients
+      fonts:
+        - asset: lib/config/ingredients.ttf
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - lib/assets/Hewa.db
+    - lib/fonts/MyFlutterApp.ttf
+    - lib/config/ingredients.ttf
+    - lib/assets/home/food.png
+    - lib/assets/fridge/egg.jpeg
+    - lib/assets/menu_detail/food.png
+    - lib/assets/menu_detail/food2.png
+    - lib/assets/menu_detail/food3.png
+    - lib/assets/menu_detail/recipe.png
+    - lib/assets/icon/Icon-App.png
+    - lib/assets/icon/icon-original.png
+    - lib/assets/logo/logoo.png
+    - lib/assets/รูปเมนู/Beef wellington.jpeg
+    - lib/assets/รูปเมนู/กุ้งอบวุ้นเส้น.jpeg
+    - lib/assets/รูปเมนู/เกี๊ยวซ่าหมู.jpeg
+    - lib/assets/รูปเมนู/เกี๊ยวน้ำ.jpeg
+    - lib/assets/รูปเมนู/แกงเขียวหวานไก่.jpeg
+    - lib/assets/รูปเมนู/แกงจืดเต้าหู้หมูสับ.jpeg
+    - lib/assets/รูปเมนู/ขนมจีบหมู.jpeg
+    - lib/assets/รูปเมนู/ข้าวผัดกระเทียมเบคอนกรอบ.jpeg
+    - lib/assets/รูปเมนู/ข้าวผัดหมู.jpeg
+    - lib/assets/รูปเมนู/ข้าวมันไก่.jpeg
+    - lib/assets/รูปเมนู/ข้าวหน้าแซลมอน.jpeg
+    - lib/assets/รูปเมนู/ข้าวหน้าเนื้อ.jpeg
+    - lib/assets/รูปเมนู/ข้าวหน้าเป็ด.jpeg
+    - lib/assets/รูปเมนู/ข้าวห่อไข่.jpeg
+    - lib/assets/รูปเมนู/ไข่เจียวหมูสับ.jpeg
+    - lib/assets/รูปเมนู/ไข่ดองน้ำปลา.jpeg
+    - lib/assets/รูปเมนู/ไข่พะโล้.jpeg
+    - lib/assets/รูปเมนู/ไข่หวาน.jpeg
+    - lib/assets/รูปเมนู/คะน้าหมูกรอบ.jpeg
+    - lib/assets/รูปเมนู/ฉู่ฉี่ปลาทอด.jpeg
+    - lib/assets/รูปเมนู/ซี่โครงหมูบาร์บีคิว.jpeg
+    - lib/assets/รูปเมนู/ซีซาร์สลัด.jpeg
+    - lib/assets/รูปเมนู/ซุปครีมเห็ด.jpeg
+    - lib/assets/รูปเมนู/แซนวิชอกไก่.jpeg
+    - lib/assets/รูปเมนู/ต้มข่าไก่.jpeg
+    - lib/assets/รูปเมนู/ต้มยำกุ้ง.jpeg
+    - lib/assets/รูปเมนู/ทงคัตสึ.jpeg
+    - lib/assets/รูปเมนู/น้ำพริกอ่อง.jpeg
+    - lib/assets/รูปเมนู/ปลาซาบะย่างซอสเทอริยากิ.jpeg
+    - lib/assets/รูปเมนู/ปอเปี๊ยะ.jpeg
+    - lib/assets/รูปเมนู/ปีกไก่ทอดน้ำปลา.jpeg
+    - lib/assets/รูปเมนู/เป็ดพะโล้.jpeg
+    - lib/assets/รูปเมนู/ผักโขมอบชีส.jpeg
+    - lib/assets/รูปเมนู/ผัดกะเพราหมูสับ.jpeg
+    - lib/assets/รูปเมนู/ผัดซีอิ๊ว.jpeg
+    - lib/assets/รูปเมนู/ผัดโป๊ยเซียน.jpeg
+    - lib/assets/รูปเมนู/พะแนงไก่.jpeg
+    - lib/assets/รูปเมนู/พะแนงหมู.jpeg
+    - lib/assets/รูปเมนู/มันบด.jpeg
+    - lib/assets/รูปเมนู/มาม่าผัด.jpeg
+    - lib/assets/รูปเมนู/ยากิโซบะ.jpeg
+    - lib/assets/รูปเมนู/ยำแซลมอน.jpeg
+    - lib/assets/รูปเมนู/สปาเก็ตตี้คาโบนาร่า.jpeg
+    - lib/assets/รูปเมนู/ส้มตำ.jpeg
+    - lib/assets/รูปเมนู/สุกี้แห้ง.jpeg
+    - lib/assets/รูปเมนู/หนำเลี๊ยบหมูสับ.jpeg
+    - lib/assets/รูปเมนู/หมูทอดกระเทียม.jpeg
+    - lib/assets/รูปเมนู/หมูทอดราดซอสเปรี้ยวหวาน.jpeg
+    - lib/assets/รูปเมนู/หมูหวาน.jpeg
+    - lib/assets/รูปเมนู/ห่อหมกปลาช่อน.jpeg
+    - lib/assets/fridge/รูปวัตถุดิบ/1.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/2.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/3.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/4.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/5.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/6.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/7.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/8.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/9.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/10.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/11.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/12.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/13.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/14.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/15.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/16.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/17.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/18.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/19.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/20.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/21.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/22.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/23.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/24.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/25.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/26.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/27.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/28.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/29.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/30.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/31.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/32.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/33.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/34.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/35.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/36.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/37.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/38.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/39.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/40.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/41.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/42.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/43.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/44.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/45.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/46.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/47.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/48.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/49.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/50.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/51.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/52.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/53.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/54.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/55.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/56.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/56.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/57.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/58.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/59.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/60.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/61.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/62.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/63.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/64.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/65.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/66.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/67.jpg
+    - lib/assets/fridge/รูปวัตถุดิบ/68.jpg
+  #- images/a_durr.jpeg
+  #   - images/a_dam.jpeg
+#An image asset can refer to one or more resolution-specific "variants", see
+# https://flutter.dev/assets-and-images/#resolution-aware.
+
+# For details regarding adding assets from package dependencies, see
+# https://flutter.dev/assets-and-images/#from-packages
+
+# To add custom fonts to your application, add a fonts section here,
+# in this "flutter" section. Each entry in this list should have a
+# "family" key with the font family name, and a "fonts" key with a
+# list giving the asset and other descriptors for the font. For
+# example:
+# fonts:
+#   - family: Schyler
+#     fonts:
+#       - asset: fonts/Schyler-Regular.ttf
+#       - asset: fonts/Schyler-Italic.ttf
+#         style: italic
+#   - family: Trajan Pro
+#     fonts:
+#       - asset: fonts/TrajanPro.ttf
+#       - asset: fonts/TrajanPro_Bold.ttf
+#         weight: 700
+#
+# For details regarding fonts from package dependencies,
+# see https://flutter.dev/custom-fonts/#from-packages

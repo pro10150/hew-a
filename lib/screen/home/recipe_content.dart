@@ -5,6 +5,7 @@ import 'actions_toolbar.dart';
 import 'recipe_description.dart';
 import '../menu_detail/menu_detail.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
+<<<<<<< Updated upstream
 import 'package:hewa/models/user_model.dart';
 
 class RecipeContent extends StatelessWidget {
@@ -13,6 +14,14 @@ class RecipeContent extends StatelessWidget {
   var likes;
   var url;
   UserModel userModel;
+=======
+
+class RecipeContent extends StatelessWidget {
+  RecipeContent(this.menuRecipeModel, this.url);
+  MenuRecipeModel menuRecipeModel;
+  var likes;
+  var url;
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -79,7 +88,11 @@ class RecipeContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               RecipeDescription(menuRecipeModel),
+<<<<<<< Updated upstream
               ActionsToolbar(menuRecipeModel, userModel)
+=======
+              ActionsToolbar(menuRecipeModel)
+>>>>>>> Stashed changes
             ],
           )
         ],

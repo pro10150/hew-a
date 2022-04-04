@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,20 @@ class OtherProfile extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _OtherProfileState(url, uid);
+=======
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:hewa/screen/profile/EditProfile.dart';
+
+class OtherProfile extends StatefulWidget {
+  static const routeName = '/';
+
+  const OtherProfile({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _OtherProfileState();
+>>>>>>> Stashed changes
   }
 }
 
@@ -45,6 +60,7 @@ class UpperClipper extends CustomClipper<Path> {
 
 class _OtherProfileState extends State<OtherProfile>
     with SingleTickerProviderStateMixin {
+<<<<<<< Updated upstream
   _OtherProfileState(this.url, this.uid);
   String url;
   String uid;
@@ -93,15 +109,24 @@ class _OtherProfileState extends State<OtherProfile>
     }
   }
 
+=======
+  late TabController controller;
+  late var _scrollViewController;
+>>>>>>> Stashed changes
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+<<<<<<< Updated upstream
     getUser();
     getFollows();
     getRecipes();
     _scrollViewController = ScrollController();
     controller = TabController(length: 1, vsync: this);
+=======
+    _scrollViewController = ScrollController();
+    controller = TabController(length: 2, vsync: this);
+>>>>>>> Stashed changes
   }
 
   @override
@@ -144,6 +169,7 @@ class _OtherProfileState extends State<OtherProfile>
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: <Widget>[
+<<<<<<< Updated upstream
                                         Spacer(),
                                         user!.name != null
                                             ? Text(
@@ -165,12 +191,31 @@ class _OtherProfileState extends State<OtherProfile>
                                         CircleAvatar(
                                           backgroundImage: NetworkImage(
                                             url,
+=======
+                                        Text(""),
+                                        Text(""),
+                                        Text(
+                                          "Johannieieie",
+                                          style: TextStyle(
+                                              fontSize: 24.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(" "),
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+>>>>>>> Stashed changes
                                           ),
                                           radius: 60.0,
                                         ),
                                         Text(" "),
                                         Text(
+<<<<<<< Updated upstream
                                           "@" + user!.username!,
+=======
+                                          "@iamJohannie",
+>>>>>>> Stashed changes
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: Colors.black,
@@ -194,8 +239,12 @@ class _OtherProfileState extends State<OtherProfile>
                                                             .center,
                                                     children: <Widget>[
                                                       Text(
+<<<<<<< Updated upstream
                                                         followings.length
                                                             .toString(),
+=======
+                                                        "520",
+>>>>>>> Stashed changes
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -220,8 +269,12 @@ class _OtherProfileState extends State<OtherProfile>
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
+<<<<<<< Updated upstream
                                                         followers.length
                                                             .toString(),
+=======
+                                                        "116",
+>>>>>>> Stashed changes
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -246,8 +299,12 @@ class _OtherProfileState extends State<OtherProfile>
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
+<<<<<<< Updated upstream
                                                         menuRecipeModels.length
                                                             .toString(),
+=======
+                                                        "6",
+>>>>>>> Stashed changes
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -279,6 +336,7 @@ class _OtherProfileState extends State<OtherProfile>
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
+<<<<<<< Updated upstream
                                             _auth.currentUser!.uid != uid
                                                 ? RaisedButton(
                                                     shape:
@@ -303,6 +361,28 @@ class _OtherProfileState extends State<OtherProfile>
                                                     ),
                                                   )
                                                 : Container(),
+=======
+                                            RaisedButton(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                              ),
+                                              color: Colors.black,
+                                              textColor: Colors.white,
+                                              padding: EdgeInsets.only(
+                                                  bottom: 0,
+                                                  top: 0,
+                                                  right: 42,
+                                                  left: 42),
+                                              onPressed: () => {},
+                                              child: Text(
+                                                "follow",
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                ),
+                                              ),
+                                            ),
+>>>>>>> Stashed changes
                                           ],
                                         ))
                                       ],
@@ -322,7 +402,13 @@ class _OtherProfileState extends State<OtherProfile>
                       tabs: [
                         Tab(
                           icon: Icon(Icons.menu_book),
+<<<<<<< Updated upstream
                           text: "My recipe",
+=======
+                        ),
+                        Tab(
+                          icon: Icon(Icons.favorite),
+>>>>>>> Stashed changes
                         ),
                       ],
                       controller: controller,
@@ -334,6 +420,7 @@ class _OtherProfileState extends State<OtherProfile>
                 controller: controller,
                 children: [
                   Expanded(
+<<<<<<< Updated upstream
                       child: menuRecipeModels.length > 0
                           ? GridView.builder(
                               primary: false,
@@ -352,6 +439,42 @@ class _OtherProfileState extends State<OtherProfile>
                                 'You haven\'t create any recipes yet',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ))),
+=======
+                      child: GridView.count(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.5,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: <Widget>[
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes()
+                    ],
+                  )),
+                  Expanded(
+                      child: GridView.count(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.5,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: <Widget>[
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                      recipes(),
+                    ],
+                  )),
+>>>>>>> Stashed changes
                 ],
               )
 
@@ -369,6 +492,7 @@ class _OtherProfileState extends State<OtherProfile>
 }
 
 class recipes extends StatelessWidget {
+<<<<<<< Updated upstream
   recipes(this.menuRecipeModel) {
     ref = FirebaseStorage.instance
         .ref()
@@ -417,6 +541,34 @@ class recipes extends StatelessWidget {
           }
           return Column(children: children);
         });
+=======
+  const recipes({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          print('Tap');
+        },
+        child: Container(
+          padding: EdgeInsets.all(0),
+          decoration: BoxDecoration(
+              color: Colors.red,
+              image: DecorationImage(
+                  image: NetworkImage(
+                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg"))),
+        )
+
+        // child: Column(
+        //   children: <Widget>[
+        //     Image.network(
+        //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
+        //   ],
+        // ),
+        );
+>>>>>>> Stashed changes
   }
 }
 

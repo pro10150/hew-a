@@ -6,7 +6,11 @@
 	<dict>
 		<key>DKPhotoGallery.bundle/Assets.car</key>
 		<data>
+<<<<<<< Updated upstream
 		pSge0DsSfsJH3+qQYI9K/7mED5s=
+=======
+		ajmmv7W3JEWaKlYNvy2RK403Wnk=
+>>>>>>> Stashed changes
 		</data>
 		<key>DKPhotoGallery.bundle/Base.lproj/DKPhotoGallery.strings</key>
 		<dict>
@@ -23,7 +27,11 @@
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeDirectory</key>
 		<data>
+<<<<<<< Updated upstream
 		+29swEGLhie7+DheKm97G8yfDlg=
+=======
+		Kqsnf55mKFyOsiE6t51l7zKoBg8=
+>>>>>>> Stashed changes
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -31,11 +39,19 @@
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements-1</key>
 		<data>
+<<<<<<< Updated upstream
 		PXcKL7rxhMXxys5+hmsxFogN1o4=
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeResources</key>
 		<data>
 		VvHD6ZYKtaqBIvnzm/gkzEJBrq0=
+=======
+		OsZLBsOTERiAvA3F2w+bw/AXVVA=
+		</data>
+		<key>DKPhotoGallery.bundle/_CodeSignature/CodeResources</key>
+		<data>
+		npuRzDmCWqjEzZUUnY7CdCFEKdM=
+>>>>>>> Stashed changes
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeSignature</key>
 		<data>
@@ -154,11 +170,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< Updated upstream
 			pSge0DsSfsJH3+qQYI9K/7mED5s=
 			</data>
 			<key>hash2</key>
 			<data>
 			CNyKRi0qopmmcCx7Eq6vhc8WFowueQYEwJLgaw9q/is=
+=======
+			ajmmv7W3JEWaKlYNvy2RK403Wnk=
+			</data>
+			<key>hash2</key>
+			<data>
+			EvQj/ePCzcAI5dXHljlccUPmWczvVRA5Edh/RvqhRTk=
+>>>>>>> Stashed changes
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/Base.lproj/DKPhotoGallery.strings</key>
@@ -189,11 +213,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< Updated upstream
 			+29swEGLhie7+DheKm97G8yfDlg=
 			</data>
 			<key>hash2</key>
 			<data>
 			9xn2dO7OYOR/MKAw0sXhaMeSAAqlt+T2yLqKbEyfNQQ=
+=======
+			Kqsnf55mKFyOsiE6t51l7zKoBg8=
+			</data>
+			<key>hash2</key>
+			<data>
+			+CyD6RdmtfU0dQqdLDt36LNNsYcVCxLVoNu1LZAAdZk=
+>>>>>>> Stashed changes
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements</key>
@@ -211,22 +243,38 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< Updated upstream
 			PXcKL7rxhMXxys5+hmsxFogN1o4=
 			</data>
 			<key>hash2</key>
 			<data>
 			X+3hrstRwNaNHiWJgouHh2+MFWmxdcoVvWR1Dk8AHOM=
+=======
+			OsZLBsOTERiAvA3F2w+bw/AXVVA=
+			</data>
+			<key>hash2</key>
+			<data>
+			6C445euiJzJSp8we6lNmHqAluQJ9+F5dBW0wflMXNIo=
+>>>>>>> Stashed changes
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< Updated upstream
 			VvHD6ZYKtaqBIvnzm/gkzEJBrq0=
 			</data>
 			<key>hash2</key>
 			<data>
 			0Gpss+FTE9YA3dbPkrITYt4J9H+3Yq/yp4ezWtsg5h8=
+=======
+			npuRzDmCWqjEzZUUnY7CdCFEKdM=
+			</data>
+			<key>hash2</key>
+			<data>
+			6qZwaM4AYgzjLVyse3wuJpd6U7n85r1R+SQSbM/oDOk=
+>>>>>>> Stashed changes
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeSignature</key>

@@ -59,6 +59,7 @@ class _KitchenwareState extends State<Kitchenware> {
     var object = await userKitchHelper.UserKitchHelper()
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
     print('user kitchenware length ==> ${object.length}');
+<<<<<<< Updated upstream
     setState(() {
       _kitchenwareList.clear();
       if (object.length != 0) {
@@ -68,6 +69,15 @@ class _KitchenwareState extends State<Kitchenware> {
         }
       }
     });
+=======
+    _kitchenwareList.clear();
+    if (object.length != 0) {
+      for (var model in object) {
+        _kitchenwareList.add(model.kitchenware!);
+        kitchenware.remove(model.kitchenware);
+      }
+    }
+>>>>>>> Stashed changes
   }
 
   Future<Null> getSwitch() async {

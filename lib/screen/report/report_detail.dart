@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import 'dart:js';
 
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,12 @@ import 'package:flutter/widgets.dart';
 
 class reportDetail extends StatefulWidget {
   const reportDetail({Key? key}) : super(key: key);
+=======
+import 'package:flutter/material.dart';
+
+class reportDetail extends StatefulWidget {
+  const reportDetail({ Key? key }) : super(key: key);
+>>>>>>> Stashed changes
 
   @override
   _reportDetailState createState() => _reportDetailState();
@@ -16,6 +23,7 @@ class _reportDetailState extends State<reportDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< Updated upstream
         title: Padding(
           padding: const EdgeInsets.all(75.0),
           child: Text(
@@ -23,6 +31,16 @@ class _reportDetailState extends State<reportDetail> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+=======
+        title: 
+            Padding(
+              padding: const EdgeInsets.all(75.0),
+              child: Text(
+                'ลุงตู้ผู้พิชิต',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),  
+>>>>>>> Stashed changes
         backgroundColor: Color(0xffffab91),
         elevation: 0,
       ),
@@ -37,9 +55,16 @@ class _reportDetailState extends State<reportDetail> {
                   Padding(
                     padding: const EdgeInsets.all(35.0),
                     child: CircleAvatar(
+<<<<<<< Updated upstream
                         radius: 50,
                         backgroundImage: NetworkImage(
                             "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")),
+=======
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")
+                  ),
+>>>>>>> Stashed changes
                   ),
                 ],
               ),
@@ -203,6 +228,7 @@ class _reportDetailState extends State<reportDetail> {
                                               color: Colors.white,
                                               fontSize: 16),
                                         ),
+<<<<<<< Updated upstream
                                         onPressed: () {
                                           showDialog(
                                               context: context,
@@ -229,6 +255,10 @@ class _reportDetailState extends State<reportDetail> {
                                               });
                                         },
                                       ),
+=======
+                                        onPressed: () {},
+                                      ),
+>>>>>>> Stashed changes
                                     ],
                                   ),
                                 )
@@ -241,6 +271,7 @@ class _reportDetailState extends State<reportDetail> {
       ),
     );
   }
+<<<<<<< Updated upstream
 //   Future openBlockDialog(BuildContext context) => showDialog(
 //     context: context,
 //     builder: (context) {
@@ -258,3 +289,6 @@ class _reportDetailState extends State<reportDetail> {
   //   Navigator.of(context).pop();
   // }
 }
+=======
+}
+>>>>>>> Stashed changes

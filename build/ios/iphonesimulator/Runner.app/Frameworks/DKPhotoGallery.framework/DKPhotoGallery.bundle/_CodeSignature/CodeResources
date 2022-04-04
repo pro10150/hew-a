@@ -6,7 +6,11 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
+<<<<<<< Updated upstream
 		pSge0DsSfsJH3+qQYI9K/7mED5s=
+=======
+		ajmmv7W3JEWaKlYNvy2RK403Wnk=
+>>>>>>> Stashed changes
 		</data>
 		<key>Base.lproj/DKPhotoGallery.strings</key>
 		<data>
@@ -37,11 +41,19 @@
 		<dict>
 			<key>hash</key>
 			<data>
+<<<<<<< Updated upstream
 			pSge0DsSfsJH3+qQYI9K/7mED5s=
 			</data>
 			<key>hash2</key>
 			<data>
 			CNyKRi0qopmmcCx7Eq6vhc8WFowueQYEwJLgaw9q/is=
+=======
+			ajmmv7W3JEWaKlYNvy2RK403Wnk=
+			</data>
+			<key>hash2</key>
+			<data>
+			EvQj/ePCzcAI5dXHljlccUPmWczvVRA5Edh/RvqhRTk=
+>>>>>>> Stashed changes
 			</data>
 		</dict>
 		<key>Base.lproj/DKPhotoGallery.strings</key>
