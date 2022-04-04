@@ -53,7 +53,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE ingredientTABLE (id INTEGER PRIMARY KEY, name TEXT, image TEXT)');
     db.execute(
-        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, mainIngredient TEXT, userID TEXT, menuImage TEXT)');
+        'CREATE TABLE menuTABLE (id INTEGER PRIMARY KEY, nameMenu TEXT, descMenu TEXT, mainIngredient INTEGER, userID TEXT, menuImage TEXT, methodid INTEGER)');
     db.execute(
         'CREATE TABLE userTABLE (uid TEXT PRIMARY KEY, name TEXT,username TEXT, image TEXT, ingredients INTEGER, kitchenwares INTEGER, isAdmin INTEGER)');
     db.execute(
@@ -73,7 +73,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE userIngredientTABLE (id INTEGER PRIMARY KEY, uid TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
     db.execute(
-        'CREATE TABLE recipeKitchenwareTABLE (id INTEGER PRIMARY KEY, recipeId TEXT,kitchenwareId TEXT)');
+        'CREATE TABLE recipeKitchenwareTABLE (id INTEGER PRIMARY KEY, recipeId TEXT,kitchenwareId INTEGER)');
     db.execute(
         'CREATE TABLE commentTABLE (id INTEGER PRIMARY KEY, uid TEXT, recipeId INTEGER, text TEXT, date INTEGER)');
     db.execute(

@@ -16,6 +16,7 @@ class MenuHelper {
 
   final String idColumn = 'id';
   final String nameMenuColumn = 'nameMenu';
+  final String descMenuColumn = 'descMenu';
   final String mainIngredientColumn = 'mainIngredient';
   final String methodidColumn = 'methodid';
   final String userIDColumn = 'userID';
@@ -28,7 +29,7 @@ class MenuHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXt), $methodidColumn INTEGER'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT, $methodidColumn INTEGER'),
         version: version);
   }
 
@@ -168,11 +169,16 @@ class MenuHelper {
     });
   }
 
+
   Future<Null> updateDataToSQLite(MenuModel menuModel) async {
     Database database = await connectedDatabase();
     try {
       database.update(tableDatabase, menuModel.toJson(),
-          where: '${idColumn} = ?', whereArgs: [menuModel.id]);
+          where:
+              '$idColumn = ?',
+          whereArgs: [
+            menuModel.id,
+          ]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
@@ -188,6 +194,33 @@ class MenuHelper {
       menuModels.add(menuModel);
     }
     return menuModels;
+  }
+
+  Future<List<MenuModel>> readDataFromSQLiteMenu(MenuModel menuModel) async {
+    Database database = await connectedDatabase();
+    List<MenuModel> menuModels = [];
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where:
+        '$nameMenuColumn = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
+        whereArgs: [
+          menuModel.nameMenu,
+          menuModel.descMenu,
+          menuModel.mainIngredient
+        ]
+    );
+    for (var map in maps) {
+      MenuModel menuModel = MenuModel.fromJson(map);
+      menuModels.add(menuModel);
+    }
+    return menuModels;
+  }
+
+
+  Future<int> insert(MenuModel menuModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, menuModel.toJson());
+    return results;
   }
 
   Future<List<MenuModel>> readDataFromSQLiteWhereId(String id) async {

@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:hewa/models/recipe_model.dart';
+import 'package:hewa/models/Recipe_model.dart';
 import 'package:http/http.dart' as http;
 
 import 'db_helper.dart';
@@ -16,7 +17,7 @@ class RecipeHelper {
   final String idColumn = 'id';
   final String uidColumn = 'uid';
   final String recipeUidColumn = 'recipeUid';
-  final String nameMenuColumn = 'nameMenu';
+  final String menuIdColumn = 'menuId';
   final String recipeNameColumn = 'recipeName';
   final String descriptionColumn = 'description';
   final String timeHourColumn = 'timeHour';
@@ -35,7 +36,7 @@ class RecipeHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $menuIdColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
         version: version);
   }
 
@@ -52,6 +53,12 @@ class RecipeHelper {
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
+  }
+
+  Future<int> insert(RecipeModel recipeModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, recipeModel.toJson());
+    return results;
   }
 
   Future<Null> initInsertDataToSqlite() async {
@@ -465,6 +472,27 @@ class RecipeHelper {
     return recipeModels;
   }
 
+  Future<List<RecipeModel>> readDataFromSQLiteRecipe(RecipeModel recipeModel) async {
+    Database database = await connectedDatabase();
+    List<RecipeModel> recipeModels = [];
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where:
+        '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
+        whereArgs: [
+          recipeModel.menuId,
+          recipeModel.recipeName,
+          recipeModel.recipeUid
+        ]
+    );
+    for (var map in maps) {
+      RecipeModel recipeModel = RecipeModel.fromJson(map);
+      recipeModels.add(recipeModel);
+      print(map);
+    }
+    return recipeModels;
+  }
+
   Future<List<RecipeModel>> getAllUserRecipe(String id) async {
     Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
@@ -533,7 +561,7 @@ class RecipeHelper {
     } else {
       List<Map<String, dynamic>> maps = await database.query(tableDatabase,
           where:
-              '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
+          '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
           whereArgs: recommendation);
       for (var map in maps) {
         RecipeModel recipeModel = RecipeModel.fromJson(map);

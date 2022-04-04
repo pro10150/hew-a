@@ -1,6 +1,6 @@
 class ReKitchenwareModel {
   String? recipeId;
-  String? kitchenwareId;
+  int? kitchenwareId;
 
   ReKitchenwareModel({required this.recipeId, required this.kitchenwareId});
 

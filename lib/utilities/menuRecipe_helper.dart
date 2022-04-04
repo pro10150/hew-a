@@ -39,7 +39,7 @@ class MenuRecipeHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXT)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER, $mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT)'),
         version: version);
   }
 
@@ -135,7 +135,7 @@ class MenuRecipeHelper {
     print(objects.runtimeType);
     var dio = Dio();
     final response = await dio.post(
-        'http://192.168.1.108:5000/recommendation?uid=' +
+        'http://192.168.31.117:5000/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid,
         data: objects);
 
