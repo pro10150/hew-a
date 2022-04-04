@@ -39,6 +39,12 @@ class ReStepHelper {
     }
   }
 
+  Future<int> insert(ReStepModel reStepModel) async {
+    Database database = await connectedDatabase();
+    var results = database.insert(tableDatabase, reStepModel.toJson());
+    return results;
+  }
+
   Future<Null> initInsertDataToSQLite() async {
     Database database = await connectedDatabase();
     var steps = [
@@ -386,6 +392,26 @@ class ReStepHelper {
       reStepModels.add(reStepModel);
     }
     return reStepModels;
+  }
+
+  Future<List<ReStepModel>> readDataFromSQLiteRestep(ReStepModel reStepModel) async {
+    Database database = await connectedDatabase();
+    List<ReStepModel> restepModels = [];
+
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where:
+        '$recipeIdColumn = ? And $stepColumn = ?',
+        whereArgs: [
+          reStepModel.recipeId,
+          reStepModel.step
+        ]
+    );
+    for (var map in maps) {
+      ReStepModel reStepModel = ReStepModel.fromJson(map);
+      restepModels.add(reStepModel);
+      print(map);
+    }
+    return restepModels;
   }
 
   Future<List<ReStepModel>> readDataFromSQLiteWhereRecipe(
