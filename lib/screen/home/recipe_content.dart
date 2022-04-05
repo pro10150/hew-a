@@ -78,7 +78,7 @@ class RecipeContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              RecipeDescription(menuRecipeModel),
+              RecipeDescription(menuRecipeModel, userModel),
               ActionsToolbar(menuRecipeModel, userModel)
             ],
           )

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 import 'package:hewa/screen/login/round_image.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -35,6 +38,8 @@ class _UserInformationState extends State<UserInformation> {
   // String imageUrl = '';
   DateTime date = DateTime(2022, 12, 24);
   File? _imageFile = null;
+  var nameController = TextEditingController();
+  var _auth = FirebaseAuth.instance;
   final picker = ImagePicker();
 
   Future pickImage() async {
@@ -51,7 +56,15 @@ class _UserInformationState extends State<UserInformation> {
         .ref()
         .child('upload')
         .child('/$fileName');
+    var object =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    var userModel = object.first;
+    if (nameController.value.text != '') {
+      userModel.name = nameController.text.trim();
+    }
 
+    userModel.image = fileName;
+    UserHelper().updateDataToSQLite(userModel);
     final metadata = firebase_storage.SettableMetadata(
         contentType: 'image/jpeg',
         customMetadata: {'picked-file-path': fileName});
@@ -120,6 +133,7 @@ class _UserInformationState extends State<UserInformation> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: nameController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -340,8 +354,8 @@ class _UserInformationState extends State<UserInformation> {
 
                                     SizedBox(height: 20),
                                     buildname(),
-                                    SizedBox(height: 20),
-                                    buildbirthday(),
+                                    // SizedBox(height: 20),
+                                    // buildbirthday(),
                                     SizedBox(height: 50),
                                     buildnextBtn(),
                                     SizedBox(height: 15),

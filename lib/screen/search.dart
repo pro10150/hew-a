@@ -11,8 +11,11 @@ import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/method_helper.dart';
 import 'package:hewa/models/method_model.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:hewa/config/palette.dart';
+import 'menu_detail/menu_detail.dart';
 
 class Search extends StatefulWidget {
   static const routeName = '/';
@@ -44,14 +47,14 @@ class _SearchState extends State<Search> {
   //   });
   // }
 
-  List<MenuModel> menu = [];
-  List<MenuModel> filter = [];
+  List<MenuRecipeModel> menu = [];
+  List<MenuRecipeModel> filter = [];
   List<UserModel> user = [];
   List<UserModel> filtersearch = [];
   List<MethodModel> method_list = [];
 
   void readSQLite() {
-    MenuHelper().readlDataFromSQLite().then((menus) {
+    MenuRecipeHelper().readDataFromSQLite().then((menus) {
       for (var model in menus) {
         menu.add(model);
         filter.add(model);
@@ -112,7 +115,11 @@ class _SearchState extends State<Search> {
                     child: Image.network(snapshot.data!, fit: BoxFit.cover),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return MenuDetail(filter[index]);
+                  }));
+                },
               ),
             ]),
             Text(
