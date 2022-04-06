@@ -1,15 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hewa/models/report_model.dart';
+import 'package:hewa/utilities/report_helper.dart';
 
 class reportDetail extends StatefulWidget {
-  const reportDetail({Key? key}) : super(key: key);
+
 
   @override
   _reportDetailState createState() => _reportDetailState();
 }
 
 class _reportDetailState extends State<reportDetail> {
+
+
+
+  ReportModel? reportModel;
+  ReportHelper? reportHelper;
+
+  List<ReportModel> userReport = [];
+
+  getReport() async {
+    var objects = await ReportHelper().readlDataFromSQLite();
+    for (var object in objects) {
+      setState(() {
+        userReport.add(object);
+      });
+    }
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
