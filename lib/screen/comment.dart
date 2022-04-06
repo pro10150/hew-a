@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/models/comment_model.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:intl/intl.dart';
 
@@ -39,58 +40,112 @@ class _commentPage extends State<commentPage> {
 
   Widget commentChild(data) {
     List<Widget> children = [];
-    for (var index = 0; index < comments.length; index++) {
-      var url;
-      if (users[index].image != null) {
-        var ref = FirebaseStorage.instance
-            .ref()
-            .child('upload')
-            .child(users[index].image!);
-        url = ref.getDownloadURL();
-      }
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-        child: ListTile(
-          leading: GestureDetector(
-            onTap: () async {
-              // Display the image in large form.
-              print("Comment Clicked");
-            },
-            child: Container(
-              height: 50.0,
-              width: 50.0,
-              decoration: new BoxDecoration(
-                  borderRadius: new BorderRadius.all(Radius.circular(50))),
-              child: url != null
-                  ? FutureBuilder<String>(
-                      future: url,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(snapshot.data!));
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    )
-                  : CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
+    return ListView.builder(
+        itemCount: comments.length,
+        itemBuilder: (context, index) {
+          var url;
+          if (users[index].image != null) {
+            var ref = FirebaseStorage.instance
+                .ref()
+                .child('upload')
+                .child(users[index].image!);
+            url = ref.getDownloadURL();
+          }
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+            child: ListTile(
+              leading: GestureDetector(
+                onTap: () async {
+                  // Display the image in large form.
+                  print("Comment Clicked");
+                },
+                child: Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: new BoxDecoration(
+                      borderRadius: new BorderRadius.all(Radius.circular(50))),
+                  child: url != null
+                      ? FutureBuilder<String>(
+                          future: url,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      NetworkImage(snapshot.data!));
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
+                ),
+              ),
+              title: Text(
+                users[index].name != null || users[index].name == ""
+                    ? users[index].name!
+                    : users[index].username!,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(comments[index].text!),
             ),
-          ),
-          title: Text(
-            users[index].name != null || users[index].name == ""
-                ? users[index].name!
-                : users[index].username!,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(comments[index].text!),
-        ),
-      ));
-    }
-    return ListView(children: children);
+          );
+        });
+    // for (var index = 0; index < comments.length; index++) {
+    //   var url;
+    //   if (users[index].image != null) {
+    //     var ref = FirebaseStorage.instance
+    //         .ref()
+    //         .child('upload')
+    //         .child(users[index].image!);
+    //     url = ref.getDownloadURL();
+    //   }
+    //   children.add(Padding(
+    //     padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+    //     child: ListTile(
+    //       leading: GestureDetector(
+    //         onTap: () async {
+    //           // Display the image in large form.
+    //           print("Comment Clicked");
+    //         },
+    //         child: Container(
+    //           height: 50.0,
+    //           width: 50.0,
+    //           decoration: new BoxDecoration(
+    //               borderRadius: new BorderRadius.all(Radius.circular(50))),
+    //           child: url != null
+    //               ? FutureBuilder<String>(
+    //                   future: url,
+    //                   builder: (context, snapshot) {
+    //                     if (snapshot.hasData) {
+    //                       return CircleAvatar(
+    //                           radius: 50,
+    //                           backgroundImage: NetworkImage(snapshot.data!));
+    //                     } else {
+    //                       return CircularProgressIndicator();
+    //                     }
+    //                   },
+    //                 )
+    //               : CircleAvatar(
+    //                   radius: 50,
+    //                   backgroundImage: NetworkImage(
+    //                       "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
+    //         ),
+    //       ),
+    //       title: Text(
+    //         users[index].name != null || users[index].name == ""
+    //             ? users[index].name!
+    //             : users[index].username!,
+    //         style: TextStyle(fontWeight: FontWeight.bold),
+    //       ),
+    //       subtitle: Text(comments[index].text!),
+    //     ),
+    //   ));
+    // }
+    // return ListView(children: children);
     // return ListView.builder(
     //     itemCount: data.length,
     //     itemBuilder: (context, index) {
@@ -197,7 +252,9 @@ class _commentPage extends State<commentPage> {
                                     recipeId: comments[0].recipeId,
                                     date: DateFormat('yyyy-MM-dd HH:mm:ss')
                                         .format(DateTime.now()));
+                                CommentHelper().insertDataToSQLite(value);
                                 comments.add(value);
+                                users.add(currentUser!);
                               });
                               commentController.clear();
                               FocusScope.of(context).unfocus();
@@ -236,6 +293,8 @@ class _commentPage extends State<commentPage> {
                               recipeId: comments[0].recipeId,
                               date: DateFormat('yyyy-MM-dd HH:mm:ss')
                                   .format(DateTime.now()));
+                          CommentHelper().insertDataToSQLite(value);
+                          users.add(currentUser!);
                           comments.add(value);
                         });
                         commentController.clear();

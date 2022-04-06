@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/models/reAllergy_model.dart';
+import 'package:hewa/utilities/reAllergy_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
@@ -32,6 +34,8 @@ class MenuRecipeHelper {
   final String userIDColumn = 'userID';
   final String imageColumn = 'image';
 
+  var _auth = FirebaseAuth.instance;
+
   MenuRecipeHelper() {
     initDatabase();
   }
@@ -39,7 +43,7 @@ class MenuRecipeHelper {
   Future<Null> initDatabase() async {
     await openDatabase(join(await getDatabasesPath(), nameDatabase),
         onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER, $mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT)'),
+            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $nameMenuColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER, $mainIngredientColumn TEXT, $userIDColumn TEXT, $imageColumn TEXT)'),
         version: version);
   }
 
@@ -47,12 +51,32 @@ class MenuRecipeHelper {
     return openDatabase(join(await getDatabasesPath(), nameDatabase));
   }
 
+  // getAllergies() async {
+  //   reAllergyModels = [];
+  //   var objects = await ReAllergyHelper()
+  //       .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+  //   for (var object in objects) {
+  //     reAllergyModels.add(object);
+  //   }
+  // }
+
   Future<List<MenuRecipeModel>> readDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient; ');
+    List<Map<String, dynamic>> maps = [];
+    List<ReAllergyModel> reAllergyModels = [];
+    var objects = await ReAllergyHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    for (var object in objects) {
+      reAllergyModels.add(object);
+    }
+    if (reAllergyModels.length > 0) {
+      maps = await database.rawQuery(
+          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = "${_auth.currentUser!.uid}") on menutable.mainIngredient = allid where allid is null;');
+    } else {
+      maps = await database.rawQuery(
+          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient;');
+    }
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);
@@ -63,8 +87,11 @@ class MenuRecipeHelper {
   Future<List<MenuRecipeModel>> getAllUserRecipe(String id) async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient; where recipeTABLE.recipeUid = $id');
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.recipeUid = ?;',
+        [id]);
+
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);
@@ -75,9 +102,11 @@ class MenuRecipeHelper {
   Future<List<MenuRecipeModel>> getLikedRecipe(String id) async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = (select recipeId from likeTABLE where uid = ?);',
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
+        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id in (select recipeId from likeTABLE where uid = ?);',
         [id]);
+
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
       menuRecipeModels.add(menuRecipeModel);
@@ -88,8 +117,20 @@ class MenuRecipeHelper {
   Future<List<MenuRecipeModel>> getTrending() async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-        "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId WHERE recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
+    List<Map<String, dynamic>> maps = [];
+    List<ReAllergyModel> reAllergyModels = [];
+    var objects = await ReAllergyHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    for (var object in objects) {
+      reAllergyModels.add(object);
+    }
+    if (reAllergyModels.length > 0) {
+      maps = await database.rawQuery(
+          "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE allid is null and recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
+    } else {
+      maps = await database.rawQuery(
+          "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId WHERE recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
+    }
     if (maps.length == 0) {
       return readDataFromSQLite();
     } else {
@@ -117,14 +158,29 @@ class MenuRecipeHelper {
 
   Future<List<MenuRecipeModel>> getFollowing(String uid) async {
     Database database = await connectedDatabase();
+    List<ReAllergyModel> reAllergyModels = [];
+    var objects = await ReAllergyHelper()
+        .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+    for (var object in objects) {
+      reAllergyModels.add(object);
+    }
     List<MenuRecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
-        "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT followedUserId FROM followTABLE WHERE uid = ?)",
-        [uid]);
+    List<Map<String, dynamic>> maps = [];
+    if (reAllergyModels.length > 0) {
+      maps = await database.rawQuery(
+          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?) and allid is null",
+          [uid]);
+    } else {
+      maps = await database.rawQuery(
+          "SELECT *, recipeTABLE.id as id  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?)",
+          [uid]);
+    }
+    print("map -> ${maps.length}");
     for (var map in maps) {
       MenuRecipeModel recipeModel = MenuRecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
     }
+
     return recipeModels;
   }
 
@@ -135,7 +191,7 @@ class MenuRecipeHelper {
     print(objects.runtimeType);
     var dio = Dio();
     final response = await dio.post(
-        'http://192.168.31.117:5000/recommendation?uid=' +
+        'http://192.168.1.108:5000/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid,
         data: objects);
 
@@ -146,9 +202,25 @@ class MenuRecipeHelper {
     if (recommendation.length == 0) {
       return getTrending();
     } else {
-      List<Map<String, dynamic>> maps = await database.rawQuery(
-          "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')})",
-          recommendation);
+      List<ReAllergyModel> reAllergyModels = [];
+      List<String> userId = [];
+      var objects = await ReAllergyHelper()
+          .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
+      for (var object in objects) {
+        reAllergyModels.add(object);
+        userId.add(object.userID!);
+      }
+      List<Map<String, dynamic>> maps = [];
+      if (reAllergyModels.length > 0) {
+        maps = await database.rawQuery(
+            "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid  WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')})  and allid is null",
+            recommendation);
+      } else {
+        maps = await database.rawQuery(
+            "SELECT *, recipeTABLE.id as id FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')}) ",
+            recommendation);
+      }
+
       for (var map in maps) {
         MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
         menuRecipeModels.add(menuRecipeModel);

@@ -34,9 +34,6 @@ class Trending extends StatelessWidget {
         child: menuRecipeModels.length > 0
             ? TikTokStyleFullPageScroller(
                 contentSize: menuRecipeModels.length,
-                swipePositionThreshold: 0.2,
-                swipeVelocityThreshold: 1000,
-                animationDuration: const Duration(milliseconds: 300),
                 builder: (BuildContext context, int index) {
                   return RecipeContent(
                       menuRecipeModels[index], refs[index], userModel);

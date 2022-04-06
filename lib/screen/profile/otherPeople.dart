@@ -70,17 +70,17 @@ class _OtherProfileState extends State<OtherProfile>
       setState(() {
         followers.add(object);
       });
+      if (object.followedUserID == _auth.currentUser!.uid) {
+        setState(() {
+          isFollowed = true;
+        });
+      }
     }
     objects = await FollowHelper().getFollowing(uid);
     for (var object in objects) {
       setState(() {
         followings.add(object);
       });
-      if (object.followedUserID == uid) {
-        setState(() {
-          isFollowed = true;
-        });
-      }
     }
   }
 
@@ -89,6 +89,24 @@ class _OtherProfileState extends State<OtherProfile>
     for (var object in objects) {
       setState(() {
         menuRecipeModels.add(object);
+      });
+    }
+  }
+
+  follow() {
+    FollowModel followModel =
+        FollowModel(uid: uid, followedUserID: _auth.currentUser!.uid);
+    if (isFollowed == false) {
+      FollowHelper().insertDataToSQLite(followModel);
+      setState(() {
+        followers.add(followModel);
+        isFollowed = true;
+      });
+    } else {
+      FollowHelper().deleteDataWhereUidAndFollow(uid, _auth.currentUser!.uid);
+      setState(() {
+        followers.removeAt(followers.length - 1);
+        isFollowed = false;
       });
     }
   }
@@ -280,28 +298,59 @@ class _OtherProfileState extends State<OtherProfile>
                                               MainAxisAlignment.start,
                                           children: <Widget>[
                                             _auth.currentUser!.uid != uid
-                                                ? RaisedButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                    ),
-                                                    color: Colors.black,
-                                                    textColor: Colors.white,
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 0,
-                                                        top: 0,
-                                                        right: 42,
-                                                        left: 42),
-                                                    onPressed: () => {},
-                                                    child: Text(
-                                                      "follow",
-                                                      style: TextStyle(
-                                                        fontSize: 18.0,
-                                                      ),
-                                                    ),
-                                                  )
+                                                ? isFollowed == false
+                                                    ? RaisedButton(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20.0),
+                                                        ),
+                                                        color: Colors.black,
+                                                        textColor: Colors.white,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                bottom: 0,
+                                                                top: 0,
+                                                                right: 42,
+                                                                left: 42),
+                                                        onPressed: () {
+                                                          follow();
+                                                        },
+                                                        child: Text(
+                                                          "follow",
+                                                          style: TextStyle(
+                                                            fontSize: 18.0,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : RaisedButton(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20.0),
+                                                        ),
+                                                        color: Colors.black,
+                                                        textColor: Colors.white,
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                bottom: 0,
+                                                                top: 0,
+                                                                right: 42,
+                                                                left: 42),
+                                                        onPressed: () {
+                                                          follow();
+                                                        },
+                                                        child: Text(
+                                                          "unfollow",
+                                                          style: TextStyle(
+                                                            fontSize: 18.0,
+                                                          ),
+                                                        ),
+                                                      )
                                                 : Container(),
                                           ],
                                         ))

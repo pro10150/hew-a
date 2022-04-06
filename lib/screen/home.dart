@@ -41,6 +41,7 @@ class _HomeState extends State<Home> {
   List<MenuRecipeModel> followingModels = [];
   List<MenuRecipeModel> dailyPickModels = [];
   List<UserKitchenwareModel> userKitchenwareModels = [];
+  List<UserModel> recommendedUserModels = [];
   UserModel? userModel;
   var auth = FirebaseAuth.instance;
 
@@ -52,6 +53,7 @@ class _HomeState extends State<Home> {
     getFollowing();
     getDailyPick();
     getUser();
+    getRecommendedUserModel();
     super.initState();
   }
 
@@ -89,6 +91,11 @@ class _HomeState extends State<Home> {
       recommendations = decoded['recommendation'];
       print(recommendations);
     });
+  }
+
+  getRecommendedUserModel() async {
+    var objects = await UserHelper().getUserTop5(_auth.currentUser!.uid);
+    recommendedUserModels = objects;
   }
 
   getAllData() async {
@@ -195,13 +202,13 @@ class _HomeState extends State<Home> {
       );
 
   Widget get middleSection => Container(
-      child: 
-      userModel != null ?
-      dsc
-          ? Following(followingModels, userModel!)
-          : dp
-              ? DailyPick(dailyPickModels, userModel!)
-              : Trending(trendingModels, userModel!): Container());
+      child: userModel != null
+          ? dsc
+              ? Following(followingModels, userModel!, recommendedUserModels)
+              : dp
+                  ? DailyPick(dailyPickModels, userModel!)
+                  : Trending(trendingModels, userModel!)
+          : Container());
 
   Widget build(BuildContext context) {
     return Scaffold(

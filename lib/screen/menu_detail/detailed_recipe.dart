@@ -180,40 +180,44 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     bool isEnough = false;
     if (reIngred.unit == "cup") {
       if (userIngred.unit == "cup") {
-        if (reIngred.amount! <= userIngred.amount!) {
+        if (reIngred.amount! * _n <= userIngred.amount!) {
           isEnough = true;
         }
       } else if (userIngred.unit == "tbsp") {
         var reAmount = reIngred.amount! * 16;
-        if (reAmount <= userIngred.amount!) {
+        if (reAmount * _n <= userIngred.amount!) {
           isEnough = true;
+        } else {
+          isEnough = false;
         }
       }
     } else if (reIngred.unit == "tbsp") {
       if (userIngred.unit == "cup") {
         var reAmount = reIngred.amount! * 0.0625;
-        if (reAmount <= userIngred.amount!) {
+        if (reAmount * _n <= userIngred.amount!) {
           isEnough = true;
         }
       }
     } else if (reIngred.unit == "g") {
       if (userIngred.unit == "kg") {
         var reAmount = reIngred.amount! * 100;
-        if (reAmount <= userIngred.amount!) {
+        if (reAmount * _n <= userIngred.amount!) {
           isEnough = true;
         }
       }
     } else if (reIngred.unit == "kg") {
       if (userIngred.unit == "g") {
         var reAmount = reIngred.amount! * 0.001;
-        if (reAmount <= userIngred.amount!) {
+        if (reAmount * _n <= userIngred.amount!) {
           isEnough = true;
         }
       }
     }
     if (userIngred.unit == reIngred.unit) {
-      if (reIngred.amount! <= userIngred.amount!) {
+      if (reIngred.amount! * _n <= userIngred.amount!) {
         isEnough = true;
+      } else if (reIngred.amount! * _n > userIngred.amount!) {
+        isEnough = false;
       }
     }
     return isEnough;
@@ -235,7 +239,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
               if (reIngredIngredModel.unit != null &&
                   userIngredModel.unit != null) {
                 isEnough = compareUnit(reIngredIngredModel, userIngredModel);
-              } else if (reIngredIngredModel.amount! <=
+              } else if (reIngredIngredModel.amount! * _n <=
                   userIngredModel.amount!) {
                 isEnough = true;
               }

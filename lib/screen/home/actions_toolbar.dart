@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hewa/screen/profile/otherPeople.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
+import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hewa/screen/comment.dart';
 import 'report.dart';
@@ -22,27 +23,56 @@ import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/models/user_model.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'package:hewa/utilities/follow_helper.dart';
 
-class ActionsToolbar extends StatelessWidget {
+class ActionsToolbar extends StatefulWidget {
   ActionsToolbar(this.menuRecipeModel, this.userModel);
+  MenuRecipeModel menuRecipeModel;
+  UserModel userModel;
+  @override
+  _ActionsToolbarState createState() =>
+      _ActionsToolbarState(menuRecipeModel, userModel);
+}
+
+class _ActionsToolbarState extends State<ActionsToolbar> {
+  _ActionsToolbarState(this.menuRecipeModel, this.userModel);
   MenuRecipeModel menuRecipeModel;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool isLiked = false;
-  late Future<List<LikeModel>> likes;
-  late Future<List<CommentModel>> comments;
+  bool isFollowed = false;
+  List<LikeModel> likes = [];
+  List<CommentModel> commentModels = [];
   Future<List<UserModel>>? userModels;
+  List<FollowModel> followModels = [];
   UserModel userModel;
   Future<String>? url;
-  getLike() {
-    var objects = LikeHelper()
-        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    likes = objects;
+
+  getFollow() async {
+    var objects = await FollowHelper().getFollower(menuRecipeModel.recipeUid!);
+    for (var object in objects) {
+      setState(() {
+        followModels.add(object);
+        if (object.followedUserID == _auth.currentUser!.uid) {
+          isFollowed = true;
+        }
+      });
+    }
   }
 
-  getComment() {
-    var objects = CommentHelper()
+  getLike() async {
+    var objects = await LikeHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
-    comments = objects;
+    setState(() {
+      likes = objects;
+    });
+    getIsLike(likes);
+  }
+
+  getComment() async {
+    var objects = await CommentHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
+    commentModels = objects;
   }
 
   getUserProfile() {
@@ -52,15 +82,23 @@ class ActionsToolbar extends StatelessWidget {
   }
 
   like() {
+    LikeModel likeModel = LikeModel(
+        recipeId: menuRecipeModel.id,
+        uid: _auth.currentUser!.uid,
+        datetime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()));
     if (isLiked == false) {
-      LikeModel likeModel =
-          LikeModel(recipeId: menuRecipeModel.id, uid: menuRecipeModel.uid);
       LikeHelper().insertDataToSQLite(likeModel);
       isLiked = true;
+      setState(() {
+        likes.add(likeModel);
+      });
     } else {
       LikeHelper().deleteDataWhere(
           _auth.currentUser!.uid, menuRecipeModel.id.toString());
       isLiked = false;
+      setState(() {
+        likes.removeAt(likes.length - 1);
+      });
     }
     print(isLiked);
   }
@@ -69,7 +107,9 @@ class ActionsToolbar extends StatelessWidget {
     String uid = _auth.currentUser!.uid;
     for (var like in likes) {
       if (uid == like.uid) {
-        isLiked = true;
+        setState(() {
+          isLiked = true;
+        });
         break;
       }
     }
@@ -96,9 +136,6 @@ class ActionsToolbar extends StatelessWidget {
 
   Widget _getFollowAction(
       {required String pictureUrl, required BuildContext context}) {
-    print(menuRecipeModel.recipeUid);
-    print(_auth.currentUser!.uid);
-    print(menuRecipeModel.userID == _auth.currentUser!.uid);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       width: 60,
@@ -106,7 +143,9 @@ class ActionsToolbar extends StatelessWidget {
       child: Stack(children: [
         _getProfilePicture(context, pictureUrl),
         menuRecipeModel.recipeUid != _auth.currentUser!.uid
-            ? _getPlusIcon()
+            ? isFollowed
+                ? Container()
+                : _getPlusIcon()
             : Container()
       ]),
     );
@@ -123,7 +162,15 @@ class ActionsToolbar extends StatelessWidget {
       left: ((ActionWidgetSize / 2) - (PlusIconSize / 2)),
       child: GestureDetector(
           onTap: () {
-            print("eee");
+            FollowModel followModel = FollowModel(
+                uid: menuRecipeModel.recipeUid,
+                followedUserID: _auth.currentUser!.uid);
+            FollowHelper().insertDataToSQLite(followModel);
+            setState(() {
+              print("followed");
+              followModels.add(followModel);
+              isFollowed = true;
+            });
           },
           child: Container(
             width: PlusIconSize,
@@ -181,10 +228,17 @@ class ActionsToolbar extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     getLike();
     getComment();
+    getFollow();
     getUserProfile();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: 100,
       child: Column(
@@ -207,12 +261,12 @@ class ActionsToolbar extends StatelessWidget {
                         children = [
                           FutureBuilder<String>(
                               future: url,
-                              builder: (context, snapshot) {
+                              builder: (context, urlSnapshot) {
                                 List<Widget> children = [];
-                                if (snapshot.hasData) {
+                                if (urlSnapshot.hasData) {
                                   children = [
                                     _getFollowAction(
-                                        pictureUrl: snapshot.data!,
+                                        pictureUrl: urlSnapshot.data!,
                                         context: context)
                                   ];
                                 } else {
@@ -223,13 +277,14 @@ class ActionsToolbar extends StatelessWidget {
                                 );
                               })
                         ];
+                      } else {
+                        children = [
+                          _getFollowAction(
+                              pictureUrl:
+                                  "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                              context: context)
+                        ];
                       }
-                      children = [
-                        _getFollowAction(
-                            pictureUrl:
-                                "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                            context: context)
-                      ];
                     } else {
                       children = [CircularProgressIndicator()];
                     }
@@ -237,62 +292,18 @@ class ActionsToolbar extends StatelessWidget {
                       children: children,
                     );
                   }),
-              FutureBuilder<List<LikeModel>>(
-                  future: likes,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    List<Widget> children = [];
-                    if (snapshot.hasData) {
-                      getIsLike(snapshot.data);
-                      print(isLiked);
-                      children = [
-                        GestureDetector(
-                            child: LikeButton(
-                          onTap: (isLiked) {
-                            return changedata(
-                              isLiked,
-                            );
-                          },
-                          countPostion: CountPostion.bottom,
-                          size: 50,
-                          circleColor: CircleColor(
-                              start: Colors.black, end: Color(0xff0099cc)),
-                          bubblesColor: BubblesColor(
-                            dotPrimaryColor: Color(0xff33b5e5),
-                            dotSecondaryColor: Color(0xff0099cc),
-                          ),
-                          likeCount: snapshot.data.length,
-                          likeCountAnimationType: LikeCountAnimationType.all,
-                          likeBuilder: (bool isLike) {
-                            isLike = isLiked;
-                            print(isLike);
-                            return Icon(
-                              isLike ? MdiIcons.heart : MdiIcons.heartOutline,
-                              color: isLike ? Palette.roseBud : Colors.black,
-                              size: 50,
-                            );
-                          },
-                          // countBuilder: (int count, bool isLiked, String text) {
-                          //   var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
-                          //   Widget result;
-                          //   if (count == 0) {
-                          //     result = Text(
-                          //       "love",
-                          //       style: TextStyle(color: color),
-                          //     );
-                          //   } else
-                          //     result = Text(
-                          //       text,
-                          //       style: TextStyle(color: color),
-                          //     );
-                          //   return result;
-                          // },
-                        ))
-                      ];
-                    } else {
-                      children = [CircularProgressIndicator()];
-                    }
-                    return Column(children: children);
-                  }),
+              GestureDetector(
+                  onTap: () {
+                    like();
+                  },
+                  child: Column(children: [
+                    Icon(
+                      isLiked ? MdiIcons.heart : MdiIcons.heartOutline,
+                      color: isLiked ? Palette.roseBud : Colors.black,
+                      size: 50,
+                    ),
+                    Text(likes.length.toString())
+                  ])),
               // RawMaterialButton(
               //   onPressed: () {},
               //   child: _getSocialAction(
@@ -306,26 +317,14 @@ class ActionsToolbar extends StatelessWidget {
               //   //   await DBServices().updatevehicule(menu);
               //   // },
               // ),
-              FutureBuilder<List<CommentModel>>(
-                  future: comments,
-                  builder: (context, snapshot) {
-                    List<Widget> children = <Widget>[];
-                    if (snapshot.hasData) {
-                      children = [
-                        RawMaterialButton(
-                          onPressed: () {
-                            navigateTocommentPage(context, snapshot.data!);
-                          },
-                          child: _getSocialAction(
-                              title: snapshot.data!.length.toString(),
-                              icon: MdiIcons.messageOutline),
-                        )
-                      ];
-                    } else {
-                      children = [CircularProgressIndicator()];
-                    }
-                    return Column(children: children);
-                  }),
+              RawMaterialButton(
+                onPressed: () {
+                  navigateTocommentPage(context, commentModels);
+                },
+                child: _getSocialAction(
+                    title: commentModels.length.toString(),
+                    icon: MdiIcons.messageOutline),
+              ),
               RawMaterialButton(
                   onPressed: () {
                     _shareContent(context, userModel, menuRecipeModel);
@@ -461,21 +460,23 @@ void _shareContent(BuildContext context, UserModel userModel,
 }
 
 void navigateTocommentPage(
-    BuildContext context, List<CommentModel> comments) async {
+    BuildContext context, List<CommentModel> commentModels) async {
   showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return Container(
-            height: MediaQuery.of(context).size.height * 0.75,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: commentPage(comments)));
-      });
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0),
+    ),
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: commentPage(commentModels)));
+    },
+  );
+
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //   return commentPage(comments);
+  //   return commentPage(commentModels);
   // }));
 }
