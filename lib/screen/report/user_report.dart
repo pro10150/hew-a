@@ -4,8 +4,13 @@ import 'package:hewa/screen/login/loginscreen.dart';
 import 'report_detail.dart';
 import 'package:hewa/models/report_model.dart';
 import 'package:hewa/utilities/report_helper.dart';
+import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/models/menu_model.dart';
+import 'package:hewa/models/reportAbout_model.dart';
+import 'package:hewa/utilities/reportAbout_helper.dart';
 
 class userReport extends StatefulWidget {
+
   const userReport({Key? key}) : super(key: key);
 
   @override
@@ -15,18 +20,44 @@ class userReport extends StatefulWidget {
 class _userReportState extends State<userReport> {
   var _auth = FirebaseAuth.instance;
 
+  MenuModel? menuModel;
+  MenuHelper? menuHelper;
+
+  ReportAboutModel? reportAboutModel;
+  ReportAboutHelper? reportAboutHelper;
+
   ReportHelper? reportHelper;
   ReportModel? reportModel;
 
+  List<MenuModel> userMenu = [];
+
+
+
   List<ReportModel> userReport = [];
 
-  void readSQLite() {
-    ReportHelper().readlDataFromSQLite().then((userRe) {
-      for (var model in userRe) {
-        userReport.add(model);
-      }
-    });
+  // void readSQLite() {
+  //   ReportHelper().readlDataFromSQLite().then((userRe) {
+  //     for (var model in userRe) {
+  //       userReport.add(model);
+  //     }
+  //   });
+  //   MenuHelper().readlDataFromSQLite().then((userMenus) {
+  //     for (var model in userMenus) {
+  //       userMenu.add(model);
+  //     }
+  //   });
+  // }
+
+  getReport() async {
+    var objects = await ReportHelper().readlDataFromSQLite();
+    for (var object in objects) {
+      setState(() {
+        userReport.add(object);
+      });
+    }
   }
+
+  int count = 0;
 
   void signOut(BuildContext context) {
     _auth.signOut();
@@ -40,7 +71,8 @@ class _userReportState extends State<userReport> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    readSQLite();
+    // readSQLite();
+    getReport();
   }
 
   Widget builduserReportBtn(int index) {
@@ -163,17 +195,17 @@ class _userReportState extends State<userReport> {
     //   ),
     // );
     return ListView.builder(
-      itemCount: 10,
+      itemCount: userReport.length,
       itemBuilder: (_, index) {
         return Card(
           child: ListTile(
-            title: Text("iwanttosleep10hrchallenge"),
-            subtitle: Text("somethinpullfromDB"),
+            title: Text('${userReport[index].id}'),
+            subtitle: Text('${userReport[index].text}'),
             leading: CircleAvatar(
                 radius: 50,
                 backgroundImage: NetworkImage(
                     "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")),
-            trailing: Icon(Icons.arrow_forward),
+            trailing: Icon(Icons.arrow_right),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => reportDetail()));
@@ -182,5 +214,38 @@ class _userReportState extends State<userReport> {
         );
       },
     );
+  }
+
+  Widget _countReport() {
+    return ListView.builder(
+      itemCount: count,
+        itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+            height: 35,
+            width: 150,
+            decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(50)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.warning_rounded,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '${index+1}',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
   }
 }
