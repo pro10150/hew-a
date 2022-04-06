@@ -535,9 +535,15 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                             child: BackButton()),
                         Align(
                             alignment: Alignment.center,
-                            child: Text('กะเพราหมูสับ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)))
+                            child: menuRecipeModel!.recipeName != null
+                                ? Text(menuRecipeModel!.recipeName!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18))
+                                : Text(menuRecipeModel!.nameMenu!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)))
                       ],
                     ),
                     Row(

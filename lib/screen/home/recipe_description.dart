@@ -52,7 +52,7 @@ class RecipeDescription extends StatelessWidget {
                 children: <Widget>[
                   Icon(MdiIcons.clockOutline, size: 25),
                   menuRecipeModel.timeMinute != null
-                      ? Text(menuRecipeModel.timeMinute.toString() + 'min')
+                      ? Text(menuRecipeModel.timeMinute.toString() + ' min')
                       : Text('N/A'),
                   Icon(
                     IngredientsIcon.ingredients,

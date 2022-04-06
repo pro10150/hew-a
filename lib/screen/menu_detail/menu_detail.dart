@@ -134,7 +134,7 @@ class _MenuDetailState extends State<MenuDetail> {
     var kitchenwares = await KitchHelper().readlDataFromSQLite();
     for (var object in objects) {
       for (var kitchenware in kitchenwares) {
-        if (kitchenware.id.toString() == object.kitchenwareId) {
+        if (kitchenware.id == object.kitchenwareId) {
           setState(() {
             kitchenwareModels.add(kitchenware);
           });
@@ -213,7 +213,8 @@ class _MenuDetailState extends State<MenuDetail> {
                             ),
                             Text(
                                 menuRecipeModel!.timeMinute != null
-                                    ? menuRecipeModel!.timeMinute.toString()
+                                    ? menuRecipeModel!.timeMinute.toString() +
+                                        " min"
                                     : 'N/A',
                                 style: TextStyle(fontSize: 18))
                           ],

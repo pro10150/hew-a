@@ -72,10 +72,10 @@ class MenuRecipeHelper {
     }
     if (reAllergyModels.length > 0) {
       maps = await database.rawQuery(
-          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = "${_auth.currentUser!.uid}") on menutable.mainIngredient = allid where allid is null;');
+          'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = "${_auth.currentUser!.uid}") on menutable.mainIngredient = allid where allid is null;');
     } else {
       maps = await database.rawQuery(
-          'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient;');
+          'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient;');
     }
     for (var map in maps) {
       MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
@@ -89,7 +89,7 @@ class MenuRecipeHelper {
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = [];
     maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.recipeUid = ?;',
+        'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.recipeUid = ?;',
         [id]);
 
     for (var map in maps) {
@@ -104,7 +104,7 @@ class MenuRecipeHelper {
     List<MenuRecipeModel> menuRecipeModels = [];
     List<Map<String, dynamic>> maps = [];
     maps = await database.rawQuery(
-        'select * from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id in (select recipeId from likeTABLE where uid = ?);',
+        'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id in (select recipeId from likeTABLE where uid = ?);',
         [id]);
 
     for (var map in maps) {
