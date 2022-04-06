@@ -350,7 +350,7 @@ class _UserInformationState extends State<UserInformation> {
                                   ]))),
                           SizedBox(
                             height: 250,
-                            width: 350,
+                            width: double.infinity,
                             child: Stack(
                               fit: StackFit.expand,
                               overflow: Overflow.visible,
@@ -363,43 +363,49 @@ class _UserInformationState extends State<UserInformation> {
                                 //   child: builcam(),
                                 // ),
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(height: 50),
-                                    CircleAvatar(
-                                      radius: 60,
-                                      backgroundColor: Colors.white,
-                                      child: ClipOval(
-                                        child: SizedBox(
-                                            height: 500,
-                                            width: 500,
-                                            child: (_imageFile != null)
-                                                ? Image.file(_imageFile!,
-                                                    fit: BoxFit.fill)
-                                                : FlatButton(
+                                    Center(
+                                      child: CircleAvatar(
+                                        radius: 60,
+                                        backgroundColor: Colors.white,
+                                        child: ClipOval(
+                                          child: SizedBox(
+                                              height: 500,
+                                              width: 500,
+                                              child: (_imageFile != null)
+                                                  ? Image.file(_imageFile!,
+                                                  fit: BoxFit.fill)
+                                                  : FlatButton(
+                                                  onPressed: () {},
+                                                  child: IconButton(
+                                                    icon: Icon(
+                                                      FontAwesomeIcons.user,
+                                                      color:
+                                                      Color(0xffe69a83),
+                                                      size: 35,
+                                                    ),
                                                     onPressed: () {},
-                                                    child: IconButton(
-                                                      icon: Icon(
-                                                        FontAwesomeIcons.user,
-                                                        color:
-                                                            Color(0xffe69a83),
-                                                        size: 35,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ))),
+                                                  ))),
+                                        ),
                                       ),
                                     ),
                                     Positioned(
                                         bottom: 0,
                                         right: 0,
                                         child: Container(
-                                          height: 50,
-                                          width: 100,
+                                          alignment: Alignment.bottomCenter,
+                                          // height: 50,
+                                          // width: 100,
                                           child: TextButton(
                                             onPressed: () {
                                               pickImage();
                                             },
                                             child: Text(
                                               'select photo',
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
@@ -409,36 +415,9 @@ class _UserInformationState extends State<UserInformation> {
                                         )),
                                   ],
                                 ),
-
-                                // UserImage(
-                                //   onFileChanged: (imageUrl) {
-                                //     setState(() {
-                                //       this.imageUrl = imageUrl;
-                                //     });
-                                //   },
-                                // ),
                               ],
                             ),
 
-                            /* Positioned(
-                                    top: 5,
-                                    right: -110,
-                                    child: SizedBox(
-                                      height: 40,
-                                      width: 40,
-                                      child: FlatButton(
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            side: BorderSide(
-                                                color: Colors.white24)),
-                                        color: Colors.white,
-                                        onPressed: () {},
-                                        child: Icon(Icons.camera),
-                                      ),
-                                    ),
-                                  ), */
                           ),
                         ]),
                       ]),
