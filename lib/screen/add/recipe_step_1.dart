@@ -2121,6 +2121,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                               ),
                               SizedBox(height: 5),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
                                     width: 170,
