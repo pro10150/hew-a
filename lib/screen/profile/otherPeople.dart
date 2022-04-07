@@ -128,6 +128,7 @@ class _OtherProfileState extends State<OtherProfile>
       child: Scaffold(
           body: NestedScrollView(
               //controller: _scrollViewController,
+              // physics: NeverScrollableScrollPhysics(),
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return [
@@ -364,14 +365,14 @@ class _OtherProfileState extends State<OtherProfile>
                         ],
                       ),
                     ),
-                    expandedHeight: 380,
+                    expandedHeight: 400,
                     bottom: TabBar(
                       labelColor: Colors.redAccent,
                       unselectedLabelColor: Colors.black,
                       tabs: [
                         Tab(
                           icon: Icon(Icons.menu_book),
-                          text: "My recipe",
+                          text: "recipes",
                         ),
                       ],
                       controller: controller,
@@ -385,12 +386,12 @@ class _OtherProfileState extends State<OtherProfile>
                   Expanded(
                       child: menuRecipeModels.length > 0
                           ? GridView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 300.0,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0,
+                              ),
                               itemCount: menuRecipeModels.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return recipes(menuRecipeModels[index]);

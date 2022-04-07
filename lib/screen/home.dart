@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                   });
                 },
                 child: Text(
-                  'Daily Pick',
+                  'Discover',
                   style: dp
                       ? TextStyle(
                           color: Colors.black,

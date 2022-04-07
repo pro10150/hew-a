@@ -232,6 +232,21 @@ class _MenuDetailState extends State<MenuDetail> {
                             )
                           ],
                         ),
+                        menuRecipeModel!.recipeName != null
+                            ? Row(
+                                children: <Widget>[
+                                  Container(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    menuRecipeModel!.recipeName!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  )
+                                ],
+                              )
+                            : Container(),
                         Row(
                           children: <Widget>[
                             Container(

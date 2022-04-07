@@ -131,7 +131,7 @@ class _KitchenwareState extends State<Kitchenware> {
                         });
                       }),
                   Container(
-                    width: 270,
+                    width: MediaQuery.of(context).size.width * 0.7,
                   ),
                   IconButton(
                       onPressed: () {

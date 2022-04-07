@@ -28,7 +28,8 @@ class RecipeDescription extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 10, top: 450),
+              margin: EdgeInsets.only(
+                  left: 10, top: MediaQuery.of(context).size.height * 0.5),
               child: (userModel.ingredients == 1
                   ? Text(
                       'คุณต้องซื้อวัตถุดิบเพิ่มเติม',
@@ -43,6 +44,15 @@ class RecipeDescription extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
             ),
+            menuRecipeModel.recipeName != null
+                ? Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Text(
+                      menuRecipeModel.recipeName!,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  )
+                : Container(),
             Container(
               margin: EdgeInsets.only(left: 10),
               child: Row(

@@ -4,20 +4,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/models/comment_model.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/utilities/comment_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:intl/intl.dart';
 
 class commentPage extends StatefulWidget {
-  commentPage(this.objects);
+  commentPage(this.objects, this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
   List<CommentModel> objects;
   @override
-  _commentPage createState() => _commentPage(objects);
+  _commentPage createState() => _commentPage(objects, menuRecipeModel);
 }
 
 class _commentPage extends State<commentPage> {
-  _commentPage(this.comments);
+  _commentPage(this.comments, this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
   List<CommentModel> comments;
   List<UserModel> users = [];
   UserModel? currentUser;
@@ -249,7 +252,7 @@ class _commentPage extends State<commentPage> {
                                 var value = CommentModel(
                                     text: commentController.text,
                                     uid: _auth.currentUser!.uid,
-                                    recipeId: comments[0].recipeId,
+                                    recipeId: menuRecipeModel.id,
                                     date: DateFormat('yyyy-MM-dd HH:mm:ss')
                                         .format(DateTime.now()));
                                 CommentHelper().insertDataToSQLite(value);
@@ -290,7 +293,7 @@ class _commentPage extends State<commentPage> {
                           var value = CommentModel(
                               text: commentController.text,
                               uid: _auth.currentUser!.uid,
-                              recipeId: comments[0].recipeId,
+                              recipeId: menuRecipeModel.id,
                               date: DateFormat('yyyy-MM-dd HH:mm:ss')
                                   .format(DateTime.now()));
                           CommentHelper().insertDataToSQLite(value);

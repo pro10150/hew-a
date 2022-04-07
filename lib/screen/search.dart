@@ -817,10 +817,13 @@ class _SearchState extends State<Search> {
                                 removeTop: true,
                                 child: GridView.builder(
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
-                                  primary: false,
-                                  shrinkWrap: true,
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 300.0,
+                                    crossAxisSpacing: 20.0,
+                                    mainAxisSpacing: 20.0,
+                                  ),
+                                  // primary: false,
+                                  // shrinkWrap: true,
                                   physics: ScrollPhysics(),
                                   itemCount: filter.length,
                                   itemBuilder:
@@ -965,8 +968,11 @@ class _SearchState extends State<Search> {
                                   removeTop: true,
                                   child: GridView.builder(
                                     gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2),
+                                        SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 300.0,
+                                      crossAxisSpacing: 20.0,
+                                      mainAxisSpacing: 20.0,
+                                    ),
                                     padding: EdgeInsets.only(
                                         top: 5, left: 5, right: 5),
                                     primary: false,
