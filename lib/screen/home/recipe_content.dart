@@ -45,8 +45,10 @@ class RecipeContent extends StatelessWidget {
                                 child: Image.network(
                                   snapshot.data!,
                                   fit: BoxFit.cover,
-                                  height: 430,
-                                  width: 350,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
                                 ),
                                 // decoration:
                                 //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
@@ -78,7 +80,7 @@ class RecipeContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              RecipeDescription(menuRecipeModel),
+              RecipeDescription(menuRecipeModel, userModel),
               ActionsToolbar(menuRecipeModel, userModel)
             ],
           )

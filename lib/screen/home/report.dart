@@ -30,7 +30,7 @@ class _ReportPageState extends State<ReportPage> {
                 child: Row(children: [
                   Text(
                     "User",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                   Spacer(),
                   Icon(Icons.arrow_forward_ios_rounded)
@@ -53,7 +53,7 @@ class _ReportPageState extends State<ReportPage> {
               child: Row(children: [
                 Text(
                   "Recipe",
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
                 Spacer(),
                 Icon(Icons.arrow_forward_ios_rounded)

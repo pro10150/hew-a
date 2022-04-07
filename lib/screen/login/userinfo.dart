@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,9 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 import 'package:hewa/screen/login/round_image.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
+import '../launcher.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -35,6 +39,8 @@ class _UserInformationState extends State<UserInformation> {
   // String imageUrl = '';
   DateTime date = DateTime(2022, 12, 24);
   File? _imageFile = null;
+  var nameController = TextEditingController();
+  var _auth = FirebaseAuth.instance;
   final picker = ImagePicker();
 
   Future pickImage() async {
@@ -51,7 +57,15 @@ class _UserInformationState extends State<UserInformation> {
         .ref()
         .child('upload')
         .child('/$fileName');
+    var object =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    var userModel = object.first;
+    if (nameController.value.text != '') {
+      userModel.name = nameController.text.trim();
+    }
 
+    userModel.image = fileName;
+    UserHelper().updateDataToSQLite(userModel);
     final metadata = firebase_storage.SettableMetadata(
         contentType: 'image/jpeg',
         customMetadata: {'picked-file-path': fileName});
@@ -120,6 +134,7 @@ class _UserInformationState extends State<UserInformation> {
               border: Border.all(color: Colors.white)),
           height: 50,
           child: TextField(
+            controller: nameController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -261,10 +276,11 @@ class _UserInformationState extends State<UserInformation> {
     );
   }
 
-  Widget buildskipBtn() {
+  Widget buildskipBtn(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.popUntil(this.context, ModalRoute.withName('/'));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Launcher()));
       },
       child: RichText(
         text: TextSpan(children: [
@@ -312,115 +328,139 @@ class _UserInformationState extends State<UserInformation> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(height: 70),
-                        Stack(children: [
-                          Container(
-                              height: 700,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.white24,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Container(
-                                  padding: const EdgeInsets.only(top: 210.0),
-                                  margin: const EdgeInsets.only(
-                                      left: 25.0, right: 25.0),
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(children: <Widget>[
-                                    SizedBox(height: 45),
-                                    Text(
-                                      'User Info',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-
-                                    SizedBox(height: 20),
-                                    buildname(),
-                                    SizedBox(height: 20),
-                                    buildbirthday(),
-                                    SizedBox(height: 50),
-                                    buildnextBtn(),
-                                    SizedBox(height: 15),
-                                    buildskipBtn(),
-                                    // buildSignupBtn(),
-                                  ]))),
-                          SizedBox(
-                            height: 250,
-                            width: double.infinity,
-                            child: Stack(
-                              fit: StackFit.expand,
-                              overflow: Overflow.visible,
-                              children: [
-                                // Positioned(
-                                //   height: 100,
-                                //   width: 100,
-                                //   top: -50,
-                                //   right: -100,
-                                //   child: builcam(),
-                                // ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height: 50),
-                                    Center(
-                                      child: CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor: Colors.white,
-                                        child: ClipOval(
-                                          child: SizedBox(
-                                              height: 500,
-                                              width: 500,
-                                              child: (_imageFile != null)
-                                                  ? Image.file(_imageFile!,
-                                                  fit: BoxFit.fill)
-                                                  : FlatButton(
-                                                  onPressed: () {},
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      FontAwesomeIcons.user,
-                                                      color:
-                                                      Color(0xffe69a83),
-                                                      size: 35,
-                                                    ),
-                                                    onPressed: () {},
-                                                  ))),
+                        Stack(
+                          children: [
+                            Container(
+                                height: 700,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: Colors.white24,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Container(
+                                    padding: const EdgeInsets.only(top: 210.0),
+                                    margin: const EdgeInsets.only(
+                                        left: 25.0, right: 25.0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Column(children: <Widget>[
+                                      SizedBox(height: 45),
+                                      Text(
+                                        'User Info',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
-                                    Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        child: Container(
-                                          alignment: Alignment.bottomCenter,
-                                          // height: 50,
-                                          // width: 100,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              pickImage();
-                                            },
-                                            child: Text(
-                                              'select photo',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                            ),
-                                          ),
-                                        )),
-                                  ],
+
+                                      SizedBox(height: 20),
+                                      buildname(),
+                                      // SizedBox(height: 20),
+                                      // buildbirthday(),
+                                      SizedBox(height: 50),
+                                      buildnextBtn(),
+                                      SizedBox(height: 15),
+                                      buildskipBtn(context),
+                                      // buildSignupBtn(),
+                                    ]))),
+                            // SizedBox(
+                            //   height: 250,
+                            //   width: 350,
+                            //   child: Stack(
+                            //     fit: StackFit.expand,
+                            //     overflow: Overflow.visible,
+                            //     children: [
+                            // Positioned(
+                            //   height: 100,
+                            //   width: 100,
+                            //   top: -50,
+                            //   right: -100,
+                            //   child: builcam(),
+                            // ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 50),
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.white,
+                                  child: ClipOval(
+                                    child: SizedBox(
+                                        height: 500,
+                                        width: 500,
+                                        child: (_imageFile != null)
+                                            ? Image.file(_imageFile!,
+                                                fit: BoxFit.fill)
+                                            : FlatButton(
+                                                onPressed: () {},
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.user,
+                                                    color: Color(0xffe69a83),
+                                                    size: 35,
+                                                  ),
+                                                  onPressed: () {},
+                                                ))),
+                                  ),
                                 ),
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: 50,
+                                      width: 100,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          pickImage();
+                                        },
+                                        child: Text(
+                                          'select photo',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    )),
                               ],
                             ),
 
-                          ),
-                        ]),
+                            // UserImage(
+                            //   onFileChanged: (imageUrl) {
+                            //     setState(() {
+                            //       this.imageUrl = imageUrl;
+                            //     });
+                            //   },
+                            // ),
+                          ],
+                        ),
+
+                        /* Positioned(
+                                    top: 5,
+                                    right: -110,
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 40,
+                                      child: FlatButton(
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            side: BorderSide(
+                                                color: Colors.white24)),
+                                        color: Colors.white,
+                                        onPressed: () {},
+                                        child: Icon(Icons.camera),
+                                      ),
+                                    ),
+                                  ), */
+                        // ),
                       ]),
+                  // ]),
                 ),
                 // SizedBox(height: 150),
               )

@@ -41,7 +41,7 @@ class MenuRecipeModel {
     recipeUid = json['recipeUid'];
     recipeName = json['recipeName'];
     description = json['description'];
-    timeMinute = json['timeMinue'];
+    timeMinute = json['timeMinute'];
     method = json['method'];
     type = json['type'];
     calories = json['calories'];

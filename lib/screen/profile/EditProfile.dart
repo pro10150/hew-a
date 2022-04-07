@@ -22,6 +22,7 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 import 'package:hewa/screen/login/round_image.dart';
+import 'package:hewa/screen/launcher.dart';
 
 class EditProfile extends StatefulWidget {
   static const routeName = '/';
@@ -77,31 +78,40 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
-    String fileName = basename(_imageFile!.path);
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('upload')
-        .child('/$fileName');
+    if (_imageFile != null) {
+      String fileName = basename(_imageFile!.path);
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('upload')
+          .child('/$fileName');
 
-    final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': fileName});
-    firebase_storage.UploadTask uploadTask;
-    //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
-    uploadTask = ref.putFile(io.File(_imageFile!.path), metadata);
-    UserModel targetUser = user[0];
-    if (nameController.value.text != "")
-      targetUser.name = nameController.value.text;
-    targetUser.username = usernameController.value.text;
-    targetUser.image = fileName;
-    _auth.currentUser?.updateDisplayName(targetUser.name);
-    UserHelper().updateDataToSQLite(targetUser);
+      final metadata = firebase_storage.SettableMetadata(
+          contentType: 'image/jpeg',
+          customMetadata: {'picked-file-path': fileName});
+      firebase_storage.UploadTask uploadTask;
+      //late StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+      uploadTask = ref.putFile(io.File(_imageFile!.path), metadata);
+      UserModel targetUser = user[0];
+      if (nameController.value.text != "")
+        targetUser.name = nameController.value.text;
+      targetUser.username = usernameController.value.text;
+      targetUser.image = fileName;
+      _auth.currentUser?.updateDisplayName(targetUser.name);
+      UserHelper().updateDataToSQLite(targetUser);
 
-    firebase_storage.UploadTask task = await Future.value(uploadTask);
-    Future.value(uploadTask)
-        .then((value) => {print("Upload file path ${value.ref.fullPath}")})
-        .onError((error, stackTrace) =>
-            {print("Upload file path error ${error.toString()} ")});
+      firebase_storage.UploadTask task = await Future.value(uploadTask);
+      Future.value(uploadTask)
+          .then((value) => {print("Upload file path ${value.ref.fullPath}")})
+          .onError((error, stackTrace) =>
+              {print("Upload file path error ${error.toString()} ")});
+    } else {
+      UserModel targetUser = user[0];
+      if (nameController.value.text != "")
+        targetUser.name = nameController.value.text;
+      targetUser.username = usernameController.value.text;
+      _auth.currentUser?.updateDisplayName(targetUser.name);
+      UserHelper().updateDataToSQLite(targetUser);
+    }
   }
 
   @override
@@ -288,7 +298,13 @@ class _EditProfileState extends State<EditProfile> {
 
 void navigateToProfilePage(BuildContext context) async {
   Future.delayed(const Duration(milliseconds: 500), () {
-    Navigator.pop(context);
+    Navigator.pop(context, true);
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => Launcher(),
+    //   ),
+    // );
   });
 }
 

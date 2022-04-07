@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		MnjNsdBHbu/16uLASeaK/zlOtGU=
+		rjFLp6q3V3Zv2dL9/V918QbYxZY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Modules/search_choices.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		Sru+4nRVkTdxFjPiK2JQQymD5jU=
+		wyYkEXUzPPwpNXKo3za3m6oVDvs=
 		</data>
 		<key>Modules/search_choices.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -54,7 +54,7 @@
 		</data>
 		<key>Modules/search_choices.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		Sru+4nRVkTdxFjPiK2JQQymD5jU=
+		wyYkEXUzPPwpNXKo3za3m6oVDvs=
 		</data>
 		<key>Modules/search_choices.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Modules/search_choices.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		L8wSLm09i5UBU5tK2hIFnMVsTBM=
+		vag1RIGwb6i55Ty8jxkXiXcZdrI=
 		</data>
 		<key>Modules/search_choices.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Modules/search_choices.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		L8wSLm09i5UBU5tK2hIFnMVsTBM=
+		vag1RIGwb6i55Ty8jxkXiXcZdrI=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -178,11 +178,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Sru+4nRVkTdxFjPiK2JQQymD5jU=
+			wyYkEXUzPPwpNXKo3za3m6oVDvs=
 			</data>
 			<key>hash2</key>
 			<data>
-			U0L4X53nSKa1zUazhEGuCu5Prr1nMgZJ2W/T4SqLX7k=
+			Mx2a65Cxn7AKC7lfFKcwUH8NbssTL/RRnjc3mpqLkzc=
 			</data>
 		</dict>
 		<key>Modules/search_choices.swiftmodule/arm64.swiftdoc</key>
@@ -200,11 +200,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Sru+4nRVkTdxFjPiK2JQQymD5jU=
+			wyYkEXUzPPwpNXKo3za3m6oVDvs=
 			</data>
 			<key>hash2</key>
 			<data>
-			U0L4X53nSKa1zUazhEGuCu5Prr1nMgZJ2W/T4SqLX7k=
+			Mx2a65Cxn7AKC7lfFKcwUH8NbssTL/RRnjc3mpqLkzc=
 			</data>
 		</dict>
 		<key>Modules/search_choices.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -222,11 +222,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			L8wSLm09i5UBU5tK2hIFnMVsTBM=
+			vag1RIGwb6i55Ty8jxkXiXcZdrI=
 			</data>
 			<key>hash2</key>
 			<data>
-			HgGqfrVsaFZ6iP5CThTpL6Ug+uqkQJ9ip/8QItNQ5W8=
+			P8E3L73SbKPGoTVdkYq1EXkgLSBGJuMZSUn2ibb7jIQ=
 			</data>
 		</dict>
 		<key>Modules/search_choices.swiftmodule/x86_64.swiftdoc</key>
@@ -244,11 +244,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			L8wSLm09i5UBU5tK2hIFnMVsTBM=
+			vag1RIGwb6i55Ty8jxkXiXcZdrI=
 			</data>
 			<key>hash2</key>
 			<data>
-			HgGqfrVsaFZ6iP5CThTpL6Ug+uqkQJ9ip/8QItNQ5W8=
+			P8E3L73SbKPGoTVdkYq1EXkgLSBGJuMZSUn2ibb7jIQ=
 			</data>
 		</dict>
 	</dict>

@@ -14,6 +14,7 @@ import 'package:hewa/utilities/follow_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
+import 'menu_detail/menu_detail.dart';
 
 class Profile extends StatefulWidget {
   static const routeName = '/';
@@ -330,7 +331,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                             .center,
                                                     children: <Widget>[
                                                       Text(
-                                                        '$follower',
+                                                        '$following',
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -355,7 +356,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(
-                                                        "$following",
+                                                        "$follower",
                                                         style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
@@ -470,12 +471,17 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   Expanded(
                       child: menuRecipes.length > 0
                           ? GridView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
+                              // primary: false,
+                              // shrinkWrap: true,
+                              // physics: ScrollPhysics(),
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 300.0,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0,
+                              ),
+                              // const SliverGridDelegateWithFixedCrossAxisCount(
+                              //     crossAxisCount: 2),
                               itemCount: menuRecipes.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return recipes(menuRecipes[index]);
@@ -489,12 +495,15 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   Expanded(
                       child: likeRecipes.length > 0
                           ? GridView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
+                              // primary: false,
+                              // shrinkWrap: true,
+                              // physics: ScrollPhysics(),
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 300.0,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0,
+                              ),
                               itemCount: likeRecipes.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return recipes(likeRecipes[index]);
@@ -502,7 +511,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           : Container(
                               alignment: Alignment.topCenter,
                               child: Text(
-                                'You haven\'t liked something yet',
+                                'You haven\'t liked anything yet',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ))),
                 ],
@@ -518,6 +527,18 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               // ),
               )),
     );
+  }
+
+  void navigateToEditPage(BuildContext context) async {
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      final reloadPage =
+          await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return EditProfile();
+      }));
+      if (reloadPage) {
+        getUsername();
+      }
+    });
   }
 }
 
@@ -542,7 +563,10 @@ class recipes extends StatelessWidget {
             children = <Widget>[
               InkWell(
                   onTap: () {
-                    print('Tap');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return MenuDetail(menuRecipeModel);
+                    }));
                   },
                   child: Container(
                     padding: EdgeInsets.all(0),
@@ -563,7 +587,13 @@ class recipes extends StatelessWidget {
                   //   ],
                   // ),
                   ),
-              Text(menuRecipeModel.nameMenu!)
+              menuRecipeModel.recipeName != null
+                  ? Text(
+                      menuRecipeModel.recipeName!,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : Container(),
+              Text(menuRecipeModel.nameMenu!),
             ];
           } else {
             children = <Widget>[CircularProgressIndicator()];
@@ -571,14 +601,6 @@ class recipes extends StatelessWidget {
           return Column(children: children);
         });
   }
-}
-
-void navigateToEditPage(BuildContext context) async {
-  Future.delayed(const Duration(milliseconds: 500), () {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EditProfile();
-    }));
-  });
 }
 
 var rep = new Column(

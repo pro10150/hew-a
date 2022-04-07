@@ -14,24 +14,24 @@ class RecipeModel {
 
   RecipeModel(
       {required this.recipeUid,
-        required this.menuId,
-        this.recipeName,
-        this.description,
-        this.id,
-        required this.timeMinute,
-        required this.method,
-        required this.type,
-        required this.calories,
-        required this.protein,
-        required this.carb,
-        required this.fat});
+      required this.menuId,
+      this.recipeName,
+      this.description,
+      this.id,
+      required this.timeMinute,
+      required this.method,
+      required this.type,
+      required this.calories,
+      required this.protein,
+      required this.carb,
+      required this.fat});
 
   RecipeModel.fromJson(Map<String, dynamic> json) {
     recipeUid = json['recipeUid'];
     menuId = json['menuId'];
     recipeName = json['recipeName'];
     description = json['description'];
-    timeMinute = json['timeMinue'];
+    timeMinute = json['timeMinute'];
     method = json['method'];
     type = json['type'];
     calories = json['calories'];

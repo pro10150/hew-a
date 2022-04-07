@@ -12,7 +12,7 @@ class UserModel {
   UserModel(
       {required this.uid,
       this.name,
-      required this.username,
+      this.username,
       this.image,
       this.ingredients,
       this.kitchenwares,

@@ -6,7 +6,7 @@
 	<dict>
 		<key>DKPhotoGallery.bundle/Assets.car</key>
 		<data>
-		pSge0DsSfsJH3+qQYI9K/7mED5s=
+		ajmmv7W3JEWaKlYNvy2RK403Wnk=
 		</data>
 		<key>DKPhotoGallery.bundle/Base.lproj/DKPhotoGallery.strings</key>
 		<dict>
@@ -19,11 +19,11 @@
 		</dict>
 		<key>DKPhotoGallery.bundle/Info.plist</key>
 		<data>
-		CdZk9GrgnlrjJf0aytAyqsZtcqA=
+		IgfJE62hJG7LDFENGIRBOuIZjNw=
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeDirectory</key>
 		<data>
-		+29swEGLhie7+DheKm97G8yfDlg=
+		qwGSl16wo5ZU+KhjCLkWuF8eJdQ=
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -31,11 +31,11 @@
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		PXcKL7rxhMXxys5+hmsxFogN1o4=
+		daftAaOJf+kkEcq6E3sChMGgwKM=
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeResources</key>
 		<data>
-		VvHD6ZYKtaqBIvnzm/gkzEJBrq0=
+		npuRzDmCWqjEzZUUnY7CdCFEKdM=
 		</data>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeSignature</key>
 		<data>
@@ -61,7 +61,7 @@
 		</dict>
 		<key>Info.plist</key>
 		<data>
-		mXuY/oy3mQ/3O1lMMDVIm6kzOB4=
+		k5TqyWC+pYRTCsqSYSDK+J5KbLk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -70,11 +70,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			pSge0DsSfsJH3+qQYI9K/7mED5s=
+			ajmmv7W3JEWaKlYNvy2RK403Wnk=
 			</data>
 			<key>hash2</key>
 			<data>
-			CNyKRi0qopmmcCx7Eq6vhc8WFowueQYEwJLgaw9q/is=
+			EvQj/ePCzcAI5dXHljlccUPmWczvVRA5Edh/RvqhRTk=
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/Base.lproj/DKPhotoGallery.strings</key>
@@ -94,22 +94,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			CdZk9GrgnlrjJf0aytAyqsZtcqA=
+			IgfJE62hJG7LDFENGIRBOuIZjNw=
 			</data>
 			<key>hash2</key>
 			<data>
-			AaKlZEnzjVPcWsEE9GehI2rlcNsQYEhk9noyJnOX15k=
+			PlXSeDQpgFNCHYL/h46HA5/rFTf+K9VkVtrYgc124fo=
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeDirectory</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+29swEGLhie7+DheKm97G8yfDlg=
+			qwGSl16wo5ZU+KhjCLkWuF8eJdQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			9xn2dO7OYOR/MKAw0sXhaMeSAAqlt+T2yLqKbEyfNQQ=
+			wTPC3GUxLcThqny+RxA+2pAH3I7bNUl8hlCgU4Yy4Ik=
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeRequirements</key>
@@ -127,22 +127,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			PXcKL7rxhMXxys5+hmsxFogN1o4=
+			daftAaOJf+kkEcq6E3sChMGgwKM=
 			</data>
 			<key>hash2</key>
 			<data>
-			X+3hrstRwNaNHiWJgouHh2+MFWmxdcoVvWR1Dk8AHOM=
+			0se8xRKkOdV935lgZmoICFIAJ9bZg9wAQ/F/ppZiM64=
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VvHD6ZYKtaqBIvnzm/gkzEJBrq0=
+			npuRzDmCWqjEzZUUnY7CdCFEKdM=
 			</data>
 			<key>hash2</key>
 			<data>
-			0Gpss+FTE9YA3dbPkrITYt4J9H+3Yq/yp4ezWtsg5h8=
+			6qZwaM4AYgzjLVyse3wuJpd6U7n85r1R+SQSbM/oDOk=
 			</data>
 		</dict>
 		<key>DKPhotoGallery.bundle/_CodeSignature/CodeSignature</key>

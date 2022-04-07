@@ -50,7 +50,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		AlWcsZGm6cZEatBK0B/8rcc6Y/Q=
+		PG0907R6snfwikIunJKxLJvIiYU=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -67,11 +67,11 @@
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/Info.plist</key>
 		<data>
-		kAKyk3mTqILo3glU+3uoFMwkRb8=
+		8tAQNtGH9LLZiw5SUMfz2JY8R4Y=
 		</data>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeDirectory</key>
 		<data>
-		6L+ixmTb4klCB4loIu/T/jDvQ5E=
+		5iIyXBJGCCDOLMCw4u99cLcCM9o=
 		</data>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -79,7 +79,7 @@
 		</data>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		Y9Oj+izpLbRjPedx3JIHNVetkjc=
+		h4+5aHbAXSXJycFk+H/Zt82bnik=
 		</data>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeResources</key>
 		<data>
@@ -493,22 +493,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			kAKyk3mTqILo3glU+3uoFMwkRb8=
+			8tAQNtGH9LLZiw5SUMfz2JY8R4Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			DCSLCZP/C2CLdWHToFe77omXR4Al5AoaBB/vftFixNk=
+			20SCtZU2uEo5k2bexkJjLKZ+Nkk6z5q1/qApyfyx7bY=
 			</data>
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeDirectory</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			6L+ixmTb4klCB4loIu/T/jDvQ5E=
+			5iIyXBJGCCDOLMCw4u99cLcCM9o=
 			</data>
 			<key>hash2</key>
 			<data>
-			wEUPWnCNDxXDkExG2A1efIcmdKem1SjpUkGff9hRTng=
+			oBFJUVWFW/IKS+cEHSzxpSgecU6898tEVNghmxBi+dQ=
 			</data>
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeRequirements</key>
@@ -526,11 +526,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Y9Oj+izpLbRjPedx3JIHNVetkjc=
+			h4+5aHbAXSXJycFk+H/Zt82bnik=
 			</data>
 			<key>hash2</key>
 			<data>
-			/moL39xXCyNvK1RcmCZVvi7sHTyRbUEr2bcMC2kiDVY=
+			KMJ3fu7558riMpioNKMi/KEvVuksXeDiUYXKQWZlrjE=
 			</data>
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/_CodeSignature/CodeResources</key>

@@ -84,7 +84,8 @@ class TimerPainter extends CustomPainter {
 class _DetailedRecipeState extends State<DetailedRecipe>
     with TickerProviderStateMixin {
   int _n = 1;
-  AnimationController? controller;
+  List<dynamic> controllers = [];
+  List<dynamic> timerStrings = [];
 
   getUserIngred() async {
     var objects = await UserIngredHelper()
@@ -105,6 +106,23 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     var objects = await ReStepHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id.toString());
     for (var object in objects) {
+      if (object.minute != null) {
+        setState(() {
+          var controller = AnimationController(
+              vsync: this, duration: Duration(minutes: object.minute!));
+          controllers.add(controller);
+          Duration duration = controller.duration!;
+          String timerString =
+              '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+          timerStrings.add(timerString);
+        });
+      } else {
+        setState(() {
+          controllers.add(null);
+          timerStrings.add(null);
+        });
+      }
+
       var images = await ReImageStepHelper().readDataFromSQLiteWhereStep(
           int.parse(object.recipeId!), object.recipeId);
       List<String> tempUrls = [];
@@ -148,6 +166,22 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     }
   }
 
+  getController() {
+    for (var reStepModel in reStepModels) {
+      setState(() {
+        var controller = AnimationController(
+            vsync: this, duration: Duration(minutes: reStepModel.minute!));
+        controllers.add(controller);
+        Duration duration = controller.duration! * controller.value;
+        String timerString =
+            '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+        timerStrings.add(timerString);
+        print(timerString);
+      });
+    }
+    print(controllers.length);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -155,12 +189,13 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     getRecipeSteps();
     getRecipeIngred();
     getUserIngred();
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 20));
+    // getController();
+    // controller = AnimationController(
+    //     vsync: this, duration: Duration(minutes: menuRecipeModel!.timeMinute!));
   }
 
-  String get timerString {
-    Duration duration = controller!.duration! * controller!.value;
+  String timerString(AnimationController controller) {
+    Duration duration = controller.duration! * controller.value;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
@@ -323,15 +358,23 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     );
   }
 
+  bool isMoving = false;
+
   Widget _getRecipeStep(ReStepModel reStepModel, int index,
       List<ReImageStepModel> images, List<String> imageUrls) {
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 5));
-    controller!.addListener(() {
-      if (controller!.value == 0) {
-        FlutterRingtonePlayer.playRingtone();
-      }
-    });
+    // controllers[index] = AnimationController(
+    //     vsync: this, duration: Duration(minutes: reStepModel.minute!));
+    if (controllers[index] != null) {
+      controllers[index].addListener(() {
+        if (controllers[index].value == 0 && isMoving == true) {
+          FlutterRingtonePlayer.playRingtone();
+          setState(() {
+            isMoving = false;
+          });
+        }
+      });
+    }
+
     return Column(
       children: <Widget>[
         Container(
@@ -392,16 +435,21 @@ class _DetailedRecipeState extends State<DetailedRecipe>
             reStepModel.minute != null
                 ? GFButton(
                     onPressed: () {
-                      if (controller!.isAnimating) {
-                        controller!.reset();
-                        controller!
-                            .reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                      if (controllers[index].isAnimating) {
+                        controllers[index].reset();
+                        controllers[index].reverse(
+                            from: controllers[index].value == 0.0 ? 1.0 : 0);
                       } else {
-                        controller!
-                            .reverse(from: controller!.value == 0.0 ? 1.0 : 0);
+                        controllers[index].reverse(
+                            from: controllers[index].value == 0.0 ? 1.0 : 0);
                       }
 
-                      _openTimer(context, controller);
+                      _openTimer(context, controllers[index], index);
+                      Future.delayed(Duration(milliseconds: 200), () {
+                        setState(() {
+                          isMoving = true;
+                        });
+                      });
                     },
                     text: reStepModel.minute.toString() + ' min',
                     textColor: Colors.black,
@@ -449,8 +497,14 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     );
   }
 
-  _openTimer(context, controller) {
+  _openTimer(context, controller, int index) {
     Alert(
+        closeFunction: () {
+          setState(() {
+            isMoving = false;
+            Navigator.pop(context);
+          });
+        },
         context: context,
         title: "Timer",
         content: Container(
@@ -487,7 +541,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                                     builder:
                                         (BuildContext context, Widget? child) {
                                       return new Text(
-                                        timerString,
+                                        timerString(controller),
                                         style: TextStyle(
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold),
@@ -504,6 +558,9 @@ class _DetailedRecipeState extends State<DetailedRecipe>
               color: Palette.roseBud,
               child: Text("Stop"),
               onPressed: () {
+                setState(() {
+                  isMoving = false;
+                });
                 Navigator.pop(context);
               })
         ]).show();
@@ -535,9 +592,15 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                             child: BackButton()),
                         Align(
                             alignment: Alignment.center,
-                            child: Text('กะเพราหมูสับ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)))
+                            child: menuRecipeModel!.recipeName != null
+                                ? Text(menuRecipeModel!.recipeName!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18))
+                                : Text(menuRecipeModel!.nameMenu!,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)))
                       ],
                     ),
                     Row(

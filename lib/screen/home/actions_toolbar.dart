@@ -337,144 +337,149 @@ class _ActionsToolbarState extends State<ActionsToolbar> {
       ),
     );
   }
-}
 
-Future<bool> changedata(status) async {
-  //your code
-  print("eee");
-  print(status);
-  print(!status);
-  // isLiked = !isLiked;
-  return Future.value(!status);
-}
-
-navigateToProfilePage(BuildContext context) {}
-
-void _shareContent(BuildContext context, UserModel userModel,
-    MenuRecipeModel menuRecipeModel) {
-  showModalBottomSheet(
+  void navigateTocommentPage(
+      BuildContext context, List<CommentModel> commentModels) async {
+    showModalBottomSheet(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return StatefulBuilder(builder: (BuildContext context,
-            StateSetter setModalState /*You can rename this!*/) {
-          return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Text("Menu",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-            Container(
-                margin: EdgeInsets.only(top: 30, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.facebook,
-                          size: 50,
-                        ),
-                        label: Container()),
-                    TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          FontAwesomeIcons.instagram,
-                          size: 50,
-                        ),
-                        label: Container()),
-                    TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          FontAwesomeIcons.twitter,
-                          size: 50,
-                        ),
-                        label: Container()),
-                    TextButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(FontAwesomeIcons.twitch, size: 50),
-                        label: Container()),
-                  ],
-                )),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20, left: 20),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Column(children: [
-                  MaterialButton(
-                    onPressed: () {
-                      print(userModel.username);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ReportPage(userModel, menuRecipeModel)),
-                      );
-                    },
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    child: Icon(
-                      Icons.flag,
-                      size: 24,
-                    ),
-                    padding: EdgeInsets.all(16),
-                    shape: CircleBorder(),
-                  ),
-                  Text("Report")
-                ]),
-                Column(children: [
-                  MaterialButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Colors.pink,
-                    textColor: Colors.white,
-                    child: Icon(
-                      FontAwesomeIcons.heartBroken,
-                      size: 24,
-                    ),
-                    padding: EdgeInsets.all(16),
-                    shape: CircleBorder(),
-                  ),
-                  Text("Not Interested")
-                ])
-              ]),
-            ),
-          ]);
-        });
-      });
-  // Share.share('check out my website https://example.com',
-  //     subject: 'Look what I made!');
-}
+        return Container(
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: commentPage(commentModels, menuRecipeModel)));
+      },
+    );
+  }
 
-void navigateTocommentPage(
-    BuildContext context, List<CommentModel> commentModels) async {
-  showModalBottomSheet(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    isScrollControlled: true,
-    context: context,
-    builder: (context) {
-      return Container(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: commentPage(commentModels)));
-    },
-  );
+  Future<bool> changedata(status) async {
+    //your code
+    print("eee");
+    print(status);
+    print(!status);
+    // isLiked = !isLiked;
+    return Future.value(!status);
+  }
+
+  navigateToProfilePage(BuildContext context) {}
+
+  void _shareContent(BuildContext context, UserModel userModel,
+      MenuRecipeModel menuRecipeModel) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40.0),
+        ),
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (BuildContext context,
+              StateSetter setModalState /*You can rename this!*/) {
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Menu",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                  Container(
+                      margin: EdgeInsets.only(top: 30, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.facebook,
+                                size: 50,
+                              ),
+                              label: Container()),
+                          TextButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.instagram,
+                                size: 50,
+                              ),
+                              label: Container()),
+                          TextButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.twitter,
+                                size: 50,
+                              ),
+                              label: Container()),
+                          TextButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(FontAwesomeIcons.twitch, size: 50),
+                              label: Container()),
+                        ],
+                      )),
+                  const Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20, left: 20),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(children: [
+                            MaterialButton(
+                              onPressed: () {
+                                print(userModel.username);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ReportPage(
+                                          userModel, menuRecipeModel)),
+                                );
+                              },
+                              color: Colors.blue,
+                              textColor: Colors.white,
+                              child: Icon(
+                                Icons.flag,
+                                size: 24,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              shape: CircleBorder(),
+                            ),
+                            Text("Report")
+                          ]),
+                          Column(children: [
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              color: Colors.pink,
+                              textColor: Colors.white,
+                              child: Icon(
+                                FontAwesomeIcons.heartBroken,
+                                size: 24,
+                              ),
+                              padding: EdgeInsets.all(16),
+                              shape: CircleBorder(),
+                            ),
+                            Text("Not Interested")
+                          ])
+                        ]),
+                  ),
+                ]);
+          });
+        });
+    // Share.share('check out my website https://example.com',
+    //     subject: 'Look what I made!');
+  }
 
   // Navigator.push(context, MaterialPageRoute(builder: (context) {
   //   return commentPage(commentModels);

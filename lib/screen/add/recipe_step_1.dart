@@ -46,11 +46,9 @@ import 'dart:core';
 import 'package:hewa/screen/add/DynamicWidget.dart';
 
 class RecipeStep1 extends StatefulWidget {
-
   MenuModel menuModel;
 
   RecipeStep1(this.menuModel);
-
 
   @override
   _RecipeStep1State createState() => _RecipeStep1State(menuModel);
@@ -90,7 +88,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
   final descstepController = TextEditingController();
   final _amountController = TextEditingController();
 
-
   RecipeHelper? recipeHelper;
   RecipeModel? recipeModel;
 
@@ -102,28 +99,29 @@ class _RecipeStep1State extends State<RecipeStep1> {
   ReKitchenwareModel? reKitchenwareModel;
   ReKitchenwareHelper? reKitchenwareHelper;
 
-
   ReIngredModel? reIngredModel;
 
   MenuHelper? menuHelper;
   MenuModel menuModel;
   _RecipeStep1State(this.menuModel);
 
-
   int _kitchenwareCount = 1;
   int _ingredientsCount = 1;
-
 
   createRecipes() async {
     String recipemenu = recipeController.text;
     String desc1menu = desc1Controller.text;
-    double calmenu = double.parse(calController.text);
-    double proteinmenu = double.parse(proteinController.text);
-    double carbomenu = double.parse(carboController.text);
-    double fatmenu = double.parse(fatController.text);
+    double calmenu =
+        calController.text != '' ? double.parse(calController.text) : 0;
+    double proteinmenu =
+        proteinController.text != '' ? double.parse(proteinController.text) : 0;
+    double carbomenu =
+        carboController.text != '' ? double.parse(carboController.text) : 0;
+    double fatmenu =
+        fatController.text != '' ? double.parse(fatController.text) : 0;
     // String desc2menu = desc2Controller.text;
 
-     recipeModel = RecipeModel(
+    recipeModel = RecipeModel(
         recipeUid: _auth.currentUser!.uid,
         recipeName: recipemenu,
         description: desc1menu,
@@ -148,30 +146,27 @@ class _RecipeStep1State extends State<RecipeStep1> {
   }
 
   createKits() async {
-
     print(kitchenwareModel.length);
-    
+
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
 
+    for (var i = 0; i < _selectedKitchenware.length; i++) {
+      ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
+          recipeId: object.first.id.toString(),
+          kitchenwareId: kitchenwareModel
+              .where((element) => element.nameKitc == _selectedKitchenware[i])
+              .first
+              .id);
+      int resultkitc;
+      resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
 
-      for (var i = 0; i < _selectedKitchenware.length; i++) {
-        ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-            recipeId: object.first.id.toString(),
-            kitchenwareId: kitchenwareModel
-                .where((element) => element.nameKitc == _selectedKitchenware[i])
-                .first
-                .id);
-        int resultkitc;
-        resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
-
-
-        if (resultkitc != 0) {
-          print('Success');
-        } else {
-          print('Failed');
-        }
+      if (resultkitc != 0) {
+        print('Success');
+      } else {
+        print('Failed');
       }
+    }
   }
 
   createIngres() async {
@@ -212,7 +207,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
   bool flagRemove = false;
   final editAmountController = TextEditingController();
 
-
   Widget _addIngredient() {
     flagAdd = false;
     return StatefulBuilder(builder: (context, setState) {
@@ -221,10 +215,10 @@ class _RecipeStep1State extends State<RecipeStep1> {
         title: Text('Add new ingredient'),
         content: SingleChildScrollView(
             child: ListBody(children: <Widget>[
-              Center(),
-              _renderWidget(),
-              _widgetId == 1
-                  ? TextButton(
+          Center(),
+          _renderWidget(),
+          _widgetId == 1
+              ? TextButton(
                   onPressed: () {
                     print('$_selectedIngredient');
                     setState(() {
@@ -232,37 +226,38 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     });
                   },
                   child: Text('Next'))
-                  : Row(
+              : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    TextButton(
+                      TextButton(
+                          onPressed: () {
+                            print('$_selectedIngredient');
+                            setState(() {
+                              _updateWidget();
+                            });
+                          },
+                          child: Text('Back')),
+                      TextButton(
                         onPressed: () {
-                          print('$_selectedIngredient');
                           setState(() {
-                            _updateWidget();
+                            print(_selectedIngredient);
+                            print(_selectedIngredientAmount);
+                            print(_selectedUnit);
+                            flagAdd = true;
+
+                            ingredients.remove(_selectedIngredient);
+                            _selectedIngredients.add(_selectedIngredient);
+                            _selectedIngredientsCount
+                                .add((_selectedIngredientAmount));
+                            _selectedIngredientsUnit.add(_selectedUnit);
                           });
+
+                          Navigator.pop(context);
                         },
-                        child: Text('Back')),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          print(_selectedIngredient);
-                          print(_selectedIngredientAmount);
-                          print(_selectedUnit);
-                          flagAdd = true;
-
-                          ingredients.remove(_selectedIngredient);
-                          _selectedIngredients.add(_selectedIngredient);
-                          _selectedIngredientsCount.add((_selectedIngredientAmount));
-                          _selectedIngredientsUnit.add(_selectedUnit);
-                        });
-
-                        Navigator.pop(context);
-                      },
-                      child: Text('Add'),
-                    )
-                  ]),
-            ])),
+                        child: Text('Add'),
+                      )
+                    ]),
+        ])),
       );
     });
   }
@@ -276,29 +271,29 @@ class _RecipeStep1State extends State<RecipeStep1> {
         title: Text('Edit ingredient'),
         content: SingleChildScrollView(
             child: ListBody(children: <Widget>[
-              Center(),
-              renderEditWidget(),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    TextButton(
-                        onPressed: () {
-                          print('deleted');
-                          flagRemove = true;
-                          Navigator.pop(context);
-                        },
-                        child: Text('Delete')),
-                    TextButton(
-                      onPressed: () {
-                        print(_selectedUnit);
-                        print(editAmountController.text);
-                        flagEdit = true;
-                        Navigator.pop(context);
-                      },
-                      child: Text('Done'),
-                    )
-                  ])
-            ])),
+          Center(),
+          renderEditWidget(),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      print('deleted');
+                      flagRemove = true;
+                      Navigator.pop(context);
+                    },
+                    child: Text('Delete')),
+                TextButton(
+                  onPressed: () {
+                    print(_selectedUnit);
+                    print(editAmountController.text);
+                    flagEdit = true;
+                    Navigator.pop(context);
+                  },
+                  child: Text('Done'),
+                )
+              ])
+        ])),
       );
     });
   }
@@ -312,7 +307,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
           return const Iterable.empty();
         }
         return ingredients.where(
-              (element) {
+          (element) {
             return element
                 .toLowerCase()
                 .contains(textEditingValue.text.toLowerCase());
@@ -345,9 +340,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     )),
                 Center(
                     child: ActionChip(
-                      label: Text(_selectedIngredient),
-                      onPressed: () {},
-                    )),
+                  label: Text(_selectedIngredient),
+                  onPressed: () {},
+                )),
                 TextField(
                   controller: editAmountController,
                   decoration: InputDecoration(hintText: 'Amount'),
@@ -364,51 +359,51 @@ class _RecipeStep1State extends State<RecipeStep1> {
                           context: context,
                           barrierDismissible: true,
                           builder: (context) => Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xffffffff),
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xff999999),
-                                      width: 0.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    CupertinoButton(
-                                      child: Text('Close'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0,
-                                        vertical: 5.0,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffffffff),
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Color(0xff999999),
+                                          width: 0.0,
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 320.0,
-                                color: Color(0xfff7f7f7),
-                                child: CupertinoPicker(
-                                  itemExtent: 32,
-                                  backgroundColor: Colors.white,
-                                  onSelectedItemChanged: (int index) {
-                                    setState(() {
-                                      _selectedUnit = units[index];
-                                    });
-                                  },
-                                  children: getPickerItems(units),
-                                ),
-                              )
-                            ],
-                          ));
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        CupertinoButton(
+                                          child: Text('Close'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                            vertical: 5.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 320.0,
+                                    color: Color(0xfff7f7f7),
+                                    child: CupertinoPicker(
+                                      itemExtent: 32,
+                                      backgroundColor: Colors.white,
+                                      onSelectedItemChanged: (int index) {
+                                        setState(() {
+                                          _selectedUnit = units[index];
+                                        });
+                                      },
+                                      children: getPickerItems(units),
+                                    ),
+                                  )
+                                ],
+                              ));
                     })
               ];
             } else {
@@ -444,9 +439,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     )),
                 Center(
                     child: ActionChip(
-                      label: Text(_selectedIngredient),
-                      onPressed: () {},
-                    )),
+                  label: Text(_selectedIngredient),
+                  onPressed: () {},
+                )),
                 TextField(
                   onChanged: (value) {
                     _selectedIngredientAmount = double.parse(value);
@@ -465,51 +460,51 @@ class _RecipeStep1State extends State<RecipeStep1> {
                           context: context,
                           barrierDismissible: true,
                           builder: (context) => Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xffffffff),
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color(0xff999999),
-                                      width: 0.0,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    CupertinoButton(
-                                      child: Text('Close'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0,
-                                        vertical: 5.0,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffffffff),
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Color(0xff999999),
+                                          width: 0.0,
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 320.0,
-                                color: Color(0xfff7f7f7),
-                                child: CupertinoPicker(
-                                  itemExtent: 32,
-                                  backgroundColor: Colors.white,
-                                  onSelectedItemChanged: (int index) {
-                                    setState(() {
-                                      _selectedUnit = units[index];
-                                    });
-                                  },
-                                  children: getPickerItems(units),
-                                ),
-                              )
-                            ],
-                          ));
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        CupertinoButton(
+                                          child: Text('Close'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                            vertical: 5.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 320.0,
+                                    color: Color(0xfff7f7f7),
+                                    child: CupertinoPicker(
+                                      itemExtent: 32,
+                                      backgroundColor: Colors.white,
+                                      onSelectedItemChanged: (int index) {
+                                        setState(() {
+                                          _selectedUnit = units[index];
+                                        });
+                                      },
+                                      children: getPickerItems(units),
+                                    ),
+                                  )
+                                ],
+                              ));
                     })
               ];
             } else {
@@ -534,43 +529,42 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   buildAddWidget() {
     showDialog(
-        context: context,
-        builder: (BuildContext context) => _addIngredient())
+            context: context,
+            builder: (BuildContext context) => _addIngredient())
         .then((value) => setState(() async {
-      if (flagAdd == true) {
-        // ingredients.remove(_selectedIngredient);
-        // _selectedIngredients.add(_selectedIngredient);
-        // _selectedIngredientsCount.add((_selectedIngredientAmount));
-        // _selectedIngredientsUnit.add(_selectedUnit);
+              if (flagAdd == true) {
+                // ingredients.remove(_selectedIngredient);
+                // _selectedIngredients.add(_selectedIngredient);
+                // _selectedIngredientsCount.add((_selectedIngredientAmount));
+                // _selectedIngredientsUnit.add(_selectedUnit);
 
-        var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-        print(object.first.id);
+                var object =
+                    await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+                print(object.first.id);
 
-        ReIngredModel reIngred = ReIngredModel(
-            ingredientId: ingredModel
-                .where((element) => element.name == _selectedIngredient)
-                .first
-                .id,
-            amount: _selectedIngredientAmount,
-            unit: _selectedUnit == '-' ? '' : _selectedUnit,
-            recipeId: object.first.id);
+                ReIngredModel reIngred = ReIngredModel(
+                    ingredientId: ingredModel
+                        .where((element) => element.name == _selectedIngredient)
+                        .first
+                        .id,
+                    amount: _selectedIngredientAmount,
+                    unit: _selectedUnit == '-' ? '' : _selectedUnit,
+                    recipeId: object.first.id);
 
-        int resultIngred;
-        resultIngred = await ReIngredHelper().insert(reIngred);
+                int resultIngred;
+                resultIngred = await ReIngredHelper().insert(reIngred);
 
-        setState(() {
-          reingredModel.add(reIngred);
-        });
+                setState(() {
+                  reingredModel.add(reIngred);
+                });
 
-
-        if (resultIngred != 0) {
-          print('Success');
-        } else {
-          print('Failed');
-        }
-
-      }
-    }));
+                if (resultIngred != 0) {
+                  print('Success');
+                } else {
+                  print('Failed');
+                }
+              }
+            }));
   }
 
   buildEditWidget(int index) {
@@ -578,30 +572,30 @@ class _RecipeStep1State extends State<RecipeStep1> {
       editAmountController.text = reingredModel[index].amount!.toString();
     });
     showDialog(
-        context: context,
-        builder: (BuildContext context) => _editIngredient(index))
+            context: context,
+            builder: (BuildContext context) => _editIngredient(index))
         .then((value) => setState(() {
-      if (flagEdit == true) {
-        reingredModel[index].unit = _selectedUnit;
-        reingredModel[index].amount =
-            double.parse(editAmountController.text);
+              if (flagEdit == true) {
+                reingredModel[index].unit = _selectedUnit;
+                reingredModel[index].amount =
+                    double.parse(editAmountController.text);
 
-        setState(() {
-          _selectedIngredientsCount[index] = double.parse(editAmountController.text);
-          _selectedIngredientsUnit[index] = _selectedUnit;
-        });
+                setState(() {
+                  _selectedIngredientsCount[index] =
+                      double.parse(editAmountController.text);
+                  _selectedIngredientsUnit[index] = _selectedUnit;
+                });
 
-
-        ReIngredHelper().updateDataToSQLite(reingredModel[index]);
-      }
-      if (flagRemove == true) {
-        ReIngredHelper().deleteDataWhere(_auth.currentUser!.uid,
-            reingredModel[index].ingredientId.toString());
-        setState(() {
-          reingredModel.removeAt(index);
-        });
-      }
-    }));
+                ReIngredHelper().updateDataToSQLite(reingredModel[index]);
+              }
+              if (flagRemove == true) {
+                ReIngredHelper().deleteDataWhere(_auth.currentUser!.uid,
+                    reingredModel[index].ingredientId.toString());
+                setState(() {
+                  reingredModel.removeAt(index);
+                });
+              }
+            }));
   }
 
   List<TextEditingController> _descStepControllers = [];
@@ -614,7 +608,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
           Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Step ${index+1}',
+                'Step ${index + 1}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               )),
           SizedBox(height: 10),
@@ -641,21 +635,21 @@ class _RecipeStep1State extends State<RecipeStep1> {
             },
             child: _Stepimage[index] != null
                 ? ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  color: Colors.white,
-                  child: Image.file(_Stepimage[index]),
-                ))
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      color: Colors.white,
+                      child: Image.file(_Stepimage[index]),
+                    ))
                 : ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  color: Colors.white,
-                  child: Icon(Icons.add),
-                )),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      color: Colors.white,
+                      child: Icon(Icons.add),
+                    )),
           ),
           SizedBox(height: 30),
           Row(
@@ -663,15 +657,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Time',
-                  style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SizedBox(width: 20),
               Container(
                 width: 100,
                 child: TextField(
                   controller: _timeStepControllers[index],
-                  keyboardType: TextInputType.numberWithOptions(
-                      decimal: true),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     hintText: '-',
@@ -680,21 +672,17 @@ class _RecipeStep1State extends State<RecipeStep1> {
               ),
               SizedBox(width: 20),
               Text('Minute',
-                  style:
-                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ],
           ),
-
           SizedBox(height: 60),
         ],
       ),
     );
   }
 
-
   Widget _getRecipeStep(ReStepModel reStepModel, int index,
       List<ReImageStepModel> images, List<String> imageUrls) {
-
     return Column(
       children: <Widget>[
         Container(
@@ -754,61 +742,58 @@ class _RecipeStep1State extends State<RecipeStep1> {
             ),
             reStepModel.minute != null
                 ? GFButton(
-              onPressed: () {},
-              text: reStepModel.minute.toString() + ' min',
-              textColor: Colors.black,
-              shape: GFButtonShape.pills,
-              type: GFButtonType.outline2x,
-              color: Colors.black,
-            )
+                    onPressed: () {},
+                    text: reStepModel.minute.toString() + ' min',
+                    textColor: Colors.black,
+                    shape: GFButtonShape.pills,
+                    type: GFButtonType.outline2x,
+                    color: Colors.black,
+                  )
                 : Container()
           ]),
         ),
         images.length > 0
             ? GridView.builder(
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 9,
-                      offset: Offset(0, 3), // changes position of shadow
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 9,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image(
-                    image: NetworkImage(imageUrls[index]),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              );
-            })
+                    margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image(
+                        image: NetworkImage(imageUrls[index]),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                })
             : Container()
       ],
     );
   }
 
   addReStep() async {
-
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
 
-    for( int i = 0; i < _count;i++) {
-
-
+    for (int i = 0; i < _count; i++) {
       String descStep = _descStepControllers[i].value.text;
       int? timeStep = int.tryParse(_timeStepControllers[i].value.text);
 
@@ -835,18 +820,15 @@ class _RecipeStep1State extends State<RecipeStep1> {
     uploadImageToFirebase(context);
   }
 
-
-
-
-
   List<ReStepModel> steps = [];
   List<ReImageStepModel> reimages = [];
 
   Future uploadImageToFirebase(BuildContext context) async {
-    for (int i=0; i < _count; i++) {
-      if(_Stepimage[i] != null)  {
+    for (int i = 0; i < _count; i++) {
+      if (_Stepimage[i] != null) {
         String fileName = p.basename(_Stepimage[i].path);
-        firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        firebase_storage.Reference ref = firebase_storage
+            .FirebaseStorage.instance
             .ref()
             .child('steps')
             .child('/$fileName');
@@ -857,15 +839,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
         firebase_storage.UploadTask uploadTask;
         uploadTask = ref.putFile(io.File(_Stepimage[i].path), metadata);
 
-        var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+        var object =
+            await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
         print(object.first.id);
 
         var objects = await ReStepHelper().readDataFromSQLiteRestep(steps[i]);
         ReStepModel targetReStep = objects.first;
         ReImageStepModel reImageStepModel = ReImageStepModel(
-            recipeId: object.first.id,
-            stepId: targetReStep.id,
-            name: fileName);
+            recipeId: object.first.id, stepId: targetReStep.id, name: fileName);
 
         ReImageStepHelper().insertDataToSQLite(reImageStepModel);
 
@@ -873,13 +854,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
         Future.value(uploadTask)
             .then((value) => {print("Upload file path ${value.ref.fullPath}")})
             .onError((error, stackTrace) =>
-        {print("Upload file path error ${error.toString()} ")});
+                {print("Upload file path error ${error.toString()} ")});
 
         print(fileName);
       }
     }
   }
-
 
   void addNewKitchenware() {
     setState(() {
@@ -908,7 +888,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
   int _selectedHour = 0, _selectedMinute = 0;
   String _selectedMethod = 'Select method';
   String _selectedType = 'Select type';
-
 
   List<String> _selectedKitchenware = ['Select Kitchenware'];
   List<String> _selectedIngredients = [];
@@ -944,8 +923,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
-
-
   Future<Null> readSQLiteKitch() async {
     var object = await KitchHelper().readlDataFromSQLite();
     print('object length ==> ${object.length}');
@@ -967,7 +944,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
     setState(() {});
   }
-
 
   static const color = const Color(0xffffab91);
 
@@ -1110,14 +1086,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
-
-
   void minus() {
     setState(() {
       if (_n != 1) _n--;
     });
   }
-
 
   getRecipeIngred() async {
     setState(() {
@@ -1155,7 +1128,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
       ),
     );
   }
-
 
   // Widget _getRecipeStep() {
   //   return Column(
@@ -1272,7 +1244,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
       List<String> tempUrls = [];
       for (var image in images) {
         var ref =
-        FirebaseStorage.instance.ref().child('steps').child(image.name!);
+            FirebaseStorage.instance.ref().child('steps').child(image.name!);
         String tempURL = await ref.getDownloadURL();
         tempUrls.add(tempURL);
       }
@@ -1293,7 +1265,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
   }
 
   buildIngredChip(int index) {
-    return ActionChip(label: Text(_selectedIngredients[index]), onPressed: () {});
+    return ActionChip(
+        label: Text(_selectedIngredients[index]), onPressed: () {});
   }
 
   List<DynamicWidget> listDynamic = [];
@@ -1301,7 +1274,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
   addDynamic(int index) {
     listDynamic.add(DynamicWidget(index, recipeModel!));
   }
-
 
   @override
   void initState() {
@@ -1313,7 +1285,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
     readSQLiteMenu();
     readSQLiteRecipe();
     getRecipeSteps();
-
   }
 
   int _index = 0;
@@ -1366,46 +1337,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             borderRadius: new BorderRadius.circular(30.0),
                           ),
                         )
-                  : _index == 1
-                  ? Container(
-                    child: Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            if (_index > 0) {
-                              setState(() {
-                                _index -= 1;
-                              });
-                            }
-                          },
-                          child: const Text('BACK'),
-                        ),
-                        RaisedButton(
-                          onPressed: () async {
-                            if (_index <= 1) {
-                              setState(() {
-                                _index += 1;
-                              });
-                            }
-                            createKits();
-                          },
-                          textColor: Colors.white,
-                          color: Colors.black,
-                          disabledColor: Colors.black,
-                          child: Text("NEXT"),
-                          // onPressed: () {},
-                          padding: EdgeInsets.all(10),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius:
-                            new BorderRadius.circular(30.0),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                      : _index == 2
+                      : _index == 1
                           ? Container(
                               child: Row(
                                 mainAxisAlignment:
@@ -1423,14 +1355,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                   ),
                                   RaisedButton(
                                     onPressed: () async {
-                                      if (_index <= 2) {
+                                      if (_index <= 1) {
                                         setState(() {
                                           _index += 1;
                                         });
                                       }
-                                      // DynamicWidget(_count, recipeModel!).method();
-                                      addReStep();
-                                      // submitStep();
+                                      createKits();
                                     },
                                     textColor: Colors.white,
                                     color: Colors.black,
@@ -1446,7 +1376,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 ],
                               ),
                             )
-                          : _index >= 3
+                          : _index == 2
                               ? Container(
                                   child: Row(
                                     mainAxisAlignment:
@@ -1463,17 +1393,20 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                         child: const Text('BACK'),
                                       ),
                                       RaisedButton(
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Launcher()));
+                                        onPressed: () async {
+                                          if (_index <= 2) {
+                                            setState(() {
+                                              _index += 1;
+                                            });
+                                          }
+                                          // DynamicWidget(_count, recipeModel!).method();
+                                          addReStep();
+                                          // submitStep();
                                         },
                                         textColor: Colors.white,
                                         color: Colors.black,
                                         disabledColor: Colors.black,
-                                        child: Text("DONE"),
+                                        child: Text("NEXT"),
                                         // onPressed: () {},
                                         padding: EdgeInsets.all(10),
                                         shape: new RoundedRectangleBorder(
@@ -1484,16 +1417,55 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     ],
                                   ),
                                 )
-                              : TextButton(
-                                  onPressed: () {
-                                    if (_index > 0) {
-                                      setState(() {
-                                        _index -= 1;
-                                      });
-                                    }
-                                  },
-                                  child: const Text('BACK'),
-                                ),
+                              : _index >= 3
+                                  ? Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              if (_index > 0) {
+                                                setState(() {
+                                                  _index -= 1;
+                                                });
+                                              }
+                                            },
+                                            child: const Text('BACK'),
+                                          ),
+                                          RaisedButton(
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Launcher()));
+                                            },
+                                            textColor: Colors.white,
+                                            color: Colors.black,
+                                            disabledColor: Colors.black,
+                                            child: Text("DONE"),
+                                            // onPressed: () {},
+                                            padding: EdgeInsets.all(10),
+                                            shape: new RoundedRectangleBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      30.0),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () {
+                                        if (_index > 0) {
+                                          setState(() {
+                                            _index -= 1;
+                                          });
+                                        }
+                                      },
+                                      child: const Text('BACK'),
+                                    ),
                 ],
               );
             },
@@ -1775,7 +1747,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     )),
               ),
               Step(
-                isActive: _index >= 1,
+                  isActive: _index >= 1,
                   title: Text(
                     '',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -1797,7 +1769,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             itemCount: _kitchenwareCount,
                             itemBuilder: (BuildContext context, int index) {
                               String currentKitchenWare =
-                              _selectedKitchenware[index];
+                                  _selectedKitchenware[index];
                               return Column(children: <Widget>[
                                 TextButton(
                                     onPressed: () {
@@ -1805,7 +1777,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                         if (currentKitchenWare !=
                                             'Select Kitchenware') {
                                           if (kitchenware.contains(
-                                              currentKitchenWare) ==
+                                                  currentKitchenWare) ==
                                               false) {
                                             kitchenware.insert(
                                                 0, currentKitchenWare);
@@ -1822,38 +1794,34 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                         builder: (context) {
                                           return Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                                MainAxisAlignment.end,
                                             children: <Widget>[
                                               Container(
                                                 decoration: BoxDecoration(
                                                   color: Color(0xffffffff),
                                                   border: Border(
                                                     bottom: BorderSide(
-                                                      color:
-                                                      Color(0xff999999),
+                                                      color: Color(0xff999999),
                                                       width: 0.0,
                                                     ),
                                                   ),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: <Widget>[
                                                     CupertinoButton(
                                                       child: Text('Cancel',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              fontSize:
-                                                              20)),
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 20)),
                                                       onPressed: () {
-                                                        Navigator.pop(
-                                                            context);
+                                                        Navigator.pop(context);
                                                       },
-                                                      padding:
-                                                      const EdgeInsets
+                                                      padding: const EdgeInsets
                                                           .symmetric(
                                                         horizontal: 16.0,
                                                         vertical: 5.0,
@@ -1863,23 +1831,20 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                       child: Text('Confirm',
                                                           style: TextStyle(
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              fontSize:
-                                                              20)),
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 20)),
                                                       onPressed: () {
                                                         setState(() {
                                                           kitchenware.remove(
                                                               currentKitchenWare);
                                                           _selectedKitchenware[
-                                                          index] =
+                                                                  index] =
                                                               currentKitchenWare;
                                                         });
-                                                        Navigator.pop(
-                                                            context);
+                                                        Navigator.pop(context);
                                                       },
-                                                      padding:
-                                                      const EdgeInsets
+                                                      padding: const EdgeInsets
                                                           .symmetric(
                                                         horizontal: 16.0,
                                                         vertical: 5.0,
@@ -1893,16 +1858,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                 color: Color(0xfff7f7f7),
                                                 child: CupertinoPicker(
                                                   itemExtent: 32,
-                                                  backgroundColor:
-                                                  Colors.white,
+                                                  backgroundColor: Colors.white,
                                                   onSelectedItemChanged:
                                                       (int index) {
                                                     setState(() {
                                                       currentKitchenWare =
-                                                      kitchenware[
-                                                      index];
-                                                      print(
-                                                          currentKitchenWare);
+                                                          kitchenware[index];
+                                                      print(currentKitchenWare);
                                                     });
                                                   },
                                                   children: getPickerItems(
@@ -1943,23 +1905,24 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 height: 300,
                                 child: _selectedIngredients.length != 0
                                     ? Wrap(
-                                    spacing: 6,
-                                    runSpacing: 6,
-                                    children:
-                                    List.generate(_selectedIngredients.length, (index) {
-                                      return ActionChip(
-                                          label:
-                                          Text('${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'),
-                                          onPressed: () {
-                                            buildEditWidget(index);
-                                          });
-                                    }))
-
-                                    : Text('Select Ingredient',
-                                style: TextStyle(color: color),),
+                                        spacing: 6,
+                                        runSpacing: 6,
+                                        children: List.generate(
+                                            _selectedIngredients.length,
+                                            (index) {
+                                          return ActionChip(
+                                              label: Text(
+                                                  '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'),
+                                              onPressed: () {
+                                                buildEditWidget(index);
+                                              });
+                                        }))
+                                    : Text(
+                                        'Select Ingredient',
+                                        style: TextStyle(color: color),
+                                      ),
                               ),
                             ),
-
                             IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -1976,8 +1939,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                         ),
                       ],
                     ),
-                  )
-              ),
+                  )),
               Step(
                 isActive: _index >= 2,
                 title: Text(
@@ -2044,8 +2006,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   alignment: Alignment.centerLeft,
                   child: SingleChildScrollView(
                       child: Column(children: <Widget>[
-                        Text('${recipeController.text}',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                    Text(
+                      '${recipeController.text}',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
                     SizedBox(height: 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -2096,22 +2061,28 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                   ),
                                   ListView.builder(
                                       itemCount: _selectedIngredients.length,
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return Container(
-                                          child: Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Chip(
-                                                      label: Text('${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
-                                                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
-                                                      ),
-                                                    ),
-                                          ],
+                                            child: Column(children: <Widget>[
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Chip(
+                                                label: Text(
+                                                  '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ]));
                                       }),
@@ -2175,10 +2146,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             Column(children: <Widget>[
                                               Text('Calories'),
                                               Chip(
-                                                label: Text('${calController.text}',
-                                                    style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
-                                              ),
-
+                                                  label: Text(
+                                                      '${calController.text}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
                                             ]),
                                             SizedBox(
                                               width: 20,
@@ -2189,9 +2162,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                 Chip(
                                                   label: Text(
                                                       '${proteinController.text}',
-                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
                                                 ),
-
                                               ],
                                             )
                                           ],
@@ -2206,9 +2181,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             Column(children: <Widget>[
                                               Text('Fat'),
                                               Chip(
-                                                  label:Text('${fatController.text}',
-                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))),
-
+                                                  label: Text(
+                                                      '${fatController.text}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight
+                                                              .bold))),
                                             ]),
                                             SizedBox(
                                               width: 20,
@@ -2217,10 +2195,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                               children: <Widget>[
                                                 Text('Carbs'),
                                                 Chip(
-                                                  label:Text('${carboController.text}',
-                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                  label: Text(
+                                                      '${carboController.text}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
                                                 ),
-
                                               ],
                                             )
                                           ],
@@ -2258,7 +2239,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           alignment: Alignment.centerLeft,
                                           child: Container(
                                               margin: EdgeInsets.only(
-                                                  left: 10, right: 10,top: 30),
+                                                  left: 10, right: 10, top: 30),
                                               child: Text(
                                                 'Estimated time',
                                                 style: TextStyle(fontSize: 18),
@@ -2275,10 +2256,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             ),
                                             SizedBox(height: 10),
                                             Chip(
-                                              label:Text('${_selectedHour * 60 + _selectedMinute}',
-                                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                                              label: Text(
+                                                '${_selectedHour * 60 + _selectedMinute}',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ),
-
                                           ],
                                         )
                                       ],
@@ -2307,85 +2292,114 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                               child: Chip(
                                                 backgroundColor: color,
                                                 label: Text(
-                                                  'Step ${index+1}',
-                                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                  'Step ${index + 1}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
                                                 ),
                                               )),
                                           SizedBox(height: 20),
                                           Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text('Description',
-                                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold))),
                                           SizedBox(height: 15),
-                                      Container(
-                                        height: 200,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
-                                              bottomLeft: Radius.circular(20),
-                                              bottomRight: Radius.circular(20)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 3,
-                                              blurRadius: 9,
-                                              offset: Offset(0,
-                                                  3), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        margin: EdgeInsets.all(10),
-                                          child: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Container(
-                                                    margin: EdgeInsets.all(15),
-                                                    child: Text('${_descStepControllers[index].text}',
-                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                                          Container(
+                                            height: 200,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                  bottomLeft:
+                                                      Radius.circular(20),
+                                                  bottomRight:
+                                                      Radius.circular(20)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.5),
+                                                  spreadRadius: 3,
+                                                  blurRadius: 9,
+                                                  offset: Offset(0,
+                                                      3), // changes position of shadow
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            margin: EdgeInsets.all(10),
+                                            child: Column(
+                                              children: [
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Container(
+                                                    margin: EdgeInsets.all(15),
+                                                    child: Text(
+                                                      '${_descStepControllers[index].text}',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                      ),
                                           SizedBox(height: 40),
                                           InkWell(
                                             onTap: () {},
                                             child: _Stepimage[index] != null
                                                 ? ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Container(
-                                                  width: 120,
-                                                  height: 120,
-                                                  color: Colors.white,
-                                                  child: Image.file(_Stepimage[index]),
-                                                ))
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: Container(
+                                                      width: 120,
+                                                      height: 120,
+                                                      color: Colors.white,
+                                                      child: Image.file(
+                                                          _Stepimage[index]),
+                                                    ))
                                                 : Container(),
                                           ),
                                           SizedBox(height: 30),
                                           Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text('Time',
-                                                  style:
-                                                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                               SizedBox(width: 20),
                                               Container(
                                                 width: 100,
                                                 child: Chip(
                                                   shadowColor: color,
-                                                  label: Text('${_timeStepControllers[index].text}',
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                                  label: Text(
+                                                      '${_timeStepControllers[index].text}',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
                                                 ),
                                               ),
                                               SizedBox(width: 20),
                                               Text('Minute',
-                                                  style:
-                                                  TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                             ],
                                           ),
                                           SizedBox(height: 60),
@@ -2418,4 +2432,3 @@ class _RecipeStep1State extends State<RecipeStep1> {
     // ),
   }
 }
-
