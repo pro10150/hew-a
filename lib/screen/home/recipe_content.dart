@@ -15,77 +15,74 @@ class RecipeContent extends StatelessWidget {
   UserModel userModel;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: MenuDetail(menuRecipeModel),
-                        type: PageTransitionType.leftToRight));
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: FutureBuilder<String>(
-                      future: url,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        List<Widget> children = [];
-                        if (snapshot.hasData) {
-                          children = <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: ClipRRect(
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: <Widget>[
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      child: MenuDetail(menuRecipeModel),
+                      type: PageTransitionType.leftToRight));
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: FutureBuilder<String>(
+                    future: url,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      List<Widget> children = [];
+                      if (snapshot.hasData) {
+                        children = <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                snapshot.data!,
+                                fit: BoxFit.cover,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                width: MediaQuery.of(context).size.width * 0.8,
+                              ),
+                              // decoration:
+                              //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                            ),
+                          )
+                        ];
+                      } else {
+                        children = <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                  snapshot.data!,
-                                  fit: BoxFit.cover,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                ),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator())
                                 // decoration:
                                 //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                              ),
-                            )
-                          ];
-                        } else {
-                          children = <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Align(
-                                      alignment: Alignment.center,
-                                      child: CircularProgressIndicator())
-                                  // decoration:
-                                  //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                                  ),
-                            )
-                          ];
-                        }
-                        return Column(children: children);
-                      }),
-                  // decoration:
-                  //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                ),
-              )),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              RecipeDescription(menuRecipeModel, userModel),
-              ActionsToolbar(menuRecipeModel, userModel)
-            ],
-          )
-        ],
-      ),
+                                ),
+                          )
+                        ];
+                      }
+                      return Column(children: children);
+                    }),
+                // decoration:
+                //     BoxDecoration(borderRadius: BorderRadius.circular(15)),
+              ),
+            )),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            RecipeDescription(menuRecipeModel, userModel),
+            ActionsToolbar(menuRecipeModel, userModel)
+          ],
+        )
+      ],
     );
   }
 
