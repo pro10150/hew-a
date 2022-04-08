@@ -345,9 +345,10 @@ class _DetailedRecipeState extends State<DetailedRecipe>
       children: <Widget>[
         GridView.builder(
             shrinkWrap: true,
-            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              childAspectRatio: 1,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 100.0,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 20.0,
             ),
             physics: const NeverScrollableScrollPhysics(),
             itemCount: reIngredIngredModels.length,

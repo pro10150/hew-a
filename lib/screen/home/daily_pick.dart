@@ -39,7 +39,7 @@ class DailyPick extends StatelessWidget {
                 contentSize: menuRecipeModels.length,
                 swipePositionThreshold: 0.2,
                 swipeVelocityThreshold: 1000,
-                animationDuration: const Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 200),
                 builder: (BuildContext context, int index) {
                   return RecipeContent(
                       menuRecipeModels[index], refs[index], userModel);

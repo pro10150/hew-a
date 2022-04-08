@@ -74,11 +74,6 @@ class _FollowingState extends State<Following> {
   List<bool> isFollowed = [false, false, false, false, false, false];
   var _auth = FirebaseAuth.instance;
 
-  void _handleCallbackEvent(ScrollEventType type, {required int currentIndex}) {
-    print(
-        "Scroll callback received with data: {type: $type, and index: $currentIndex}");
-  }
-
   @override
   Widget build(BuildContext context) {
     print(menuRecipeModels.length);

@@ -32,7 +32,7 @@ dependencies:
   page_transition: "^2.0.4"
   animate_icons: 2.0.0
   flutter_switch: ^0.3.2
-  tiktoklikescroller: 0.1.8
+  tiktoklikescroller: ^0.2.0
   cached_network_image: ^3.2.0
   flutter_advanced_switch: ^3.0.0
   flutter_slidable: ^1.2.0

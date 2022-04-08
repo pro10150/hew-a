@@ -216,6 +216,7 @@ class _commentPage extends State<commentPage> {
   @override
   Widget build(BuildContext context) {
     var currentUserUrl;
+    print(menuRecipeModel.id);
     if (currentUser!.image != null) {
       var ref = FirebaseStorage.instance
           .ref()

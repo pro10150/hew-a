@@ -446,7 +446,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    expandedHeight: 380,
+                    expandedHeight: 400,
                     bottom: TabBar(
                       labelColor: Colors.redAccent,
                       unselectedLabelColor: Colors.black,

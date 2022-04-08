@@ -6,6 +6,7 @@ import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/config/ingredients_icon.dart';
 import 'package:hewa/config/my_flutter_app_icons.dart';
+import 'package:hewa/config/adaptive_text_size.dart';
 
 class RecipeDescription extends StatelessWidget {
   RecipeDescription(this.menuRecipeModel, this.userModel);
@@ -33,7 +34,9 @@ class RecipeDescription extends StatelessWidget {
               child: (userModel.ingredients == 1
                   ? Text(
                       'คุณต้องซื้อวัตถุดิบเพิ่มเติม',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(
+                          fontSize: AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 14)),
                     )
                   : Container()),
             ),
@@ -41,7 +44,11 @@ class RecipeDescription extends StatelessWidget {
               margin: EdgeInsets.only(left: 10),
               child: Text(
                 menuRecipeModel.nameMenu!,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize:
+                        AdaptiveTextSize().getadaptiveTextSize(context, 36)),
               ),
             ),
             menuRecipeModel.recipeName != null
@@ -49,7 +56,9 @@ class RecipeDescription extends StatelessWidget {
                     margin: EdgeInsets.only(left: 10),
                     child: Text(
                       menuRecipeModel.recipeName!,
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                          fontSize: AdaptiveTextSize()
+                              .getadaptiveTextSize(context, 20)),
                     ),
                   )
                 : Container(),

@@ -555,7 +555,7 @@
     },
     {
       "name": "tiktoklikescroller",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/tiktoklikescroller-0.1.8",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/tiktoklikescroller-0.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -608,7 +608,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-04-06T16:43:23.459598Z",
+  "generated": "2022-04-08T16:43:28.072094Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

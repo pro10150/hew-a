@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 import Flutter
 
 @UIApplicationMain
@@ -7,7 +8,7 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // FirebaseApp.configure()
+    FirebaseApp.configure()
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
