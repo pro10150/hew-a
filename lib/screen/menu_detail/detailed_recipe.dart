@@ -327,12 +327,20 @@ class _DetailedRecipeState extends State<DetailedRecipe>
           isHave == false
               ? Text(
                   'คุณไม่มี',
-                  style: TextStyle(color: Colors.red, fontSize: 10),
+                  style: TextStyle(
+                      color: reIngredIngredModel.isPrimary == 1
+                          ? Colors.red
+                          : Colors.orange[400],
+                      fontSize: 10),
                 )
               : isEnough == false
                   ? Text(
                       'คุณมีไม่พอ',
-                      style: TextStyle(color: Colors.red, fontSize: 10),
+                      style: TextStyle(
+                          color: reIngredIngredModel.isPrimary == 1
+                              ? Colors.red
+                              : Colors.orange[400],
+                          fontSize: 10),
                     )
                   : Container()
         ],
@@ -662,6 +670,19 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                               )),
                         ),
                         _getIngredientsRow(),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                              margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.02,
+                                bottom:
+                                    MediaQuery.of(context).size.width * 0.01,
+                              ),
+                              child: Text(
+                                '*Red text means you needs it to make this while orange represent something you can be ignored',
+                                style: TextStyle(fontSize: 10),
+                              )),
+                        ),
                       ]),
                     ),
                     Row(
