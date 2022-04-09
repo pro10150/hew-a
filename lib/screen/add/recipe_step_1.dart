@@ -66,7 +66,8 @@ List<ReIngredModel> reingredModel = [];
 List<ReStepModel> reStepModel = [];
 List<ReStepModel> reStepModels = [];
 List<IngredModel> ingredModel = [];
-List<String> units = ['-', 'g', 'kg', 'ml', 'l', 'bottles'];
+List<bool> isPrimarys = [];
+List<String> units = ['-', 'g', 'kg', 'tbps', 'cup', 'ml', 'l', 'bottles'];
 
 int _selectedMinute = 0;
 var minute = 0;
@@ -180,7 +181,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
               .first
               .id,
           amount: _amount,
-          unit: _selectedIngredientsUnit[i]);
+          unit: _selectedIngredientsUnit[i],
+          isPrimary: isPrimarys[i] == true ? 1 : 0);
       int resultIngre;
       resultIngre = await ReIngredHelper().insert(reIngredModel);
 
@@ -201,6 +203,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
   String _selectedIngredient = '';
   String _selectedUnit = '';
   double _selectedIngredientAmount = 0;
+  bool isPrimary = false;
 
   int _widgetId = 1;
   bool flagEdit = false;
@@ -250,6 +253,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             _selectedIngredientsCount
                                 .add((_selectedIngredientAmount));
                             _selectedIngredientsUnit.add(_selectedUnit);
+                            isPrimarys.add(isPrimary);
                           });
 
                           Navigator.pop(context);
@@ -505,7 +509,23 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                   )
                                 ],
                               ));
-                    })
+                    }),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isPrimary,
+                      fillColor: MaterialStateProperty.all(Palette.roseBud),
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isPrimary = value!;
+                        });
+                      },
+                    ),
+                    Text(
+                      "Primary ingredient",
+                    )
+                  ],
+                )
               ];
             } else {
               children = <Widget>[CircularProgressIndicator()];
@@ -549,7 +569,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
                         .id,
                     amount: _selectedIngredientAmount,
                     unit: _selectedUnit == '-' ? '' : _selectedUnit,
-                    recipeId: object.first.id);
+                    recipeId: object.first.id,
+                    isPrimary: isPrimary == true ? 1 : 0);
 
                 int resultIngred;
                 resultIngred = await ReIngredHelper().insert(reIngred);
@@ -579,11 +600,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
                 reingredModel[index].unit = _selectedUnit;
                 reingredModel[index].amount =
                     double.parse(editAmountController.text);
+                reingredModel[index].isPrimary = isPrimary == true ? 1 : 0;
 
                 setState(() {
                   _selectedIngredientsCount[index] =
                       double.parse(editAmountController.text);
                   _selectedIngredientsUnit[index] = _selectedUnit;
+                  isPrimarys[index] = isPrimary;
                 });
 
                 ReIngredHelper().updateDataToSQLite(reingredModel[index]);
@@ -681,6 +704,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     );
   }
 
+  // ignore: unused_element
   Widget _getRecipeStep(ReStepModel reStepModel, int index,
       List<ReImageStepModel> images, List<String> imageUrls) {
     return Column(
@@ -1911,8 +1935,11 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             _selectedIngredients.length,
                                             (index) {
                                           return ActionChip(
-                                              label: Text(
-                                                  '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'),
+                                              label: isPrimarys[index] == false
+                                                  ? Text(
+                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}')
+                                                  : Text(
+                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient'),
                                               onPressed: () {
                                                 buildEditWidget(index);
                                               });
@@ -1930,6 +1957,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     _selectedIngredientAmount = 0;
                                     _selectedUnit = '';
                                     _widgetId = 1;
+                                    isPrimary = false;
                                   });
                                   print(_selectedIngredientsCount);
                                   buildAddWidget();
@@ -2074,13 +2102,22 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
                                               Chip(
-                                                label: Text(
-                                                  '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16),
-                                                ),
+                                                label: isPrimarys[index] ==
+                                                        false
+                                                    ? Text(
+                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16),
+                                                      )
+                                                    : Text(
+                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16),
+                                                      ),
                                               ),
                                             ],
                                           ),

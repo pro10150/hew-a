@@ -67,7 +67,7 @@ class DBHelper {
     db.execute(
         'CREATE TABLE reAllergyTABLE(id INTEGER PRIMARY KEY, userID TEXT, allID INTEGER)');
     db.execute(
-        'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT)');
+        'CREATE TABLE recipeIngredientTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, ingredientId INTEGER, amount REAL, unit TEXT, isPrimary INTEGER)');
     db.execute(
         'CREATE TABLE recipeStepTABLE (id INTEGER PRIMARY KEY, recipeId TEXT, step INTEGER, minute INTEGER, description TEXT)');
     db.execute(

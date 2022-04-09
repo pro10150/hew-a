@@ -6,6 +6,7 @@ class ReIngredIngredModel {
   String? image;
   double? amount;
   String? unit;
+  int? isPrimary;
 
   ReIngredIngredModel(
       {this.id,
@@ -14,7 +15,8 @@ class ReIngredIngredModel {
       this.type,
       this.image,
       this.amount,
-      this.unit});
+      this.unit,
+      this.isPrimary});
 
   ReIngredIngredModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,6 +26,7 @@ class ReIngredIngredModel {
     image = json['image'];
     amount = json['amount'];
     unit = json['unit'];
+    isPrimary = json['isPrimary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +39,7 @@ class ReIngredIngredModel {
     data['image'] = this.image;
     data['amount'] = this.amount;
     data['unit'] = this.unit;
+    data['isPrimary'] = this.isPrimary;
     return data;
   }
 }
