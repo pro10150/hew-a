@@ -237,7 +237,7 @@ class IngredHelper {
       'Sugar',
       'Basil',
       'Pepper',
-      'Citizens',
+      'Others',
       'Chinda',
       'Parsley',
       'Sugar',
