@@ -661,6 +661,15 @@ class ReIngredHelper {
     }
   }
 
+  Future<Null> deleteDataWhereId(String id) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase, where: '$idColumn = $id');
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

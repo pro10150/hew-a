@@ -238,6 +238,16 @@ class MenuRecipeHelper {
     }
   }
 
+
+  Future<Null> deleteDataWhereIdRecipe(String recipe) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase, where: '$uidColumn = $recipe');
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

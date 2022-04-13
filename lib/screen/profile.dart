@@ -1,11 +1,18 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hewa/models/reStep_model.dart';
 import 'package:hewa/models/recipe_model.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
+import 'package:hewa/utilities/menu.helper.dart';
+import 'package:hewa/utilities/reImageStep_helper.dart';
+import 'package:hewa/utilities/reIngred_helper.dart';
+import 'package:hewa/utilities/reKitchenware_helper.dart';
+import 'package:hewa/utilities/reStep_helper.dart';
 import 'package:page_transition/page_transition.dart';
 import 'login/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +21,7 @@ import 'package:hewa/utilities/follow_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
+import 'package:hewa/models/menu_model.dart';
 import 'menu_detail/menu_detail.dart';
 
 class Profile extends StatefulWidget {
@@ -89,6 +97,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   late var recipe = 0;
   var userProfileRef;
   var userProfileUrl;
+  MenuRecipeHelper? menuRecipeHelper;
+  MenuModel? menuModel;
+
 
   Future<void> getUsername() async {
     UserHelper()
@@ -132,6 +143,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       }
     });
   }
+  static const color = const Color(0xffffab91);
+
+
+
 
   @override
   void initState() {
@@ -484,7 +499,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               //     crossAxisCount: 2),
                               itemCount: menuRecipes.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return recipes(menuRecipes[index]);
+                                return  recipes(menuRecipes[index]);
                               })
                           : Container(
                               alignment: Alignment.topCenter,
@@ -550,9 +565,72 @@ class recipes extends StatelessWidget {
         .child(menuRecipeModel.menuImage!);
     url = ref.getDownloadURL();
   }
+
   MenuRecipeModel menuRecipeModel;
   var ref;
   var url;
+  static const color = const Color(0xffffab91);
+
+  Future<Null> readSQLite() async {
+    var object = await MenuRecipeHelper().readDataFromSQLite();
+    print('object length ==> ${object.length}');
+    for (var model in object) {
+      print(model);
+    }
+  }
+
+  _doneFromDialog(context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel',
+                    style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold)),
+              ),
+              FlatButton(
+                  textColor: Colors.black,
+                  color: color,
+                  disabledColor: Colors.black,
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await MenuHelper().deleteDataWhereId(menuRecipeModel.id.toString()).then((value) {
+                      print('Delete Success Menu');
+                    });
+
+                    await RecipeHelper().deleteDataWhereId(menuRecipeModel.id.toString()).then((value) {
+                      print('Delete Success Recipe');
+                    });
+
+                    await ReKitchenwareHelper().deleteDataWhereUser(menuRecipeModel.id.toString()).then((value) {
+                      print('Delete Success ReKit');
+                    });
+
+                    await ReStepHelper().deleteDataWhereRecipe(menuRecipeModel.id.toString()).then((value) {
+                      print('Delete Success ReStep');
+                    });
+
+                    await ReImageStepHelper().deleteDataWhereRecipeimage(menuRecipeModel.id.toString()).then((value) {
+                      print('Delete Success ReImStep');
+                    });
+                  },
+                  child: Text('Done',
+                      style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold))),
+            ],
+            title: Text('Are you sure to delete ${menuRecipeModel.recipeName!}?',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+          );
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
@@ -562,6 +640,69 @@ class recipes extends StatelessWidget {
           if (snapshot.hasData) {
             children = <Widget>[
               InkWell(
+                onLongPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Expanded(
+                        child: SimpleDialog(
+                          backgroundColor: Colors.white.withOpacity(0.93),
+                          title: Text(
+                            menuRecipeModel.recipeName!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(
+                                  Radius.circular(16.0))),
+                          children:[
+                            SizedBox(
+                              height: 1,
+                              child: Container(
+                                color: Colors.black45,
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Edit',
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                                  Icon(Icons.edit),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1,
+                              child: Container(
+                                color: Colors.black12,
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                _doneFromDialog(context);
+
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Delete',
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.red),),
+                                  Icon(Icons.remove_circle_outline_rounded,color: Colors.red),
+                                ],
+                              ),
+                            ),
+                          ],
+                          elevation: 1,
+                          //backgroundColor: Colors.green,
+                        ),
+                      );
+                    },
+                  );
+                },
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
@@ -590,7 +731,7 @@ class recipes extends StatelessWidget {
               menuRecipeModel.recipeName != null
                   ? Text(
                       menuRecipeModel.recipeName!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
                     )
                   : Container(),
               Text(menuRecipeModel.nameMenu!),

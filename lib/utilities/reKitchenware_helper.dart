@@ -155,6 +155,7 @@ class ReKitchenwareHelper {
     }
   }
 
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

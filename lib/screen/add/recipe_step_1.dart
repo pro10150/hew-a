@@ -138,7 +138,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     resultrec = await RecipeHelper().insert(recipeModel!);
 
     if (resultrec != 0) {
-      print('Success');
+      print('Success Recipe');
     } else {
       print('Failed');
     }
@@ -163,7 +163,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
       resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
 
       if (resultkitc != 0) {
-        print('Success');
+        print('Success Kitchenware');
       } else {
         print('Failed');
       }
@@ -595,7 +595,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     showDialog(
             context: context,
             builder: (BuildContext context) => _editIngredient(index))
-        .then((value) => setState(() {
+        .then((value) => setState(() async {
               if (flagEdit == true) {
                 reingredModel[index].unit = _selectedUnit;
                 reingredModel[index].amount =
@@ -836,7 +836,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
         });
         print(descStep);
         print(timeStep);
-        print('Success');
+        print('Success Step');
       } else {
         print('Failed');
       }
@@ -1299,6 +1299,48 @@ class _RecipeStep1State extends State<RecipeStep1> {
     listDynamic.add(DynamicWidget(index, recipeModel!));
   }
 
+  _doneFromDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel',
+                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+              ),
+              FlatButton(
+                  textColor: Colors.black,
+                  color: color,
+                  disabledColor: Colors.black,
+                  onPressed: () {
+                    createRecipes();
+                    createKits();
+                    addReStep();
+
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Launcher()));
+                  },
+                  child: Text('Done',
+                      style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
+            ],
+            title: Text('Are you sure?',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+          );
+        }
+    );
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -1349,7 +1391,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 _index += 1;
                               });
                             }
-                            createRecipes();
+                            // createRecipes();
                           },
                           textColor: Colors.white,
                           color: Colors.black,
@@ -1368,7 +1410,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (_index > 0) {
                                         setState(() {
                                           _index -= 1;
@@ -1384,7 +1426,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           _index += 1;
                                         });
                                       }
-                                      createKits();
+                                      // createKits();
                                     },
                                     textColor: Colors.white,
                                     color: Colors.black,
@@ -1424,7 +1466,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             });
                                           }
                                           // DynamicWidget(_count, recipeModel!).method();
-                                          addReStep();
+                                          // addReStep();
                                           // submitStep();
                                         },
                                         textColor: Colors.white,
@@ -1459,11 +1501,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                           ),
                                           RaisedButton(
                                             onPressed: () {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Launcher()));
+                                              _doneFromDialog();
                                             },
                                             textColor: Colors.white,
                                             color: Colors.black,
@@ -2109,14 +2147,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 16),
+                                                            fontSize: 14),
                                                       )
                                                     : Text(
                                                         '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 16),
+                                                            fontSize: 14),
                                                       ),
                                               ),
                                             ],

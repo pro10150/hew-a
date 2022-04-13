@@ -4,6 +4,23 @@
             "outputFile": "C:\\Users\\66931\\Documents\\projects\\hew-a\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pt\\values-pt.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\59ea20cdbb2f9915da8dba181b452248\\jetified-ucrop-2.2.8\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,101,164,222,273,320",
+                        "endColumns": "45,62,57,50,46,47",
+                        "endOffsets": "96,159,217,268,315,363"
+                    },
+                    "to": {
+                        "startLines": "31,32,33,34,35,36",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "3030,3076,3139,3197,3248,3295",
+                        "endColumns": "45,62,57,50,46,47",
+                        "endOffsets": "3071,3134,3192,3243,3290,3338"
+                    }
+                },
+                {
                     "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2",
