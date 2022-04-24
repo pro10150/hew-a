@@ -104,6 +104,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   MenuHelper? menuHelper;
   MenuModel menuModel;
+
   _RecipeStep1State(this.menuModel);
 
   int _kitchenwareCount = 1;
@@ -170,24 +171,47 @@ class _RecipeStep1State extends State<RecipeStep1> {
     }
   }
 
-  createIngres() async {
-    double _amount = double.parse(_amountController.text);
+  // createIngres() async {
+  //   double _amount = double.parse(_amountController.text);
+  //
+  //   for (var i = 0; i < _selectedIngredients.length; i++) {
+  //     ReIngredModel reIngredModel = ReIngredModel(
+  //         recipeId: null,
+  //         ingredientId: ingredModel
+  //             .where((element) => element.name == _selectedIngredients[i])
+  //             .first
+  //             .id,
+  //         amount: _amount,
+  //         unit: _selectedIngredientsUnit[i],
+  //         isPrimary: isPrimarys[i] == true ? 1 : 0);
+  //     int resultIngre;
+  //     resultIngre = await ReIngredHelper().insert(reIngredModel);
+  //
+  //     if (resultIngre != 0) {
+  //       print('Success');
+  //     } else {
+  //       print('Failed');
+  //     }
+  //   }
+  // }
 
-    for (var i = 0; i < _selectedIngredients.length; i++) {
-      ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: null,
-          ingredientId: ingredModel
-              .where((element) => element.name == _selectedIngredients[i])
-              .first
-              .id,
-          amount: _amount,
-          unit: _selectedIngredientsUnit[i],
-          isPrimary: isPrimarys[i] == true ? 1 : 0);
-      int resultIngre;
-      resultIngre = await ReIngredHelper().insert(reIngredModel);
+  createIngre() async {
+    var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+    print(object.first.id);
 
-      if (resultIngre != 0) {
-        print('Success');
+    for (var rei in reingredModel) {
+      ReIngredModel reIngred = ReIngredModel(
+          ingredientId: rei.ingredientId,
+          recipeId: object.first.id,
+          amount: rei.amount,
+          unit: rei.unit == '-' ? '' : rei.unit,
+          isPrimary: rei.isPrimary);
+
+      int resultIngred;
+      resultIngred = await ReIngredHelper().insert(reIngred);
+
+      if (resultIngred != 0) {
+        print('Success Ingredient');
       } else {
         print('Failed');
       }
@@ -254,6 +278,16 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                 .add((_selectedIngredientAmount));
                             _selectedIngredientsUnit.add(_selectedUnit);
                             isPrimarys.add(isPrimary);
+                            var reing = ReIngredModel(
+                                ingredientId: ingredModel
+                                    .where((element) =>
+                                        element.name == _selectedIngredient)
+                                    .first
+                                    .id,
+                                amount: _selectedIngredientAmount,
+                                unit: _selectedUnit,
+                                isPrimary: isPrimary == true ? 1 : 0);
+                            reingredModel.add(reing);
                           });
 
                           Navigator.pop(context);
@@ -276,7 +310,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
         content: SingleChildScrollView(
             child: ListBody(children: <Widget>[
           Center(),
-          renderEditWidget(),
+          renderEditWidget(index),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -321,9 +355,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
     });
   }
 
-  Widget renderEditWidget() {
+  Widget renderEditWidget(int index) {
     var ingredient = ingredModel
-        .where((element) => element.name == _selectedIngredient)
+        .where((element) => element.id == reingredModel[index].ingredientId)
         .toList();
     final ref = FirebaseStorage.instance
         .ref()
@@ -344,7 +378,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     )),
                 Center(
                     child: ActionChip(
-                  label: Text(_selectedIngredient),
+                  label: Text(ingredient[0].name!),
                   onPressed: () {},
                 )),
                 TextField(
@@ -356,8 +390,9 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
                 CupertinoButton(
-                    child: Text(
-                        _selectedUnit != '' ? _selectedUnit : 'Select unit'),
+                    child: Text(reingredModel[index].unit != ''
+                        ? reingredModel[index].unit!
+                        : 'Select unit'),
                     onPressed: () {
                       showCupertinoDialog(
                           context: context,
@@ -400,7 +435,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                       backgroundColor: Colors.white,
                                       onSelectedItemChanged: (int index) {
                                         setState(() {
-                                          _selectedUnit = units[index];
+                                          reingredModel[index].unit =
+                                              units[index];
                                         });
                                       },
                                       children: getPickerItems(units),
@@ -557,33 +593,32 @@ class _RecipeStep1State extends State<RecipeStep1> {
                 // _selectedIngredients.add(_selectedIngredient);
                 // _selectedIngredientsCount.add((_selectedIngredientAmount));
                 // _selectedIngredientsUnit.add(_selectedUnit);
+                // var object =
+                //     await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
+                // print(object.first.id);
+                //
+                // ReIngredModel reIngred = ReIngredModel(
+                //     ingredientId: ingredModel
+                //         .where((element) => element.name == _selectedIngredient)
+                //         .first
+                //         .id,
+                //     amount: _selectedIngredientAmount,
+                //     unit: _selectedUnit == '-' ? '' : _selectedUnit,
+                //     isPrimary: isPrimary == true ? 1 : 0);
+                //
+                // int resultIngred;
+                // resultIngred = await ReIngredHelper().insert(reIngred);
+                //
+                // setState(() {
+                //   reingredModel.add(reIngred);
+                // });
+                //
+                // if (resultIngred != 0) {
+                //   print('Success');
+                // } else {
+                //   print('Failed');
+                // }
 
-                var object =
-                    await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-                print(object.first.id);
-
-                ReIngredModel reIngred = ReIngredModel(
-                    ingredientId: ingredModel
-                        .where((element) => element.name == _selectedIngredient)
-                        .first
-                        .id,
-                    amount: _selectedIngredientAmount,
-                    unit: _selectedUnit == '-' ? '' : _selectedUnit,
-                    recipeId: object.first.id,
-                    isPrimary: isPrimary == true ? 1 : 0);
-
-                int resultIngred;
-                resultIngred = await ReIngredHelper().insert(reIngred);
-
-                setState(() {
-                  reingredModel.add(reIngred);
-                });
-
-                if (resultIngred != 0) {
-                  print('Success');
-                } else {
-                  print('Failed');
-                }
               }
             }));
   }
@@ -597,12 +632,12 @@ class _RecipeStep1State extends State<RecipeStep1> {
             builder: (BuildContext context) => _editIngredient(index))
         .then((value) => setState(() async {
               if (flagEdit == true) {
-                reingredModel[index].unit = _selectedUnit;
-                reingredModel[index].amount =
-                    double.parse(editAmountController.text);
-                reingredModel[index].isPrimary = isPrimary == true ? 1 : 0;
-
                 setState(() {
+                  reingredModel[index].unit = _selectedUnit;
+                  reingredModel[index].amount =
+                      double.parse(editAmountController.text);
+                  reingredModel[index].isPrimary = isPrimary == true ? 1 : 0;
+
                   _selectedIngredientsCount[index] =
                       double.parse(editAmountController.text);
                   _selectedIngredientsUnit[index] = _selectedUnit;
@@ -1312,7 +1347,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   Navigator.pop(context);
                 },
                 child: Text('Cancel',
-                style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               ),
               FlatButton(
                   textColor: Colors.black,
@@ -1322,24 +1358,23 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     createRecipes();
                     createKits();
                     addReStep();
+                    createIngre();
 
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                Launcher()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Launcher()));
                   },
                   child: Text('Done',
-                      style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold))),
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.bold))),
             ],
-            title: Text('Are you sure?',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+            title: Text(
+              'Are you sure?',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
           );
-        }
-    );
+        });
   }
-
 
   @override
   void initState() {
@@ -1552,6 +1587,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
               });
             },
             steps: <Step>[
+              //recipe
               Step(
                 isActive: _index >= 0,
                 title: Text(
@@ -1808,6 +1844,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
                       ),
                     )),
               ),
+
+              //Kitchenware&Ingredient
               Step(
                   isActive: _index >= 1,
                   title: Text(
@@ -1815,197 +1853,206 @@ class _RecipeStep1State extends State<RecipeStep1> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   content: Container(
-                    child: Column(
-                      children: [
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Kitchenware',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20))),
-                        Column(children: <Widget>[
-                          SizedBox(height: 15),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: _kitchenwareCount,
-                            itemBuilder: (BuildContext context, int index) {
-                              String currentKitchenWare =
-                                  _selectedKitchenware[index];
-                              return Column(children: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        if (currentKitchenWare !=
-                                            'Select Kitchenware') {
-                                          if (kitchenware.contains(
-                                                  currentKitchenWare) ==
-                                              false) {
-                                            kitchenware.insert(
-                                                0, currentKitchenWare);
-                                          } else {
-                                            kitchenware
-                                                .remove(currentKitchenWare);
-                                            kitchenware.insert(
-                                                0, currentKitchenWare);
-                                          }
+                    child: Column(children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Kitchenware',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20))),
+                      Column(children: <Widget>[
+                        SizedBox(height: 15),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: _kitchenwareCount,
+                          itemBuilder: (BuildContext context, int index) {
+                            String currentKitchenWare =
+                                _selectedKitchenware[index];
+                            return Column(children: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if (currentKitchenWare !=
+                                          'Select Kitchenware') {
+                                        if (kitchenware
+                                                .contains(currentKitchenWare) ==
+                                            false) {
+                                          kitchenware.insert(
+                                              0, currentKitchenWare);
+                                        } else {
+                                          kitchenware
+                                              .remove(currentKitchenWare);
+                                          kitchenware.insert(
+                                              0, currentKitchenWare);
                                         }
-                                      });
-                                      showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (context) {
-                                          return Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: <Widget>[
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xffffffff),
-                                                  border: Border(
-                                                    bottom: BorderSide(
-                                                      color: Color(0xff999999),
-                                                      width: 0.0,
-                                                    ),
+                                      }
+                                    });
+                                    showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffffffff),
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xff999999),
+                                                    width: 0.0,
                                                   ),
                                                 ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    CupertinoButton(
-                                                      child: Text('Cancel',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 20)),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 16.0,
-                                                        vertical: 5.0,
-                                                      ),
-                                                    ),
-                                                    CupertinoButton(
-                                                      child: Text('Confirm',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 20)),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          kitchenware.remove(
-                                                              currentKitchenWare);
-                                                          _selectedKitchenware[
-                                                                  index] =
-                                                              currentKitchenWare;
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 16.0,
-                                                        vertical: 5.0,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
                                               ),
-                                              Container(
-                                                height: 320.0,
-                                                color: Color(0xfff7f7f7),
-                                                child: CupertinoPicker(
-                                                  itemExtent: 32,
-                                                  backgroundColor: Colors.white,
-                                                  onSelectedItemChanged:
-                                                      (int index) {
-                                                    setState(() {
-                                                      currentKitchenWare =
-                                                          kitchenware[index];
-                                                      print(currentKitchenWare);
-                                                    });
-                                                  },
-                                                  children: getPickerItems(
-                                                      kitchenware),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Text(
-                                      '$currentKitchenWare',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ))
-                              ]);
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  CupertinoButton(
+                                                    child: Text('Cancel',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20)),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 5.0,
+                                                    ),
+                                                  ),
+                                                  CupertinoButton(
+                                                    child: Text('Confirm',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        kitchenware.remove(
+                                                            currentKitchenWare);
+                                                        _selectedKitchenware[
+                                                                index] =
+                                                            currentKitchenWare;
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 5.0,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 320.0,
+                                              color: Color(0xfff7f7f7),
+                                              child: CupertinoPicker(
+                                                itemExtent: 32,
+                                                backgroundColor: Colors.white,
+                                                onSelectedItemChanged:
+                                                    (int index) {
+                                                  setState(() {
+                                                    currentKitchenWare =
+                                                        kitchenware[index];
+                                                    print(currentKitchenWare);
+                                                  });
+                                                },
+                                                children:
+                                                    getPickerItems(kitchenware),
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    '$currentKitchenWare',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ))
+                            ]);
+                          },
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              addNewKitchenware();
                             },
+                            icon: Icon(Icons.add)),
+                      ]),
+                      SizedBox(height: 35),
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Ingredients',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20))),
+                      Column(
+                        children: <Widget>[
+                          SizedBox(height: 35),
+                          Container(
+                            child: Container(
+                              height: 300,
+                              child: reingredModel.length != 0
+                                  ? Wrap(
+                                      spacing: 6,
+                                      runSpacing: 6,
+                                      children: List.generate(
+                                          reingredModel.length, (index) {
+                                        var ingredName = ingredModel
+                                            .where((element) =>
+                                                element.id ==
+                                                reingredModel[index]
+                                                    .ingredientId)
+                                            .first
+                                            .name;
+                                        return ActionChip(
+                                            backgroundColor:
+                                                isPrimarys[index] == false
+                                                    ? Colors.grey[200]
+                                                    : Palette.roseBud,
+                                            label: Text(
+                                              reingredModel[index].amount != 0
+                                                  ? '$ingredName  ${reingredModel[index].amount}  ${reingredModel[index].unit}'
+                                                  : '$ingredName  ${reingredModel[index].amount}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            ),
+                                            onPressed: () {
+                                              buildEditWidget(index);
+                                            });
+                                      }))
+                                  : Text(
+                                      'Select Ingredient',
+                                      style: TextStyle(color: color),
+                                    ),
+                            ),
                           ),
                           IconButton(
                               onPressed: () {
-                                addNewKitchenware();
+                                setState(() {
+                                  _selectedIngredient = ingredients[0];
+                                  _selectedIngredientAmount = 0;
+                                  _selectedUnit = '';
+                                  _widgetId = 1;
+                                  isPrimary = false;
+                                });
+                                print(_selectedIngredientsCount);
+                                buildAddWidget();
                               },
                               icon: Icon(Icons.add)),
-                        ]),
-                        SizedBox(height: 35),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Ingredients',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20))),
-                        Column(
-                          children: <Widget>[
-                            SizedBox(height: 35),
-                            Container(
-                              child: Container(
-                                height: 300,
-                                child: _selectedIngredients.length != 0
-                                    ? Wrap(
-                                        spacing: 6,
-                                        runSpacing: 6,
-                                        children: List.generate(
-                                            _selectedIngredients.length,
-                                            (index) {
-                                          return ActionChip(
-                                              label: isPrimarys[index] == false
-                                                  ? Text(
-                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}')
-                                                  : Text(
-                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient'),
-                                              onPressed: () {
-                                                buildEditWidget(index);
-                                              });
-                                        }))
-                                    : Text(
-                                        'Select Ingredient',
-                                        style: TextStyle(color: color),
-                                      ),
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _selectedIngredient = ingredients[0];
-                                    _selectedIngredientAmount = 0;
-                                    _selectedUnit = '';
-                                    _widgetId = 1;
-                                    isPrimary = false;
-                                  });
-                                  print(_selectedIngredientsCount);
-                                  buildAddWidget();
-                                },
-                                icon: Icon(Icons.add)),
-                          ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ]),
                   )),
+
+              //Step
               Step(
                 isActive: _index >= 2,
                 title: Text(
@@ -2062,6 +2109,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
                   ],
                 )),
               ),
+
+              //readalldata
               Step(
                 isActive: _index >= 3,
                 title: Text(
@@ -2126,11 +2175,18 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                         )),
                                   ),
                                   ListView.builder(
-                                      itemCount: _selectedIngredients.length,
+                                      itemCount: reingredModel.length,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
+                                        var ingredName = ingredModel
+                                            .where((element) =>
+                                                element.id ==
+                                                reingredModel[index]
+                                                    .ingredientId)
+                                            .first
+                                            .name;
                                         return Container(
                                             child: Column(children: <Widget>[
                                           Row(
@@ -2140,23 +2196,21 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
                                               Chip(
-                                                label: isPrimarys[index] ==
-                                                        false
-                                                    ? Text(
-                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 14),
-                                                      )
-                                                    : Text(
-                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 14),
-                                                      ),
-                                              ),
+                                                backgroundColor:
+                                                    isPrimarys[index] == false
+                                                        ? Colors.grey[200]
+                                                        : Palette.roseBud,
+                                                label: Text(
+                                                  reingredModel[index].amount !=
+                                                          0
+                                                      ? '$ingredName  ${reingredModel[index].amount}  ${reingredModel[index].unit}'
+                                                      : '$ingredName  ${reingredModel[index].amount}',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ]));

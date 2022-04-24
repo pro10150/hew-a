@@ -629,6 +629,14 @@ class ReIngredHelper {
     return reIngredModels;
   }
 
+  Future<int> update(ReIngredModel reIngredModel) async {
+    Database database = await connectedDatabase();
+    var results = database.update(tableDatabase, reIngredModel.toJson(),
+        where: '${recipeIdColumn} = ? AND ${ingredientIdColumn} = ?',
+        whereArgs: [reIngredModel.recipeId, reIngredModel.ingredientId]);
+    return results;
+  }
+
   Future<Null> updateDataToSQLite(ReIngredModel reIngredModel) async {
     Database database = await connectedDatabase();
     try {

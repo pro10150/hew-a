@@ -108,6 +108,13 @@ class ReKitchenwareHelper {
     }
   }
 
+  Future<int> update(ReKitchenwareModel reKitchenwareModel) async {
+    Database database = await connectedDatabase();
+    var results = database.update(tableDatabase, reKitchenwareModel.toJson(),
+        where: '${idColumn} = ?', whereArgs: [reKitchenwareModel.id]);
+    return results;
+  }
+
   Future<List<ReKitchenwareModel>> readlDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<ReKitchenwareModel> reKitchenwareModels = [];
@@ -154,7 +161,6 @@ class ReKitchenwareHelper {
       print('e delete ==> ${e.toString()}');
     }
   }
-
 
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();

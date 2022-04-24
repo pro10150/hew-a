@@ -1,5 +1,6 @@
 class MenuRecipeModel {
   int? id;
+  int? menuId;
   String? uid;
   String? recipeUid;
   String? nameMenu;
@@ -18,7 +19,9 @@ class MenuRecipeModel {
   String? name;
 
   MenuRecipeModel(
-      {this.uid,
+      {this.id,
+      this.uid,
+      this.menuId,
       this.recipeUid,
       this.recipeName,
       this.description,
@@ -37,6 +40,7 @@ class MenuRecipeModel {
 
   MenuRecipeModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    menuId = json['menuId'];
     uid = json['uid'];
     recipeUid = json['recipeUid'];
     recipeName = json['recipeName'];
@@ -58,6 +62,7 @@ class MenuRecipeModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['menuId'] = this.menuId;
     data['uid'] = this.uid;
     data['recipeUid'] = this.recipeUid;
     data['recipeName'] = this.recipeName;

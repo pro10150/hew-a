@@ -6,7 +6,7 @@ class ReIngredModel {
   int? isPrimary;
 
   ReIngredModel(
-      {required this.recipeId,
+      {this.recipeId,
       required this.ingredientId,
       this.amount,
       this.unit,
