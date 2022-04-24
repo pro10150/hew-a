@@ -114,6 +114,21 @@ class MenuRecipeHelper {
     return menuRecipeModels;
   }
 
+  Future<List<MenuRecipeModel>> readWhereId(String id) async {
+    Database database = await connectedDatabase();
+    List<MenuRecipeModel> menuRecipeModels = [];
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
+        'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = $id;',
+        [id]);
+
+    for (var map in maps) {
+      MenuRecipeModel menuRecipeModel = MenuRecipeModel.fromJson(map);
+      menuRecipeModels.add(menuRecipeModel);
+    }
+    return menuRecipeModels;
+  }
+
   Future<List<MenuRecipeModel>> getTrending() async {
     Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];

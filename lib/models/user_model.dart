@@ -8,6 +8,9 @@ class UserModel {
   int? ingredients;
   int? kitchenwares;
   int? isAdmin;
+  String? dateBanned;
+  int? banTime;
+  int? isPermanentlyBan;
 
   UserModel(
       {required this.uid,
@@ -16,7 +19,10 @@ class UserModel {
       this.image,
       this.ingredients,
       this.kitchenwares,
-      this.isAdmin});
+      this.isAdmin,
+      this.dateBanned,
+      this.banTime,
+      this.isPermanentlyBan});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -26,6 +32,9 @@ class UserModel {
     ingredients = json['ingredients'];
     kitchenwares = json['kitchenwares'];
     isAdmin = json['isAdmin'];
+    dateBanned = json['dateBanned'];
+    banTime = json['banTime'];
+    isPermanentlyBan = json['isPermanentlyBan'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +46,9 @@ class UserModel {
     data['ingredients'] = this.ingredients;
     data['kitchenwares'] = this.kitchenwares;
     data['isAdmin'] = this.isAdmin;
+    data['dateBanned'] = this.dateBanned;
+    data['banTime'] = this.banTime;
+    data['isPermanentlyBan'] = this.isPermanentlyBan;
 
     return data;
   }

@@ -104,6 +104,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dart_ipify",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/dart_ipify-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "dio",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/dio-4.0.4",
       "packageUri": "lib/",
@@ -482,6 +488,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "searchfield",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/searchfield-0.6.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "share",
       "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4",
       "packageUri": "lib/",
@@ -608,7 +620,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-04-08T16:43:28.072094Z",
+  "generated": "2022-04-23T17:45:23.011152Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }

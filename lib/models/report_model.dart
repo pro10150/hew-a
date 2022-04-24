@@ -7,6 +7,7 @@ class ReportModel {
   int? about;
   String? text;
   String? date;
+  int? isSolve;
 
   ReportModel(
       {this.id,
@@ -16,17 +17,19 @@ class ReportModel {
       this.reportedRecipeId,
       required this.about,
       this.text,
-      required this.date});
+      required this.date,
+      this.isSolve});
 
   ReportModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     uid = json['uid'];
     type = json['type'];
-    reportedUid = json['recportedUid'];
+    reportedUid = json['reportedUid'];
     reportedRecipeId = json['reportedRecipeId'];
     about = json['about'];
     text = json['text'];
     date = json['date'];
+    isSolve = json['isSolve'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class ReportModel {
     data['about'] = this.about;
     data['text'] = this.text;
     data['date'] = this.date;
+    data['isSolve'] = this.isSolve;
 
     return data;
   }

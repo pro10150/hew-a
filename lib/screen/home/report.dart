@@ -39,7 +39,7 @@ class _ReportPageState extends State<ReportPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ReportUser(userModel)));
+                          builder: (context) => ReportUser(menuRecipeModel)));
                 },
                 style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(Size(300, 45)),

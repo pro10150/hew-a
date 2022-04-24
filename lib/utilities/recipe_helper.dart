@@ -472,19 +472,19 @@ class RecipeHelper {
     return recipeModels;
   }
 
-  Future<List<RecipeModel>> readDataFromSQLiteRecipe(RecipeModel recipeModel) async {
+  Future<List<RecipeModel>> readDataFromSQLiteRecipe(
+      RecipeModel recipeModel) async {
     Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
 
     List<Map<String, dynamic>> maps = await database.query(tableDatabase,
         where:
-        '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
+            '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
         whereArgs: [
           recipeModel.menuId,
           recipeModel.recipeName,
           recipeModel.recipeUid
-        ]
-    );
+        ]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
@@ -561,7 +561,7 @@ class RecipeHelper {
     } else {
       List<Map<String, dynamic>> maps = await database.query(tableDatabase,
           where:
-          '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
+              '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
           whereArgs: recommendation);
       for (var map in maps) {
         RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -572,6 +572,15 @@ class RecipeHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase, where: '$idColumn = $id');
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
+  Future<Null> deleteDataWhereUser(String id) async {
     Database database = await connectedDatabase();
     try {
       await database.delete(tableDatabase, where: '$uidColumn = $id');

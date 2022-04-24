@@ -1935,11 +1935,20 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                             _selectedIngredients.length,
                                             (index) {
                                           return ActionChip(
-                                              label: isPrimarys[index] == false
-                                                  ? Text(
-                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}')
-                                                  : Text(
-                                                      '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient'),
+                                              backgroundColor:
+                                                  isPrimarys[index] == false
+                                                      ? Colors.grey[200]
+                                                      : Palette.roseBud,
+                                              label: Text(
+                                                _selectedIngredientsCount[
+                                                            index] !=
+                                                        0
+                                                    ? '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'
+                                                    : '${_selectedIngredients[index]}  ${_selectedIngredientsUnit[index]}',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              ),
                                               onPressed: () {
                                                 buildEditWidget(index);
                                               });
@@ -2102,23 +2111,21 @@ class _RecipeStep1State extends State<RecipeStep1> {
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
                                               Chip(
-                                                label: isPrimarys[index] ==
-                                                        false
-                                                    ? Text(
-                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 16),
-                                                      )
-                                                    : Text(
-                                                        '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]} Primary ingredient',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 16),
-                                                      ),
-                                              ),
+                                                  backgroundColor:
+                                                      isPrimarys[index] == false
+                                                          ? Colors.grey[200]
+                                                          : Palette.roseBud,
+                                                  label: Text(
+                                                    _selectedIngredientsCount[
+                                                                index] !=
+                                                            0
+                                                        ? '${_selectedIngredients[index]}  ${_selectedIngredientsCount[index]}  ${_selectedIngredientsUnit[index]}'
+                                                        : '${_selectedIngredients[index]}  ${_selectedIngredientsUnit[index]}',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  )),
                                             ],
                                           ),
                                         ]));

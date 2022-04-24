@@ -123,6 +123,16 @@ class LikeHelper {
     }
   }
 
+  Future<Null> deleteDataWhereUser(String id) async {
+    Database database = await connectedDatabase();
+    try {
+      await database
+          .delete(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

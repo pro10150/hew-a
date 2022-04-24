@@ -59,6 +59,8 @@ dependencies:
   like_button: ^2.0.4
   dio: ^4.0.4
   get: ^4.6.1
+  dart_ipify: ^1.1.1
+  searchfield: ^0.6.4
 
 dev_dependencies:
   flutter_test:
