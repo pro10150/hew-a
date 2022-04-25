@@ -131,6 +131,33 @@ class _EditRecipeState extends State<EditRecipe> {
       });
       // RecipeHelper().updateDataToSQLite(recipeModel!);
     });
+
+    ReKitchenwareHelper()
+        .readDataFromSQLiteWhereId(recipeModel!.id!)
+        .then((value) {
+      print(value);
+      setState(() {
+        reKitchenwareModel  = value.first;
+        if ( reKitchenwareModel!.kitchenwareId != null) {
+          _selectedKitchenware =  reKitchenwareModel!.kitchenwareId as List<String>;
+        }
+
+      });
+    });
+
+    ReStepHelper()
+        .readDataFromSQLiteWhereId(recipeModel!.id!)
+        .then((value) {
+      print(value);
+      setState(() {
+        reStepModel = value.first;
+        if (reStepModel!.description != null) {
+          _descStepControllers[0].text = reStepModel!.description!;
+        }
+        _timeStepControllers[0].text = reStepModel!.minute!.toString();
+
+      });
+    });
   }
 
 
@@ -141,9 +168,9 @@ class _EditRecipeState extends State<EditRecipe> {
         .then((value) {
       print(value);
       setState(() {
-        reKitch  = value;
-        if (reKitch[0].kitchenwareId != null) {
-          _selectedKitchenware = reKitch[0].kitchenwareId as List<String>;
+        reKitchenwareModel  = value.first;
+        if ( reKitchenwareModel!.kitchenwareId != null) {
+          _selectedKitchenware =  reKitchenwareModel!.kitchenwareId as List<String>;
         }
 
       });
@@ -1312,13 +1339,14 @@ class _EditRecipeState extends State<EditRecipe> {
     // TODO: implement initState
     super.initState();
     // getKitchenware();
+    getRecipe();
     readSQLite();
     readSQLiteKitch();
     readSQLiteMenuRecipe();
     readSQLiteRecipe();
     getRecipeSteps();
-    getKitchenwares();
-    getRecipe();
+
+
     // getReStep();
 
 
