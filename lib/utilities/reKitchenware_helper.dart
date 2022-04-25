@@ -127,6 +127,18 @@ class ReKitchenwareHelper {
     return reKitchenwareModels;
   }
 
+  Future<List<ReKitchenwareModel>> readDataFromSQLiteWhereId(int id) async {
+    Database database = await connectedDatabase();
+    List<ReKitchenwareModel> reKitchenwareModels = [];
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel.fromJson(map);
+      reKitchenwareModels.add(reKitchenwareModel);
+    }
+    return reKitchenwareModels;
+  }
+
   Future<List<ReKitchenwareModel>> readDataFromSQLiteWhereRecipe(
       String recipeId) async {
     Database database = await connectedDatabase();

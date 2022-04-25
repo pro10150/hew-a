@@ -61,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
         if (user[0].name != null) {
           nameController.text = user[0].name!;
         }
-        usernameController.text = user[0].username!;
+         usernameController.text = user[0].username!;
       });
     });
   }

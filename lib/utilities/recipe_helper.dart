@@ -64,8 +64,8 @@ class RecipeHelper {
   Future<int> update(RecipeModel recipeModel) async {
     Database database = await connectedDatabase();
     var results = database.update(tableDatabase, recipeModel.toJson(),
-        where: '${recipeUidColumn} = ?',
-        whereArgs: [recipeModel.recipeUid]);
+        where: '${idColumn} = ?',
+        whereArgs: [recipeModel.id]);
     return results;
   }
 
@@ -461,8 +461,8 @@ class RecipeHelper {
     Database database = await connectedDatabase();
     try {
       database.update(tableDatabase, recipeModel.toJson(),
-          where: '${recipeUidColumn} = ? AND ${recipeNameColumn} = ?',
-          whereArgs: [recipeModel.recipeUid, recipeModel.recipeName]);
+          where: '${idColumn} = ?',
+          whereArgs: [recipeModel.id]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
@@ -516,6 +516,18 @@ class RecipeHelper {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
       print(map);
+    }
+    return recipeModels;
+  }
+
+  Future<List<RecipeModel>> readDataFromSQLiteWhereId(int id) async {
+    Database database = await connectedDatabase();
+    List<RecipeModel> recipeModels = [];
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      RecipeModel recipeModel = RecipeModel.fromJson(map);
+      recipeModels.add(recipeModel);
     }
     return recipeModels;
   }

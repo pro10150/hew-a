@@ -3,15 +3,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hewa/models/Recipe_model.dart';
-import 'package:hewa/models/menu_model.dart';
 import 'package:hewa/models/reImageStep_model.dart';
-import 'package:hewa/models/reIngredIngred_model.dart';
 import 'package:hewa/models/reKitchenware_model.dart';
 import 'package:hewa/models/reStep_model.dart';
-import 'package:hewa/models/userIngred_model.dart';
 import 'package:hewa/utilities/menu.helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/reImageStep_helper.dart';
@@ -20,19 +15,16 @@ import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/utilities/reKitchenware_helper.dart';
 import 'package:hewa/utilities/reStep_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as p;
 import 'dart:io' as io;
 import '../../config/palette.dart';
 import '../menu_detail/detailed_recipe.dart';
-import 'recipe_step_2.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/models/kitch_model.dart';
 import 'package:hewa/utilities/kitch_helper.dart';
 import 'package:hewa/models/ingred_model.dart';
-import 'package:hewa/utilities/reIngred_helper.dart';
 import 'package:hewa/models/reIngred_model.dart';
 import 'package:hewa/models/step_model.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
@@ -40,7 +32,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hewa/screen/launcher.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:core';
@@ -48,6 +39,7 @@ import 'package:hewa/screen/add/DynamicWidget.dart';
 
 class EditRecipe extends StatefulWidget {
   MenuRecipeModel menuRecipeModel;
+
 
   EditRecipe(this.menuRecipeModel);
 
@@ -112,41 +104,96 @@ class _EditRecipeState extends State<EditRecipe> {
   int _kitchenwareCount = 1;
   int _ingredientsCount = 1;
 
+
+  List<MenuRecipeModel> menuRecipes = [];
+  List<RecipeModel> recipes = [];
+  List<ReKitchenwareModel> reKitch = [];
+
+
+  Future<String?> getRecipe() async {
+
+    RecipeHelper()
+        .readDataFromSQLiteWhereId(menuRecipeModel.id!)
+        .then((value) {
+      print(value);
+      setState(() {
+        recipeModel = value.first;
+        if (recipeModel!.recipeName != null) {
+          recipeController.text = recipeModel!.recipeName!;
+        }
+        desc1Controller.text = recipeModel!.description!;
+        calController.text = recipeModel!.calories!.toString();
+        carboController.text = recipeModel!.carb!.toString();
+        proteinController.text = recipeModel!.protein!.toString();
+        fatController.text = recipeModel!.fat!.toString();
+        _selectedMethod = recipeModel!.method!;
+        _selectedType = recipeModel!.type!;
+      });
+      // RecipeHelper().updateDataToSQLite(recipeModel!);
+    });
+  }
+
+
+  getKitchenwares() async {
+
+    ReKitchenwareHelper()
+        .readDataFromSQLiteWhereId(recipeModel!.id!)
+        .then((value) {
+      print(value);
+      setState(() {
+        reKitch  = value;
+        if (reKitch[0].kitchenwareId != null) {
+          _selectedKitchenware = reKitch[0].kitchenwareId as List<String>;
+        }
+
+      });
+    });
+  }
+
+  List<ReStepModel> reStepp = [];
+
+  getReStep() async {
+
+    ReStepHelper()
+        .readDataFromSQLiteWhereRecipe(recipeModel!.recipeUid!)
+        .then((value) {
+      print(value);
+      setState(() {
+        reStepModel = value.first;
+        if (reStepModel!.description != null) {
+          _descStepControllers[0].text = reStepModel!.description!;
+        }
+        _timeStepControllers[0].text = reStepModel!.minute!.toString();
+
+      });
+    });
+  }
+
+
   updateRecipes() async {
-    String recipemenu = recipeController.text;
-    String desc1menu = desc1Controller.text;
-    double calmenu =
-        calController.text != '' ? double.parse(calController.text) : 0;
-    double proteinmenu =
-        proteinController.text != '' ? double.parse(proteinController.text) : 0;
-    double carbomenu =
-        carboController.text != '' ? double.parse(carboController.text) : 0;
-    double fatmenu =
-        fatController.text != '' ? double.parse(fatController.text) : 0;
-    // String desc2menu = desc2Controller.text;
 
-    recipeModel = RecipeModel(
-        recipeUid: _auth.currentUser!.uid,
-        recipeName: recipemenu,
-        description: desc1menu,
-        menuId: menuRecipeModel.id,
-        timeMinute: _selectedHour * 60 + _selectedMinute,
-        method: _selectedMethod,
-        type: _selectedType,
-        calories: calmenu,
-        protein: proteinmenu,
-        carb: carbomenu,
-        fat: fatmenu);
-    // int resultrec;
-    // resultrec = await RecipeHelper().update(recipeModel!);
-    await RecipeHelper().updateDataToSQLite(recipeModel!);
-    print(recipeModel!.recipeName);
+    // String recipemenu = recipeController.text;
+    // String desc1menu = desc1Controller.text;
+    // double calmenu =
+    //     calController.text != '' ? double.parse(calController.text) : 0;
+    // double proteinmenu =
+    //     proteinController.text != '' ? double.parse(proteinController.text) : 0;
+    // double carbomenu =
+    //     carboController.text != '' ? double.parse(carboController.text) : 0;
+    // double fatmenu =
+    //     fatController.text != '' ? double.parse(fatController.text) : 0;
 
-    // if (resultrec != 0) {
-    //   print('Success Update Recipe');
-    // } else {
-    //   print('Failed');
-    // }
+   recipeModel!.recipeName = recipeController.text;
+
+
+    int resultrec;
+    resultrec = await RecipeHelper().update(recipeModel!);
+
+    if (resultrec != 0) {
+      print('Success Update Recipe');
+    } else {
+      print('Failed');
+    }
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
@@ -158,14 +205,17 @@ class _EditRecipeState extends State<EditRecipe> {
     print(object.first.id);
 
     for (var i = 0; i < _selectedKitchenware.length; i++) {
-      ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-          recipeId: object.first.id.toString(),
-          kitchenwareId: kitchenwareModel
-              .where((element) => element.nameKitc == _selectedKitchenware[i])
-              .first
-              .id);
+      // ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
+      //     recipeId: object.first.id.toString(),
+      //     kitchenwareId: kitchenwareModel
+      //         .where((element) => element.nameKitc == _selectedKitchenware[i])
+      //         .first
+      //         .id);
+
+      _selectedKitchenware[i] = _selectedKitchenware as String;
+
       int resultkitc;
-      resultkitc = await ReKitchenwareHelper().update(reKitchenwareModel);
+      resultkitc = await ReKitchenwareHelper().update(reKitchenwareModel!);
 
       if (resultkitc != 0) {
         print('Success Kitchenware');
@@ -1169,106 +1219,6 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  // Widget _getRecipeStep() {
-  //   return Column(
-  //     children: <Widget>[
-  //       Container(
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.only(
-  //               topLeft: Radius.circular(20),
-  //               topRight: Radius.circular(20),
-  //               bottomLeft: Radius.circular(20),
-  //               bottomRight: Radius.circular(20)),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.5),
-  //               spreadRadius: 3,
-  //               blurRadius: 9,
-  //               offset: Offset(0, 3), // changes position of shadow
-  //             ),
-  //           ],
-  //         ),
-  //         margin: EdgeInsets.all(15),
-  //         child: Column(children: <Widget>[
-  //           SizedBox(height: 10),
-  //           Align(
-  //             alignment: Alignment.centerLeft,
-  //             child: Container(
-  //                 margin: EdgeInsets.only(left: 10),
-  //                 child: Text(
-  //                   'Step 1',
-  //                   style: TextStyle(fontSize: 18),
-  //                 )),
-  //           ),
-  //           Container(
-  //             margin: EdgeInsets.all(5),
-  //             child: Row(
-  //               children: <Widget>[
-  //                 Container(
-  //                   width: 20,
-  //                 ),
-  //                 Flexible(
-  //                   // child: RichText(
-  //                   //   overflow: TextOverflow.visible,
-  //                   //   text: TextSpan(
-  //                   //     text:
-  //                   //     'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s.',
-  //                   //     style: TextStyle(
-  //                   //       color: Colors.black,
-  //                   //       fontSize: 16,
-  //                   //     ),
-  //                   //   ),
-  //                   //   strutStyle: StrutStyle(
-  //                   //     fontSize: 18,
-  //                   //     fontWeight: FontWeight.bold,
-  //                   //   ),
-  //                   // ),
-  //                   child: Text('${desc2Controller.text}'),
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //           GFButton(
-  //             onPressed: () {},
-  //             text: '5 min',
-  //             textColor: Colors.black,
-  //             shape: GFButtonShape.pills,
-  //             type: GFButtonType.outline2x,
-  //             color: Colors.black,
-  //           )
-  //         ]),
-  //       ),
-  //       SizedBox(height: 5),
-  //       Container(
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.only(
-  //               topLeft: Radius.circular(20),
-  //               topRight: Radius.circular(20),
-  //               bottomLeft: Radius.circular(20),
-  //               bottomRight: Radius.circular(20)),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.5),
-  //               spreadRadius: 3,
-  //               blurRadius: 9,
-  //               offset: Offset(0, 3), // changes position of shadow
-  //             ),
-  //           ],
-  //         ),
-  //         margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-  //         child: ClipRRect(
-  //           borderRadius: BorderRadius.circular(20),
-  //           child: Image(
-  //             image: AssetImage('lib/assets/menu_detail/recipe.png'),
-  //             fit: BoxFit.cover,
-  //           ),
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
 
   getRecipeSteps() async {
     setState(() {
@@ -1367,6 +1317,14 @@ class _EditRecipeState extends State<EditRecipe> {
     readSQLiteMenuRecipe();
     readSQLiteRecipe();
     getRecipeSteps();
+    getKitchenwares();
+    getRecipe();
+    // getReStep();
+
+
+
+
+
   }
 
   int _index = 0;
