@@ -123,8 +123,8 @@ class _DetailedRecipeState extends State<DetailedRecipe>
         });
       }
 
-      var images = await ReImageStepHelper().readDataFromSQLiteWhereStep(
-          int.parse(object.recipeId!), object.recipeId);
+      var images = await ReImageStepHelper()
+          .readDataFromSQLiteWhereStep(int.parse(object.recipeId!), object.id);
       List<String> tempUrls = [];
       for (var image in images) {
         var ref =
@@ -480,37 +480,52 @@ class _DetailedRecipeState extends State<DetailedRecipe>
           ]),
         ),
         images.length > 0
-            ? GridView.builder(
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40),
-                          bottomLeft: Radius.circular(40),
-                          bottomRight: Radius.circular(40)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 9,
-                          offset: Offset(0, 3), // changes position of shadow
+            ? Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.height * 0.3,
+                alignment: Alignment.center,
+                child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: MediaQuery.of(context).size.width,
+                      crossAxisSpacing: 20.0,
+                      mainAxisSpacing: 20.0,
+                    ),
+                    itemCount: images.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 9,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: Image(
-                        image: NetworkImage(imageUrls[index]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  );
-                })
+                        margin:
+                            EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: Image(
+                                image: NetworkImage(imageUrls[i]),
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                      );
+                    }))
             : Container()
       ],
     );
