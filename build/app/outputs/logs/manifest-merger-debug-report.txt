@@ -14,6 +14,7 @@ MERGED from [:flutter_plugin_android_lifecycle] C:\Users\66931\Documents\project
 MERGED from [:sqflite] C:\Users\66931\Documents\projects\hew-a\build\sqflite\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:path_provider_android] C:\Users\66931\Documents\projects\hew-a\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:image_cropper] C:\Users\66931\Documents\projects\hew-a\build\image_cropper\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:uri_to_file] C:\Users\66931\Documents\projects\hew-a\build\uri_to_file\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:flutter_ringtone_player] C:\Users\66931\Documents\projects\hew-a\build\flutter_ringtone_player\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:search_choices] C:\Users\66931\Documents\projects\hew-a\build\search_choices\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:share] C:\Users\66931\Documents\projects\hew-a\build\share\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-19:12
@@ -240,6 +241,8 @@ MERGED from [:path_provider_android] C:\Users\66931\Documents\projects\hew-a\bui
 MERGED from [:path_provider_android] C:\Users\66931\Documents\projects\hew-a\build\path_provider_android\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:image_cropper] C:\Users\66931\Documents\projects\hew-a\build\image_cropper\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:image_cropper] C:\Users\66931\Documents\projects\hew-a\build\image_cropper\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:uri_to_file] C:\Users\66931\Documents\projects\hew-a\build\uri_to_file\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:uri_to_file] C:\Users\66931\Documents\projects\hew-a\build\uri_to_file\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_ringtone_player] C:\Users\66931\Documents\projects\hew-a\build\flutter_ringtone_player\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:flutter_ringtone_player] C:\Users\66931\Documents\projects\hew-a\build\flutter_ringtone_player\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:search_choices] C:\Users\66931\Documents\projects\hew-a\build\search_choices\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44

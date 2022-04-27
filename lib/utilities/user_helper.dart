@@ -133,7 +133,7 @@ class UserHelper {
           [uid]);
     } else {
       maps = await database.query(tableDatabase,
-          limit: 6, where: '$uidColumn NOT LIKE "%?%"', whereArgs: [uid]);
+          limit: 6, where: '$uidColumn <> ?', whereArgs: [uid]);
     }
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);

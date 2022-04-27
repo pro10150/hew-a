@@ -171,30 +171,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
     }
   }
 
-  // createIngres() async {
-  //   double _amount = double.parse(_amountController.text);
-  //
-  //   for (var i = 0; i < _selectedIngredients.length; i++) {
-  //     ReIngredModel reIngredModel = ReIngredModel(
-  //         recipeId: null,
-  //         ingredientId: ingredModel
-  //             .where((element) => element.name == _selectedIngredients[i])
-  //             .first
-  //             .id,
-  //         amount: _amount,
-  //         unit: _selectedIngredientsUnit[i],
-  //         isPrimary: isPrimarys[i] == true ? 1 : 0);
-  //     int resultIngre;
-  //     resultIngre = await ReIngredHelper().insert(reIngredModel);
-  //
-  //     if (resultIngre != 0) {
-  //       print('Success');
-  //     } else {
-  //       print('Failed');
-  //     }
-  //   }
-  // }
-
   createIngre() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
@@ -202,7 +178,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     for (var rei in reingredModel) {
       ReIngredModel reIngred = ReIngredModel(
           ingredientId: rei.ingredientId,
-          recipeId: object.first.id,
+          recipeId: object.first.id.toString(),
           amount: rei.amount,
           unit: rei.unit == '-' ? '' : rei.unit,
           isPrimary: rei.isPrimary);

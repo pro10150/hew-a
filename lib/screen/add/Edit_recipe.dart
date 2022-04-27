@@ -18,8 +18,11 @@ import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'dart:io' as io;
+import 'package:http/http.dart' as http;
 import '../../config/palette.dart';
+import '../../models/menu_model.dart';
 import '../menu_detail/detailed_recipe.dart';
 import 'package:hewa/utilities/ingred_helper.dart';
 import 'package:hewa/models/kitch_model.dart';
@@ -36,10 +39,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:core';
 import 'package:hewa/screen/add/DynamicWidget.dart';
+import 'package:uri_to_file/uri_to_file.dart';
 
 class EditRecipe extends StatefulWidget {
   MenuRecipeModel menuRecipeModel;
-
 
   EditRecipe(this.menuRecipeModel);
 
@@ -81,7 +84,6 @@ class _EditRecipeState extends State<EditRecipe> {
   final ingreController = TextEditingController();
   final descstepController = TextEditingController();
 
-
   RecipeHelper? recipeHelper;
   RecipeModel? recipeModel;
 
@@ -96,6 +98,7 @@ class _EditRecipeState extends State<EditRecipe> {
   ReIngredModel? reIngredModel;
 
   MenuHelper? menuHelper;
+  MenuModel? menuModel;
 
   MenuRecipeModel menuRecipeModel;
 
@@ -104,18 +107,16 @@ class _EditRecipeState extends State<EditRecipe> {
   int _kitchenwareCount = 1;
   int _ingredientsCount = 1;
 
-
   List<MenuRecipeModel> menuRecipes = [];
   List<RecipeModel> recipes = [];
   List<ReKitchenwareModel> reKitch = [];
 
-
   Future<String?> getRecipe() async {
-
-    RecipeHelper()
-        .readDataFromSQLiteWhereId(menuRecipeModel.id!)
-        .then((value) {
+    RecipeHelper().readDataFromSQLiteWhereId(menuRecipeModel.id!).then((value) {
       print(value);
+      getKitchenwares();
+      getReIngreds();
+      getReStep();
       setState(() {
         recipeModel = value.first;
         if (recipeModel!.recipeName != null) {
@@ -128,96 +129,157 @@ class _EditRecipeState extends State<EditRecipe> {
         fatController.text = recipeModel!.fat!.toString();
         _selectedMethod = recipeModel!.method!;
         _selectedType = recipeModel!.type!;
-      });
-      // RecipeHelper().updateDataToSQLite(recipeModel!);
-    });
-
-    ReKitchenwareHelper()
-        .readDataFromSQLiteWhereId(recipeModel!.id!)
-        .then((value) {
-      print(value);
-      setState(() {
-        reKitchenwareModel  = value.first;
-        if ( reKitchenwareModel!.kitchenwareId != null) {
-          _selectedKitchenware =  reKitchenwareModel!.kitchenwareId as List<String>;
-        }
-
-      });
-    });
-
-    ReStepHelper()
-        .readDataFromSQLiteWhereId(recipeModel!.id!)
-        .then((value) {
-      print(value);
-      setState(() {
-        reStepModel = value.first;
-        if (reStepModel!.description != null) {
-          _descStepControllers[0].text = reStepModel!.description!;
-        }
-        _timeStepControllers[0].text = reStepModel!.minute!.toString();
+        _selectedMinute = recipeModel!.timeMinute! % 60;
+        _selectedHour = (recipeModel!.timeMinute! / 60).floor();
 
       });
     });
   }
 
-
   getKitchenwares() async {
-
     ReKitchenwareHelper()
-        .readDataFromSQLiteWhereId(recipeModel!.id!)
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString())
         .then((value) {
-      print(value);
+      print(value.length);
       setState(() {
-        reKitchenwareModel  = value.first;
-        if ( reKitchenwareModel!.kitchenwareId != null) {
-          _selectedKitchenware =  reKitchenwareModel!.kitchenwareId as List<String>;
+        if (value.length > 0) {
+          _selectedKitchenware = [];
+          _kitchenwareCount = value.length;
+          for (var object in value) {
+            _selectedKitchenware.add(kitchenwareModel
+                .where((element) => element.id == object.kitchenwareId)
+                .first
+                .nameKitc!);
+            reKitch.add(object);
+          }
         }
-
+        // reKitchenwareModel = value.first;
+        // if (reKitchenwareModel!.kitchenwareId != null) {
+        //   _selectedKitchenware =
+        //       reKitchenwareModel!.kitchenwareId as List<String>;
+        // }
       });
     });
   }
 
   List<ReStepModel> reStepp = [];
 
-  getReStep() async {
-
-    ReStepHelper()
-        .readDataFromSQLiteWhereRecipe(recipeModel!.recipeUid!)
+  getReIngreds() async {
+    ReIngredHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString())
         .then((value) {
-      print(value);
-      setState(() {
-        reStepModel = value.first;
-        if (reStepModel!.description != null) {
-          _descStepControllers[0].text = reStepModel!.description!;
-        }
-        _timeStepControllers[0].text = reStepModel!.minute!.toString();
+      print("reingred => ${value.length}");
+      if (value.length > 0) {
+        setState(() {
+          reingredModel = [];
+          _selectedIngredients = [];
+          _selectedIngredientsCount = [];
+          _selectedIngredientsUnit = [];
 
-      });
+          for (var object in value) {
+            _selectedIngredients.add(ingredModel
+                .where((element) => element.id == object.ingredientId)
+                .first
+                .name!);
+            _selectedIngredientsCount.add(object.amount!);
+            _selectedIngredientsUnit.add(object.unit!);
+            isPrimarys.add(object.isPrimary == 0 ? false : true);
+            reingredModel.add(object);
+          }
+        });
+      }
     });
   }
 
+  getReStep() async {
+    ReStepHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString())
+        .then((value) async {
+      print(value);
+      // reStepModel = value.first;
+      if (value.length > 0) {
+        _count = value.length;
+        for (var i = 0; i < value.length; i++) {
+          var images = await ReImageStepHelper().readDataFromSQLiteWhereStep(
+              int.parse(value[i].recipeId!), value[i].id);
+          setState(() {
+            _descStepControllers.add(TextEditingController());
+            _timeStepControllers.add(TextEditingController());
+            _Stepimage.add(null);
+          });
+          print("images => ${images.length}");
+
+          setState(() {
+            if (value[i].description != null) {
+              _descStepControllers[i].text = value[i].description!;
+            }
+            if (value[i].minute != null) {
+              _timeStepControllers[i].text = value[i].minute.toString();
+            }
+          });
+          if (images.length > 0) {
+            var ref = FirebaseStorage.instance
+                .ref()
+                .child("steps")
+                .child(images.first.name!);
+            var image = await ref.getDownloadURL();
+            var imageFile = await convertUriToFile(image);
+            setState(() {
+              _Stepimage[i] = imageFile;
+            });
+          }
+        }
+      }
+      // if (reStepModel!.description != null) {
+      //   _descStepControllers[0].text = reStepModel!.description!;
+      // }
+      // _timeStepControllers[0].text = reStepModel!.minute!.toString();
+    });
+  }
+
+  convertUriToFile(url) async {
+    final http.Response responseData = await http.get(Uri.parse(url));
+    var uint8list = responseData.bodyBytes;
+    var buffer = uint8list.buffer;
+    ByteData byteData = ByteData.view(buffer);
+    var tempDir = await getTemporaryDirectory();
+    File file = await File('${tempDir.path}/img').writeAsBytes(
+        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
+  }
 
   updateRecipes() async {
+    String recipemenu = recipeController.text;
+    String desc1menu = desc1Controller.text;
+    double calmenu =
+    calController.text != '' ? double.parse(calController.text) : 0;
+    double proteinmenu =
+    proteinController.text != '' ? double.parse(proteinController.text) : 0;
+    double carbomenu =
+    carboController.text != '' ? double.parse(carboController.text) : 0;
+    double fatmenu =
+    fatController.text != '' ? double.parse(fatController.text) : 0;
+    // String desc2menu = desc2Controller.text;
 
-    // String recipemenu = recipeController.text;
-    // String desc1menu = desc1Controller.text;
-    // double calmenu =
-    //     calController.text != '' ? double.parse(calController.text) : 0;
-    // double proteinmenu =
-    //     proteinController.text != '' ? double.parse(proteinController.text) : 0;
-    // double carbomenu =
-    //     carboController.text != '' ? double.parse(carboController.text) : 0;
-    // double fatmenu =
-    //     fatController.text != '' ? double.parse(fatController.text) : 0;
+    recipeModel = RecipeModel(
 
-   recipeModel!.recipeName = recipeController.text;
-
+        recipeUid: _auth.currentUser!.uid,
+        recipeName: recipemenu,
+        description: desc1menu,
+        menuId: menuModel!.id,
+        timeMinute: _selectedHour * 60 + _selectedMinute,
+        method: _selectedMethod,
+        type: _selectedType,
+        calories: calmenu,
+        protein: proteinmenu,
+        carb: carbomenu,
+        fat: fatmenu);
 
     int resultrec;
     resultrec = await RecipeHelper().update(recipeModel!);
 
     if (resultrec != 0) {
-      print('Success Update Recipe');
+      print('Success Recipe');
     } else {
       print('Failed');
     }
@@ -225,24 +287,21 @@ class _EditRecipeState extends State<EditRecipe> {
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
 
-  updateKits() async {
+  createKits() async {
     print(kitchenwareModel.length);
 
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
 
     for (var i = 0; i < _selectedKitchenware.length; i++) {
-      // ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
-      //     recipeId: object.first.id.toString(),
-      //     kitchenwareId: kitchenwareModel
-      //         .where((element) => element.nameKitc == _selectedKitchenware[i])
-      //         .first
-      //         .id);
-
-      _selectedKitchenware[i] = _selectedKitchenware as String;
-
+      ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(
+          recipeId: object.first.id.toString(),
+          kitchenwareId: kitchenwareModel
+              .where((element) => element.nameKitc == _selectedKitchenware[i])
+              .first
+              .id);
       int resultkitc;
-      resultkitc = await ReKitchenwareHelper().update(reKitchenwareModel!);
+      resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
 
       if (resultkitc != 0) {
         print('Success Kitchenware');
@@ -252,20 +311,20 @@ class _EditRecipeState extends State<EditRecipe> {
     }
   }
 
-  updateIngre() async {
+  createIngre() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
 
     for (var rei in reingredModel) {
       ReIngredModel reIngred = ReIngredModel(
           ingredientId: rei.ingredientId,
-          recipeId: object.first.id,
+          recipeId: object.first.id.toString(),
           amount: rei.amount,
           unit: rei.unit == '-' ? '' : rei.unit,
           isPrimary: rei.isPrimary);
 
       int resultIngred;
-      resultIngred = await ReIngredHelper().update(reIngred);
+      resultIngred = await ReIngredHelper().insert(reIngred);
 
       if (resultIngred != 0) {
         print('Success Ingredient');
@@ -274,6 +333,7 @@ class _EditRecipeState extends State<EditRecipe> {
       }
     }
   }
+
 
   bool flagAdd = false;
 
@@ -905,7 +965,7 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  updateReStep() async {
+  addReStep() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
     print(object.first.id);
 
@@ -1010,10 +1070,9 @@ class _EditRecipeState extends State<EditRecipe> {
   List<String> _selectedIngredientsUnit = [];
   List<double> _selectedIngredientsCount = [];
 
-
   Future<Null> readSQLite() async {
     var object = await IngredHelper().readlDataFromSQLite();
-    print('object length ==> ${object.length}');
+    print('ingredients length ==> ${object.length}');
     ingredients.clear();
     for (var model in object) {
       print(model);
@@ -1024,7 +1083,7 @@ class _EditRecipeState extends State<EditRecipe> {
 
   Future<Null> readSQLiteMenuRecipe() async {
     var object = await MenuRecipeHelper().readDataFromSQLite();
-    print('object length ==> ${object.length}');
+    print('menurecipe length ==> ${object.length}');
     setState(() {
       menuRecipeModel = object.first;
       print(object.first.id);
@@ -1033,7 +1092,7 @@ class _EditRecipeState extends State<EditRecipe> {
 
   Future<Null> readSQLiteRecipe() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-    print('object length ==> ${object.length}');
+    print('recipe length ==> ${object.length}');
     setState(() {
       recipeModel = object.first;
       print(object.first.id);
@@ -1246,7 +1305,6 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-
   getRecipeSteps() async {
     setState(() {
       urls = [];
@@ -1312,8 +1370,39 @@ class _EditRecipeState extends State<EditRecipe> {
                   textColor: Colors.black,
                   color: color,
                   disabledColor: Colors.black,
-                  onPressed: () {
+                  onPressed: ()  async {
+
                     updateRecipes();
+
+                    await ReKitchenwareHelper()
+                        .deleteDataWhereUser(recipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReKit');
+                    });
+                    createKits();
+
+                    await ReStepHelper()
+                        .deleteDataWhereRecipe(recipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReStep');
+                    });
+                    await ReImageStepHelper()
+                        .deleteDataWhereRecipeimage(
+                        recipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReImStep');
+                    });
+                    addReStep();
+
+                    await ReIngredHelper()
+                        .deleteDataWhereUser(recipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReIngre');
+                    });
+                    createIngre();
+
+
+
                     // updateKits();
                     // updateReStep();
                     // updateIngre();
@@ -1343,16 +1432,10 @@ class _EditRecipeState extends State<EditRecipe> {
     readSQLite();
     readSQLiteKitch();
     readSQLiteMenuRecipe();
-    readSQLiteRecipe();
-    getRecipeSteps();
-
+    // readSQLiteRecipe();
+    // getRecipeSteps();
 
     // getReStep();
-
-
-
-
-
   }
 
   int _index = 0;
@@ -1387,7 +1470,7 @@ class _EditRecipeState extends State<EditRecipe> {
                   // if (_index != 0)
                   _index == 0
                       ? RaisedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_index <= 1) {
                               setState(() {
                                 _index += 1;

@@ -1,5 +1,5 @@
 class ReIngredModel {
-  int? recipeId;
+  String? recipeId;
   int? ingredientId;
   double? amount;
   String? unit;

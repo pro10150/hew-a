@@ -587,7 +587,7 @@ class ReIngredHelper {
     try {
       ingred.forEachIndexed((index, element) {
         ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: element['recipeId'] as int,
+          recipeId: element['recipeId'].toString(),
           ingredientId: element['ingredId'] as int,
         );
         if (element['amount'] != null) {
