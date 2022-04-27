@@ -13,9 +13,12 @@ import 'package:hewa/utilities/method_helper.dart';
 import 'package:hewa/models/method_model.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
+import 'package:hewa/models/follow_model.dart';
+import 'package:hewa/utilities/follow_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:hewa/config/palette.dart';
 import 'menu_detail/menu_detail.dart';
+import 'profile/otherPeople.dart';
 
 class Search extends StatefulWidget {
   static const routeName = '/';
@@ -69,6 +72,8 @@ class _SearchState extends State<Search> {
       setState(() {});
     });
     MethodHelper().readDataFromSQLite().then((methods) {
+      MethodModel methodModel = MethodModel(nameMethod: "All");
+      method_list.add(methodModel);
       for (var model in methods) {
         method_list.add(model);
       }
@@ -76,12 +81,17 @@ class _SearchState extends State<Search> {
     });
   }
 
+  getUserFollowers(UserModel userModel) {
+    var objects = FollowHelper().getFollower(userModel.uid!);
+    return objects;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userHelper = UserHelper();
-    userHelper.allUser().then((tableDatabase) {
+    userHelper.readlDataFromSQLite().then((tableDatabase) {
       setState(() {
         allUser = tableDatabase;
         items = allUser;
@@ -318,6 +328,26 @@ class _SearchState extends State<Search> {
   //     // )),
   //   );
   // }
+
+  filterMethod(MethodModel methodModel) {
+    if (methodModel.nameMethod != "All") {
+      setState(() {
+        filter = [];
+        for (var object in menu) {
+          if (object.method == methodModel.nameMethod) {
+            filter.add(object);
+          }
+        }
+      });
+    } else {
+      setState(() {
+        filter = [];
+        for (var object in menu) {
+          filter.add(object);
+        }
+      });
+    }
+  }
 
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -767,27 +797,112 @@ class _SearchState extends State<Search> {
                             ? ListView.builder(
                                 itemCount: items.length,
                                 itemBuilder: (context, i) {
-                                  UserModel usermod =
-                                      UserModel.fromJson(items[i]);
-                                  return Card(
-                                    color: Colors.white,
-                                    margin: EdgeInsets.all(3),
-                                    child: ListTile(
-                                      leading: Icon(
-                                        Icons.perm_identity,
-                                        size: 40,
-                                      ),
-                                      title: Text('${usermod.username}',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold)),
-                                      subtitle: Text('Follow : 0'),
-                                      trailing: IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.more_vert),
-                                      ),
-                                    ),
-                                  );
+                                  var url;
+                                  if (items[i].image != null) {
+                                    final ref = FirebaseStorage.instance
+                                        .ref()
+                                        .child('menus')
+                                        .child(items[i].image!);
+                                    url = ref.getDownloadURL();
+                                  }
+                                  var followers = getUserFollowers(items[i]);
+
+                                  return url != null
+                                      ? FutureBuilder<String>(
+                                          future: url,
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              return GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) {
+                                                      return OtherProfile(
+                                                          snapshot.data!,
+                                                          items[i].uid);
+                                                    }));
+                                                  },
+                                                  child: Card(
+                                                    color: Colors.white,
+                                                    margin: EdgeInsets.all(3),
+                                                    child: ListTile(
+                                                        leading: Image.network(
+                                                            snapshot.data!),
+                                                        title: Text(
+                                                            '${items[i].username}',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                        subtitle: FutureBuilder<
+                                                                List<
+                                                                    FollowModel>>(
+                                                            future: followers,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                return Text(
+                                                                    'Follow : ${snapshot.data!.length}');
+                                                              } else {
+                                                                return Text(
+                                                                    'Follow : 0');
+                                                              }
+                                                            })
+
+                                                        // trailing: IconButton(
+                                                        //   onPressed: () {},
+                                                        //   icon: Icon(Icons.more_vert),
+                                                        // ),
+                                                        ),
+                                                  ));
+                                            } else {
+                                              return CircularProgressIndicator();
+                                            }
+                                          })
+                                      : GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return OtherProfile(
+                                                  "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                                  items[i].uid);
+                                            }));
+                                          },
+                                          child: Card(
+                                            color: Colors.white,
+                                            margin: EdgeInsets.all(3),
+                                            child: ListTile(
+                                                leading: Image.network(
+                                                    "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
+                                                title: Text(
+                                                    '${items[i].username}',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                subtitle: FutureBuilder<
+                                                        List<FollowModel>>(
+                                                    future: followers,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        return Text(
+                                                            'Follow : ${snapshot.data!.length}');
+                                                      } else {
+                                                        return Text(
+                                                            'Follow : 0');
+                                                      }
+                                                    })
+
+                                                // trailing: IconButton(
+                                                //   onPressed: () {},
+                                                //   icon: Icon(Icons.more_vert),
+                                                // ),
+                                                ),
+                                          ));
                                 })
                             : Text(
                                 'No results found',
@@ -865,25 +980,103 @@ class _SearchState extends State<Search> {
                       ? ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (context, i) {
-                            UserModel usermod = UserModel.fromJson(items[i]);
-                            return Card(
-                              margin: EdgeInsets.all(8),
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.perm_identity,
-                                  size: 40,
-                                ),
-                                title: Text('${usermod.username}',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                                subtitle: Text('Follow : 0'),
-                                trailing: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.more_vert),
-                                ),
-                              ),
-                            );
+                            var url;
+                            if (items[i].image != null) {
+                              final ref = FirebaseStorage.instance
+                                  .ref()
+                                  .child('menus')
+                                  .child(items[i].image!);
+                              url = ref.getDownloadURL();
+                            }
+                            var followers = getUserFollowers(items[i]);
+                            return url != null
+                                ? FutureBuilder<String>(
+                                    future: url,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return OtherProfile(
+                                                    snapshot.data!,
+                                                    items[i].uid);
+                                              }));
+                                            },
+                                            child: Card(
+                                              color: Colors.white,
+                                              margin: EdgeInsets.all(3),
+                                              child: ListTile(
+                                                  leading: Image.network(
+                                                      snapshot.data!),
+                                                  title: Text(
+                                                      '${items[i].username}',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                  subtitle: FutureBuilder<
+                                                          List<FollowModel>>(
+                                                      future: followers,
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        if (snapshot.hasData) {
+                                                          return Text(
+                                                              'Follow : ${snapshot.data!.length}');
+                                                        } else {
+                                                          return Text(
+                                                              'Follow : 0');
+                                                        }
+                                                      })
+
+                                                  // trailing: IconButton(
+                                                  //   onPressed: () {},
+                                                  //   icon: Icon(Icons.more_vert),
+                                                  // ),
+                                                  ),
+                                            ));
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
+                                    })
+                                : GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return OtherProfile(
+                                            "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                            items[i].uid);
+                                      }));
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      margin: EdgeInsets.all(3),
+                                      child: ListTile(
+                                          leading: Image.network(
+                                              "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
+                                          title: Text('${items[i].username}',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold)),
+                                          subtitle:
+                                              FutureBuilder<List<FollowModel>>(
+                                                  future: followers,
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      return Text(
+                                                          'Follow : ${snapshot.data!.length}');
+                                                    } else {
+                                                      return Text('Follow : 0');
+                                                    }
+                                                  })
+
+                                          // trailing: IconButton(
+                                          //   onPressed: () {},
+                                          //   icon: Icon(Icons.more_vert),
+                                          // ),
+                                          ),
+                                    ));
                           })
                       : Padding(
                           padding: EdgeInsets.only(top: 50),
@@ -928,7 +1121,10 @@ class _SearchState extends State<Search> {
                                 itemCount: method_list.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
-                                    onTap: () => setState(() => _value = index),
+                                    onTap: () => setState(() {
+                                      _value = index;
+                                      filterMethod(method_list[index]);
+                                    }),
                                     child: Container(
                                       width: 70,
                                       child: Card(

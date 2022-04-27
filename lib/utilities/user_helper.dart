@@ -105,7 +105,9 @@ class UserHelper {
     List<Map<String, dynamic>> maps = await database.query(tableDatabase);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
-      userModels.add(userModel);
+      if (userModel.isAdmin != 1) {
+        userModels.add(userModel);
+      }
     }
     return userModels;
   }

@@ -3,7 +3,7 @@ class MethodModel {
   String? nameMethod;
 
   MethodModel({
-    required this.methodid,
+    this.methodid,
     required this.nameMethod,
   });
 
