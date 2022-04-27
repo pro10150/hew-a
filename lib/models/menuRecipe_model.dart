@@ -51,7 +51,7 @@ class MenuRecipeModel {
     calories = json['calories'];
     protein = json['protein'];
     carb = json['carb'];
-    fat = json['carb'];
+    fat = json['fat'];
     nameMenu = json['nameMenu'];
     mainIngredient = json['mainIngredient'];
     userID = json['userID'];

@@ -131,7 +131,6 @@ class _EditRecipeState extends State<EditRecipe> {
         _selectedType = recipeModel!.type!;
         _selectedMinute = recipeModel!.timeMinute! % 60;
         _selectedHour = (recipeModel!.timeMinute! / 60).floor();
-
       });
     });
   }
@@ -208,6 +207,7 @@ class _EditRecipeState extends State<EditRecipe> {
             _Stepimage.add(null);
           });
           print("images => ${images.length}");
+          // print(images[0].name);
 
           setState(() {
             if (value[i].description != null) {
@@ -229,6 +229,10 @@ class _EditRecipeState extends State<EditRecipe> {
             });
           }
         }
+        for (var i in _Stepimage) {
+          print(i.path);
+        }
+        print(_Stepimage.length);
       }
       // if (reStepModel!.description != null) {
       //   _descStepControllers[0].text = reStepModel!.description!;
@@ -243,8 +247,9 @@ class _EditRecipeState extends State<EditRecipe> {
     var buffer = uint8list.buffer;
     ByteData byteData = ByteData.view(buffer);
     var tempDir = await getTemporaryDirectory();
-    File file = await File('${tempDir.path}/img').writeAsBytes(
-        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    File file = await File('${tempDir.path}/' + DateTime.now().toString())
+        .writeAsBytes(
+            buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
     return file;
   }
 
@@ -252,34 +257,44 @@ class _EditRecipeState extends State<EditRecipe> {
     String recipemenu = recipeController.text;
     String desc1menu = desc1Controller.text;
     double calmenu =
-    calController.text != '' ? double.parse(calController.text) : 0;
+        calController.text != '' ? double.parse(calController.text) : 0;
     double proteinmenu =
-    proteinController.text != '' ? double.parse(proteinController.text) : 0;
+        proteinController.text != '' ? double.parse(proteinController.text) : 0;
     double carbomenu =
-    carboController.text != '' ? double.parse(carboController.text) : 0;
+        carboController.text != '' ? double.parse(carboController.text) : 0;
     double fatmenu =
-    fatController.text != '' ? double.parse(fatController.text) : 0;
+        fatController.text != '' ? double.parse(fatController.text) : 0;
     // String desc2menu = desc2Controller.text;
 
-    recipeModel = RecipeModel(
-
-        recipeUid: _auth.currentUser!.uid,
-        recipeName: recipemenu,
-        description: desc1menu,
-        menuId: menuModel!.id,
-        timeMinute: _selectedHour * 60 + _selectedMinute,
-        method: _selectedMethod,
-        type: _selectedType,
-        calories: calmenu,
-        protein: proteinmenu,
-        carb: carbomenu,
-        fat: fatmenu);
+    // recipeModel = RecipeModel(
+    //     recipeUid: _auth.currentUser!.uid,
+    //     recipeName: recipemenu,
+    //     description: desc1menu,
+    //     menuId: menuModel!.id,
+    //     timeMinute: _selectedHour * 60 + _selectedMinute,
+    //     method: _selectedMethod,
+    //     type: _selectedType,
+    //     calories: calmenu,
+    //     protein: proteinmenu,
+    //     carb: carbomenu,
+    //     fat: fatmenu);
+    setState(() {
+      recipeModel!.recipeName = recipemenu;
+      recipeModel!.description = desc1menu;
+      recipeModel!.timeMinute = _selectedHour * 60 + _selectedMinute;
+      recipeModel!.method = _selectedMethod;
+      recipeModel!.type = _selectedType;
+      recipeModel!.calories = calmenu;
+      recipeModel!.carb = carbomenu;
+      recipeModel!.protein = proteinmenu;
+      recipeModel!.fat = fatmenu;
+    });
 
     int resultrec;
     resultrec = await RecipeHelper().update(recipeModel!);
 
     if (resultrec != 0) {
-      print('Success Recipe');
+      print('Success Update Recipe');
     } else {
       print('Failed');
     }
@@ -333,7 +348,6 @@ class _EditRecipeState extends State<EditRecipe> {
       }
     }
   }
-
 
   bool flagAdd = false;
 
@@ -1002,7 +1016,7 @@ class _EditRecipeState extends State<EditRecipe> {
   Future uploadImageToFirebase(BuildContext context) async {
     for (int i = 0; i < _count; i++) {
       if (_Stepimage[i] != null) {
-        String fileName = p.basename(_Stepimage[i].path);
+        String fileName = DateTime.now().toString() + ".jpg";
         firebase_storage.Reference ref = firebase_storage
             .FirebaseStorage.instance
             .ref()
@@ -1370,8 +1384,7 @@ class _EditRecipeState extends State<EditRecipe> {
                   textColor: Colors.black,
                   color: color,
                   disabledColor: Colors.black,
-                  onPressed: ()  async {
-
+                  onPressed: () async {
                     updateRecipes();
 
                     await ReKitchenwareHelper()
@@ -1387,8 +1400,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       print('Delete Success ReStep');
                     });
                     await ReImageStepHelper()
-                        .deleteDataWhereRecipeimage(
-                        recipeModel!.id.toString())
+                        .deleteDataWhereRecipeimage(recipeModel!.id.toString())
                         .then((value) {
                       print('Delete Success ReImStep');
                     });
@@ -1400,8 +1412,6 @@ class _EditRecipeState extends State<EditRecipe> {
                       print('Delete Success ReIngre');
                     });
                     createIngre();
-
-
 
                     // updateKits();
                     // updateReStep();
