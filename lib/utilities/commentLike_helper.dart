@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/commentLike_model.dart';
 
-class LikeHelper {
+class CommentLikeHelper {
   final String nameDatabase = 'Hewa.db';
   final String tableDatabase = 'commentLikeTABLE';
   int version = 1;
@@ -14,7 +14,7 @@ class LikeHelper {
   final String commentIdColumn = 'commentId';
   final String uidColumn = 'uid';
 
-  LikeHelper() {
+  CommentLikeHelper() {
     initDatabase();
   }
 

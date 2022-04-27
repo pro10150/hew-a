@@ -37,7 +37,7 @@ class RecipeModel {
     calories = json['calories'];
     protein = json['protein'];
     carb = json['carb'];
-    fat = json['carb'];
+    fat = json['fat'];
     id = json['id'];
   }
 

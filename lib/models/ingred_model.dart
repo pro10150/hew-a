@@ -7,7 +7,7 @@ class IngredModel {
   String? image;
 
   IngredModel(
-      {required this.id, required this.name, this.type, required this.image});
+      {this.id, required this.name, this.type, required this.image});
 
   IngredModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

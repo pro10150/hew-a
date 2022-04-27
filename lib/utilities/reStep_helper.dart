@@ -382,6 +382,14 @@ class ReStepHelper {
     });
   }
 
+  Future<int> update(ReStepModel reStepModel) async {
+    Database database = await connectedDatabase();
+    var results = database.update(tableDatabase, reStepModel.toJson(),
+        where: '${recipeIdColumn} = ? AND ${stepColumn} = ?',
+        whereArgs: [reStepModel.recipeId, reStepModel.step]);
+    return results;
+  }
+
   Future<List<ReStepModel>> readlDataFromSQLite() async {
     Database database = await connectedDatabase();
     List<ReStepModel> reStepModels = [];
@@ -394,18 +402,26 @@ class ReStepHelper {
     return reStepModels;
   }
 
-  Future<List<ReStepModel>> readDataFromSQLiteRestep(ReStepModel reStepModel) async {
+  Future<List<ReStepModel>> readDataFromSQLiteWhereId(int id) async {
+    Database database = await connectedDatabase();
+    List<ReStepModel> reStepModels = [];
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      ReStepModel reStepModel = ReStepModel.fromJson(map);
+      reStepModels.add(reStepModel);
+    }
+    return reStepModels;
+  }
+
+  Future<List<ReStepModel>> readDataFromSQLiteRestep(
+      ReStepModel reStepModel) async {
     Database database = await connectedDatabase();
     List<ReStepModel> restepModels = [];
 
     List<Map<String, dynamic>> maps = await database.query(tableDatabase,
-        where:
-        '$recipeIdColumn = ? And $stepColumn = ?',
-        whereArgs: [
-          reStepModel.recipeId,
-          reStepModel.step
-        ]
-    );
+        where: '$recipeIdColumn = ? And $stepColumn = ?',
+        whereArgs: [reStepModel.recipeId, reStepModel.step]);
     for (var map in maps) {
       ReStepModel reStepModel = ReStepModel.fromJson(map);
       restepModels.add(reStepModel);

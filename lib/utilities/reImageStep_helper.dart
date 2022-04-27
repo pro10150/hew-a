@@ -99,6 +99,25 @@ class ReImageStepHelper {
     }
   }
 
+  Future<Null> deleteDataWhereId(String id) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase, where: '$idColumn = $id');
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
+  Future<Null> deleteDataWhereRecipeimage(String recipeId) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.rawDelete(
+          'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [recipeId]);
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
   Future<Null> deleteAlldata() async {
     Database database = await connectedDatabase();
     try {

@@ -1,0 +1,14 @@
+in/lazymanstudios/uri_to_file/BuildConfig.java
+ in.lazymanstudios.uri_to_file.BuildConfig
+in/lazymanstudios/uri_to_file/model/MethodResultWrapper.java
+ in.lazymanstudios.uri_to_file.model.MethodResultWrapper
+ in.lazymanstudios.uri_to_file.model.MethodResultWrapper$1
+ in.lazymanstudios.uri_to_file.model.MethodResultWrapper$2
+ in.lazymanstudios.uri_to_file.model.MethodResultWrapper$3
+in/lazymanstudios/uri_to_file/model/UriToFile.java
+ in.lazymanstudios.uri_to_file.model.UriToFile
+ in.lazymanstudios.uri_to_file.model.UriToFile$CopyFileCallable
+in/lazymanstudios/uri_to_file/helper/UriToFileMethodCallHandler.java
+ in.lazymanstudios.uri_to_file.helper.UriToFileMethodCallHandler
+in/lazymanstudios/uri_to_file/UriToFilePlugin.java
+ in.lazymanstudios.uri_to_file.UriToFilePlugin

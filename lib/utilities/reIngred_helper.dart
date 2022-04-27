@@ -587,7 +587,7 @@ class ReIngredHelper {
     try {
       ingred.forEachIndexed((index, element) {
         ReIngredModel reIngredModel = ReIngredModel(
-          recipeId: element['recipeId'] as int,
+          recipeId: element['recipeId'].toString(),
           ingredientId: element['ingredId'] as int,
         );
         if (element['amount'] != null) {
@@ -629,6 +629,14 @@ class ReIngredHelper {
     return reIngredModels;
   }
 
+  Future<int> update(ReIngredModel reIngredModel) async {
+    Database database = await connectedDatabase();
+    var results = database.update(tableDatabase, reIngredModel.toJson(),
+        where: '${recipeIdColumn} = ? AND ${ingredientIdColumn} = ?',
+        whereArgs: [reIngredModel.recipeId, reIngredModel.ingredientId]);
+    return results;
+  }
+
   Future<Null> updateDataToSQLite(ReIngredModel reIngredModel) async {
     Database database = await connectedDatabase();
     try {
@@ -656,6 +664,15 @@ class ReIngredHelper {
     try {
       await database.rawDelete(
           'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [uid]);
+    } catch (e) {
+      print('e delete ==> ${e.toString()}');
+    }
+  }
+
+  Future<Null> deleteDataWhereId(String id) async {
+    Database database = await connectedDatabase();
+    try {
+      await database.delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }

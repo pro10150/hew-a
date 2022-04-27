@@ -4,13 +4,13 @@
             "outputFile": "C:\\Users\\66931\\Documents\\projects\\hew-a\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh\\values-zh.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\5cf133757f0ea1ff6e29234396e83ae2\\jetified-ucrop-2.2.7\\res\\values-zh\\values-zh.xml",
+                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\59ea20cdbb2f9915da8dba181b452248\\jetified-ucrop-2.2.8\\res\\values-zh\\values-zh.xml",
                     "from": {
-                        "startLines": "2,3,4",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,109,163",
-                        "endColumns": "53,53,46",
-                        "endOffsets": "104,158,205"
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,97,151,205,252,296",
+                        "endColumns": "41,53,53,46,43,42",
+                        "endOffsets": "92,146,200,247,291,334"
                     }
                 }
             ]

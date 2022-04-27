@@ -1,12 +1,12 @@
 class ReIngredModel {
-  int? recipeId;
+  String? recipeId;
   int? ingredientId;
   double? amount;
   String? unit;
   int? isPrimary;
 
   ReIngredModel(
-      {required this.recipeId,
+      {this.recipeId,
       required this.ingredientId,
       this.amount,
       this.unit,
