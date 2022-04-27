@@ -69,7 +69,7 @@ class IngredHelper {
       'Unsalted butter',
       'Snakehead',
       'Sweet pepper',
-      'Salted butter',
+      '',
       'Carrot',
       'Seaweed',
       'Garlic',
@@ -315,6 +315,7 @@ class IngredHelper {
 
     List<Map<String, dynamic>> maps = await database.query(tableDatabase);
     for (var map in maps) {
+      // print(map);
       IngredModel ingredModel = IngredModel.fromJson(map);
       ingredModels.add(ingredModel);
     }
@@ -327,6 +328,7 @@ class IngredHelper {
     List<Map<String, dynamic>> maps = await database
         .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     for (var map in maps) {
+      // print(map);
       IngredModel ingredModel = IngredModel.fromJson(map);
       ingredModels.add(ingredModel);
     }

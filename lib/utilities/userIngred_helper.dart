@@ -59,6 +59,7 @@ class UserIngredHelper {
     List<Map<String, dynamic>> maps =
         await database.query(tableDatabase, where: 'uid = ?', whereArgs: [uid]);
     for (var map in maps) {
+      // print(map);
       UserIngredModel userIngredModel = UserIngredModel.fromJson(map);
       userIngredModels.add(userIngredModel);
     }

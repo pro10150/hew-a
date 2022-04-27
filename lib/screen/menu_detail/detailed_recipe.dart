@@ -263,26 +263,36 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     bool isHave = false;
     bool isEnough = false;
     bool isDiffType = false;
+    print(reIngredIngredModel.name);
     if (userModel!.ingredients == 1) {
       for (var userIngredModel in userIngredModels) {
-        if (reIngredIngredModel.id == userIngredModel.ingredientId) {
+        if (userIngredModel.amount == 0.0 &&
+            (userIngredModel.unit != null && userIngredModel.unit != "")) {
           isHave = true;
-          if (reIngredIngredModel.amount != null ||
-              userIngredModel.amount != null) {
-            if (reIngredIngredModel.amount != null &&
-                userIngredModel.amount != null) {
-              if (reIngredIngredModel.unit != null &&
-                  userIngredModel.unit != null) {
-                isEnough = compareUnit(reIngredIngredModel, userIngredModel);
-              } else if (reIngredIngredModel.amount! * _n <=
-                  userIngredModel.amount!) {
+          isEnough = true;
+          isDiffType = true;
+          break;
+        } else {
+          if (reIngredIngredModel.id == userIngredModel.ingredientId) {
+            isHave = true;
+            if (reIngredIngredModel.amount != null ||
+                userIngredModel.amount == 0.0) {
+              if (reIngredIngredModel.amount != null &&
+                  userIngredModel.amount == 0.0) {
+                if (reIngredIngredModel.unit != null &&
+                    (userIngredModel.unit != null &&
+                        userIngredModel.unit != "")) {
+                  isEnough = compareUnit(reIngredIngredModel, userIngredModel);
+                } else if (reIngredIngredModel.amount! * _n <=
+                    userIngredModel.amount!) {
+                  isEnough = true;
+                }
+              } else {
                 isEnough = true;
               }
             } else {
               isEnough = true;
             }
-          } else {
-            isEnough = true;
           }
         }
       }
@@ -354,7 +364,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
         GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 100.0,
+              maxCrossAxisExtent: 150.0,
               crossAxisSpacing: 20.0,
               mainAxisSpacing: 20.0,
             ),
@@ -689,7 +699,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                           alignment: Alignment.topLeft,
                           child: Container(
                               margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.02,
+                                left: MediaQuery.of(context).size.width * 0.05,
                                 bottom:
                                     MediaQuery.of(context).size.width * 0.01,
                               ),

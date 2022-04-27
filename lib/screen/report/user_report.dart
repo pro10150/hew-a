@@ -1,16 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/screen/login/loginscreen.dart';
 import 'report_detail.dart';
-import 'package:hewa/models/report_model.dart';
-import 'package:hewa/utilities/report_helper.dart';
+import 'package:hewa/models/report_join_model.dart';
+import 'package:hewa/utilities/report_join_helper.dart';
 import 'package:hewa/utilities/menu.helper.dart';
 import 'package:hewa/models/menu_model.dart';
 import 'package:hewa/models/reportAbout_model.dart';
+import 'package:hewa/models/user_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/reportAbout_helper.dart';
 
 class userReport extends StatefulWidget {
-
   const userReport({Key? key}) : super(key: key);
 
   @override
@@ -26,14 +28,13 @@ class _userReportState extends State<userReport> {
   ReportAboutModel? reportAboutModel;
   ReportAboutHelper? reportAboutHelper;
 
-  ReportHelper? reportHelper;
-  ReportModel? reportModel;
+  ReportJoinModel? reportModel;
 
   List<MenuModel> userMenu = [];
 
-
-
-  List<ReportModel> userReport = [];
+  List<ReportJoinModel> userReport = [];
+  List<UserModel> users = [];
+  List<String> urls = [];
 
   // void readSQLite() {
   //   ReportHelper().readlDataFromSQLite().then((userRe) {
@@ -49,11 +50,35 @@ class _userReportState extends State<userReport> {
   // }
 
   getReport() async {
-    var objects = await ReportHelper().readlDataFromSQLite();
+    setState(() {
+      userReport = [];
+      users = [];
+      urls = [];
+    });
+    var objects = await ReportJoinHelper().getAllUserReport();
+    print(objects.length);
     for (var object in objects) {
-      setState(() {
-        userReport.add(object);
-      });
+      if (object.isSolve == null) {
+        var user =
+            await UserHelper().readDataFromSQLiteWhereId(object.reportedUid!);
+        setState(() {
+          userReport.add(object);
+          users.add(user.first);
+        });
+        if (user.first.image != null) {
+          var ref = FirebaseStorage.instance
+              .ref()
+              .child('upload')
+              .child(user.first.image!);
+          var image = await ref.getDownloadURL();
+          setState(() {
+            urls.add(image);
+          });
+        } else {
+          urls.add(
+              "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg");
+        }
+      }
     }
   }
 
@@ -73,6 +98,7 @@ class _userReportState extends State<userReport> {
     super.initState();
     // readSQLite();
     getReport();
+    // getUser();
   }
 
   Widget builduserReportBtn(int index) {
@@ -82,11 +108,17 @@ class _userReportState extends State<userReport> {
         List<Widget> children;
         if (snapshot.hasData) {
           children = <Widget>[
-            Text(
-              userReport[index].reportedUid!,
-              style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
-              overflow: TextOverflow.ellipsis,
-            )
+            users[index].name != null
+                ? Text(
+                    users[index].name!,
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : Text(
+                    users[index].username!,
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
+                    overflow: TextOverflow.ellipsis,
+                  )
           ];
         } else {
           children = <Widget>[CircularProgressIndicator()];
@@ -116,8 +148,7 @@ class _userReportState extends State<userReport> {
               ],
             ),
             IconButton(
-                onPressed: () => signOut(context),
-                icon: Icon(Icons.logout)),
+                onPressed: () => signOut(context), icon: Icon(Icons.logout)),
           ],
         ),
         backgroundColor: Color(0xffffab91),
@@ -147,16 +178,20 @@ class _userReportState extends State<userReport> {
                       width: 5,
                     ),
                     Text(
-                      "13 report alert",
+                      "${userReport.length} report alert",
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),
               ),
             ),
-            Expanded(
-              child: _buildListReport(context),
-            ),
+            userReport.length > 0
+                ? Expanded(
+                    child: _buildListReport(context),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    child: Text("No report was found")),
           ],
         ),
       ),
@@ -199,16 +234,24 @@ class _userReportState extends State<userReport> {
       itemBuilder: (_, index) {
         return Card(
           child: ListTile(
-            title: Text('${userReport[index].id}'),
-            subtitle: Text('${userReport[index].text}'),
+            title: users[index].name != null
+                ? Text('${users[index].name}')
+                : Text('${users[index].username}'),
+            subtitle: Text(userReport[index].aboutName!),
             leading: CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(
-                    "https://pyxis.nymag.com/v1/imgs/f22/cee/18a5c624814d1fee69692841d2f92e89ad-21-homer-bushes-lede.rhorizontal.w700.jpg")),
+                backgroundImage: urls.length > index
+                    ? NetworkImage(urls[index])
+                    : NetworkImage(
+                        "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
             trailing: Icon(Icons.arrow_right),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => reportDetail()));
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              reportDetail(userReport[index])))
+                  .then((value) => getReport());
             },
           ),
         );
@@ -218,34 +261,33 @@ class _userReportState extends State<userReport> {
 
   Widget _countReport() {
     return ListView.builder(
-      itemCount: count,
+        itemCount: count,
         itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            height: 35,
-            width: 150,
-            decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(50)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.warning_rounded,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  '${index+1}',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              height: 35,
+              width: 150,
+              decoration: BoxDecoration(
+                  color: Colors.black, borderRadius: BorderRadius.circular(50)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.warning_rounded,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    '${index + 1}',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      });
+          );
+        });
   }
 }

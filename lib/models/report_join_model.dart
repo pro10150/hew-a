@@ -10,6 +10,7 @@ class ReportJoinModel {
   String? typeName;
   String? aboutName;
   int? aboutType;
+  int? isSolve;
 
   ReportJoinModel(
       {this.id,
@@ -22,7 +23,8 @@ class ReportJoinModel {
       this.date,
       this.typeName,
       this.aboutName,
-      this.aboutType});
+      this.aboutType,
+      this.isSolve});
 
   ReportJoinModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,6 +38,7 @@ class ReportJoinModel {
     typeName = json['typeName'];
     aboutName = json['aboutName'];
     aboutType = json['aboutType'];
+    isSolve = json['isSolve'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,7 @@ class ReportJoinModel {
     data['typeName'] = this.typeName;
     data['aboutName'] = this.aboutName;
     data['aboutType'] = this.aboutType;
+    data['isSolve'] = this.isSolve;
     return data;
   }
 }

@@ -7,6 +7,7 @@ import 'package:hewa/config/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:hewa/utilities/db_helper.dart';
 import 'package:hewa/utilities/recipe_helper.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
@@ -17,6 +18,8 @@ import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
+
+import 'login/loginscreen.dart';
 
 class Home extends StatefulWidget {
   static const routeName = '/';
@@ -54,6 +57,7 @@ class _HomeState extends State<Home> {
     getDailyPick();
     getUser();
     getRecommendedUserModel();
+    checkBan();
     super.initState();
   }
 
@@ -132,6 +136,79 @@ class _HomeState extends State<Home> {
       setState(() {
         dailyPickModels.add(object);
       });
+    }
+  }
+
+  void signOut(BuildContext context) {
+    _auth.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        ModalRoute.withName('/'));
+  }
+
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    return (to.difference(from).inHours / 24).round();
+  }
+
+  showAlert() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Ban details"),
+            content: Container(
+              height: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.height * 0.5,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "You have been banned!",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(userModel!.isPermanentlyBan == 1
+                        ? "You will be banned permanently"
+                        : "You will be banned until"),
+                    userModel!.isPermanentlyBan == 1
+                        ? Container()
+                        : Text(userModel!.dateBanned!)
+                  ]),
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              RaisedButton(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                child: Text(
+                  "I understand",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }).then((value) => signOut(context));
+  }
+
+  checkBan() async {
+    var objects =
+        await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+    var currentDate = DateTime.now();
+    var period = daysBetween(
+        DateFormat("yyyy-MM-dd hh:mm:ss").parse(objects.first.dateBanned!),
+        currentDate);
+    print("tttttttttttttttttt");
+    print(period);
+    if (period < 3 || userModel!.isPermanentlyBan == 1) {
+      showAlert();
     }
   }
 

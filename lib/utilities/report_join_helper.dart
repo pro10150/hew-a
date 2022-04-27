@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import 'db_helper.dart';
 
-class ReIngredIngredHelper {
+class ReportJoinHelper {
   final String nameDatabase = 'Hewa.db';
   final String tableDatabase = 'menuRecipeTABLE';
   int version = 1;
@@ -25,7 +25,7 @@ class ReIngredIngredHelper {
   final String aboutNameColumn = 'aboutName';
   final String aboutTypeColumn = 'aboutType';
 
-  ReIngredIngredHelper() {
+  ReportJoinHelper() {
     initDatabase();
   }
 
@@ -57,6 +57,32 @@ class ReIngredIngredHelper {
 
     List<Map<String, dynamic>> maps = await database.rawQuery(
         'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE recipeIngredientTABLE.recipeId = $id;');
+    for (var map in maps) {
+      ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
+      reportJoinModels.add(reportJoinModel);
+    }
+    return reportJoinModels;
+  }
+
+  Future<List<ReportJoinModel>> getAllUserReport() async {
+    Database database = await connectedDatabase();
+    List<ReportJoinModel> reportJoinModels = [];
+
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE reportTABLE.type = 1;');
+    for (var map in maps) {
+      ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
+      reportJoinModels.add(reportJoinModel);
+    }
+    return reportJoinModels;
+  }
+
+  Future<List<ReportJoinModel>> getAllRecipeReport() async {
+    Database database = await connectedDatabase();
+    List<ReportJoinModel> reportJoinModels = [];
+
+    List<Map<String, dynamic>> maps = await database.rawQuery(
+        'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE reportTABLE.type = 2;');
     for (var map in maps) {
       ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
       reportJoinModels.add(reportJoinModel);

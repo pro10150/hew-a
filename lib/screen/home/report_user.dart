@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:hewa/models/reportImage_model.dart';
+import 'package:hewa/utilities/user_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/models/report_model.dart';
+import 'package:hewa/models/menuRecipe_model.dart';
+import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/report_helper.dart';
 import 'package:hewa/utilities/reportImage_helper.dart';
 import 'package:hewa/config/palette.dart';
@@ -18,17 +21,18 @@ import 'dart:io' as io;
 import '../launcher.dart';
 
 class ReportUser extends StatefulWidget {
-  ReportUser(this.userModel);
-  UserModel userModel;
+  ReportUser(this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
   @override
-  _ReportUserState createState() => _ReportUserState(userModel);
+  _ReportUserState createState() => _ReportUserState(menuRecipeModel);
 }
 
 class _ReportUserState extends State<ReportUser> {
-  _ReportUserState(this.userModel);
+  _ReportUserState(this.menuRecipeModel);
   var _auth = FirebaseAuth.instance;
   final textController = TextEditingController();
-  UserModel userModel;
+  MenuRecipeModel menuRecipeModel;
+  UserModel? userModel;
   int? _selectedAbout;
   List<String> titles = [
     "สแปม",
@@ -133,7 +137,7 @@ class _ReportUserState extends State<ReportUser> {
               type: type,
               date: _nowDate,
               about: _selectedAbout! + 1,
-              reportedUid: userModel.uid,
+              reportedUid: userModel!.uid,
               text: textController.text);
         } else {
           reportModel = ReportModel(
@@ -141,7 +145,7 @@ class _ReportUserState extends State<ReportUser> {
             type: type,
             date: _nowDate,
             about: _selectedAbout! + 1,
-            reportedUid: userModel.uid,
+            reportedUid: userModel!.uid,
           );
         }
       }
@@ -165,6 +169,22 @@ class _ReportUserState extends State<ReportUser> {
     }
   }
 
+  getUser() async {
+    print(menuRecipeModel.recipeUid!);
+    var object = await UserHelper()
+        .readDataFromSQLiteWhereId(menuRecipeModel.recipeUid!);
+    setState(() {
+      userModel = object.first;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,9 +198,9 @@ class _ReportUserState extends State<ReportUser> {
               },
             ),
           ],
-          title: userModel.name != null
-              ? Text(userModel.name!)
-              : Text(userModel.username!),
+          title: userModel!.name != null
+              ? Text(userModel!.name!)
+              : Text(userModel!.username!),
         ),
         body: SingleChildScrollView(
           child: Column(children: [

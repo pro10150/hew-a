@@ -51,6 +51,19 @@ class ReportImageHelper {
     return reportImageModels;
   }
 
+  Future<List<ReportImageModel>> readWhereId(String id) async {
+    Database database = await connectedDatabase();
+    List<ReportImageModel> reportImageModels = [];
+
+    List<Map<String, dynamic>> maps = await database
+        .query(tableDatabase, where: "reportId = ?", whereArgs: [id]);
+    for (var map in maps) {
+      ReportImageModel reportImageModel = ReportImageModel.fromJson(map);
+      reportImageModels.add(reportImageModel);
+    }
+    return reportImageModels;
+  }
+
   Future<Null> deleteDataWhereId(String id) async {
     Database database = await connectedDatabase();
     try {

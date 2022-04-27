@@ -1,2 +1,0 @@
-li/jod/search_choices/BuildConfig.java
- li.jod.search_choices.BuildConfig
