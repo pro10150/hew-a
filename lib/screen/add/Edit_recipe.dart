@@ -1674,6 +1674,7 @@ class _EditRecipeState extends State<EditRecipe> {
                             TextField(
                                 key: _formKey,
                                 controller: recipeController,
+                                maxLength: 25,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
