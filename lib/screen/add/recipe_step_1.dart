@@ -1590,6 +1590,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
                             TextField(
                                 key: _formKey,
                                 controller: recipeController,
+                                maxLength: 25,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide.none,

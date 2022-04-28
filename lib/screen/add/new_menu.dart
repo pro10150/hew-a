@@ -260,6 +260,7 @@ class _NewMenuState extends State<NewMenu> {
                                       TextField(
                                           key: _formKey,
                                           controller: menuController,
+                                          maxLength: 25,
                                           keyboardType: TextInputType.name,
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
