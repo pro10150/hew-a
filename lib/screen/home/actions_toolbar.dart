@@ -395,10 +395,14 @@ class ActionsToolbar extends StatelessWidget {
                   }),
               RawMaterialButton(
                   onPressed: () {
-                    _shareContent(context, userModel, menuRecipeModel);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ReportPage(userModel, menuRecipeModel)));
                   },
                   child: _getSocialAction(
-                      title: 'Share', icon: MdiIcons.shareOutline)),
+                      title: 'Report', icon: Icons.flag_outlined)),
             ],
           ),
         ],

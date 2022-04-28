@@ -134,15 +134,16 @@ class _ReportRecipeState extends State<ReportRecipe> {
               date: _nowDate,
               about: _selectedAbout! + 1,
               reportedUid: menuRecipeModel.uid,
+              reportedRecipeId: menuRecipeModel.id,
               text: textController.text);
         } else {
           reportModel = ReportModel(
-            uid: _auth.currentUser!.uid,
-            type: type,
-            date: _nowDate,
-            about: _selectedAbout! + 1,
-            reportedUid: menuRecipeModel.uid,
-          );
+              uid: _auth.currentUser!.uid,
+              type: type,
+              date: _nowDate,
+              about: _selectedAbout! + 1,
+              reportedUid: menuRecipeModel.uid,
+              reportedRecipeId: menuRecipeModel.id);
         }
       }
       ReportHelper().insertDataToSQLite(reportModel!);

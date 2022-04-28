@@ -68,7 +68,35 @@ class ReportHelper {
     Database database = await connectedDatabase();
     try {
       database.update(tableDatabase, reportModel.toJson(),
-          where: '${uidColumn} = ?', whereArgs: [reportModel.uid]);
+          where: '${idColumn} = ?', whereArgs: [reportModel.id]);
+    } catch (e) {
+      print('e updateData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> updateAllDataToSQLite(ReportModel reportModel) async {
+    Database database = await connectedDatabase();
+    try {
+      var objects = await readDataFromSQLiteWhereReportedRecipeId(
+          reportModel.reportedRecipeId.toString());
+      for (var object in objects) {
+        object.isSolve = 1;
+        updateDataToSQLite(object);
+      }
+    } catch (e) {
+      print('e updateData ==>> ${e.toString()}');
+    }
+  }
+
+  Future<Null> updateAllUserToSQLite(ReportModel reportModel) async {
+    Database database = await connectedDatabase();
+    try {
+      var objects =
+          await readDataFromSQLiteWhereUid(reportModel.reportedUid.toString());
+      for (var object in objects) {
+        object.isSolve = 1;
+        updateDataToSQLite(object);
+      }
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
     }
@@ -91,6 +119,19 @@ class ReportHelper {
     List<ReportModel> reportModels = [];
     List<Map<String, dynamic>> maps = await database
         .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
+    for (var map in maps) {
+      ReportModel reportModel = ReportModel.fromJson(map);
+      reportModels.add(reportModel);
+    }
+    return reportModels;
+  }
+
+  Future<List<ReportModel>> readDataFromSQLiteWhereReportedRecipeId(
+      String id) async {
+    Database database = await connectedDatabase();
+    List<ReportModel> reportModels = [];
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+        where: '$reportedRecipeIdColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       ReportModel reportModel = ReportModel.fromJson(map);
       reportModels.add(reportModel);
@@ -130,7 +171,7 @@ class ReportHelper {
     Database database = await connectedDatabase();
     List<ReportModel> reportModels = [];
     List<Map<String, dynamic>> maps =
-        await database.query(tableDatabase, where: '$typeColumn = 1');
+        await database.query(tableDatabase, where: '$typeColumn = 2');
     for (var map in maps) {
       ReportModel reportModel = ReportModel.fromJson(map);
       reportModels.add(reportModel);
@@ -142,7 +183,7 @@ class ReportHelper {
     Database database = await connectedDatabase();
     List<ReportModel> reportModels = [];
     List<Map<String, dynamic>> maps =
-        await database.query(tableDatabase, where: '$typeColumn = 2');
+        await database.query(tableDatabase, where: '$typeColumn = 1');
     for (var map in maps) {
       ReportModel reportModel = ReportModel.fromJson(map);
       reportModels.add(reportModel);
