@@ -1674,6 +1674,7 @@ class _EditRecipeState extends State<EditRecipe> {
                             TextField(
                                 key: _formKey,
                                 controller: recipeController,
+                                maxLength: 25,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
@@ -1846,7 +1847,16 @@ class _EditRecipeState extends State<EditRecipe> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20))),
-                            SizedBox(height: 20),
+                            SizedBox(height: 30),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Calory',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                )),
+                            SizedBox(height: 15),
                             TextField(
                                 controller: calController,
                                 keyboardType: TextInputType.numberWithOptions(
@@ -1859,7 +1869,16 @@ class _EditRecipeState extends State<EditRecipe> {
                                     filled: true,
                                     hintText: 'Calories',
                                     fillColor: Colors.white)),
-                            SizedBox(height: 10),
+                            SizedBox(height: 30),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Protein',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                )),
+                            SizedBox(height: 15),
                             TextField(
                                 controller: proteinController,
                                 keyboardType: TextInputType.numberWithOptions(
@@ -1872,7 +1891,16 @@ class _EditRecipeState extends State<EditRecipe> {
                                     filled: true,
                                     hintText: 'Protein',
                                     fillColor: Colors.white)),
-                            SizedBox(height: 10),
+                            SizedBox(height: 30),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Carbohydrate',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                )),
+                            SizedBox(height: 15),
                             TextField(
                                 controller: carboController,
                                 keyboardType: TextInputType.numberWithOptions(
@@ -1885,7 +1913,16 @@ class _EditRecipeState extends State<EditRecipe> {
                                     filled: true,
                                     hintText: 'Carbohydrates',
                                     fillColor: Colors.white)),
-                            SizedBox(height: 10),
+                            SizedBox(height: 30),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Fat',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
+                                )),
+                            SizedBox(height: 15),
                             TextField(
                                 controller: fatController,
                                 keyboardType: TextInputType.numberWithOptions(
