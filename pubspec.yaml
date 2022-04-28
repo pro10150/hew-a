@@ -60,6 +60,8 @@ dependencies:
   dio: ^4.0.4
   get: ^4.6.1
   uri_to_file: ^0.2.0
+  searchfield: ^0.6.4
+
 
 dev_dependencies:
   flutter_test:

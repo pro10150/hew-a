@@ -758,8 +758,8 @@ class recipes extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.all(0),
-                    width: 150,
-                    height: 150,
+                    height: MediaQuery.of(context).size.height * 0.17,
+                    width: MediaQuery.of(context).size.height * 0.17,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.red,
@@ -932,8 +932,8 @@ class recipeslike extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.all(0),
-                    width: 150,
-                    height: 150,
+                    height: MediaQuery.of(context).size.height * 0.17,
+                    width: MediaQuery.of(context).size.height * 0.17,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.red,

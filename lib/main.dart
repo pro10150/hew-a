@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hewa/config/palette.dart';
@@ -7,6 +9,8 @@ import 'firebase_options.dart';
 import 'package:hewa/screen/login/loginscreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +34,60 @@ class MyApp extends StatelessWidget {
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           })),
       title: 'Hew\'a App',
-      initialRoute: '/', // สามารถใช้ home แทนได้
-      routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
-      },
+      initialRoute: '/',
+      home: SplashScreen(),// สามารถใช้ home แทนได้
+      // routes: {
+      //   LoginScreen.routeName: (context) => LoginScreen(),
+      // },
     );
   }
 }
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const color = const Color(0xffffab91);
+    return Scaffold(
+      backgroundColor: color,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // logo here
+            Image.asset(
+              'lib/assets/icon/icon-original.png',
+              height: 200,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text('Hew\'a App',
+            style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.black),
+            ),
+            SizedBox(
+              height:MediaQuery.of(context).size.height / 10),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
