@@ -6,7 +6,7 @@
 	<dict>
 		<key>Info.plist</key>
 		<data>
-		3xgs6wR931MthlgrTLaIGE/MGYY=
+		ZEcsWRQHM1jv24GXEYSljiGPLIw=
 		</data>
 		<key>TOCropViewControllerBundle.bundle/Base.lproj/TOCropViewControllerLocalizable.strings</key>
 		<dict>
@@ -19,7 +19,7 @@
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/Info.plist</key>
 		<data>
-		Nf0Hd3sTwBfBuaiOEoXjJNjJWxM=
+		3Wq4nU0vg5Xm5Ze8KGq1XXybtqQ=
 		</data>
 		<key>TOCropViewControllerBundle.bundle/ar.lproj/TOCropViewControllerLocalizable.strings</key>
 		<dict>
@@ -151,7 +151,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Ec0FMlpxwXr+kMjvlO4AjGT4kME=
+			Iwh4b74rKw69c3ajJ6GBbESqJcY=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -293,11 +293,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Nf0Hd3sTwBfBuaiOEoXjJNjJWxM=
+			3Wq4nU0vg5Xm5Ze8KGq1XXybtqQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			pm7y2ZCs9tXyVGdEQk2SsHstzsTdXo86I1BQaC88pbw=
+			vJA4i2oPPaHHNzKoW5mO4ZuZVqlTMf5PyEV38gaQhmE=
 			</data>
 		</dict>
 		<key>TOCropViewControllerBundle.bundle/ar.lproj/TOCropViewControllerLocalizable.strings</key>
@@ -486,11 +486,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Ec0FMlpxwXr+kMjvlO4AjGT4kME=
+			Iwh4b74rKw69c3ajJ6GBbESqJcY=
 			</data>
 			<key>hash2</key>
 			<data>
-			g08XOwnCfbysHfLiDfdqqhzDafk/jmsDKiSc8Og7I3k=
+			ZVvNCp0WDyjoB3PsKvxDnYX/3oZwWAkKXWhkN8fOjK0=
 			</data>
 			<key>optional</key>
 			<true/>

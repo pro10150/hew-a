@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,6 +9,7 @@ import 'package:hewa/models/reAllergy_model.dart';
 import 'package:hewa/utilities/reAllergy_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 import 'db_helper.dart';
 import 'view_helper.dart';
@@ -221,8 +223,10 @@ class MenuRecipeHelper {
     final objects = await ViewHelper().readlDataFromSQLite();
     print(objects.runtimeType);
     var dio = Dio();
+    print(await NetworkInfo().getWifiIP());
+    var ip = await NetworkInfo().getWifiIP();
     final response = await dio.post(
-        'http://192.168.1.108:5000/recommendation?uid=' +
+        'http://192.168.1.108:6000/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid,
         data: objects);
 
