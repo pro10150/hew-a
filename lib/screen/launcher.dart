@@ -71,31 +71,39 @@ class _LauncherState extends State<Launcher> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: _pageWidget.elementAt(_selectedIndex),
-      floatingActionButton: FloatingActionButton(
-        elevation: 2.0,
-        child: Container(
-          width: 60,
-          height: 60,
-          child: Icon(
-            Icons.add,
-            size: 40,
+      floatingActionButton:  keyboardIsOpened ?
+      null : Visibility(
+          child:  FloatingActionButton(
+            elevation: 2.0,
+            child: Container(
+              width: 60,
+              height: 60,
+              child: Icon(
+                Icons.add,
+                size: 40,
+              ),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                      colors: [Color(0xFFEC7063), Color(0xFFFFAB91)])),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.topToBottom,
+                    child: Add(),
+                  ));
+            },
           ),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                  colors: [Color(0xFFEC7063), Color(0xFFFFAB91)])),
-        ),
-        onPressed: () {
-          Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.topToBottom,
-                child: Add(),
-              ));
-        },
       ),
+
+
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

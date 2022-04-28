@@ -117,20 +117,25 @@ class _SearchState extends State<Search> {
         if (snapshot.hasData) {
           children = <Widget>[
             Stack(children: <Widget>[
-              GestureDetector(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20), // Image border
-                  child: SizedBox.fromSize(
-                    size: Size.fromRadius(70), // Image radius
-                    child: Image.network(snapshot.data!, fit: BoxFit.cover),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.17,
+                width: MediaQuery.of(context).size.height * 0.17,
+                child: GestureDetector(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20), // Image border
+                    child: SizedBox.fromSize(
+                      size: Size.fromRadius(70), // Image radius
+                      child: Image.network(snapshot.data!, fit: BoxFit.cover),
+                    ),
                   ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return MenuDetail(filter[index]);
+                    }));
+                  },
                 ),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MenuDetail(filter[index]);
-                  }));
-                },
               ),
+
             ]),
             Text(
               filter[index].nameMenu!,
@@ -212,7 +217,7 @@ class _SearchState extends State<Search> {
     if (query.isNotEmpty) {
       var dummyListData = [];
       dummySearchList.forEach((item) {
-        var user = item;
+        var user = UserModel.fromJson(item);
         if (user.username!.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
@@ -351,750 +356,532 @@ class _SearchState extends State<Search> {
 
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: color,
-            toolbarHeight: 100,
-            title: Container(
-              width: double.infinity,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: TextField(
-                  onSubmitted: (_) {
-                    // Navigator.push(
-                    //     context,
-                    //     PageTransition(
-                    //         child: SearchContent(),
-                    //         type: PageTransitionType.leftToRight));
-                  },
-                  controller: teSeach,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search, color: Colors.black),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
-                      border: InputBorder.none),
-                  onChanged: (value) {
-                    setState(() {
-                      filterSeach(value);
-                      filter.clear();
-                      filter.addAll(menu);
-                      filter.retainWhere((element) {
-                        return element.nameMenu!.contains(value);
-                      });
-                      filtersearch.clear();
-                      filtersearch.addAll(user);
-                      filtersearch.retainWhere((element) {
-                        return element.username!.contains(value);
-                      });
-                    });
-                  },
-                ),
+        appBar: AppBar(
+          toolbarHeight: 100,
+          bottom: TabBar(
+            unselectedLabelColor: Colors.white,
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(Icons.account_circle),
               ),
-            ),
-            actions: [
-              // IconButton(
-              //     onPressed: _showMultiSelect,
-              //     icon: Icon(Icons.filter_list)),
-              // const Divider(
-              //   height: 30,
-              // ),
-
-              // Builder(
-              //   builder: (context) => IconButton(
-              //     icon: Icon(Icons.filter_list, color: Colors.black),
-              //     onPressed: () => Scaffold.of(context).openEndDrawer(),
-              //     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-              //   ),
-              // ),
+              Tab(
+                icon: Icon(Icons.fastfood_rounded),
+              ),
             ],
-            bottom: TabBar(
-              unselectedLabelColor: Colors.white,
-              tabs: <Widget>[
-                Tab(
-                  icon: Icon(Icons.account_circle),
-                ),
-                Tab(
-                  icon: Icon(Icons.fastfood_rounded),
-                ),
-              ],
+          ),
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            child: Center(
+              child: TextField(
+                controller: teSeach,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Colors.black),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(color: Colors.grey, fontSize: 16),
+                    border: InputBorder.none),
+                onChanged: (value) {
+                  setState(() {
+                    filterSeach(value);
+                    filter.clear();
+                    filter.addAll(menu);
+                    filter.retainWhere((element) {
+                      return element.nameMenu!.contains(value);
+                    });
+                    filtersearch.clear();
+                    filtersearch.addAll(user);
+                    filtersearch.retainWhere((element) {
+                      return element.username!.contains(value);
+                    });
+                  });
+                },
+              ),
             ),
           ),
-          // endDrawer: Drawer(
-          //   child: Stack(
-          //     children: [
-          //       Container(
-          //         height: double.infinity,
-          //         width: double.infinity,
-          //         color: Colors.white,
-          //         child: SingleChildScrollView(
-          //           physics: AlwaysScrollableScrollPhysics(),
-          //           padding: EdgeInsets.symmetric(horizontal: 25, vertical: 22),
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        body: TabBarView(children: <Widget>[
+          // Center(
+          //   child: Expanded(
+          //     child: Container(
+          //       margin: EdgeInsets.all(5),
+          //       alignment: Alignment.topLeft,
+          //       child: Column(
+          //         children: [
+          //           Row(
           //             children: [
-          //               SizedBox(height: 25),
+          //               Padding(padding: EdgeInsets.all(5)),
           //               Text(
-          //                 'Filters',
+          //                 'User',
           //                 textAlign: TextAlign.left,
           //                 style: TextStyle(
-          //                   fontSize: 30,
-          //                   fontWeight: FontWeight.bold,
-          //                 ),
+          //                     fontSize: 24,
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Colors.black),
           //               ),
-          //               //อันที่ 1
-          //               SizedBox(height: 35),
-          //               Text(
-          //               'Method',
-          //                 textAlign: TextAlign.right,
-          //               style: TextStyle(
-          //                 fontSize: 24,
-          //                 fontWeight: FontWeight.bold,
-          //               ),
-          //             ),
-          //               SizedBox(height: 10),
-          //               Container(
-          //                 height: 50,
-          //                 child: ListView.builder(
-          //                   scrollDirection: Axis.horizontal,
-          //                   itemCount: method_list.length,
-          //                   itemBuilder: (BuildContext context, int index) {
-          //                     return InkWell(
-          //                       onTap: () => setState(() => _value=index),
-          //                       child: Container(
-          //                         width: 100,
-          //                         child: Card(
-          //                           shape: (_value==index)
-          //                               ? RoundedRectangleBorder(
-          //                               side: BorderSide(color: Colors.green))
-          //                               : null,
-          //                           elevation: 5,
-          //                           child: Column(
-          //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //                             children: <Widget>[
-          //                               Text('${method_list[index].nameMethod}',
-          //                                                        style: TextStyle(
-          //                                                          fontSize: 20,
-          //                                                          fontWeight: FontWeight.bold,
-          //                                                        ),),
-          //                             ],
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     );
-          //                   },
-          //                 ),
-          //               ),
-          //              // Container(
-          //              //   height: double.maxFinite,
-          //              //   child: ListView.builder(
-          //              //     itemCount: method_list.length,
-          //              //       itemBuilder: (context, index) {
-          //              //       return ChoiceChip(
-          //              //         label: Text('${method_list[index].nameMethod}',
-          //              //                            style: TextStyle(
-          //              //                              fontSize: 20,
-          //              //                              fontWeight: FontWeight.bold,
-          //              //                            ),),
-          //              //         selected: _value == index,
-          //              //         onSelected: (bool selected) {
-          //              //           setState(() {
-          //              //             _value = selected ? index : null;
-          //              //           }
-          //              //           );
-          //              //         },
-          //              //         pressElevation: 15,
-          //              //         elevation: 5,
-          //              //       );
-          //              //       }),
-          //              // ),
-          //              //  Container(
-          //              //   height: double.maxFinite,
-          //              //        child: ListView.builder(
-          //              //            itemCount: method_list.length,
-          //              //            itemBuilder: (context, index) {
-          //              //              return CheckboxListTile(
-          //              //                title: Text('${method_list[index].nameMethod}',
-          //              //                  style: TextStyle(
-          //              //                    fontSize: 20,
-          //              //                    fontWeight: FontWeight.bold,
-          //              //                  ),),
-          //              //              onChanged: (bool? value) {
-          //              //                _isChecked = value!;
-          //              //              },
-          //              //              value: _isChecked,
-          //              //
-          //              //              // return  Wrap(
-          //              //              //   children: <Widget>[
-          //              //              //     Chip(
-          //              //              //       label: Text('${method_list[index].nameMethod}',
-          //              //              //           style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
-          //              //              //       // onDeleted: () {
-          //              //              //       //   setState(() {
-          //              //              //       //     // method_list.removeAt(index);
-          //              //              //       //   });
-          //              //              //       // },
-          //              //              //     ),
-          //              //              //   ],
-          //              //              // );
-          //              //
-          //              //              // return Card(
-          //              //              //   margin: EdgeInsets.all(8),
-          //              //              //   child: ListTile(
-          //              //              //     title: Text('${method_list[index].nameMethod}',
-          //              //              //         style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.black)),
-          //              //              //   ),
-          //              //              // );
-          //              //
-          //              //            );}
-          //              //      ),
-          //              // ),
-          //              //  SizedBox(height: 20),
-          //              //  Row(
-          //              //    mainAxisAlignment: MainAxisAlignment.end,
-          //              //    children: [
-          //              //      Container(
-          //              //        margin: EdgeInsets.all(5),
-          //              //        child: buildapplyBtn(),
-          //              //      )
-          //              //    ],
-          //              //  )
-          //
-          //               // Text(
-          //               //   'Method',
-          //               //   textAlign: TextAlign.left,
-          //               //   style: TextStyle(
-          //               //     fontSize: 24,
-          //               //     fontWeight: FontWeight.bold,
-          //               //   ),
-          //               // ),
-          //               // SizedBox(height: 10),
-          //               // CheckboxListTile(
-          //               //   value: boil,
-          //               //   activeColor: Colors.black,
-          //               //   title: Text(
-          //               //     'Boil',
-          //               //     style: TextStyle(
-          //               //         fontSize: 20, fontWeight: FontWeight.bold),
-          //               //   ),
-          //               //   onChanged: (val) {
-          //               //     setState(() {
-          //               //       boil = val!;
-          //               //     });
-          //               //   },
-          //               // ),
-          //               // CheckboxListTile(
-          //               //   value: bake,
-          //               //   activeColor: Colors.black,
-          //               //   title: Text(
-          //               //     'Bake',
-          //               //     style: TextStyle(
-          //               //         fontSize: 20, fontWeight: FontWeight.bold),
-          //               //   ),
-          //               //   onChanged: (val) {
-          //               //     setState(() {
-          //               //       bake = val!;
-          //               //     });
-          //               //   },
-          //               // ),
-          //               // CheckboxListTile(
-          //               //   value: fry,
-          //               //   activeColor: Colors.black,
-          //               //   title: Text(
-          //               //     'Fry',
-          //               //     style: TextStyle(
-          //               //         fontSize: 20, fontWeight: FontWeight.bold),
-          //               //   ),
-          //               //   onChanged: (val) {
-          //               //     setState(() {
-          //               //       fry = val!;
-          //               //     });
-          //               //   },
-          //               // ),
-          //               //
-          //               // //อันที่ 2
-          //               // SizedBox(height: 50),
-          //               // Text(
-          //               //   'Types of food',
-          //               //   textAlign: TextAlign.left,
-          //               //   style: TextStyle(
-          //               //     fontSize: 24,
-          //               //     fontWeight: FontWeight.bold,
-          //               //   ),
-          //               // ),
-          //               // SizedBox(height: 10),
-          //               // CheckboxListTile(
-          //               //   value: sav,
-          //               //   activeColor: Colors.black,
-          //               //   title: Text(
-          //               //     'Savory',
-          //               //     style: TextStyle(
-          //               //         fontSize: 20, fontWeight: FontWeight.bold),
-          //               //   ),
-          //               //   onChanged: (val) {
-          //               //     setState(() {
-          //               //       sav = val!;
-          //               //     });
-          //               //   },
-          //               // ),
-          //               // CheckboxListTile(
-          //               //   value: des,
-          //               //   activeColor: Colors.black,
-          //               //   title: Text(
-          //               //     'Dessert',
-          //               //     style: TextStyle(
-          //               //         fontSize: 20, fontWeight: FontWeight.bold),
-          //               //   ),
-          //               //   onChanged: (val) {
-          //               //     setState(() {
-          //               //       des = val!;
-          //               //     });
-          //               //   },
-          //               // ),
-          //               //
-          //               // //อันที่ 3
-          //               // SizedBox(height: 50),
-          //               // Text(
-          //               //   'Filter',
-          //               //   textAlign: TextAlign.left,
-          //               //   style: TextStyle(
-          //               //     fontSize: 24,
-          //               //     fontWeight: FontWeight.bold,
-          //               //   ),
-          //               // ),
-          //               // SizedBox(height: 10),
-          //               // SwitchListTile(
-          //               //     value: kit,
-          //               //     activeColor: Colors.black,
-          //               //     title: Text(
-          //               //       'Kitchenwares',
-          //               //       style: TextStyle(
-          //               //           fontSize: 20, fontWeight: FontWeight.bold),
-          //               //     ),
-          //               //     onChanged: (bool s) {
-          //               //       setState(() {
-          //               //         kit = s;
-          //               //         print(kit);
-          //               //       });
-          //               //     }),
-          //               // SwitchListTile(
-          //               //     value: alg,
-          //               //     activeColor: Colors.black,
-          //               //     title: Text(
-          //               //       'Allergies',
-          //               //       style: TextStyle(
-          //               //           fontSize: 20, fontWeight: FontWeight.bold),
-          //               //     ),
-          //               //     onChanged: (bool s) {
-          //               //       setState(() {
-          //               //         alg = s;
-          //               //         print(alg);
-          //               //       });
-          //               //     }),
-          //               //
-          //               // SizedBox(height: 50),
-          //               // Text(
-          //               //   'Sort by',
-          //               //   textAlign: TextAlign.left,
-          //               //   style: TextStyle(
-          //               //     fontSize: 24,
-          //               //     fontWeight: FontWeight.bold,
-          //               //   ),
-          //               // ),
-          //               // SizedBox(height: 10),
-          //               // Row(
-          //               //   children: [
-          //               //     SizedBox(width: 15),
-          //               //     Text(
-          //               //       'Relevant',
-          //               //       style: TextStyle(
-          //               //           fontSize: 20, fontWeight: FontWeight.bold),
-          //               //     ),
-          //               //     SizedBox(width: 98),
-          //               //     Radio(
-          //               //       value: 1,
-          //               //       groupValue: _value,
-          //               //       onChanged: (int? value) {
-          //               //         setState(() {
-          //               //           _value = value;
-          //               //         });
-          //               //       },
-          //               //       activeColor: Colors.black,
-          //               //     ),
-          //               //   ],
-          //               // ),
-          //               // Row(
-          //               //   children: [
-          //               //     SizedBox(width: 15),
-          //               //     Text(
-          //               //       'Most liked',
-          //               //       style: TextStyle(
-          //               //           fontSize: 20, fontWeight: FontWeight.bold),
-          //               //     ),
-          //               //     SizedBox(width: 83),
-          //               //     Radio(
-          //               //       value: 2,
-          //               //       groupValue: _value,
-          //               //       onChanged: (int? value) {
-          //               //         setState(() {
-          //               //           _value = value;
-          //               //         });
-          //               //       },
-          //               //       activeColor: Colors.black,
-          //               //     ),
-          //               //   ],
-          //               // ),
-          //               // SizedBox(height: 20),
-          //               // Row(
-          //               //   mainAxisAlignment: MainAxisAlignment.end,
-          //               //   children: [
-          //               //     Container(
-          //               //       margin: EdgeInsets.all(5),
-          //               //       child: buildapplyBtn(),
-          //               //     )
-          //               //   ],
-          //               // )
+          //               IconButton(
+          //                   onPressed: () {}, icon: Icon(Icons.chevron_right))
           //             ],
           //           ),
-          //         ),
+          //           Expanded(
+          //             child: items.isNotEmpty
+          //                 ? ListView.builder(
+          //                     itemCount: items.length,
+          //                     itemBuilder: (context, i) {
+          //                       var url;
+          //                       if (items[i].image != null) {
+          //                         final ref = FirebaseStorage.instance
+          //                             .ref()
+          //                             .child('menus')
+          //                             .child(items[i].image!);
+          //                         url = ref.getDownloadURL();
+          //                       }
+          //                       var followers = getUserFollowers(items[i]);
+          //
+          //                       return url != null
+          //                           ? FutureBuilder<String>(
+          //                               future: url,
+          //                               builder: (context, snapshot) {
+          //                                 if (snapshot.hasData) {
+          //                                   return GestureDetector(
+          //                                       onTap: () {
+          //                                         Navigator.push(context,
+          //                                             MaterialPageRoute(
+          //                                                 builder: (context) {
+          //                                           return OtherProfile(
+          //                                               snapshot.data!,
+          //                                               items[i].uid);
+          //                                         }));
+          //                                       },
+          //                                       child: Card(
+          //                                         color: Colors.white,
+          //                                         margin: EdgeInsets.all(3),
+          //                                         child: ListTile(
+          //                                             leading: Image.network(
+          //                                                 snapshot.data!),
+          //                                             title: Text(
+          //                                                 '${items[i].username}',
+          //                                                 style: TextStyle(
+          //                                                     fontSize: 18,
+          //                                                     fontWeight:
+          //                                                         FontWeight
+          //                                                             .bold)),
+          //                                             subtitle: FutureBuilder<
+          //                                                     List<
+          //                                                         FollowModel>>(
+          //                                                 future: followers,
+          //                                                 builder: (context,
+          //                                                     snapshot) {
+          //                                                   if (snapshot
+          //                                                       .hasData) {
+          //                                                     return Text(
+          //                                                         'Follow : ${snapshot.data!.length}');
+          //                                                   } else {
+          //                                                     return Text(
+          //                                                         'Follow : 0');
+          //                                                   }
+          //                                                 })
+          //
+          //                                             // trailing: IconButton(
+          //                                             //   onPressed: () {},
+          //                                             //   icon: Icon(Icons.more_vert),
+          //                                             // ),
+          //                                             ),
+          //                                       ));
+          //                                 } else {
+          //                                   return CircularProgressIndicator();
+          //                                 }
+          //                               })
+          //                           : GestureDetector(
+          //                               onTap: () {
+          //                                 Navigator.push(context,
+          //                                     MaterialPageRoute(
+          //                                         builder: (context) {
+          //                                   return OtherProfile(
+          //                                       "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+          //                                       items[i].uid);
+          //                                 }));
+          //                               },
+          //                               child: Card(
+          //                                 color: Colors.white,
+          //                                 margin: EdgeInsets.all(3),
+          //                                 child: ListTile(
+          //                                     leading: Image.network(
+          //                                         "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
+          //                                     title: Text(
+          //                                         '${items[i].username}',
+          //                                         style: TextStyle(
+          //                                             fontSize: 18,
+          //                                             fontWeight:
+          //                                                 FontWeight.bold)),
+          //                                     subtitle: FutureBuilder<
+          //                                             List<FollowModel>>(
+          //                                         future: followers,
+          //                                         builder:
+          //                                             (context, snapshot) {
+          //                                           if (snapshot.hasData) {
+          //                                             return Text(
+          //                                                 'Follow : ${snapshot.data!.length}');
+          //                                           } else {
+          //                                             return Text(
+          //                                                 'Follow : 0');
+          //                                           }
+          //                                         })
+          //
+          //                                     // trailing: IconButton(
+          //                                     //   onPressed: () {},
+          //                                     //   icon: Icon(Icons.more_vert),
+          //                                     // ),
+          //                                     ),
+          //                               ));
+          //                     })
+          //                 : Text(
+          //                     'No results found',
+          //                     style: TextStyle(
+          //                         fontSize: 20, fontWeight: FontWeight.w500),
+          //                   ),
+          //           ),
+          //           Row(
+          //             children: [
+          //               Padding(padding: EdgeInsets.all(5)),
+          //               Text(
+          //                 'Menu',
+          //                 textAlign: TextAlign.left,
+          //                 style: TextStyle(
+          //                     fontSize: 24,
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Colors.black),
+          //               ),
+          //               IconButton(
+          //                   onPressed: () {}, icon: Icon(Icons.chevron_right))
+          //             ],
+          //           ),
+          //           Expanded(
+          //             child: filter.isNotEmpty
+          //                 ? MediaQuery.removePadding(
+          //                     context: context,
+          //                     removeTop: true,
+          //                     child: GridView.builder(
+          //                       gridDelegate:
+          //                           SliverGridDelegateWithMaxCrossAxisExtent(
+          //                         maxCrossAxisExtent: 300.0,
+          //                         crossAxisSpacing: 20.0,
+          //                         mainAxisSpacing: 20.0,
+          //                       ),
+          //                       // primary: false,
+          //                       // shrinkWrap: true,
+          //                       physics: ScrollPhysics(),
+          //                       itemCount: filter.length,
+          //                       itemBuilder:
+          //                           (BuildContext context, int index) {
+          //                         return Container(
+          //                           child: Card(
+          //                             shape: RoundedRectangleBorder(
+          //                               side: BorderSide(
+          //                                   color: Colors.transparent,
+          //                                   width: 1),
+          //                               // borderRadius: BorderRadius.circular(15),
+          //                             ),
+          //                             color: Colors.white,
+          //                             child: Column(
+          //                               children: [
+          //                                 SizedBox(height: 8),
+          //                                 buildPictureBtn(index),
+          //                               ],
+          //                             ),
+          //                           ),
+          //                         );
+          //                       },
+          //                     ))
+          //                 : Text(
+          //                     'No results found',
+          //                     style: TextStyle(
+          //                         fontSize: 20, fontWeight: FontWeight.w500),
+          //                   ),
+          //           )
+          //         ],
           //       ),
-          //
-          //
-          //     ],
+          //     ),
           //   ),
           // ),
-          body: TabBarView(children: <Widget>[
-            Center(
-              child: Expanded(
-                  child: items.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, i) {
-                            var url;
-                            if (items[i].image != null) {
-                              final ref = FirebaseStorage.instance
-                                  .ref()
-                                  .child('menus')
-                                  .child(items[i].image!);
-                              url = ref.getDownloadURL();
+
+          Center(
+            child: Expanded(
+                child: items.isNotEmpty
+                    ? ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, i) {
+                      var url;
+                      if (items[i].image != null) {
+                        final ref = FirebaseStorage.instance
+                            .ref()
+                            .child('menus')
+                            .child(items[i].image!);
+                        url = ref.getDownloadURL();
+                      }
+                      var followers = getUserFollowers(items[i]);
+                      return url != null
+                          ? FutureBuilder<String>(
+                          future: url,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(
+                                            builder: (context) {
+                                              return OtherProfile(
+                                                  snapshot.data!,
+                                                  items[i].uid);
+                                            }));
+                                  },
+                                  child: Card(
+                                    color: Colors.white,
+                                    margin: EdgeInsets.all(3),
+                                    child: ListTile(
+                                        leading: Image.network(
+                                            snapshot.data!),
+                                        title: Text(
+                                            '${items[i].username}',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight:
+                                                FontWeight.bold)),
+                                        subtitle: FutureBuilder<
+                                            List<FollowModel>>(
+                                            future: followers,
+                                            builder:
+                                                (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                return Text(
+                                                    'Follow : ${snapshot.data!.length}');
+                                              } else {
+                                                return Text(
+                                                    'Follow : 0');
+                                              }
+                                            })
+
+                                      // trailing: IconButton(
+                                      //   onPressed: () {},
+                                      //   icon: Icon(Icons.more_vert),
+                                      // ),
+                                    ),
+                                  ));
+                            } else {
+                              return CircularProgressIndicator();
                             }
-                            var followers = getUserFollowers(items[i]);
-                            return url != null
-                                ? FutureBuilder<String>(
-                                    future: url,
+                          })
+                          : GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return OtherProfile(
+                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                      items[i].uid);
+                                }));
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.all(3),
+                            child: ListTile(
+                                leading: Image.network(
+                                    "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
+                                title: Text('${items[i].username}',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                                subtitle:
+                                FutureBuilder<List<FollowModel>>(
+                                    future: followers,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                                        return GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return OtherProfile(
-                                                    snapshot.data!,
-                                                    items[i].uid);
-                                              }));
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              margin: EdgeInsets.all(3),
-                                              child: ListTile(
-                                                  leading: Image.network(
-                                                      snapshot.data!),
-                                                  title: Text(
-                                                      '${items[i].username}',
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                  subtitle: FutureBuilder<
-                                                          List<FollowModel>>(
-                                                      future: followers,
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        if (snapshot.hasData) {
-                                                          return Text(
-                                                              'Follow : ${snapshot.data!.length}');
-                                                        } else {
-                                                          return Text(
-                                                              'Follow : 0');
-                                                        }
-                                                      })
-
-                                                  // trailing: IconButton(
-                                                  //   onPressed: () {},
-                                                  //   icon: Icon(Icons.more_vert),
-                                                  // ),
-                                                  ),
-                                            ));
+                                        return Text(
+                                            'Follow : ${snapshot.data!.length}');
                                       } else {
-                                        return CircularProgressIndicator();
+                                        return Text('Follow : 0');
                                       }
                                     })
-                                : GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return OtherProfile(
-                                            "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                                            items[i].uid);
-                                      }));
-                                    },
+
+                              // trailing: IconButton(
+                              //   onPressed: () {},
+                              //   icon: Icon(Icons.more_vert),
+                              // ),
+                            ),
+                          ));
+                    })
+                    : Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Text(
+                    'No results found',
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                )),
+          ),
+
+          // Center(
+          //   child: Expanded(
+          //     child: ListView.builder(
+          //         itemCount: method_list.length,
+          //         itemBuilder: (context, index) {
+          //           return Card(
+          //             margin: EdgeInsets.all(8),
+          //             child: ListTile(
+          //               title: Text('${method_list[index].nameMethod}',
+          //                   style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.black)),
+          //             ),
+          //           );
+          //         }),
+          //   )
+          // ),
+          Center(
+            child: Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                alignment: Alignment.topLeft,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(padding: EdgeInsets.all(5)),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: method_list.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () => setState(() {
+                                    _value = index;
+                                    filterMethod(method_list[index]);
+                                  }),
+                                  child: Container(
+                                    width: 70,
                                     child: Card(
-                                      color: Colors.white,
-                                      margin: EdgeInsets.all(3),
-                                      child: ListTile(
-                                          leading: Image.network(
-                                              "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
-                                          title: Text('${items[i].username}',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)),
-                                          subtitle:
-                                              FutureBuilder<List<FollowModel>>(
-                                                  future: followers,
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot.hasData) {
-                                                      return Text(
-                                                          'Follow : ${snapshot.data!.length}');
-                                                    } else {
-                                                      return Text('Follow : 0');
-                                                    }
-                                                  })
-
-                                          // trailing: IconButton(
-                                          //   onPressed: () {},
-                                          //   icon: Icon(Icons.more_vert),
-                                          // ),
-                                          ),
-                                    ));
-                          })
-                      : Padding(
-                          padding: EdgeInsets.only(top: 50),
-                          child: Text(
-                            'No results found',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                        )),
-            ),
-
-            // Center(
-            //   child: Expanded(
-            //     child: ListView.builder(
-            //         itemCount: method_list.length,
-            //         itemBuilder: (context, index) {
-            //           return Card(
-            //             margin: EdgeInsets.all(8),
-            //             child: ListTile(
-            //               title: Text('${method_list[index].nameMethod}',
-            //                   style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.black)),
-            //             ),
-            //           );
-            //         }),
-            //   )
-            // ),
-            Center(
-              child: Expanded(
-                child: Container(
-                  margin: EdgeInsets.all(5),
-                  alignment: Alignment.topLeft,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Padding(padding: EdgeInsets.all(5)),
-                          Expanded(
-                            child: Container(
-                              height: 50,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: method_list.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                    onTap: () => setState(() {
-                                      _value = index;
-                                      filterMethod(method_list[index]);
-                                    }),
-                                    child: Container(
-                                      width: 70,
-                                      child: Card(
-                                        shape: (_value == index)
-                                            ? RoundedRectangleBorder(
-                                                side: BorderSide(
-                                                    width: 7,
-                                                    color: Palette.roseBud))
-                                            : null,
-                                        elevation: 7,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            Text(
-                                              '${method_list[index].nameMethod}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                      shape: (_value == index)
+                                          ? RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              width: 7,
+                                              color: Palette.roseBud))
+                                          : null,
+                                      elevation: 7,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          Text(
+                                            '${method_list[index].nameMethod}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      ),
-                      Expanded(
-                          child: filter.isNotEmpty
-                              ? MediaQuery.removePadding(
-                                  context: context,
-                                  removeTop: true,
-                                  child: GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent: 300.0,
-                                      crossAxisSpacing: 20.0,
-                                      mainAxisSpacing: 20.0,
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                        child: filter.isNotEmpty
+                            ? MediaQuery.removePadding(
+                            context: context,
+                            removeTop: true,
+                            child: GridView.builder(
+                              gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 300.0,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0,
+                              ),
+                              padding: EdgeInsets.only(
+                                  top: 5, left: 5, right: 5),
+                              primary: false,
+                              shrinkWrap: true,
+                              physics: ScrollPhysics(),
+                              itemCount: filter.length,
+                              itemBuilder:
+                                  (BuildContext context, int index) {
+                                return Container(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1),
                                     ),
-                                    padding: EdgeInsets.only(
-                                        top: 5, left: 5, right: 5),
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    physics: ScrollPhysics(),
-                                    itemCount: filter.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                                color: Colors.transparent,
-                                                width: 1),
-                                          ),
-                                          color: Colors.white,
-                                          child: Column(
-                                            children: [
-                                              SizedBox(height: 8),
-                                              buildPictureBtn(index),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ))
-                              : Padding(
-                                  padding: EdgeInsets.only(top: 210),
-                                  child: Text(
-                                    'No results found',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 8),
+                                        buildPictureBtn(index),
+                                      ],
+                                    ),
                                   ),
-                                ))
-                    ],
-                  ),
+                                );
+                              },
+                            ))
+                            : Padding(
+                          padding: EdgeInsets.only(top: 210),
+                          child: Text(
+                            'No results found',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ))
+                  ],
                 ),
               ),
-              // child: filter.isNotEmpty
-              //     ? MediaQuery.removePadding(
-              //     context: context,
-              //     removeTop: true,
-              //     child: GridView.builder(
-              //       gridDelegate:
-              //       const SliverGridDelegateWithFixedCrossAxisCount(
-              //           crossAxisCount: 2),
-              //       padding:
-              //       EdgeInsets.only(top: 5,left: 5,right: 5),
-              //       primary: false,
-              //       shrinkWrap: true,
-              //       physics: ScrollPhysics(),
-              //       itemCount: filter.length,
-              //       itemBuilder: (BuildContext context, int index) {
-              //         return Container(
-              //           child: Card(
-              //             shape: RoundedRectangleBorder(
-              //               side: BorderSide(color:Colors.transparent,width: 1),
-              //               // borderRadius: BorderRadius.circular(15),
-              //             ),
-              //             color: Colors.white,
-              //             child: Column(
-              //               children: [
-              //                 SizedBox(height: 8),
-              //                 buildPictureBtn(index),
-              //               ],
-              //             ),
-              //           ),
-              //         );
-              //       },
-              //     ))
-              //     : Text('No results found',
-              //   style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
             ),
-          ])),
-
-      // body: Stack(
-      //   children: <Widget>[
-      //     SafeArea(
-      //       child: Column(
-      //         children: <Widget>[
-      //           Expanded(
-      //             child: DefaultTabController(
-      //               length: 3, // length of tabs
-      //               initialIndex: 0,
-      //               child: Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   Padding(
-      //                       padding: EdgeInsets.symmetric(
-      //                           horizontal: 120, vertical: 0)),
-      //                   Container(
-      //
-      //
-      //                   //   child: TabBar(
-      //                   //     labelColor: Colors.redAccent,
-      //                   //     unselectedLabelColor: Colors.black,
-      //                   //     tabs: [
-      //                   //       Tab(
-      //                   //         text: "Top",
-      //                   //       ),
-      //                   //       Tab(
-      //                   //         text: "Users",
-      //                   //       ),
-      //                   //       Tab(
-      //                   //         text: "Recipes",
-      //                   //       ),
-      //                   //     ],
-      //                   //   ),
-      //                   // ),
-      //                   // Container(
-      //                   //     height: 509,
-      //                   //     //height of TabBarView
-      //                   //     decoration: BoxDecoration(
-      //                   //         border: Border(
-      //                   //             top: BorderSide(
-      //                   //                 color: Colors.grey, width: 0.5))),
-      //                   //     child: TabBarView(children: <Widget>[
-      //                   //       top,
-      //                   //       Text("User"),
-      //                   //       Text("Recipes")
-      //                   //     ]))
-      //                   ),],
-      //               ),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
+            // child: filter.isNotEmpty
+            //     ? MediaQuery.removePadding(
+            //     context: context,
+            //     removeTop: true,
+            //     child: GridView.builder(
+            //       gridDelegate:
+            //       const SliverGridDelegateWithFixedCrossAxisCount(
+            //           crossAxisCount: 2),
+            //       padding:
+            //       EdgeInsets.only(top: 5,left: 5,right: 5),
+            //       primary: false,
+            //       shrinkWrap: true,
+            //       physics: ScrollPhysics(),
+            //       itemCount: filter.length,
+            //       itemBuilder: (BuildContext context, int index) {
+            //         return Container(
+            //           child: Card(
+            //             shape: RoundedRectangleBorder(
+            //               side: BorderSide(color:Colors.transparent,width: 1),
+            //               // borderRadius: BorderRadius.circular(15),
+            //             ),
+            //             color: Colors.white,
+            //             child: Column(
+            //               children: [
+            //                 SizedBox(height: 8),
+            //                 buildPictureBtn(index),
+            //               ],
+            //             ),
+            //           ),
+            //         );
+            //       },
+            //     ))
+            //     : Text('No results found',
+            //   style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
+          ),
+        ]),
+      ),
     );
+
   }
 }
 
