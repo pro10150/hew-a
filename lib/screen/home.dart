@@ -18,7 +18,7 @@ import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'login/loginscreen.dart';
 
 class Home extends StatefulWidget {
@@ -47,6 +47,30 @@ class _HomeState extends State<Home> {
   List<UserModel> recommendedUserModels = [];
   UserModel? userModel;
   var auth = FirebaseAuth.instance;
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    getAllData();
+    getTrending();
+    getFollowing();
+    getDailyPick();
+    getUser();
+    getRecommendedUserModel();
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
 
   @override
   void initState() {
@@ -103,6 +127,9 @@ class _HomeState extends State<Home> {
   }
 
   getAllData() async {
+    setState(() {
+      menuRecipeModels.clear();
+    });
     var objects = await MenuRecipeHelper().readDataFromSQLite();
     for (var object in objects) {
       print(object);
@@ -113,6 +140,9 @@ class _HomeState extends State<Home> {
   }
 
   getTrending() async {
+    setState(() {
+      trendingModels.clear();
+    });
     var objects = await MenuRecipeHelper().getTrending();
     for (var object in objects) {
       setState(() {
@@ -122,6 +152,9 @@ class _HomeState extends State<Home> {
   }
 
   getFollowing() async {
+    setState(() {
+      followingModels.clear();
+    });
     var objects = await MenuRecipeHelper().getFollowing(auth.currentUser!.uid);
     for (var object in objects) {
       setState(() {
@@ -131,6 +164,9 @@ class _HomeState extends State<Home> {
   }
 
   getDailyPick() async {
+    setState(() {
+      dailyPickModels.clear();
+    });
     var objects = await MenuRecipeHelper().getDailyPick();
     for (var object in objects) {
       setState(() {
