@@ -135,6 +135,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Future<void> getRecipe() async {
+    setState(() {
+      menuRecipes.clear();
+      likeRecipes.clear();
+    });
     var object = await RecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     var mr = await MenuRecipeHelper().getAllUserRecipe(_auth.currentUser!.uid);
     var lr = await MenuRecipeHelper().getLikedRecipe(_auth.currentUser!.uid);
@@ -505,6 +509,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 return recipes(menuRecipes[index]);
                               })
                           : Container(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.05),
                               alignment: Alignment.topCenter,
                               child: Text(
                                 'You haven\'t create any recipes yet',
@@ -527,6 +534,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 return recipeslike(likeRecipes[index]);
                               })
                           : Container(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.05),
                               alignment: Alignment.topCenter,
                               child: Text(
                                 'You haven\'t liked anything yet',
@@ -558,28 +568,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       }
     });
   }
-}
 
-class recipes extends StatelessWidget {
-  recipes(this.menuRecipeModel) {
-    ref = FirebaseStorage.instance
-        .ref()
-        .child('menus')
-        .child(menuRecipeModel.menuImage!);
-    url = ref.getDownloadURL();
-    menuModel = MenuModel(
-        nameMenu: menuRecipeModel.nameMenu,
-        mainIngredient: menuRecipeModel.mainIngredient,
-        id: menuRecipeModel.id);
-  }
-
-  var menuModel;
-  MenuRecipeModel menuRecipeModel;
   var ref;
   var url;
-  static const color = const Color(0xffffab91);
-
-
 
   Future<Null> readSQLite() async {
     var object = await MenuRecipeHelper().readDataFromSQLite();
@@ -589,7 +580,7 @@ class recipes extends StatelessWidget {
     }
   }
 
-  _doneFromDialog(context) {
+  _doneFromDialog(context, MenuRecipeModel menuRecipeModel) {
     return showDialog(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -646,6 +637,7 @@ class recipes extends StatelessWidget {
                     });
 
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text('Done',
                       style: TextStyle(
@@ -660,8 +652,16 @@ class recipes extends StatelessWidget {
         });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget recipes(MenuRecipeModel menuRecipeModel) {
+    ref = FirebaseStorage.instance
+        .ref()
+        .child('menus')
+        .child(menuRecipeModel.menuImage!);
+    url = ref.getDownloadURL();
+    menuModel = MenuModel(
+        nameMenu: menuRecipeModel.nameMenu,
+        mainIngredient: menuRecipeModel.mainIngredient,
+        id: menuRecipeModel.id);
     return FutureBuilder<String>(
         future: url,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -723,8 +723,7 @@ class recipes extends StatelessWidget {
                               ),
                               SimpleDialogOption(
                                 onPressed: () {
-                                  Navigator.pop(context);
-                                  _doneFromDialog(context);
+                                  _doneFromDialog(context, menuRecipeModel);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -748,7 +747,7 @@ class recipes extends StatelessWidget {
                           ),
                         );
                       },
-                    );
+                    ).then((value) => getRecipe());
                   },
                   onTap: () {
                     Navigator.push(context,
@@ -790,37 +789,8 @@ class recipes extends StatelessWidget {
           return Column(children: children);
         });
   }
-}
 
-class recipeslike extends StatelessWidget {
-  recipeslike(this.menuRecipeModel) {
-    ref = FirebaseStorage.instance
-        .ref()
-        .child('menus')
-        .child(menuRecipeModel.menuImage!);
-    url = ref.getDownloadURL();
-    menuModel = MenuModel(
-        nameMenu: menuRecipeModel.nameMenu,
-        mainIngredient: menuRecipeModel.mainIngredient,
-        id: menuRecipeModel.id);
-  }
-
-  var _auth = FirebaseAuth.instance;
-  var menuModel;
-  MenuRecipeModel menuRecipeModel;
-  var ref;
-  var url;
-  static const color = const Color(0xffffab91);
-
-  Future<Null> readSQLite() async {
-    var object = await MenuRecipeHelper().readDataFromSQLite();
-    print('object length ==> ${object.length}');
-    for (var model in object) {
-      print(model);
-    }
-  }
-
-  _doneFromDialog(context) {
+  _doneFromDialogLike(context, MenuRecipeModel menuRecipeModel) {
     return showDialog(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -849,6 +819,7 @@ class recipeslike extends StatelessWidget {
                     });
 
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text('Done',
                       style: TextStyle(
@@ -863,8 +834,16 @@ class recipeslike extends StatelessWidget {
         });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget recipeslike(MenuRecipeModel menuRecipeModel) {
+    ref = FirebaseStorage.instance
+        .ref()
+        .child('menus')
+        .child(menuRecipeModel.menuImage!);
+    url = ref.getDownloadURL();
+    menuModel = MenuModel(
+        nameMenu: menuRecipeModel.nameMenu,
+        mainIngredient: menuRecipeModel.mainIngredient,
+        id: menuRecipeModel.id);
     return FutureBuilder<String>(
         future: url,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -897,8 +876,7 @@ class recipeslike extends StatelessWidget {
                               ),
                               SimpleDialogOption(
                                 onPressed: () {
-                                  Navigator.pop(context);
-                                  _doneFromDialog(context);
+                                  _doneFromDialogLike(context, menuRecipeModel);
                                 },
                                 child: Row(
                                   mainAxisAlignment:
@@ -922,7 +900,7 @@ class recipeslike extends StatelessWidget {
                           ),
                         );
                       },
-                    );
+                    ).then((value) => getRecipe());
                   },
                   onTap: () {
                     Navigator.push(context,
@@ -966,6 +944,411 @@ class recipeslike extends StatelessWidget {
         });
   }
 }
+
+// class recipes extends StatelessWidget {
+//   recipes(this.menuRecipeModel) {
+//     ref = FirebaseStorage.instance
+//         .ref()
+//         .child('menus')
+//         .child(menuRecipeModel.menuImage!);
+//     url = ref.getDownloadURL();
+//     menuModel = MenuModel(
+//         nameMenu: menuRecipeModel.nameMenu,
+//         mainIngredient: menuRecipeModel.mainIngredient,
+//         id: menuRecipeModel.id);
+//   }
+
+//   var menuModel;
+//   MenuRecipeModel menuRecipeModel;
+//   var ref;
+//   var url;
+//   static const color = const Color(0xffffab91);
+
+//   Future<Null> readSQLite() async {
+//     var object = await MenuRecipeHelper().readDataFromSQLite();
+//     print('object length ==> ${object.length}');
+//     for (var model in object) {
+//       print(model);
+//     }
+//   }
+
+//   _doneFromDialog(context) {
+//     return showDialog(
+//         context: context,
+//         barrierDismissible: false, // user must tap button!
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             actionsAlignment: MainAxisAlignment.center,
+//             actions: [
+//               FlatButton(
+//                 onPressed: () {
+//                   Navigator.pop(context);
+//                 },
+//                 child: Text('Cancel',
+//                     style:
+//                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+//               ),
+//               FlatButton(
+//                   textColor: Colors.black,
+//                   color: color,
+//                   disabledColor: Colors.black,
+//                   onPressed: () async {
+//                     // await MenuHelper().deleteDataWhereId(menuRecipeModel.id.toString()).then((value) {
+//                     //   print('Delete Success Menu');
+//                     // });
+
+//                     await RecipeHelper()
+//                         .deleteDataWhereId(menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success Recipe');
+//                     });
+
+//                     await ReKitchenwareHelper()
+//                         .deleteDataWhereUser(menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success ReKit');
+//                     });
+
+//                     await ReStepHelper()
+//                         .deleteDataWhereRecipe(menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success ReStep');
+//                     });
+
+//                     await ReIngredHelper()
+//                         .deleteDataWhereUser(menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success ReIngre');
+//                     });
+
+//                     await ReImageStepHelper()
+//                         .deleteDataWhereRecipeimage(
+//                             menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success ReImStep');
+//                     });
+
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text('Done',
+//                       style: TextStyle(
+//                           fontSize: 14, fontWeight: FontWeight.bold))),
+//             ],
+//             title: Text(
+//               'Are you sure to delete ${menuRecipeModel.recipeName!}?',
+//               textAlign: TextAlign.center,
+//               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+//             ),
+//           );
+//         });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<String>(
+//         future: url,
+//         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+//           List<Widget> children;
+//           if (snapshot.hasData) {
+//             children = <Widget>[
+//               InkWell(
+//                   onLongPress: () {
+//                     showDialog(
+//                       context: context,
+//                       builder: (BuildContext context) {
+//                         return Expanded(
+//                           child: SimpleDialog(
+//                             backgroundColor: Colors.white.withOpacity(0.93),
+//                             title: Text(
+//                               menuRecipeModel.recipeName!,
+//                               textAlign: TextAlign.center,
+//                               style: TextStyle(
+//                                   fontWeight: FontWeight.bold, fontSize: 25),
+//                             ),
+//                             shape: RoundedRectangleBorder(
+//                                 borderRadius:
+//                                     BorderRadius.all(Radius.circular(16.0))),
+//                             children: [
+//                               SizedBox(
+//                                 height: 1,
+//                                 child: Container(
+//                                   color: Colors.black45,
+//                                 ),
+//                               ),
+//                               SimpleDialogOption(
+//                                 onPressed: () {
+//                                   Navigator.push(
+//                                       context,
+//                                       MaterialPageRoute(
+//                                           builder: (context) =>
+//                                               EditRecipe(menuRecipeModel)));
+//                                   readSQLite();
+//                                 },
+//                                 child: Row(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment.spaceBetween,
+//                                   children: [
+//                                     Text(
+//                                       'Edit',
+//                                       style: TextStyle(
+//                                           fontWeight: FontWeight.bold,
+//                                           fontSize: 20),
+//                                     ),
+//                                     Icon(Icons.edit),
+//                                   ],
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 height: 1,
+//                                 child: Container(
+//                                   color: Colors.black12,
+//                                 ),
+//                               ),
+//                               SimpleDialogOption(
+//                                 onPressed: () {
+//                                   Navigator.pop(context);
+//                                   _doneFromDialog(context);
+//                                 },
+//                                 child: Row(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment.spaceBetween,
+//                                   children: [
+//                                     Text(
+//                                       'Delete',
+//                                       style: TextStyle(
+//                                           fontWeight: FontWeight.bold,
+//                                           fontSize: 20,
+//                                           color: Colors.red),
+//                                     ),
+//                                     Icon(Icons.remove_circle_outline_rounded,
+//                                         color: Colors.red),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ],
+//                             elevation: 1,
+//                             //backgroundColor: Colors.green,
+//                           ),
+//                         );
+//                       },
+//                     );
+//                   },
+//                   onTap: () {
+//                     Navigator.push(context,
+//                         MaterialPageRoute(builder: (context) {
+//                       return MenuDetail(menuRecipeModel);
+//                     }));
+//                   },
+//                   child: Container(
+//                     padding: EdgeInsets.all(0),
+//                     height: MediaQuery.of(context).size.height * 0.17,
+//                     width: MediaQuery.of(context).size.height * 0.17,
+//                     decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(10),
+//                         color: Colors.red,
+//                         image: DecorationImage(
+//                             fit: BoxFit.cover,
+//                             image: NetworkImage(snapshot.data!))),
+//                   )
+
+//                   // child: Column(
+//                   //   children: <Widget>[
+//                   //     Image.network(
+//                   //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
+//                   //   ],
+//                   // ),
+//                   ),
+//               menuRecipeModel.recipeName != null
+//                   ? Text(
+//                       menuRecipeModel.recipeName!,
+//                       style:
+//                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//                     )
+//                   : Container(),
+//               Text(menuRecipeModel.nameMenu!),
+//             ];
+//           } else {
+//             children = <Widget>[CircularProgressIndicator()];
+//           }
+//           return Column(children: children);
+//         });
+//   }
+// }
+
+// class recipeslike extends StatelessWidget {
+//   recipeslike(this.menuRecipeModel) {
+//     ref = FirebaseStorage.instance
+//         .ref()
+//         .child('menus')
+//         .child(menuRecipeModel.menuImage!);
+//     url = ref.getDownloadURL();
+//     menuModel = MenuModel(
+//         nameMenu: menuRecipeModel.nameMenu,
+//         mainIngredient: menuRecipeModel.mainIngredient,
+//         id: menuRecipeModel.id);
+//   }
+
+//   var _auth = FirebaseAuth.instance;
+//   var menuModel;
+//   MenuRecipeModel menuRecipeModel;
+//   var ref;
+//   var url;
+//   static const color = const Color(0xffffab91);
+
+//   Future<Null> readSQLite() async {
+//     var object = await MenuRecipeHelper().readDataFromSQLite();
+//     print('object length ==> ${object.length}');
+//     for (var model in object) {
+//       print(model);
+//     }
+//   }
+
+//   _doneFromDialog(context) {
+//     return showDialog(
+//         context: context,
+//         barrierDismissible: false, // user must tap button!
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             actionsAlignment: MainAxisAlignment.center,
+//             actions: [
+//               FlatButton(
+//                 onPressed: () {
+//                   Navigator.pop(context);
+//                 },
+//                 child: Text('Cancel',
+//                     style:
+//                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+//               ),
+//               FlatButton(
+//                   textColor: Colors.black,
+//                   color: color,
+//                   disabledColor: Colors.black,
+//                   onPressed: () async {
+//                     await LikeHelper()
+//                         .deleteDataWhere(_auth.currentUser!.uid,
+//                             menuRecipeModel.id.toString())
+//                         .then((value) {
+//                       print('Delete Success Like');
+//                     });
+
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text('Done',
+//                       style: TextStyle(
+//                           fontSize: 14, fontWeight: FontWeight.bold))),
+//             ],
+//             title: Text(
+//               'Are you sure to delete ${menuRecipeModel.recipeName!}?',
+//               textAlign: TextAlign.center,
+//               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+//             ),
+//           );
+//         });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<String>(
+//         future: url,
+//         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+//           List<Widget> children;
+//           if (snapshot.hasData) {
+//             children = <Widget>[
+//               InkWell(
+//                   onLongPress: () {
+//                     showDialog(
+//                       context: context,
+//                       builder: (BuildContext context) {
+//                         return Expanded(
+//                           child: SimpleDialog(
+//                             backgroundColor: Colors.white.withOpacity(0.93),
+//                             title: Text(
+//                               menuRecipeModel.recipeName!,
+//                               textAlign: TextAlign.center,
+//                               style: TextStyle(
+//                                   fontWeight: FontWeight.bold, fontSize: 25),
+//                             ),
+//                             shape: RoundedRectangleBorder(
+//                                 borderRadius:
+//                                     BorderRadius.all(Radius.circular(16.0))),
+//                             children: [
+//                               SizedBox(
+//                                 height: 1,
+//                                 child: Container(
+//                                   color: Colors.black45,
+//                                 ),
+//                               ),
+//                               SimpleDialogOption(
+//                                 onPressed: () {
+//                                   Navigator.pop(context);
+//                                   _doneFromDialog(context);
+//                                 },
+//                                 child: Row(
+//                                   mainAxisAlignment:
+//                                       MainAxisAlignment.spaceBetween,
+//                                   children: [
+//                                     Text(
+//                                       'Delete',
+//                                       style: TextStyle(
+//                                           fontWeight: FontWeight.bold,
+//                                           fontSize: 20,
+//                                           color: Colors.red),
+//                                     ),
+//                                     Icon(Icons.remove_circle_outline_rounded,
+//                                         color: Colors.red),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ],
+//                             elevation: 1,
+//                             //backgroundColor: Colors.green,
+//                           ),
+//                         );
+//                       },
+//                     ).then((value) => getRecipe());
+//                   },
+//                   onTap: () {
+//                     Navigator.push(context,
+//                         MaterialPageRoute(builder: (context) {
+//                       return MenuDetail(menuRecipeModel);
+//                     }));
+//                   },
+//                   child: Container(
+//                     padding: EdgeInsets.all(0),
+//                     height: MediaQuery.of(context).size.height * 0.17,
+//                     width: MediaQuery.of(context).size.height * 0.17,
+//                     decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(10),
+//                         color: Colors.red,
+//                         image: DecorationImage(
+//                             fit: BoxFit.cover,
+//                             image: NetworkImage(snapshot.data!))),
+//                   )
+
+//                   // child: Column(
+//                   //   children: <Widget>[
+//                   //     Image.network(
+//                   //         "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")
+//                   //   ],
+//                   // ),
+//                   ),
+//               menuRecipeModel.recipeName != null
+//                   ? Text(
+//                       menuRecipeModel.recipeName!,
+//                       style:
+//                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//                     )
+//                   : Container(),
+//               Text(menuRecipeModel.nameMenu!,
+//                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+//             ];
+//           } else {
+//             children = <Widget>[CircularProgressIndicator()];
+//           }
+//           return Column(children: children);
+//         });
+//   }
+// }
 
 var rep = new Column(
   crossAxisAlignment: CrossAxisAlignment.start,

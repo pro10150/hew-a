@@ -229,10 +229,10 @@ class _EditRecipeState extends State<EditRecipe> {
             });
           }
         }
-        for (var i in _Stepimage) {
-          print(i.path);
-        }
-        print(_Stepimage.length);
+        // for (var i in _Stepimage) {
+        //   print(i.path);
+        // }
+        // print(_Stepimage.length);
       }
       // if (reStepModel!.description != null) {
       //   _descStepControllers[0].text = reStepModel!.description!;
