@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hewa/screen/profile/EditProfile.dart';
+import 'package:hewa/screen/menu_detail/menu_detail.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/models/follow_model.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
@@ -439,7 +440,10 @@ class recipes extends StatelessWidget {
             children = <Widget>[
               InkWell(
                   onTap: () {
-                    print('Tap');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return MenuDetail(menuRecipeModel);
+                    }));
                   },
                   child: Container(
                     padding: EdgeInsets.all(0),
