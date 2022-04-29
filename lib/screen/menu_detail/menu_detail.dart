@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
+import 'package:intl/intl.dart';
 import 'package:hewa/screen/add/recipe_step_1.dart';
 import 'package:hewa/screen/home.dart';
 import 'package:hewa/screen/search.dart';
@@ -28,6 +29,8 @@ import 'package:hewa/utilities/userKitch_helper.dart';
 import 'package:hewa/models/view_model.dart';
 import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/screen/add/Edit_recipe.dart';
+import 'package:hewa/models/like_model.dart';
+import 'package:hewa/utilities/like_helper.dart';
 
 class MenuDetail extends StatefulWidget {
   MenuDetail(this.object) {
@@ -45,6 +48,8 @@ UserModel? userModel;
 List<String> urls = [];
 List<KitchenwareModel> kitchenwareModels = [];
 List<UserKitchenwareModel> userKitchenwareModels = [];
+List<LikeModel> likeModels = [];
+bool isLiked = false;
 
 class _MenuDetailState extends State<MenuDetail> {
   Widget _getRecipePicture({required String pictureUrl}) {
@@ -57,6 +62,21 @@ class _MenuDetailState extends State<MenuDetail> {
         width: 300,
       ),
     );
+  }
+
+  getLike(MenuRecipeModel menuRecipeModel) async {
+    var objects = await LikeHelper()
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
+
+    setState(() {
+      likeModels.clear();
+      likeModels = objects;
+      for (var object in objects) {
+        if (object.uid == _auth.currentUser!.uid) {
+          isLiked = true;
+        }
+      }
+    });
   }
 
   getUserKitchenware() async {
@@ -165,7 +185,6 @@ class _MenuDetailState extends State<MenuDetail> {
     return children;
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -174,7 +193,9 @@ class _MenuDetailState extends State<MenuDetail> {
     getImageURL();
     getReKitchenware();
     getUserKitchenware();
+    getLike(menuRecipeModel!);
   }
+
   static const color = const Color(0xffffab91);
 
   _doneFromDialog(context) {
@@ -191,7 +212,7 @@ class _MenuDetailState extends State<MenuDetail> {
                 },
                 child: Text('Cancel',
                     style:
-                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               FlatButton(
                   textColor: Colors.black,
@@ -228,11 +249,12 @@ class _MenuDetailState extends State<MenuDetail> {
 
                     await ReImageStepHelper()
                         .deleteDataWhereRecipeimage(
-                        menuRecipeModel!.id.toString())
+                            menuRecipeModel!.id.toString())
                         .then((value) {
                       print('Delete Success ReImStep');
                     });
 
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                   child: Text('Done',
@@ -248,37 +270,62 @@ class _MenuDetailState extends State<MenuDetail> {
         });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(userModel!.username!),
         actions: [
-          PopupMenuButton(
-              onSelected: (result) {
-                if (result == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditRecipe(menuRecipeModel!)),
-                  );
-                }
-                if (result == 1) {
-                  _doneFromDialog(context);
-                }
-              },
-              itemBuilder:(context) => [
-                PopupMenuItem(
-                  child: Text("Edit"),
-                  value: 0,
-                ),
-                PopupMenuItem(
-                  child: Text("Delete"),
-                  value: 1,
-                ),
-              ]
-          ),
+          menuRecipeModel!.recipeUid == _auth.currentUser!.uid
+              ? PopupMenuButton(
+                  onSelected: (result) {
+                    if (result == 0) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditRecipe(menuRecipeModel!)),
+                      );
+                    }
+                    if (result == 1) {
+                      _doneFromDialog(context);
+                    }
+                  },
+                  itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text("Edit"),
+                          value: 0,
+                        ),
+                        PopupMenuItem(
+                          child: Text("Delete"),
+                          value: 1,
+                        ),
+                      ])
+              : GestureDetector(
+                  onTap: () {
+                    LikeModel likeModel = LikeModel(
+                        recipeId: menuRecipeModel!.id,
+                        uid: _auth.currentUser!.uid,
+                        datetime: DateFormat('yyyy-MM-dd HH:mm:ss')
+                            .format(DateTime.now()));
+                    if (isLiked == false) {
+                      LikeHelper().insertDataToSQLite(likeModel);
+                      setState(() {
+                        isLiked = true;
+                        getLike(menuRecipeModel!);
+                      });
+                    } else {
+                      LikeHelper().deleteDataWhere(_auth.currentUser!.uid,
+                          menuRecipeModel!.id.toString());
+                      setState(() {
+                        isLiked = false;
+                        getLike(menuRecipeModel!);
+                      });
+                    }
+                  },
+                  child: Column(children: [
+                    Icon(isLiked ? MdiIcons.heart : MdiIcons.heartOutline,
+                        size: MediaQuery.of(context).size.height * 0.06),
+                  ])),
 
           // IconButton(
           //   icon: const Icon(Icons.format_list_bulleted),
@@ -332,7 +379,15 @@ class _MenuDetailState extends State<MenuDetail> {
                                     ? menuRecipeModel!.timeMinute.toString() +
                                         " min"
                                     : 'N/A',
-                                style: TextStyle(fontSize: 18))
+                                style: TextStyle(fontSize: 18)),
+                            Container(
+                              width: 20,
+                            ),
+                            Icon(MdiIcons.heartOutline),
+                            Container(
+                              width: 5,
+                            ),
+                            Text(likeModels.length.toString())
                           ],
                         ),
                         Container(height: 10),
@@ -444,4 +499,3 @@ class _MenuDetailState extends State<MenuDetail> {
     );
   }
 }
-
