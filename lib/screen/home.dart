@@ -18,7 +18,6 @@ import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'login/loginscreen.dart';
 
 class Home extends StatefulWidget {
@@ -47,29 +46,13 @@ class _HomeState extends State<Home> {
   List<UserModel> recommendedUserModels = [];
   UserModel? userModel;
   var auth = FirebaseAuth.instance;
-
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
-  }
-
   void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
     getAllData();
     getTrending();
     getFollowing();
     getDailyPick();
     getUser();
     getRecommendedUserModel();
-    if (mounted) setState(() {});
-    _refreshController.loadComplete();
   }
 
   @override
@@ -259,6 +242,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             TextButton(
               onPressed: () {
+                _onLoading();
                 setState(() {
                   dsc = true;
                   dp = false;
@@ -277,6 +261,7 @@ class _HomeState extends State<Home> {
             ),
             TextButton(
                 onPressed: () {
+                  _onLoading();
                   setState(() {
                     dsc = false;
                     dp = true;
@@ -294,6 +279,7 @@ class _HomeState extends State<Home> {
                 )),
             TextButton(
               onPressed: () {
+                _onLoading();
                 setState(() {
                   dsc = false;
                   dp = false;
