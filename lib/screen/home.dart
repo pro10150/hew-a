@@ -18,7 +18,6 @@ import 'package:hewa/utilities/view_helper.dart';
 import 'package:hewa/utilities/menuRecipe_helper.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
-
 import 'login/loginscreen.dart';
 
 class Home extends StatefulWidget {
@@ -47,6 +46,14 @@ class _HomeState extends State<Home> {
   List<UserModel> recommendedUserModels = [];
   UserModel? userModel;
   var auth = FirebaseAuth.instance;
+  void _onLoading() async {
+    getAllData();
+    getTrending();
+    getFollowing();
+    getDailyPick();
+    getUser();
+    getRecommendedUserModel();
+  }
 
   @override
   void initState() {
@@ -103,6 +110,9 @@ class _HomeState extends State<Home> {
   }
 
   getAllData() async {
+    setState(() {
+      menuRecipeModels.clear();
+    });
     var objects = await MenuRecipeHelper().readDataFromSQLite();
     for (var object in objects) {
       print(object);
@@ -113,6 +123,9 @@ class _HomeState extends State<Home> {
   }
 
   getTrending() async {
+    setState(() {
+      trendingModels.clear();
+    });
     var objects = await MenuRecipeHelper().getTrending();
     for (var object in objects) {
       setState(() {
@@ -122,6 +135,9 @@ class _HomeState extends State<Home> {
   }
 
   getFollowing() async {
+    setState(() {
+      followingModels.clear();
+    });
     var objects = await MenuRecipeHelper().getFollowing(auth.currentUser!.uid);
     for (var object in objects) {
       setState(() {
@@ -131,6 +147,9 @@ class _HomeState extends State<Home> {
   }
 
   getDailyPick() async {
+    setState(() {
+      dailyPickModels.clear();
+    });
     var objects = await MenuRecipeHelper().getDailyPick();
     for (var object in objects) {
       setState(() {
@@ -223,6 +242,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             TextButton(
               onPressed: () {
+                _onLoading();
                 setState(() {
                   dsc = true;
                   dp = false;
@@ -241,6 +261,7 @@ class _HomeState extends State<Home> {
             ),
             TextButton(
                 onPressed: () {
+                  _onLoading();
                   setState(() {
                     dsc = false;
                     dp = true;
@@ -258,6 +279,7 @@ class _HomeState extends State<Home> {
                 )),
             TextButton(
               onPressed: () {
+                _onLoading();
                 setState(() {
                   dsc = false;
                   dp = false;
