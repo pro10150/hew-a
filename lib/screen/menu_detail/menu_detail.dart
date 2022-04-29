@@ -3,10 +3,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/screen/add/recipe_step_1.dart';
+import 'package:hewa/screen/home.dart';
+import 'package:hewa/screen/search.dart';
 import 'package:hewa/utilities/user_helper.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:page_transition/page_transition.dart';
+import '../../utilities/reImageStep_helper.dart';
+import '../../utilities/reIngred_helper.dart';
+import '../../utilities/reStep_helper.dart';
+import '../../utilities/recipe_helper.dart';
 import 'detailed_recipe.dart';
 import 'package:hewa/config/palette.dart';
 import 'package:hewa/models/menuRecipe_model.dart';
@@ -21,6 +27,7 @@ import 'package:hewa/models/userKitch_model.dart';
 import 'package:hewa/utilities/userKitch_helper.dart';
 import 'package:hewa/models/view_model.dart';
 import 'package:hewa/utilities/view_helper.dart';
+import 'package:hewa/screen/add/Edit_recipe.dart';
 
 class MenuDetail extends StatefulWidget {
   MenuDetail(this.object) {
@@ -158,6 +165,7 @@ class _MenuDetailState extends State<MenuDetail> {
     return children;
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -167,12 +175,120 @@ class _MenuDetailState extends State<MenuDetail> {
     getReKitchenware();
     getUserKitchenware();
   }
+  static const color = const Color(0xffffab91);
+
+  _doneFromDialog(context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel',
+                    style:
+                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              ),
+              FlatButton(
+                  textColor: Colors.black,
+                  color: color,
+                  disabledColor: Colors.black,
+                  onPressed: () async {
+                    // await MenuHelper().deleteDataWhereId(menuRecipeModel.id.toString()).then((value) {
+                    //   print('Delete Success Menu');
+                    // });
+
+                    await RecipeHelper()
+                        .deleteDataWhereId(menuRecipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success Recipe');
+                    });
+
+                    await ReKitchenwareHelper()
+                        .deleteDataWhereUser(menuRecipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReKit');
+                    });
+
+                    await ReStepHelper()
+                        .deleteDataWhereRecipe(menuRecipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReStep');
+                    });
+
+                    await ReIngredHelper()
+                        .deleteDataWhereUser(menuRecipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReIngre');
+                    });
+
+                    await ReImageStepHelper()
+                        .deleteDataWhereRecipeimage(
+                        menuRecipeModel!.id.toString())
+                        .then((value) {
+                      print('Delete Success ReImStep');
+                    });
+
+                    Navigator.pop(context);
+                  },
+                  child: Text('Done',
+                      style: TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold))),
+            ],
+            title: Text(
+              'Are you sure to delete ${menuRecipeModel!.recipeName!}?',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          );
+        });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(userModel!.username!),
+        actions: [
+          PopupMenuButton(
+              onSelected: (result) {
+                if (result == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditRecipe(menuRecipeModel!)),
+                  );
+                }
+                if (result == 1) {
+                  _doneFromDialog(context);
+                }
+              },
+              itemBuilder:(context) => [
+                PopupMenuItem(
+                  child: Text("Edit"),
+                  value: 0,
+                ),
+                PopupMenuItem(
+                  child: Text("Delete"),
+                  value: 1,
+                ),
+              ]
+          ),
+
+          // IconButton(
+          //   icon: const Icon(Icons.format_list_bulleted),
+          //   tooltip: 'Show Snackbar',
+          //   onPressed: () {
+          //     ScaffoldMessenger.of(context).showSnackBar(
+          //         const SnackBar(content: Text('This is a snackbar')));
+          //   },
+          // ),
+        ],
       ),
       backgroundColor: Palette.roseBud,
       body: SingleChildScrollView(
@@ -328,3 +444,4 @@ class _MenuDetailState extends State<MenuDetail> {
     );
   }
 }
+
