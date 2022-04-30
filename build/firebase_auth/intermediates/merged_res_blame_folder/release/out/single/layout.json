@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/custom_dialog.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/custom_dialog.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/notification_template_part_time.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/browser_actions_context_menu_page.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/8a497c5b121a097b15cb081b25db4c54/browser-1.0.0/res/layout/browser_actions_context_menu_page.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/notification_action_tombstone.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/browser_actions_context_menu_row.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/8a497c5b121a097b15cb081b25db4c54/browser-1.0.0/res/layout/browser_actions_context_menu_row.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/notification_action.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/notification_action.xml"
+    },
+    {
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_auth/intermediates/res/merged/release/layout/notification_template_icon_group.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/layout/notification_template_icon_group.xml"
+    }
+]

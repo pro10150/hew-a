@@ -93,9 +93,9 @@
     },
     {
       "name": "crypto",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.14"
     },
     {
       "name": "cupertino_icons",
@@ -219,9 +219,9 @@
     },
     {
       "name": "flutter_blurhash",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blurhash-0.6.4",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blurhash-0.6.8",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.15"
     },
     {
       "name": "flutter_cache_manager",
@@ -279,7 +279,7 @@
     },
     {
       "name": "font_awesome_flutter",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.2.0",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-10.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -339,7 +339,7 @@
     },
     {
       "name": "image_picker_ios",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.4+11",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.5",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -465,7 +465,7 @@
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.12",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.13",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -663,7 +663,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.5.1",
+      "rootUri": "file:///Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -692,7 +692,7 @@
       "languageVersion": "2.14"
     }
   ],
-  "generated": "2022-04-29T10:18:22.908299Z",
+  "generated": "2022-04-30T10:27:28.686078Z",
   "generator": "pub",
   "generatorVersion": "2.16.0-134.0.dev"
 }
