@@ -1,3 +1,4 @@
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/reImageStep_model.dart';
@@ -30,19 +31,19 @@ class ReImageStepHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReImageStepModel reImageStepModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, reImageStepModel.toJson());
+      HewaAPI().insert(tableDatabase, reImageStepModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<List<ReImageStepModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReImageStepModel> reImageStepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReImageStepModel reImageStepModel = ReImageStepModel.fromJson(map);
       reImageStepModels.add(reImageStepModel);
@@ -52,10 +53,10 @@ class ReImageStepHelper {
 
   Future<List<ReImageStepModel>> readDataFromSQLiteWhereRecipe(
       int recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReImageStepModel> reImageStepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ?', whereArgs: [recipeId]);
     for (var map in maps) {
       ReImageStepModel reImageStepModel = ReImageStepModel.fromJson(map);
@@ -66,10 +67,10 @@ class ReImageStepHelper {
 
   Future<List<ReImageStepModel>> readDataFromSQLiteWhereStep(
       int recipeId, stepId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReImageStepModel> reImageStepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ? AND $stepIdColumn = ?',
         whereArgs: [recipeId, stepId]);
     for (var map in maps) {
@@ -80,9 +81,9 @@ class ReImageStepHelper {
   }
 
   Future<Null> deleteDataWhereRecipe(int stepId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$stepIdColumn = ?', whereArgs: [stepId]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -90,9 +91,9 @@ class ReImageStepHelper {
   }
 
   Future<Null> deleteDataWhere(int id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database
+      await HewaAPI()
           .delete(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -100,18 +101,18 @@ class ReImageStepHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteDataWhereRecipeimage(String recipeId) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.rawDelete(
+      await HewaAPI().rawDelete(
           'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [recipeId]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -119,9 +120,9 @@ class ReImageStepHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

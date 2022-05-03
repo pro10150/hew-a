@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:hewa/utilities/query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -66,10 +67,10 @@ class CommentHelper {
   }
 
   Future<List<CommentModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<CommentModel> commentModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       CommentModel commentModel = CommentModel.fromJson(map);
       commentModels.add(commentModel);
@@ -79,10 +80,10 @@ class CommentHelper {
 
   Future<List<CommentModel>> readDataFromSQLiteWhereRecipe(
       String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<CommentModel> commentModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ?', whereArgs: [recipeId]);
     for (var map in maps) {
       CommentModel commentModel = CommentModel.fromJson(map);
@@ -92,9 +93,9 @@ class CommentHelper {
   }
 
   Future<Null> deleteDataWhere(String uid, String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$uidColumn = ? AND $recipeIdColumn = ?',
           whereArgs: [uid, recipeId]);
     } catch (e) {
@@ -103,9 +104,9 @@ class CommentHelper {
   }
 
   Future<Null> deleteDataWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database
+      await HewaAPI()
           .delete(tableDatabase, where: '$uidColumn = ?', whereArgs: [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -113,9 +114,9 @@ class CommentHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

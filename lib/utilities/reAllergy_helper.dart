@@ -1,3 +1,4 @@
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/reAllergy_model.dart';
@@ -28,9 +29,9 @@ class ReAllergyHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReAllergyModel reAllergyModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, reAllergyModel.toJson());
+      HewaAPI().insert(tableDatabase, reAllergyModel.toJson());
       print(reAllergyModel);
       print('inserted to reAllergyTABLE');
     } catch (e) {
@@ -39,10 +40,10 @@ class ReAllergyHelper {
   }
 
   Future<List<ReAllergyModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<ReAllergyModel> reAllergyModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReAllergyModel reAllergyModel = ReAllergyModel.fromJson(map);
       reAllergyModels.add(reAllergyModel);
@@ -51,10 +52,10 @@ class ReAllergyHelper {
   }
 
   Future<List<ReAllergyModel>> readDataFromSQLiteWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<ReAllergyModel> reAllergyModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReAllergyModel reAllergyModel = ReAllergyModel.fromJson(map);
       reAllergyModels.add(reAllergyModel);
@@ -63,9 +64,9 @@ class ReAllergyHelper {
   }
 
   Future<Null> deleteDataWhere(String uid, int allergy) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$userIDColumn = ? AND $allIDColumn = ?',
           whereArgs: [uid, allergy]);
     } catch (e) {
@@ -74,9 +75,9 @@ class ReAllergyHelper {
   }
 
   Future<Null> deleteDataWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database
+      await HewaAPI()
           .delete(tableDatabase, where: '$userIDColumn = ?', whereArgs: [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -84,9 +85,9 @@ class ReAllergyHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

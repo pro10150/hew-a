@@ -1,3 +1,4 @@
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/userIngred_model.dart';
@@ -30,9 +31,9 @@ class UserIngredHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(UserIngredModel userIngredModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, userIngredModel.toJson());
+      HewaAPI().insert(tableDatabase, userIngredModel.toJson());
       print(userIngredModel);
       print('inserted to userIngredModel');
     } catch (e) {
@@ -41,10 +42,10 @@ class UserIngredHelper {
   }
 
   Future<List<UserIngredModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<UserIngredModel> userIngredModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       UserIngredModel userIngredModel = UserIngredModel.fromJson(map);
       userIngredModels.add(userIngredModel);
@@ -53,11 +54,11 @@ class UserIngredHelper {
   }
 
   Future<List<UserIngredModel>> readDataFromSQLiteWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<UserIngredModel> userIngredModels = [];
 
-    List<Map<String, dynamic>> maps =
-        await database.query(tableDatabase, where: 'uid = ?', whereArgs: [uid]);
+    List<dynamic> maps = await HewaAPI()
+        .query(tableDatabase, where: 'uid = ?', whereArgs: [uid]);
     for (var map in maps) {
       // print(map);
       UserIngredModel userIngredModel = UserIngredModel.fromJson(map);
@@ -67,9 +68,9 @@ class UserIngredHelper {
   }
 
   Future<Null> updateDataToSQLite(UserIngredModel userIngredModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, userIngredModel.toJson(),
+      HewaAPI().update(tableDatabase, userIngredModel.toJson(),
           where: '${uidColumn} = ? AND ${ingredientIdColumn} = ?',
           whereArgs: [userIngredModel.uid, userIngredModel.ingredientId]);
     } catch (e) {
@@ -78,9 +79,9 @@ class UserIngredHelper {
   }
 
   Future<Null> deleteDataWhere(String uid, String ingredient) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$uidColumn = ? AND $ingredientIdColumn = ?',
           whereArgs: [uid, ingredient]);
     } catch (e) {
@@ -89,9 +90,9 @@ class UserIngredHelper {
   }
 
   Future<Null> deleteDataWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database
+      await HewaAPI()
           .rawDelete('DELETE FROM $tableDatabase WHERE $uidColumn = ?', [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -99,9 +100,9 @@ class UserIngredHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hewa/utilities/query.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -33,19 +34,19 @@ class CommentLikeHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(CommentLikeModel commentLikeModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, commentLikeModel.toJson());
+      HewaAPI().insert(tableDatabase, commentLikeModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<List<CommentLikeModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<CommentLikeModel> commentLikeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       CommentLikeModel commentLikeModel = CommentLikeModel.fromJson(map);
       commentLikeModels.add(commentLikeModel);
@@ -54,10 +55,10 @@ class CommentLikeHelper {
   }
 
   Future<List<CommentLikeModel>> readDataFromSQLiteWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<CommentLikeModel> commentLikeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       CommentLikeModel commentLikeModel = CommentLikeModel.fromJson(map);
       commentLikeModels.add(commentLikeModel);
@@ -66,9 +67,9 @@ class CommentLikeHelper {
   }
 
   Future<Null> deleteDataWhere(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database
+      await HewaAPI()
           .delete(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -76,9 +77,9 @@ class CommentLikeHelper {
   }
 
   Future<Null> deleteDataWhereComment(String commentId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$commentIdColumn = ?', whereArgs: [commentId]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -86,9 +87,9 @@ class CommentLikeHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

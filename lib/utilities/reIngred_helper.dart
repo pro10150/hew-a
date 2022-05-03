@@ -1,3 +1,4 @@
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:collection/collection.dart';
@@ -31,17 +32,17 @@ class ReIngredHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReIngredModel reIngredModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, reIngredModel.toJson());
+      HewaAPI().insert(tableDatabase, reIngredModel.toJson());
     } catch (e) {
       print('e insertReIngredData ==>> ${e.toString()}');
     }
   }
 
   Future<int> insert(ReIngredModel reIngredModel) async {
-    Database database = await connectedDatabase();
-    var results = database.insert(tableDatabase, reIngredModel.toJson());
+    // Database database = await connectedDatabase();
+    var results = HewaAPI().insert(tableDatabase, reIngredModel.toJson());
     return results;
   }
 
@@ -604,10 +605,10 @@ class ReIngredHelper {
   }
 
   Future<List<ReIngredModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReIngredModel> reIngredModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReIngredModel reIngredModel = ReIngredModel.fromJson(map);
       reIngredModels.add(reIngredModel);
@@ -617,10 +618,10 @@ class ReIngredHelper {
 
   Future<List<ReIngredModel>> readDataFromSQLiteWhereRecipe(
       String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReIngredModel> reIngredModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ?', whereArgs: [recipeId]);
     for (var map in maps) {
       ReIngredModel reIngredModel = ReIngredModel.fromJson(map);
@@ -630,17 +631,17 @@ class ReIngredHelper {
   }
 
   Future<int> update(ReIngredModel reIngredModel) async {
-    Database database = await connectedDatabase();
-    var results = database.update(tableDatabase, reIngredModel.toJson(),
+    //Database database = await connectedDatabase();
+    var results = HewaAPI().update(tableDatabase, reIngredModel.toJson(),
         where: '${recipeIdColumn} = ? AND ${ingredientIdColumn} = ?',
         whereArgs: [reIngredModel.recipeId, reIngredModel.ingredientId]);
     return results;
   }
 
   Future<Null> updateDataToSQLite(ReIngredModel reIngredModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, reIngredModel.toJson(),
+      HewaAPI().update(tableDatabase, reIngredModel.toJson(),
           where: '${recipeIdColumn} = ? AND ${ingredientIdColumn} = ?',
           whereArgs: [reIngredModel.recipeId, reIngredModel.ingredientId]);
     } catch (e) {
@@ -649,9 +650,9 @@ class ReIngredHelper {
   }
 
   Future<Null> deleteDataWhere(String recipeId, String kitchenware) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$recipeIdColumn = ? AND $ingredientIdColumn = ?',
           whereArgs: [recipeId, kitchenware]);
     } catch (e) {
@@ -660,9 +661,9 @@ class ReIngredHelper {
   }
 
   Future<Null> deleteDataWhereUser(String uid) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.rawDelete(
+      await HewaAPI().rawDelete(
           'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -670,18 +671,18 @@ class ReIngredHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

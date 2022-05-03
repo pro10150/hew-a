@@ -1,4 +1,5 @@
 import 'package:hewa/models/kitch_model.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/ingred_model.dart';
@@ -28,19 +29,19 @@ class KitchHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(KitchenwareModel kitchenwareModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, kitchenwareModel.toJson());
+      HewaAPI().insert(tableDatabase, kitchenwareModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<List<KitchenwareModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<KitchenwareModel> kitchenwareModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       KitchenwareModel kitchenwareModel = KitchenwareModel.fromJson(map);
       kitchenwareModels.add(kitchenwareModel);
@@ -100,18 +101,18 @@ class KitchHelper {
   }
 
   Future<Null> deleteDataWhereId(int id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

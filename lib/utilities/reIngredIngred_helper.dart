@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/reIngredIngred_model.dart';
@@ -37,10 +38,10 @@ class ReIngredIngredHelper {
   }
 
   Future<List<ReIngredIngredModel>> readDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReIngredIngredModel> reIngredIngredModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select *,ingredientTABLE.id as id from ingredientTABLE inner join recipeIngredientTABLE on ingredientTABLE.id = recipeIngredientTABLE.recipeId; ');
     for (var map in maps) {
       ReIngredIngredModel reIngredIngredModel =
@@ -52,10 +53,10 @@ class ReIngredIngredHelper {
 
   Future<List<ReIngredIngredModel>> readDataFromSQLiteWhereRecipeId(
       String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReIngredIngredModel> reIngredIngredModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'SELECT *,ingredientTABLE.id as id FROM ingredientTABLE INNER join recipeIngredientTABLE ON ingredientTABLE.id = recipeIngredientTABLE.ingredientId WHERE recipeIngredientTABLE.recipeId = $recipeId;');
     for (var map in maps) {
       // print(map);

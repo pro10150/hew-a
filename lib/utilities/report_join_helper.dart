@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/report_join_model.dart';
@@ -42,7 +43,7 @@ class ReportJoinHelper {
     Database database = await connectedDatabase();
     List<ReportJoinModel> reportJoinModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id; ');
     for (var map in maps) {
       ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
@@ -52,10 +53,10 @@ class ReportJoinHelper {
   }
 
   Future<List<ReportJoinModel>> readDataFromSQLiteWhereId(int id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReportJoinModel> reportJoinModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE recipeIngredientTABLE.recipeId = $id;');
     for (var map in maps) {
       ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
@@ -65,10 +66,10 @@ class ReportJoinHelper {
   }
 
   Future<List<ReportJoinModel>> getAllUserReport() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReportJoinModel> reportJoinModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE reportTABLE.type = 1;');
     for (var map in maps) {
       ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
@@ -78,10 +79,10 @@ class ReportJoinHelper {
   }
 
   Future<List<ReportJoinModel>> getAllRecipeReport() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReportJoinModel> reportJoinModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select *,reportTABLE.id as id from reportTABLE inner join reportTypeTABLE on reportTABLE.type = reportTypeTABLE.id inner join reportAboutTABLE on reportTABLE.about = reportAboutTABLE.id WHERE reportTABLE.type = 2;');
     for (var map in maps) {
       ReportJoinModel reportJoinModel = ReportJoinModel.fromJson(map);
