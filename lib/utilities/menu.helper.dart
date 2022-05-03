@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -40,9 +41,9 @@ class MenuHelper {
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(MenuModel menuModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, menuModel.toJson());
+      HewaAPI().insert(tableDatabase, menuModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -169,13 +170,11 @@ class MenuHelper {
     });
   }
 
-
   Future<Null> updateDataToSQLite(MenuModel menuModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, menuModel.toJson(),
-          where:
-              '$idColumn = ?',
+      HewaAPI().update(tableDatabase, menuModel.toJson(),
+          where: '$idColumn = ?',
           whereArgs: [
             menuModel.id,
           ]);
@@ -185,10 +184,10 @@ class MenuHelper {
   }
 
   Future<List<MenuModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<MenuModel> menuModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       MenuModel menuModel = MenuModel.fromJson(map);
       menuModels.add(menuModel);
@@ -197,18 +196,17 @@ class MenuHelper {
   }
 
   Future<List<MenuModel>> readDataFromSQLiteMenu(MenuModel menuModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<MenuModel> menuModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where:
-        '$nameMenuColumn = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
+            '$nameMenuColumn = ? and $descMenuColumn = ? and $mainIngredientColumn = ?',
         whereArgs: [
           menuModel.nameMenu,
           menuModel.descMenu,
           menuModel.mainIngredient
-        ]
-    );
+        ]);
     for (var map in maps) {
       MenuModel menuModel = MenuModel.fromJson(map);
       menuModels.add(menuModel);
@@ -216,17 +214,16 @@ class MenuHelper {
     return menuModels;
   }
 
-
   Future<int> insert(MenuModel menuModel) async {
-    Database database = await connectedDatabase();
-    var results = database.insert(tableDatabase, menuModel.toJson());
+    //Database database = await connectedDatabase();
+    var results = HewaAPI().insert(tableDatabase, menuModel.toJson());
     return results;
   }
 
   Future<List<MenuModel>> readDataFromSQLiteWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<MenuModel> menuModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       MenuModel menuModel = MenuModel.fromJson(map);
@@ -236,18 +233,18 @@ class MenuHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

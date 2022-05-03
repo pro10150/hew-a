@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-// String pathAddress = "https://hew-a.herokuapp.com/"; //อันจริง
+//String pathAddress = "https://hew-a.herokuapp.com/"; //อันจริง
 String pathAddress = "http://192.168.1.193:5000/"; // อันเทส
 
 /// Don't throw exception yet. will be done in the future.// environment utils

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:hewa/utilities/query.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,15 +30,15 @@ class PhotoHelper {
   }
 
   Future<Photo> save(Photo photo) async {
-    Database database = await connectedDatabase();
-    photo.id = await database.insert(tableDatabase, photo.toJson());
+    //Database database = await connectedDatabase();
+    photo.id = await HewaAPI().insert(tableDatabase, photo.toJson());
     return photo;
   }
 
   Future<List<Photo>> getPhotos() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
 
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, columns: [idColumn, photoNameColumn]);
     List<Photo> photos = [];
     if (maps.length > 0) {
@@ -50,18 +51,18 @@ class PhotoHelper {
   }
 
   Future<Null> deleteDataWhereId(int id) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

@@ -1,4 +1,5 @@
 import 'package:hewa/models/reStep_model.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:collection/collection.dart';
@@ -31,17 +32,17 @@ class ReStepHelper {
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReStepModel reStepModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, reStepModel.toJson());
+      HewaAPI().insert(tableDatabase, reStepModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<int> insert(ReStepModel reStepModel) async {
-    Database database = await connectedDatabase();
-    var results = database.insert(tableDatabase, reStepModel.toJson());
+    //Database database = await connectedDatabase();
+    var results = HewaAPI().insert(tableDatabase, reStepModel.toJson());
     return results;
   }
 
@@ -383,18 +384,18 @@ class ReStepHelper {
   }
 
   Future<int> update(ReStepModel reStepModel) async {
-    Database database = await connectedDatabase();
-    var results = database.update(tableDatabase, reStepModel.toJson(),
+    // Database database = await connectedDatabase();
+    var results = HewaAPI().update(tableDatabase, reStepModel.toJson(),
         where: '${recipeIdColumn} = ? AND ${stepColumn} = ?',
         whereArgs: [reStepModel.recipeId, reStepModel.step]);
     return results;
   }
 
   Future<List<ReStepModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<ReStepModel> reStepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReStepModel reStepModel = ReStepModel.fromJson(map);
       reStepModels.add(reStepModel);
@@ -403,9 +404,9 @@ class ReStepHelper {
   }
 
   Future<List<ReStepModel>> readDataFromSQLiteWhereId(int id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReStepModel> reStepModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       ReStepModel reStepModel = ReStepModel.fromJson(map);
@@ -416,10 +417,10 @@ class ReStepHelper {
 
   Future<List<ReStepModel>> readDataFromSQLiteRestep(
       ReStepModel reStepModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReStepModel> restepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ? And $stepColumn = ?',
         whereArgs: [reStepModel.recipeId, reStepModel.step]);
     for (var map in maps) {
@@ -432,10 +433,10 @@ class ReStepHelper {
 
   Future<List<ReStepModel>> readDataFromSQLiteWhereRecipe(
       String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReStepModel> reStepModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeIdColumn = ?', whereArgs: [recipeId]);
     for (var map in maps) {
       ReStepModel reStepModel = ReStepModel.fromJson(map);
@@ -445,9 +446,9 @@ class ReStepHelper {
   }
 
   Future<Null> deleteDataWhere(String recipeId, int step) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase,
+      await HewaAPI().delete(tableDatabase,
           where: '$recipeIdColumn = ? AND $stepColumn = ?',
           whereArgs: [recipeId, step]);
     } catch (e) {
@@ -456,9 +457,9 @@ class ReStepHelper {
   }
 
   Future<Null> deleteDataWhereRecipe(String recipeId) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.rawDelete(
+      await HewaAPI().rawDelete(
           'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [recipeId]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
@@ -466,9 +467,9 @@ class ReStepHelper {
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

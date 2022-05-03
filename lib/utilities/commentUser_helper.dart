@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/commentUser_model.dart';
@@ -38,7 +39,7 @@ class CommentUserHelper {
     Database database = await connectedDatabase();
     List<CommentUserModel> commentUserModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await database.rawQuery(
         'select * from commentTABLE inner join userTABLE on commentTABLE.uid = userTABLE.uid;');
     for (var map in maps) {
       CommentUserModel commentUserModel = CommentUserModel.fromJson(map);
@@ -52,7 +53,7 @@ class CommentUserHelper {
     Database database = await connectedDatabase();
     List<CommentUserModel> commentUserModels = [];
 
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await database.rawQuery(
         'SELECT * FROM ingredientTABLE INNER join recipeIngredientTABLE ON commentTABLE.uid = userTABLE.uid WHERE commentTABLE.recipeId = $recipeId;');
     for (var map in maps) {
       CommentUserModel commentUserModel = CommentUserModel.fromJson(map);

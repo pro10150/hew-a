@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hewa/utilities/query.dart';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -47,23 +48,23 @@ class RecipeHelper {
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(RecipeModel recipeModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, recipeModel.toJson());
+      HewaAPI().insert(tableDatabase, recipeModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<int> insert(RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
-    var results = database.insert(tableDatabase, recipeModel.toJson());
+    //Database database = await connectedDatabase();
+    var results = HewaAPI().insert(tableDatabase, recipeModel.toJson());
     return results;
   }
 
   Future<int> update(RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
-    var results = database.update(tableDatabase, recipeModel.toJson(),
+    // Database database = await connectedDatabase();
+    var results = HewaAPI().update(tableDatabase, recipeModel.toJson(),
         where: '${idColumn} = ?', whereArgs: [recipeModel.id]);
     return results;
   }
@@ -457,9 +458,9 @@ class RecipeHelper {
   }
 
   Future<Null> updateDataToSQLite(RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, recipeModel.toJson(),
+      HewaAPI().update(tableDatabase, recipeModel.toJson(),
           where: '${idColumn} = ?', whereArgs: [recipeModel.id]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
@@ -467,10 +468,10 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);
@@ -480,10 +481,10 @@ class RecipeHelper {
 
   Future<List<RecipeModel>> readDataFromSQLiteRecipe(
       RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where:
             '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
         whereArgs: [
@@ -501,10 +502,10 @@ class RecipeHelper {
 
   Future<List<RecipeModel>> readDataFromSQLiteId(
       RecipeModel recipeModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$recipeUidColumn = ?', whereArgs: [recipeModel.recipeUid]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -515,9 +516,9 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> readDataFromSQLiteWhereId(int id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$idColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -527,9 +528,9 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> getAllUserRecipe(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$recipeUidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -539,9 +540,9 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> getUserRecipe(String id, String recipeName) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$uidColumn = ? AND $recipeNameColumn = ?',
         whereArgs: [id, recipeName]);
     for (var map in maps) {
@@ -552,9 +553,9 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> getTrending() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         "SELECT * FROM recipeTABLE WHERE id IN ( SELECT distinct recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC);");
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -564,9 +565,9 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> getFollowing(String uid) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-    List<Map<String, dynamic>> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         "SELECT * FROM recipeTABLE WHERE uid IN (SELECT followedUserId FROM followTABLE WHERE uid = $uid)");
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
@@ -576,7 +577,7 @@ class RecipeHelper {
   }
 
   Future<List<RecipeModel>> getDailyPick() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
     final response = await http.get(Uri.parse(
         'http://127.0.0.1:5000/recommendation?uid=' +
@@ -592,7 +593,7 @@ class RecipeHelper {
     if (recommendation.length > 0) {
       return getFollowing(uid);
     } else {
-      List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+      List<dynamic> maps = await HewaAPI().query(tableDatabase,
           where:
               '$idColumn IN ${List.filled(recommendation.length, '?').join(',')}',
           whereArgs: recommendation);
@@ -605,27 +606,27 @@ class RecipeHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteDataWhereUser(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$uidColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$uidColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

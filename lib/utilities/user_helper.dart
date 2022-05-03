@@ -54,9 +54,9 @@ class UserHelper {
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(UserModel userModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, userModel.toJson());
+      HewaAPI().insert(tableDatabase, userModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -90,9 +90,9 @@ class UserHelper {
   }
 
   Future<Null> updateDataToSQLite(UserModel userModel) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, userModel.toJson(),
+      HewaAPI().update(tableDatabase, userModel.toJson(),
           where: '${uidColumn} = ?', whereArgs: [userModel.uid]);
     } catch (e) {
       print('e updateData ==>> ${e.toString()}');
@@ -126,16 +126,16 @@ class UserHelper {
   }
 
   Future<List<UserModel>> getUserTop5(String uid) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<UserModel> userModels = [];
-    List<Map<String, dynamic>> maps;
+    List<dynamic> maps;
     var objects = await FollowHelper().readlDataFromSQLite();
     if (objects.length > 0) {
-      maps = await database.rawQuery(
+      maps = await HewaAPI().rawQuery(
           'SELECT * FROM userTABLE INNER JOIN followTABLE ON userTABLE.uid = followTABLE.uid WHERE userTABLE.uid NOT LIKE "%?%" AND usertable.uid IN (SELECT uid FROM followTABLE GROUP BY uid ORDER BY count(uid) DESC) GROUP BY followTABLE.uid ORDER BY count(followTABLE.uid) DESC;',
           [uid]);
     } else {
-      maps = await database.query(tableDatabase,
+      maps = await HewaAPI().query(tableDatabase,
           limit: 6, where: '$uidColumn <> ?', whereArgs: [uid]);
     }
     for (var map in maps) {
@@ -147,9 +147,9 @@ class UserHelper {
 
   Future<List<UserModel>> readDataFromSQLiteWhereUsername(
       String username) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<UserModel> userModels = [];
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
+    List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where: '$usernameColumn = ?', whereArgs: [username]);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
@@ -159,23 +159,23 @@ class UserHelper {
   }
 
   Future<List> allUser() async {
-    Database database = await connectedDatabase();
-    return database.query(tableDatabase);
+    // Database database = await connectedDatabase();
+    return HewaAPI().query(tableDatabase);
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$uidColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$uidColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

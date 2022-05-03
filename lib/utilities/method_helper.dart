@@ -1,3 +1,4 @@
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/method_model.dart';
@@ -28,9 +29,9 @@ class MethodHelper {
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(MethodModel methodModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, methodModel.toJson());
+      HewaAPI().insert(tableDatabase, methodModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -64,8 +65,8 @@ class MethodHelper {
   // }
 
   Future<List<MethodModel>> getMethod() async {
-    Database database = await connectedDatabase();
-    List<Map> list = await database.rawQuery('SELECT * FROM methodTABLE');
+    // Database database = await connectedDatabase();
+    List<Map> list = HewaAPI().rawQuery("SELECT * FROM methodTABLE");
     List<MethodModel> _methods = [];
     for (int i = 0; i < list.length; i++) {
       _methods.add(new MethodModel(methodid: null, nameMethod: ''));
@@ -74,9 +75,9 @@ class MethodHelper {
   }
 
   Future<Null> updateDataToSQLite(MethodModel methodModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.update(tableDatabase, methodModel.toJson(),
+      HewaAPI().update(tableDatabase, methodModel.toJson(),
           where: '${methodidColumn} = ? AND ${nameMethodColumn} = ?',
           whereArgs: [methodModel.methodid, methodModel.nameMethod]);
     } catch (e) {
@@ -85,10 +86,10 @@ class MethodHelper {
   }
 
   Future<List<MethodModel>> readDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<MethodModel> methodModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       MethodModel methodModel = MethodModel.fromJson(map);
       methodModels.add(methodModel);
@@ -97,18 +98,18 @@ class MethodHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$methodidColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$methodidColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

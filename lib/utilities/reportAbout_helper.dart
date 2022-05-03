@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:hewa/utilities/query.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:hewa/models/reportAbout_model.dart';
@@ -31,9 +32,9 @@ class ReportAboutHelper {
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReportAboutModel reportAboutModel) async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, reportAboutModel.toJson());
+      HewaAPI().insert(tableDatabase, reportAboutModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -63,10 +64,10 @@ class ReportAboutHelper {
   }
 
   Future<List<ReportAboutModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     List<ReportAboutModel> reportAboutModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    List<dynamic> maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       ReportAboutModel reportAboutModel = ReportAboutModel.fromJson(map);
       reportAboutModels.add(reportAboutModel);
@@ -75,18 +76,18 @@ class ReportAboutHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase, where: '$idColumn = $id');
+      await HewaAPI().delete(tableDatabase, where: '$idColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    Database database = await connectedDatabase();
+    //Database database = await connectedDatabase();
     try {
-      await database.delete(tableDatabase);
+      await HewaAPI().delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

@@ -1,11 +1,11 @@
 # This is a generated file; do not edit or check into version control.
 file_picker=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\file_picker-4.5.1\\
-firebase_auth=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-3.3.8\\
-firebase_auth_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-3.3.8\\
-firebase_core=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-1.12.0\\
-firebase_core_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-1.6.0\\
-firebase_storage=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-10.2.8\\
-firebase_storage_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage_web-3.2.9\\
+firebase_auth=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-3.3.16\\
+firebase_auth_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-3.3.13\\
+firebase_core=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-1.15.0\\
+firebase_core_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-1.6.2\\
+firebase_storage=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-10.2.14\\
+firebase_storage_web=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage_web-3.2.13\\
 flutter_image_compress=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_image_compress-1.1.0\\
 flutter_plugin_android_lifecycle=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-2.0.5\\
 flutter_ringtone_player=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_ringtone_player-3.2.0\\
@@ -27,5 +27,5 @@ path_provider_macos=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path
 path_provider_windows=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_windows-2.0.5\\
 search_choices=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\search_choices-2.0.19\\
 share=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\share-2.0.4\\
-sqflite=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\sqflite-2.0.2\\
+sqflite=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\sqflite-2.0.2+1\\
 uri_to_file=C:\\src\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\uri_to_file-0.2.0\\
