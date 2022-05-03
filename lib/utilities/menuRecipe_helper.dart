@@ -64,9 +64,9 @@ class MenuRecipeHelper {
   // }
 
   Future<List<MenuRecipeModel>> readDataFromSQLite() async {
-    // Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
+    List<Map<String, dynamic>> maps = [];
     List<ReAllergyModel> reAllergyModels = [];
     var objects = await ReAllergyHelper()
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
@@ -88,11 +88,11 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> readDataFromSQLiteWhereId(int id) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
+    List<Map<String, dynamic>> maps = [];
     List<ReAllergyModel> reAllergyModels = [];
-    maps = await HewaAPI().rawQuery(
+    maps = await database.rawQuery(
         'select *, recipeTABLE.id as id, menuTABLE.id as menuId from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id = ?;',
         [id]);
 
@@ -104,10 +104,10 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> getAllUserRecipe(String id) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
-    maps = await HewaAPI().rawQuery(
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
         'select *, recipeTABLE.id as id, menuTABLE.id as menuId from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.recipeUid = ?;',
         [id]);
 
@@ -119,10 +119,10 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> getLikedRecipe(String id) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
-    maps = await HewaAPI().rawQuery(
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
         'select *, recipeTABLE.id as id, menuTABLE.id as menuId from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id in (select recipeId from likeTABLE where uid = ?);',
         [id]);
 
@@ -134,10 +134,10 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> readWhereId(String id) async {
-    // Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
-    maps = await HewaAPI().rawQuery(
+    List<Map<String, dynamic>> maps = [];
+    maps = await database.rawQuery(
         'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = $id;',
         [id]);
 
@@ -149,9 +149,9 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> getTrending() async {
-    // Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = [];
+    List<Map<String, dynamic>> maps = [];
     List<ReAllergyModel> reAllergyModels = [];
     var objects = await ReAllergyHelper()
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
@@ -159,10 +159,10 @@ class MenuRecipeHelper {
       reAllergyModels.add(object);
     }
     if (reAllergyModels.length > 0) {
-      maps = await HewaAPI().rawQuery(
+      maps = await database.rawQuery(
           "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE allid is null and recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
     } else {
-      maps = await HewaAPI().rawQuery(
+      maps = await database.rawQuery(
           "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient inner join likeTABLE on recipeTABLE.id = likeTABLE.recipeId WHERE recipeTABLE.id IN ( SELECT recipeId FROM likeTABLE WHERE DATE(datetime) >= DATE('now', 'weekday 0', '-7 days') GROUP BY recipeId ORDER BY count(recipeId) DESC) GROUP BY likeTABLE.recipeId ORDER BY count(likeTABLE.recipeID) DESC;");
     }
     if (maps.length == 0) {
@@ -178,9 +178,9 @@ class MenuRecipeHelper {
 
   Future<List<MenuRecipeModel>> getUserRecipe(
       String id, String recipeName) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<MenuRecipeModel> menuRecipeModels = [];
-    List<dynamic> maps = await HewaAPI().query(tableDatabase,
+    List<Map<String, dynamic>> maps = await database.query(tableDatabase,
         where: '$uidColumn = ? AND $recipeNameColumn = ?',
         whereArgs: [id, recipeName]);
     for (var map in maps) {
@@ -191,7 +191,7 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> getFollowing(String uid) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     List<ReAllergyModel> reAllergyModels = [];
     var objects = await ReAllergyHelper()
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
@@ -199,13 +199,13 @@ class MenuRecipeHelper {
       reAllergyModels.add(object);
     }
     List<MenuRecipeModel> recipeModels = [];
-    List<dynamic> maps = [];
+    List<Map<String, dynamic>> maps = [];
     if (reAllergyModels.length > 0) {
-      maps = await HewaAPI().rawQuery(
+      maps = await database.rawQuery(
           "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?) and allid is null",
           [uid]);
     } else {
-      maps = await HewaAPI().rawQuery(
+      maps = await database.rawQuery(
           "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId  FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.recipeUid IN (SELECT uid FROM followTABLE WHERE followedUserId = ?)",
           [uid]);
     }
@@ -219,7 +219,7 @@ class MenuRecipeHelper {
   }
 
   Future<List<MenuRecipeModel>> getDailyPick() async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
     final objects = await ViewHelper().readlDataFromSQLite();
     print(objects.runtimeType);
@@ -246,13 +246,13 @@ class MenuRecipeHelper {
         reAllergyModels.add(object);
         userId.add(object.userID!);
       }
-      List<dynamic> maps = [];
+      List<Map<String, dynamic>> maps = [];
       if (reAllergyModels.length > 0) {
-        maps = await HewaAPI().rawQuery(
+        maps = await database.rawQuery(
             "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient left join (select * from reallergytable where reallergytable.userid = '${_auth.currentUser!.uid}') on menutable.mainIngredient = allid  WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')})  and allid is null",
             recommendation);
       } else {
-        maps = await HewaAPI().rawQuery(
+        maps = await database.rawQuery(
             "SELECT *, recipeTABLE.id as id, menuTABLE.id as menuId FROM recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient WHERE recipeTABLE.id IN (${List.filled(recommendation.length, '?').join(', ')}) ",
             recommendation);
       }
@@ -266,27 +266,27 @@ class MenuRecipeHelper {
   }
 
   Future<Null> deleteDataWhereId(String id) async {
-    // Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     try {
-      await HewaAPI().delete(tableDatabase, where: '$uidColumn = $id');
+      await database.delete(tableDatabase, where: '$uidColumn = $id');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteDataWhereIdRecipe(String recipe) async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     try {
-      await HewaAPI().delete(tableDatabase, where: '$uidColumn = $recipe');
+      await database.delete(tableDatabase, where: '$uidColumn = $recipe');
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
   }
 
   Future<Null> deleteAlldata() async {
-    //Database database = await connectedDatabase();
+    Database database = await connectedDatabase();
     try {
-      await HewaAPI().delete(tableDatabase);
+      await database.delete(tableDatabase);
     } catch (e) {
       print('e delete All ==>> ${e.toString()}');
     }

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-//String pathAddress = "https://hew-a.herokuapp.com/"; //อันจริง
+// String pathAddress = "https://hew-a.herokuapp.com/"; //อันจริง
 String pathAddress = "http://192.168.1.193:5000/"; // อันเทส
 
 /// Don't throw exception yet. will be done in the future.// environment utils
@@ -316,19 +316,21 @@ class HewaAPI {
   ///            will be bound as Strings.
   /// @param conflictAlgorithm for update conflict resolver
 
-  rawQuery(String query, Map<String, Object?> values) async {
-    List<Object?>? bindArgs;
-    final size = values.length;
-
-    if (size > 0) {
-      values.forEach((String colName, Object? value) {
-        if (value == null) {
-        } else {
-          checkNonNullValue(value);
-          bindArgs!.add(value);
-        }
-      });
+  rawQuery(String query, {Map<String, Object?>? values}) async {
+    List<Object?>? bindArgs = [];
+    if (values != null) {
+      final size = values.length;
+      if (size > 0) {
+        values.forEach((String colName, Object? value) {
+          if (value == null) {
+          } else {
+            checkNonNullValue(value);
+            bindArgs!.add(value);
+          }
+        });
+      }
     }
+
     arguments = bindArgs;
     Response<dynamic> data;
     if (arguments != null) {
