@@ -89,7 +89,7 @@ class _AddState extends State<Add> {
           child: Container(
             width: 60,
             height: 60,
-            child: Icon(
+            child: const Icon(
               IconData(0xe16a, fontFamily: 'MaterialIcons'),
               size: 40,
             ),

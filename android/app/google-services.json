@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "742288804",
+    "project_id": "hew-a-38090",
+    "storage_bucket": "hew-a-38090.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742288804:android:7dc17fdd2ef92be1aee531",
+        "android_client_info": {
+          "package_name": "com.example.se"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742288804-2jpmbiog05n9mse02jcrpk60l9n1qo0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdVHuR41ArDFAFtutmDNm_91TrxYr2jqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742288804-2jpmbiog05n9mse02jcrpk60l9n1qo0q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742288804-b93dderu2s6al71f8b395br1vo4t7fm8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.se.hewa"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

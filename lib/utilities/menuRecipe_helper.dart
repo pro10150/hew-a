@@ -226,7 +226,7 @@ class MenuRecipeHelper {
     print(await NetworkInfo().getWifiIP());
     var ip = await NetworkInfo().getWifiIP();
     final response = await dio.post(
-        'http://192.168.1.108:6000/recommendation?uid=' +
+        'https://flask-service.hq8s3811a99sg.ap-southeast-1.cs.amazonlightsail.com/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid,
         data: objects);
 

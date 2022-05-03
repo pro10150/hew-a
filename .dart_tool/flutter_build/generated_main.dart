@@ -11,6 +11,7 @@ export 'package:hewa/main.dart';
 import 'package:hewa/main.dart' as entrypoint;
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:path_provider_android/path_provider_android.dart';
+import 'package:image_picker_ios/image_picker_ios.dart';
 import 'package:path_provider_ios/path_provider_ios.dart';
 import 'package:network_info_plus_linux/network_info_plus_linux.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
@@ -34,6 +35,16 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isIOS) {
+      try {
+        ImagePickerIOS.registerWith();
+      } catch (err) {
+        print(
+          '`image_picker_ios` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+        rethrow;
+      }
+
       try {
         PathProviderIOS.registerWith();
       } catch (err) {

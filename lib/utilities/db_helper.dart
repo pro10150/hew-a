@@ -38,7 +38,7 @@ class DBHelper {
     print(join(await getDatabasesPath(), nameDatabase));
     return openDatabase(
       join(await getDatabasesPath(), nameDatabase),
-      onCreate: (db, version) => {_createDb(db)},
+      onCreate: (db, version) => {_createDb(db), initInsert()},
       version: 1,
     );
   }
