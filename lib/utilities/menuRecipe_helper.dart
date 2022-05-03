@@ -10,6 +10,7 @@ import 'package:hewa/utilities/reAllergy_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'query.dart';
 
 import 'db_helper.dart';
 import 'view_helper.dart';
@@ -226,7 +227,7 @@ class MenuRecipeHelper {
     print(await NetworkInfo().getWifiIP());
     var ip = await NetworkInfo().getWifiIP();
     final response = await dio.post(
-        'https://flask-service.hq8s3811a99sg.ap-southeast-1.cs.amazonlightsail.com/recommendation?uid=' +
+        'https://hew-a.herokuapp.com/recommendation?uid=' +
             FirebaseAuth.instance.currentUser!.uid,
         data: objects);
 

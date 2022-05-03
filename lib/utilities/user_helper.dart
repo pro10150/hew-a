@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/models/follow_model.dart';
 import 'follow_helper.dart';
+import 'query.dart';
 
 class UserHelper {
   final String nameDatabase = 'Hewa.db';
@@ -102,7 +103,7 @@ class UserHelper {
     Database database = await connectedDatabase();
     List<UserModel> userModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    var maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
       if (userModel.isAdmin != 1) {
@@ -115,7 +116,7 @@ class UserHelper {
   Future<List<UserModel>> readDataFromSQLiteWhereId(String id) async {
     Database database = await connectedDatabase();
     List<UserModel> userModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);

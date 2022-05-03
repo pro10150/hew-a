@@ -219,6 +219,9 @@ class _MenuDetailState extends State<MenuDetail> {
                   color: color,
                   disabledColor: Colors.black,
                   onPressed: () async {
+                    // await MenuHelper().deleteDataWhereId(menuRecipeModel.id.toString()).then((value) {
+                    //   print('Delete Success Menu');
+                    // });
 
                     await RecipeHelper()
                         .deleteDataWhereId(menuRecipeModel!.id.toString())
@@ -273,7 +276,6 @@ class _MenuDetailState extends State<MenuDetail> {
       appBar: AppBar(
         title: Text(userModel!.username!),
         actions: [
-<<<<<<< Updated upstream
           menuRecipeModel!.recipeUid == _auth.currentUser!.uid
               ? PopupMenuButton(
                   onSelected: (result) {
@@ -324,32 +326,6 @@ class _MenuDetailState extends State<MenuDetail> {
                     Icon(isLiked ? MdiIcons.heart : MdiIcons.heartOutline,
                         size: MediaQuery.of(context).size.height * 0.06),
                   ])),
-=======
-          PopupMenuButton(
-              onSelected: (result) {
-                if (result == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditRecipe(menuRecipeModel!)),
-                  );
-                }
-                if (result == 1) {
-                  _doneFromDialog(context);
-                }
-
-              },
-              itemBuilder:(context) => [
-                PopupMenuItem(
-                  child: Text("Edit"),
-                  value: 0,
-                ),
-                PopupMenuItem(
-                  child: Text("Delete"),
-                  value: 1,
-                ),
-              ]
-          ),
->>>>>>> Stashed changes
 
           // IconButton(
           //   icon: const Icon(Icons.format_list_bulleted),
