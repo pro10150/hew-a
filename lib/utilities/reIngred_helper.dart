@@ -663,8 +663,9 @@ class ReIngredHelper {
   Future<Null> deleteDataWhereUser(String uid) async {
     //Database database = await connectedDatabase();
     try {
-      await HewaAPI().rawDelete(
-          'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [uid]);
+      await HewaAPI().rawQuery(
+          'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?',
+          values: [uid]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }

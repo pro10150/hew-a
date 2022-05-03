@@ -133,7 +133,7 @@ class UserHelper {
     if (objects.length > 0) {
       maps = await HewaAPI().rawQuery(
           'SELECT * FROM userTABLE INNER JOIN followTABLE ON userTABLE.uid = followTABLE.uid WHERE userTABLE.uid NOT LIKE "%?%" AND usertable.uid IN (SELECT uid FROM followTABLE GROUP BY uid ORDER BY count(uid) DESC) GROUP BY followTABLE.uid ORDER BY count(followTABLE.uid) DESC;',
-          [uid]);
+          values: [uid]);
     } else {
       maps = await HewaAPI().query(tableDatabase,
           limit: 6, where: '$uidColumn <> ?', whereArgs: [uid]);

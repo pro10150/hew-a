@@ -112,8 +112,9 @@ class ReImageStepHelper {
   Future<Null> deleteDataWhereRecipeimage(String recipeId) async {
     // Database database = await connectedDatabase();
     try {
-      await HewaAPI().rawDelete(
-          'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?', [recipeId]);
+      await HewaAPI().rawQuery(
+          'DELETE FROM $tableDatabase WHERE $recipeIdColumn = ?',
+          values: [recipeId]);
     } catch (e) {
       print('e delete ==> ${e.toString()}');
     }
