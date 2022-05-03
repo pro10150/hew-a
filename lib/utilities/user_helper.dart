@@ -103,7 +103,7 @@ class UserHelper {
     Database database = await connectedDatabase();
     List<UserModel> userModels = [];
 
-    List<Map<String, dynamic>> maps = await database.query(tableDatabase);
+    var maps = await HewaAPI().query(tableDatabase);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
       if (userModel.isAdmin != 1) {
@@ -116,10 +116,8 @@ class UserHelper {
   Future<List<UserModel>> readDataFromSQLiteWhereId(String id) async {
     Database database = await connectedDatabase();
     List<UserModel> userModels = [];
-    List<Map<String, dynamic>> maps = await database
+    List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
-    var something =
-        HewaAPI.query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
       userModels.add(userModel);

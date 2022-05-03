@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-String pathAddress = "https://hew-a.herokuapp.com/"; //ปอเอง
+// String pathAddress = "https://hew-a.herokuapp.com/"; //อันจริง
+String pathAddress = "http://192.168.1.193:5000/"; // อันเทส
 
 /// Don't throw exception yet. will be done in the future.// environment utils
 
@@ -138,11 +140,16 @@ final List<String> _conflictValues = <String>[
   'OR IGNORE',
   'OR REPLACE'
 ];
+var dio = Dio();
 
 //final RegExp _sLimitPattern = new RegExp('\s*\d+\s*(,\s*\d+\s*)?');
 
 /// SQL command builder.
 class HewaAPI {
+  HewaAPI() {
+    print(pathAddress);
+  }
+
   /// Convenience method for deleting rows in the database.
   ///
   /// @param table the table to delete from
@@ -151,7 +158,7 @@ class HewaAPI {
   /// @param whereArgs You may include ?s in the where clause, which
   ///            will be replaced by the values from whereArgs. The values
   ///            will be bound as Strings.
-  HewaAPI.delete(String table, {String? where, List<Object?>? whereArgs}) {
+  delete(String table, {String? where, List<Object?>? whereArgs}) async {
     checkWhereArgs(whereArgs);
     final delete = StringBuffer();
     delete.write('DELETE FROM ');
@@ -159,6 +166,9 @@ class HewaAPI {
     _writeClause(delete, ' WHERE ', where);
     sql = delete.toString();
     arguments = whereArgs != null ? List<Object?>.from(whereArgs) : null;
+    Response<dynamic> data =
+        await dio.post(pathAddress + "query?query=" + sql, data: arguments);
+    return data.data;
   }
 
   /// Build an SQL query string from the given clauses.
@@ -184,7 +194,7 @@ class HewaAPI {
   ///            default sort order, which may be unordered.
   /// @param limit Limits the number of rows returned by the query,
   ///            formatted as LIMIT clause. Passing null denotes no LIMIT clause.
-  HewaAPI.query(String table,
+  query(String table,
       {bool? distinct,
       List<String>? columns,
       String? where,
@@ -193,7 +203,7 @@ class HewaAPI {
       String? having,
       String? orderBy,
       int? limit,
-      int? offset}) {
+      int? offset}) async {
     if (groupBy == null && having != null) {
       throw ArgumentError(
           'HAVING clauses are only permitted when using a groupBy clause');
@@ -227,7 +237,15 @@ class HewaAPI {
     sql = query.toString();
     arguments = whereArgs != null ? List<Object?>.from(whereArgs) : null;
     print(sql);
-    http.post(Uri.parse("http://192.168.1.108:5000/query?query=" + sql));
+    print(arguments);
+    Response<dynamic> data;
+    print(pathAddress + "query?query=" + sql);
+    if (arguments != null)
+      data =
+          await dio.post(pathAddress + "query?query=" + sql, data: arguments);
+    else
+      data = await dio.post(pathAddress + "emptyQuery?query=" + sql);
+    return data.data;
   }
 
   /// Convenience method for inserting a row into the database.
@@ -235,8 +253,8 @@ class HewaAPI {
   /// @table the table to insert the row into
   /// @nullColumnHack optional; may be null. SQL doesn't allow inserting a completely empty row without naming at least one column name. If your provided values is empty, no column names are known and an empty row can't be inserted. If not set to null, the nullColumnHack parameter provides the name of nullable column name to explicitly insert a NULL into in the case where your values is empty.
   /// @values this map contains the initial column values for the row. The keys should be the column names and the values the column values
-  HewaAPI.insert(String table, Map<String, Object?> values,
-      {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) {
+  insert(String table, Map<String, Object?> values,
+      {String? nullColumnHack, ConflictAlgorithm? conflictAlgorithm}) async {
     final insert = StringBuffer();
     insert.write('INSERT');
     if (conflictAlgorithm != null) {
@@ -281,6 +299,9 @@ class HewaAPI {
 
     sql = insert.toString();
     arguments = bindArgs;
+    Response<dynamic> data =
+        await dio.post(pathAddress + "query?query=" + sql, data: arguments);
+    return data.data;
   }
 
   /// Convenience method for updating rows in the database.
@@ -295,22 +316,35 @@ class HewaAPI {
   ///            will be bound as Strings.
   /// @param conflictAlgorithm for update conflict resolver
 
-  rawQuery(String query) async {
-    var maps = [];
+  rawQuery(String query, Map<String, Object?> values) async {
+    List<Object?>? bindArgs;
+    final size = values.length;
 
-    var response = await http.get(Uri.parse(pathAddress + query));
-    if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
-      maps = jsonDecode(response.body);
+    if (size > 0) {
+      values.forEach((String colName, Object? value) {
+        if (value == null) {
+        } else {
+          checkNonNullValue(value);
+          bindArgs!.add(value);
+        }
+      });
     }
-
-    return maps;
+    arguments = bindArgs;
+    Response<dynamic> data;
+    if (arguments != null) {
+      data =
+          await dio.post(pathAddress + "query?query=" + query, data: arguments);
+    } else {
+      data = await dio.post(pathAddress + "emptyQuery?query=" + query,
+          data: arguments);
+    }
+    return data.data;
   }
 
-  HewaAPI.update(String table, Map<String, Object?> values,
+  update(String table, Map<String, Object?> values,
       {String? where,
       List<Object?>? whereArgs,
-      ConflictAlgorithm? conflictAlgorithm}) {
+      ConflictAlgorithm? conflictAlgorithm}) async {
     if (values.isEmpty) {
       throw ArgumentError('Empty values');
     }
@@ -348,7 +382,9 @@ class HewaAPI {
 
     sql = update.toString();
     arguments = bindArgs;
-    print(sql);
+    Response<dynamic> data =
+        await dio.post(pathAddress + "query?query=" + sql, data: arguments);
+    return data.data;
   }
 
   /// The resulting SQL command.

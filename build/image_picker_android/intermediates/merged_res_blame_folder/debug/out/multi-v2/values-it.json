@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\66931\\Documents\\projects\\hew-a\\build\\image_picker_android\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-it\\values-it.xml",
+            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_picker_android\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-it\\values-it.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-it\\values-it.xml",
+                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-it\\values-it.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\66931\\Documents\\projects\\hew-a\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\values-it\\values-it.xml",
+            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_picker_android\\intermediates\\res\\merged\\debug\\values-it\\values-it.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\66931\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-it\\values-it.xml",
+                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-it\\values-it.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
