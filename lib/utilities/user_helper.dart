@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/models/follow_model.dart';
 import 'follow_helper.dart';
+import 'query.dart';
 
 class UserHelper {
   final String nameDatabase = 'Hewa.db';
@@ -117,6 +118,8 @@ class UserHelper {
     List<UserModel> userModels = [];
     List<Map<String, dynamic>> maps = await database
         .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
+    var something =
+        HewaAPI.query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);
     for (var map in maps) {
       UserModel userModel = UserModel.fromJson(map);
       userModels.add(userModel);
