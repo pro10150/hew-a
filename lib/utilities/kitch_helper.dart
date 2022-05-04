@@ -13,19 +13,19 @@ class KitchHelper {
   final String nameColumn = 'nameKitc';
 
   KitchHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(KitchenwareModel kitchenwareModel) async {
@@ -50,7 +50,7 @@ class KitchHelper {
   }
 
   Future<Null> initialInsert() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<String> kitchenwares = [
       'Rice cooker',
       'Pan',
@@ -95,8 +95,8 @@ class KitchHelper {
       'Tong'
     ];
     for (var kitchenware in kitchenwares) {
-      database.execute(
-          'INSERT INTO $tableDatabase($nameColumn) VALUES (\'$kitchenware\')');
+      // database.execute(
+      //     'INSERT INTO $tableDatabase($nameColumn) VALUES (\'$kitchenware\')');
     }
   }
 

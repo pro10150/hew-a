@@ -20,50 +20,50 @@ class CommentHelper {
   final String dateColumn = 'date';
 
   CommentHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    await openDatabase(join(appDocDir.path, nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $recipeIdColumn INTEGER, $textColumn TEXT, $dateColumn INTEGER)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   await openDatabase(join(appDocDir.path, nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $recipeIdColumn INTEGER, $textColumn TEXT, $dateColumn INTEGER)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    return openDatabase(join(appDocDir.path, nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   return openDatabase(join(appDocDir.path, nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(CommentModel commentModel) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
-      database.insert(tableDatabase, commentModel.toJson());
+      HewaAPI().insert(tableDatabase, commentModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
   }
 
   Future<Null> initInsert() async {
-    Database database = await connectedDatabase();
-    var uid = "k2YFM1LkbVaEf4zV4HnhTAmIdRD3";
-    var recipeId = "1";
-    var comments = ["1", "2", "3", "4"];
-    try {
-      comments.forEach((element) {
-        Map<String, dynamic> row = {
-          uidColumn: uid,
-          recipeIdColumn: recipeId,
-          textColumn: element,
-          dateColumn: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
-        };
-        database.insert(tableDatabase, row);
-      });
-    } catch (e) {
-      print('e insert like data ==>> ${e.toString()}');
-    }
+    // Database database = await connectedDatabase();
+    // var uid = "k2YFM1LkbVaEf4zV4HnhTAmIdRD3";
+    // var recipeId = "1";
+    // var comments = ["1", "2", "3", "4"];
+    // try {
+    //   comments.forEach((element) {
+    //     Map<String, dynamic> row = {
+    //       uidColumn: uid,
+    //       recipeIdColumn: recipeId,
+    //       textColumn: element,
+    //       dateColumn: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+    //     };
+    //     database.insert(tableDatabase, row);
+    //   });
+    // } catch (e) {
+    //   print('e insert like data ==>> ${e.toString()}');
+    // }
   }
 
   Future<List<CommentModel>> readlDataFromSQLite() async {

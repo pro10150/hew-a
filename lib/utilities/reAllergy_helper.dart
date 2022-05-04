@@ -13,19 +13,19 @@ class ReAllergyHelper {
   final String allIDColumn = 'allID';
 
   ReAllergyHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $userIDColumn TEXT, $allIDColumn INTEGER)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $userIDColumn TEXT, $allIDColumn INTEGER)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReAllergyModel reAllergyModel) async {

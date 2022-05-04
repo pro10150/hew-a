@@ -17,19 +17,19 @@ class IngredHelper {
   final String imageColumn = 'image';
 
   IngredHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(IngredModel ingredModel) async {
@@ -44,7 +44,7 @@ class IngredHelper {
 
   Future<Null> initInsertToSQLite() async {
     print(join(await getDatabasesPath(), nameDatabase));
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<int> id = Iterable<int>.generate(68).toList();
     List<String> ingredient = [
       'Egg',
@@ -296,7 +296,7 @@ class IngredHelper {
         nameColumn: value,
         imageColumn: (key + 1).toString()
       };
-      database.insert(tableDatabase, row);
+      // database.insert(tableDatabase, row);
     });
   }
 

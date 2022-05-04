@@ -12,19 +12,19 @@ class MethodHelper {
   final String nameMethodColumn = 'nameMethod';
 
   MethodHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($methodidColumn INTEGER PRIMARY KEY, $nameMethodColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($methodidColumn INTEGER PRIMARY KEY, $nameMethodColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(MethodModel methodModel) async {
@@ -38,7 +38,7 @@ class MethodHelper {
   }
 
   Future<Null> initInsertDataToSqlite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<String> methods = [
       'Boil',
       'Fry',
@@ -52,7 +52,7 @@ class MethodHelper {
       Map<String, dynamic> row = {
         nameMethodColumn: value,
       };
-      database.insert(tableDatabase, row);
+      // database.insert(tableDatabase, row);
     });
   }
 

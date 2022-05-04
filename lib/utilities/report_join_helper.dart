@@ -27,20 +27,20 @@ class ReportJoinHelper {
   final String aboutTypeColumn = 'aboutType';
 
   ReportJoinHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
   Future<List<ReportJoinModel>> readDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<ReportJoinModel> reportJoinModels = [];
 
     List<dynamic> maps = await HewaAPI().rawQuery(

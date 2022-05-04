@@ -232,7 +232,7 @@ class LoginScreenState extends State<LoginScreen> {
       checkAuth(context);
 
       // DBHelper().deleteDB();
-      DBHelper().database();
+      // DBHelper().database();
       // DBHelper().initInsert();
       _passwordVisible = false;
     });

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/file_picker/intermediates/res/merged/release/values-sw/values-sw.xml",
+            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\file_picker\\intermediates\\res\\merged\\release\\values-sw\\values-sw.xml",
             "map": [
                 {
-                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/values-sw/values-sw.xml",
+                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/file_picker/intermediates/incremental/mergeReleaseResources/merged.dir/values-sw/values-sw.xml",
+            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\file_picker\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-sw\\values-sw.xml",
             "map": [
                 {
-                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/values-sw/values-sw.xml",
+                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

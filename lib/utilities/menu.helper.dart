@@ -24,23 +24,23 @@ class MenuHelper {
   final String imageColumn = 'menuImage';
 
   MenuHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT, $methodidColumn INTEGER'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $nameMenuColumn TEXT, $descMenuColumn TEXT,$mainIngredientColumn INTEGER, $userIDColumn TEXT, $imageColumn TEXT, $methodidColumn INTEGER'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(MenuModel menuModel) async {
-    print(join(await getDatabasesPath(), nameDatabase));
+    // print(join(await getDatabasesPath(), nameDatabase));
     //Database database = await connectedDatabase();
     try {
       HewaAPI().insert(tableDatabase, menuModel.toJson());
@@ -50,7 +50,7 @@ class MenuHelper {
   }
 
   Future<Null> initInsertToSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<String> menus = [
       'ข้าวมันไก่',
       'ข้าวผัดหมู',
@@ -166,7 +166,7 @@ class MenuHelper {
         mainIngredientColumn: mainIngredient[key],
         imageColumn: value + ".jpeg"
       };
-      database.insert(tableDatabase, row);
+      // database.insert(tableDatabase, row);
     });
   }
 

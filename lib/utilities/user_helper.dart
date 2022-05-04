@@ -37,19 +37,19 @@ class UserHelper {
   // final String textComment = 'textComment';
 
   UserHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT, $imageColumn TEXT, $ingredientsColumn INTEGER, $kitchenwaresColumn INTEGERS)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($uidColumn TEXT PRIMARY KEY, $nameColumn TEXT,$usernameColumn TEXT, $imageColumn TEXT, $ingredientsColumn INTEGER, $kitchenwaresColumn INTEGERS)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(UserModel userModel) async {
@@ -63,7 +63,7 @@ class UserHelper {
   }
 
   Future<Null> initInsert() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     var uids = [
       'k2YFM1LkbVaEf4zV4HnhTAmIdRD3',
       'x8cKCoJwnqSJZgklwPSBXLtjEgQ2',
@@ -75,7 +75,7 @@ class UserHelper {
     uids.forEach((element) {
       UserModel userModel = UserModel(uid: element, username: 'pro10150');
       try {
-        database.insert(tableDatabase, userModel.toJson());
+        HewaAPI().insert(tableDatabase, userModel.toJson());
       } catch (e) {
         print('e insertData ==>> ${e.toString()}');
       }
@@ -83,7 +83,7 @@ class UserHelper {
     UserModel userModel = UserModel(
         uid: "j3I1vMW7xLPCnT3t1L3zUyEw0Ne2", username: "admin", isAdmin: 1);
     try {
-      database.insert(tableDatabase, userModel.toJson());
+      HewaAPI().insert(tableDatabase, userModel.toJson());
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
     }
@@ -100,7 +100,7 @@ class UserHelper {
   }
 
   Future<List<UserModel>> readlDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<UserModel> userModels = [];
 
     var maps = await HewaAPI().query(tableDatabase);
@@ -114,7 +114,7 @@ class UserHelper {
   }
 
   Future<List<UserModel>> readDataFromSQLiteWhereId(String id) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<UserModel> userModels = [];
     List<dynamic> maps = await HewaAPI()
         .query(tableDatabase, where: '$uidColumn = ?', whereArgs: [id]);

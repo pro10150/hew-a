@@ -16,21 +16,21 @@ class CommentLikeHelper {
   final String uidColumn = 'uid';
 
   CommentLikeHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    await openDatabase(join(appDocDir.path, nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $commentIdColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   await openDatabase(join(appDocDir.path, nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $uidColumn TEXT, $commentIdColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    return openDatabase(join(appDocDir.path, nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   return openDatabase(join(appDocDir.path, nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(CommentLikeModel commentLikeModel) async {

@@ -23,23 +23,23 @@ class CommentUserHelper {
   final String unitColumn = 'unit';
 
   CommentUserHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
   Future<List<CommentUserModel>> readDataFromSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<CommentUserModel> commentUserModels = [];
 
-    List<dynamic> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'select * from commentTABLE inner join userTABLE on commentTABLE.uid = userTABLE.uid;');
     for (var map in maps) {
       CommentUserModel commentUserModel = CommentUserModel.fromJson(map);
@@ -50,10 +50,10 @@ class CommentUserHelper {
 
   Future<List<CommentUserModel>> readDataFromSQLiteWhereRecipeId(
       String recipeId) async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<CommentUserModel> commentUserModels = [];
 
-    List<dynamic> maps = await database.rawQuery(
+    List<dynamic> maps = await HewaAPI().rawQuery(
         'SELECT * FROM ingredientTABLE INNER join recipeIngredientTABLE ON commentTABLE.uid = userTABLE.uid WHERE commentTABLE.recipeId = $recipeId;');
     for (var map in maps) {
       CommentUserModel commentUserModel = CommentUserModel.fromJson(map);

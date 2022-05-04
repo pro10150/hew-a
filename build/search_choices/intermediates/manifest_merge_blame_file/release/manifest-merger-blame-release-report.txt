@@ -3,10 +3,10 @@
 3    package="li.jod.search_choices" >
 4
 5    <uses-sdk android:minSdkVersion="16" />
-5-->/Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/search_choices-2.0.19/android/src/main/AndroidManifest.xml
+5-->C:\src\flutter\.pub-cache\hosted\pub.dartlang.org\search_choices-2.0.19\android\src\main\AndroidManifest.xml
 6    <!-- Required to fetch data from the internet for the futureSearchFn example. -->
 7    <uses-permission android:name="android.permission.INTERNET" />
-7-->/Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/search_choices-2.0.19/android/src/main/AndroidManifest.xml:4:5-67
-7-->/Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/search_choices-2.0.19/android/src/main/AndroidManifest.xml:4:22-64
+7-->C:\src\flutter\.pub-cache\hosted\pub.dartlang.org\search_choices-2.0.19\android\src\main\AndroidManifest.xml:4:5-67
+7-->C:\src\flutter\.pub-cache\hosted\pub.dartlang.org\search_choices-2.0.19\android\src\main\AndroidManifest.xml:4:22-64
 8
 9</manifest>

@@ -23,19 +23,19 @@ class ReIngredIngredHelper {
   final String unitColumn = 'unit';
 
   ReIngredIngredHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeIdColumn TEXT, $nameColumn TEXT, $typeColumn TEXT, $imageColumn TEXT, $amountColumn REAL, $unitColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeIdColumn TEXT, $nameColumn TEXT, $typeColumn TEXT, $imageColumn TEXT, $amountColumn REAL, $unitColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
   Future<List<ReIngredIngredModel>> readDataFromSQLite() async {
     //Database database = await connectedDatabase();

@@ -1,18 +1,18 @@
 [
     {
-        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/path_provider_android/intermediates/res/merged/release/drawable/notification_icon_background.xml",
-        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/drawable/notification_icon_background.xml"
+        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\path_provider_android\\intermediates\\res\\merged\\release\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\drawable\\notification_bg_low.xml"
     },
     {
-        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/path_provider_android/intermediates/res/merged/release/drawable/notification_bg_low.xml",
-        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/drawable/notification_bg_low.xml"
+        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\path_provider_android\\intermediates\\res\\merged\\release\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\drawable\\notification_bg.xml"
     },
     {
-        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/path_provider_android/intermediates/res/merged/release/drawable/notification_bg.xml",
-        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/drawable/notification_bg.xml"
+        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\path_provider_android\\intermediates\\res\\merged\\release\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\drawable\\notification_icon_background.xml"
     },
     {
-        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/path_provider_android/intermediates/res/merged/release/drawable/notification_tile_bg.xml",
-        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/drawable/notification_tile_bg.xml"
+        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\path_provider_android\\intermediates\\res\\merged\\release\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\drawable\\notification_tile_bg.xml"
     }
 ]

@@ -16,19 +16,19 @@ class ReStepHelper {
   final String descriptionColumn = 'description';
 
   ReStepHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeIdColumn TEXT, $stepColumn INTEGER, $descriptionColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeIdColumn TEXT, $stepColumn INTEGER, $descriptionColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReStepModel reStepModel) async {
@@ -47,7 +47,7 @@ class ReStepHelper {
   }
 
   Future<Null> initInsertDataToSQLite() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     var steps = [
       [
         "ต้มน้ำซุปต้มไก่ โดยใส่ รากผักชี กระเทียม พริกไทย ขิง น้ำตาลกรวด ซีอิ๊วขาว เกลือ เคี่ยวประมาณ 15 นาที นำไก่ลงไปต้มต่อจนไก่สุก ใช้เวลาประมาณ 30 นาที",

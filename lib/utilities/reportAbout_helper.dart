@@ -15,19 +15,19 @@ class ReportAboutHelper {
   final String aboutTypeColumn = "aboutType";
 
   ReportAboutHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $aboutNameColumn TEXT, $aboutTypeColumn INTEGER)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $aboutNameColumn TEXT, $aboutTypeColumn INTEGER)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReportAboutModel reportAboutModel) async {
@@ -41,7 +41,7 @@ class ReportAboutHelper {
   }
 
   Future<Null> initInsert() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     List<ReportAboutModel> reportAboutModels = [
       ReportAboutModel(aboutType: 1, aboutName: 'สแปม'),
       ReportAboutModel(aboutType: 1, aboutName: 'ใช้คำไม่สุภาพ'),
@@ -56,7 +56,7 @@ class ReportAboutHelper {
       ReportAboutModel reportAboutModel = ReportAboutModel(
           aboutName: element.aboutName, aboutType: element.aboutType);
       try {
-        database.insert(tableDatabase, reportAboutModel.toJson());
+        HewaAPI().insert(tableDatabase, reportAboutModel.toJson());
       } catch (e) {
         print('e insertData ==>> ${e.toString()}');
       }

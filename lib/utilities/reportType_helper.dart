@@ -14,19 +14,19 @@ class ReportTypeHelper {
   final String typeNameColumn = "typeName";
 
   ReportTypeHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $typeNameColumn TEXT)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $typeNameColumn TEXT)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
   Future<Null> insertDataToSQLite(ReportTypeModel reportTypeModel) async {
@@ -40,12 +40,12 @@ class ReportTypeHelper {
   }
 
   Future<Null> initInsert() async {
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     var typeNames = ["user", "recipe"];
     typeNames.forEach((element) {
       ReportTypeModel reportTypeModel = ReportTypeModel(typeName: element);
       try {
-        database.insert(tableDatabase, reportTypeModel.toJson());
+        HewaAPI().insert(tableDatabase, reportTypeModel.toJson());
       } catch (e) {
         print('e insertData ==>> ${e.toString()}');
       }

@@ -31,30 +31,30 @@ class RecipeHelper {
   final String fatColumn = 'fat';
 
   MenuHelper() {
-    initDatabase();
+    // initDatabase();
   }
 
-  Future<Null> initDatabase() async {
-    await openDatabase(join(await getDatabasesPath(), nameDatabase),
-        onCreate: (db, version) => db.execute(
-            'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeUidColumn  TEXT, $menuIdColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
-        version: version);
-  }
+  // Future<Null> initDatabase() async {
+  //   await openDatabase(join(await getDatabasesPath(), nameDatabase),
+  //       onCreate: (db, version) => db.execute(
+  //           'CREATE TABLE $tableDatabase ($idColumn INTEGER PRIMARY KEY, $recipeUidColumn  TEXT, $menuIdColumn TEXT, $recipeNameColumn TEXT, $descriptionColumn TEXT, $timeHourColumn INTEGER, $timeMinuteColumn INTEGER, $methodColumn TEXT, $typeColumn TEXT, $caloriesColumn INTEGER, $proteinColumn INTEGER, $carbColumn INTEGER, $fatColumn INTEGER)'),
+  //       version: version);
+  // }
 
-  Future<Database> connectedDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), nameDatabase));
-  }
+  // Future<Database> connectedDatabase() async {
+  //   return openDatabase(join(await getDatabasesPath(), nameDatabase));
+  // }
 
 //insertข้อมูลและโชว์errorของดาต้าเบส
-  Future<Null> insertDataToSQLite(RecipeModel recipeModel) async {
-    print(join(await getDatabasesPath(), nameDatabase));
-    //Database database = await connectedDatabase();
-    try {
-      HewaAPI().insert(tableDatabase, recipeModel.toJson());
-    } catch (e) {
-      print('e insertData ==>> ${e.toString()}');
-    }
-  }
+  // Future<Null> insertDataToSQLite(RecipeModel recipeModel) async {
+  //   print(join(await getDatabasesPath(), nameDatabase));
+  //   //Database database = await connectedDatabase();
+  //   try {
+  //     HewaAPI().insert(tableDatabase, recipeModel.toJson());
+  //   } catch (e) {
+  //     print('e insertData ==>> ${e.toString()}');
+  //   }
+  // }
 
   Future<int> insert(RecipeModel recipeModel) async {
     //Database database = await connectedDatabase();
@@ -436,7 +436,7 @@ class RecipeHelper {
       "Mix"
     ];
     var menuId = List<int>.generate(calories.length, (int index) => index);
-    Database database = await connectedDatabase();
+    // Database database = await connectedDatabase();
     try {
       menuId.forEach((index) {
         RecipeModel recipeModel = RecipeModel(
@@ -450,7 +450,7 @@ class RecipeHelper {
             timeMinute: minutes[index],
             type: type[index],
             method: method[index]);
-        database.insert(tableDatabase, recipeModel.toJson());
+        // database.insert(tableDatabase, recipeModel.toJson());
       });
     } catch (e) {
       print('e insertData ==>> ${e.toString()}');
