@@ -669,78 +669,76 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return Expanded(
-                          child: SimpleDialog(
-                            backgroundColor: Colors.white.withOpacity(0.93),
-                            title: Text(
-                              menuRecipeModel.recipeName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16.0))),
-                            children: [
-                              SizedBox(
-                                height: 1,
-                                child: Container(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              SimpleDialogOption(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditRecipe(menuRecipeModel)));
-                                  readSQLite();
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Edit',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
-                                    Icon(Icons.edit),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 1,
-                                child: Container(
-                                  color: Colors.black12,
-                                ),
-                              ),
-                              SimpleDialogOption(
-                                onPressed: () {
-                                  _doneFromDialog(context, menuRecipeModel);
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          color: Colors.red),
-                                    ),
-                                    Icon(Icons.remove_circle_outline_rounded,
-                                        color: Colors.red),
-                                  ],
-                                ),
-                              ),
-                            ],
-                            elevation: 1,
-                            //backgroundColor: Colors.green,
+                        return SimpleDialog(
+                          backgroundColor: Colors.white.withOpacity(0.93),
+                          title: Text(
+                            menuRecipeModel.recipeName!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
                           ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0))),
+                          children: [
+                            SizedBox(
+                              height: 1,
+                              child: Container(
+                                color: Colors.black45,
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditRecipe(menuRecipeModel)));
+                                readSQLite();
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Edit',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Icon(Icons.edit),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1,
+                              child: Container(
+                                color: Colors.black12,
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                _doneFromDialog(context, menuRecipeModel);
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.red),
+                                  ),
+                                  Icon(Icons.remove_circle_outline_rounded,
+                                      color: Colors.red),
+                                ],
+                              ),
+                            ),
+                          ],
+                          elevation: 1,
+                          //backgroundColor: Colors.green,
                         );
                       },
                     ).then((value) => getRecipe());
@@ -851,49 +849,47 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return Expanded(
-                          child: SimpleDialog(
-                            backgroundColor: Colors.white.withOpacity(0.93),
-                            title: Text(
-                              menuRecipeModel.recipeName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(16.0))),
-                            children: [
-                              SizedBox(
-                                height: 1,
-                                child: Container(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              SimpleDialogOption(
-                                onPressed: () {
-                                  _doneFromDialogLike(context, menuRecipeModel);
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          color: Colors.red),
-                                    ),
-                                    Icon(Icons.remove_circle_outline_rounded,
-                                        color: Colors.red),
-                                  ],
-                                ),
-                              ),
-                            ],
-                            elevation: 1,
-                            //backgroundColor: Colors.green,
+                        return SimpleDialog(
+                          backgroundColor: Colors.white.withOpacity(0.93),
+                          title: Text(
+                            menuRecipeModel.recipeName!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25),
                           ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0))),
+                          children: [
+                            SizedBox(
+                              height: 1,
+                              child: Container(
+                                color: Colors.black45,
+                              ),
+                            ),
+                            SimpleDialogOption(
+                              onPressed: () {
+                                _doneFromDialogLike(context, menuRecipeModel);
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.red),
+                                  ),
+                                  Icon(Icons.remove_circle_outline_rounded,
+                                      color: Colors.red),
+                                ],
+                              ),
+                            ),
+                          ],
+                          elevation: 1,
+                          //backgroundColor: Colors.green,
                         );
                       },
                     ).then((value) => getRecipe());

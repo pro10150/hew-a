@@ -289,15 +289,8 @@ class _EditRecipeState extends State<EditRecipe> {
       recipeModel!.protein = proteinmenu;
       recipeModel!.fat = fatmenu;
     });
+    RecipeHelper().update(recipeModel!);
 
-    int resultrec;
-    resultrec = await RecipeHelper().update(recipeModel!);
-
-    if (resultrec != 0) {
-      print('Success Update Recipe');
-    } else {
-      print('Failed');
-    }
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }

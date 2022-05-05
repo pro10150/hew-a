@@ -121,8 +121,8 @@ class _SearchState extends State<Search> {
           children = <Widget>[
             Stack(children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.height * 0.17,
-                width: MediaQuery.of(context).size.height * 0.17,
+                height: MediaQuery.of(context).size.height * 0.15,
+                width: MediaQuery.of(context).size.height * 0.15,
                 child: GestureDetector(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20), // Image border
@@ -144,7 +144,14 @@ class _SearchState extends State<Search> {
               filter[index].nameMenu!,
               style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
               overflow: TextOverflow.ellipsis,
-            )
+            ),
+            filter[index].recipeName != null
+                ? Text(
+                    filter[index].recipeName!,
+                    style: TextStyle(fontStyle: FontStyle.normal, fontSize: 15),
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : Container()
           ];
         } else {
           children = <Widget>[CircularProgressIndicator()];
@@ -256,87 +263,6 @@ class _SearchState extends State<Search> {
   // List of items in our dropdown menu
 
   @override
-  // Widget build(BuildContext context) {
-  //   var size = MediaQuery.of(context).size;
-  //   const color = const Color(0xffffab91);
-  //   return Scaffold(
-  //     body: Stack(
-  //       children: <Widget>[
-  //         Container(
-  //           height: 130,
-  //           padding: EdgeInsets.only(top: 50, right: 25, left: 30, bottom: 10),
-  //           decoration: BoxDecoration(color: color),
-  //         ),
-  //         SafeArea(
-  //           child: Column(
-  //             children: <Widget>[
-  //               Container(
-  //                 margin: EdgeInsets.only(left: 25.0, right: 25.0, top: 40.0),
-  //                 padding:
-  //                     EdgeInsets.only(top: 5, right: 25, left: 5, bottom: 1),
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.white,
-  //                   borderRadius: BorderRadius.circular(20),
-  //                 ),
-  //                 child: TextField(
-  //                   onSubmitted: (_) {
-  //                     Navigator.push(
-  //                         context,
-  //                         PageTransition(
-  //                             child: SearchContent(),
-  //                             type: PageTransitionType.leftToRight));
-  //                   },
-  //                   decoration: InputDecoration(
-  //                     prefixIcon: Icon(
-  //                       Icons.search,
-  //                       color: Colors.grey,
-  //                     ),
-  //                     border: InputBorder.none,
-  //                     hintText: "SearchWidget Menu",
-  //                   ),
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 height: 12,
-  //               ),
-  //               Expanded(
-  //                 child: GridView.count(
-  //                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-  //                   crossAxisCount: 2,
-  //                   childAspectRatio: .85,
-  //                   crossAxisSpacing: 20,
-  //                   mainAxisSpacing: 20,
-  //                   children: <Widget>[
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                     CategoryCard(),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //
-  //     // appBar: AppBar(
-  //     //   title: Text('SearchWidget'),
-  //     // ),
-  //     // body: Center(
-  //     //     child: Column(
-  //     //   mainAxisAlignment: MainAxisAlignment.center,
-  //     //   children: <Widget>[
-  //     //     Text('SearchWidget Screen'),
-  //     //   ],
-  //     // )),
-  //   );
-  // }
-
   filterMethod(MethodModel methodModel) {
     if (methodModel.nameMethod != "All") {
       setState(() {
@@ -408,296 +334,56 @@ class _SearchState extends State<Search> {
           ),
         ),
         body: TabBarView(children: <Widget>[
-          // Center(
-          //   child: Expanded(
-          //     child: Container(
-          //       margin: EdgeInsets.all(5),
-          //       alignment: Alignment.topLeft,
-          //       child: Column(
-          //         children: [
-          //           Row(
-          //             children: [
-          //               Padding(padding: EdgeInsets.all(5)),
-          //               Text(
-          //                 'User',
-          //                 textAlign: TextAlign.left,
-          //                 style: TextStyle(
-          //                     fontSize: 24,
-          //                     fontWeight: FontWeight.bold,
-          //                     color: Colors.black),
-          //               ),
-          //               IconButton(
-          //                   onPressed: () {}, icon: Icon(Icons.chevron_right))
-          //             ],
-          //           ),
-          //           Expanded(
-          //             child: items.isNotEmpty
-          //                 ? ListView.builder(
-          //                     itemCount: items.length,
-          //                     itemBuilder: (context, i) {
-          //                       var url;
-          //                       if (items[i].image != null) {
-          //                         final ref = FirebaseStorage.instance
-          //                             .ref()
-          //                             .child('menus')
-          //                             .child(items[i].image!);
-          //                         url = ref.getDownloadURL();
-          //                       }
-          //                       var followers = getUserFollowers(items[i]);
-          //
-          //                       return url != null
-          //                           ? FutureBuilder<String>(
-          //                               future: url,
-          //                               builder: (context, snapshot) {
-          //                                 if (snapshot.hasData) {
-          //                                   return GestureDetector(
-          //                                       onTap: () {
-          //                                         Navigator.push(context,
-          //                                             MaterialPageRoute(
-          //                                                 builder: (context) {
-          //                                           return OtherProfile(
-          //                                               snapshot.data!,
-          //                                               items[i].uid);
-          //                                         }));
-          //                                       },
-          //                                       child: Card(
-          //                                         color: Colors.white,
-          //                                         margin: EdgeInsets.all(3),
-          //                                         child: ListTile(
-          //                                             leading: Image.network(
-          //                                                 snapshot.data!),
-          //                                             title: Text(
-          //                                                 '${items[i].username}',
-          //                                                 style: TextStyle(
-          //                                                     fontSize: 18,
-          //                                                     fontWeight:
-          //                                                         FontWeight
-          //                                                             .bold)),
-          //                                             subtitle: FutureBuilder<
-          //                                                     List<
-          //                                                         FollowModel>>(
-          //                                                 future: followers,
-          //                                                 builder: (context,
-          //                                                     snapshot) {
-          //                                                   if (snapshot
-          //                                                       .hasData) {
-          //                                                     return Text(
-          //                                                         'Follow : ${snapshot.data!.length}');
-          //                                                   } else {
-          //                                                     return Text(
-          //                                                         'Follow : 0');
-          //                                                   }
-          //                                                 })
-          //
-          //                                             // trailing: IconButton(
-          //                                             //   onPressed: () {},
-          //                                             //   icon: Icon(Icons.more_vert),
-          //                                             // ),
-          //                                             ),
-          //                                       ));
-          //                                 } else {
-          //                                   return CircularProgressIndicator();
-          //                                 }
-          //                               })
-          //                           : GestureDetector(
-          //                               onTap: () {
-          //                                 Navigator.push(context,
-          //                                     MaterialPageRoute(
-          //                                         builder: (context) {
-          //                                   return OtherProfile(
-          //                                       "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-          //                                       items[i].uid);
-          //                                 }));
-          //                               },
-          //                               child: Card(
-          //                                 color: Colors.white,
-          //                                 margin: EdgeInsets.all(3),
-          //                                 child: ListTile(
-          //                                     leading: Image.network(
-          //                                         "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
-          //                                     title: Text(
-          //                                         '${items[i].username}',
-          //                                         style: TextStyle(
-          //                                             fontSize: 18,
-          //                                             fontWeight:
-          //                                                 FontWeight.bold)),
-          //                                     subtitle: FutureBuilder<
-          //                                             List<FollowModel>>(
-          //                                         future: followers,
-          //                                         builder:
-          //                                             (context, snapshot) {
-          //                                           if (snapshot.hasData) {
-          //                                             return Text(
-          //                                                 'Follow : ${snapshot.data!.length}');
-          //                                           } else {
-          //                                             return Text(
-          //                                                 'Follow : 0');
-          //                                           }
-          //                                         })
-          //
-          //                                     // trailing: IconButton(
-          //                                     //   onPressed: () {},
-          //                                     //   icon: Icon(Icons.more_vert),
-          //                                     // ),
-          //                                     ),
-          //                               ));
-          //                     })
-          //                 : Text(
-          //                     'No results found',
-          //                     style: TextStyle(
-          //                         fontSize: 20, fontWeight: FontWeight.w500),
-          //                   ),
-          //           ),
-          //           Row(
-          //             children: [
-          //               Padding(padding: EdgeInsets.all(5)),
-          //               Text(
-          //                 'Menu',
-          //                 textAlign: TextAlign.left,
-          //                 style: TextStyle(
-          //                     fontSize: 24,
-          //                     fontWeight: FontWeight.bold,
-          //                     color: Colors.black),
-          //               ),
-          //               IconButton(
-          //                   onPressed: () {}, icon: Icon(Icons.chevron_right))
-          //             ],
-          //           ),
-          //           Expanded(
-          //             child: filter.isNotEmpty
-          //                 ? MediaQuery.removePadding(
-          //                     context: context,
-          //                     removeTop: true,
-          //                     child: GridView.builder(
-          //                       gridDelegate:
-          //                           SliverGridDelegateWithMaxCrossAxisExtent(
-          //                         maxCrossAxisExtent: 300.0,
-          //                         crossAxisSpacing: 20.0,
-          //                         mainAxisSpacing: 20.0,
-          //                       ),
-          //                       // primary: false,
-          //                       // shrinkWrap: true,
-          //                       physics: ScrollPhysics(),
-          //                       itemCount: filter.length,
-          //                       itemBuilder:
-          //                           (BuildContext context, int index) {
-          //                         return Container(
-          //                           child: Card(
-          //                             shape: RoundedRectangleBorder(
-          //                               side: BorderSide(
-          //                                   color: Colors.transparent,
-          //                                   width: 1),
-          //                               // borderRadius: BorderRadius.circular(15),
-          //                             ),
-          //                             color: Colors.white,
-          //                             child: Column(
-          //                               children: [
-          //                                 SizedBox(height: 8),
-          //                                 buildPictureBtn(index),
-          //                               ],
-          //                             ),
-          //                           ),
-          //                         );
-          //                       },
-          //                     ))
-          //                 : Text(
-          //                     'No results found',
-          //                     style: TextStyle(
-          //                         fontSize: 20, fontWeight: FontWeight.w500),
-          //                   ),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
           Center(
-            child: Expanded(
-                child: items.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, i) {
-                          var url;
-                          if (items[i].image != null) {
-                            final ref = FirebaseStorage.instance
-                                .ref()
-                                .child('upload')
-                                .child(items[i].image!);
-                            url = ref.getDownloadURL();
-                          }
-                          var followers = getUserFollowers(items[i]);
-                          return url != null
-                              ? FutureBuilder<String>(
-                                  future: url,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                              return OtherProfile(
-                                                  snapshot.data!, items[i].uid);
-                                            }));
-                                          },
-                                          child: Card(
-                                            color: Colors.white,
-                                            margin: EdgeInsets.all(3),
-                                            child: ListTile(
-                                                leading: Image.network(
-                                                    snapshot.data!),
-                                                title: Text(
-                                                    '${items[i].username}',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                                subtitle: FutureBuilder<
-                                                        List<FollowModel>>(
-                                                    future: followers,
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      if (snapshot.hasData) {
-                                                        return Text(
-                                                            'Follow : ${snapshot.data!.length}');
-                                                      } else {
-                                                        return Text(
-                                                            'Follow : 0');
-                                                      }
-                                                    })
-
-                                                // trailing: IconButton(
-                                                //   onPressed: () {},
-                                                //   icon: Icon(Icons.more_vert),
-                                                // ),
-                                                ),
-                                          ));
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  })
-                              : GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return OtherProfile(
-                                          "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                                          items[i].uid);
-                                    }));
-                                  },
-                                  child: Card(
-                                    color: Colors.white,
-                                    margin: EdgeInsets.all(3),
-                                    child: ListTile(
-                                        leading: Image.network(
-                                            "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
-                                        title: Text('${items[i].username}',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold)),
-                                        subtitle:
-                                            FutureBuilder<List<FollowModel>>(
+            child: items.isNotEmpty
+                ? ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, i) {
+                      var url;
+                      if (items[i].image != null) {
+                        final ref = FirebaseStorage.instance
+                            .ref()
+                            .child('upload')
+                            .child(items[i].image!);
+                        url = ref.getDownloadURL();
+                      }
+                      var followers = getUserFollowers(items[i]);
+                      return url != null
+                          ? FutureBuilder<String>(
+                              future: url,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return OtherProfile(
+                                              snapshot.data!, items[i].uid);
+                                        }));
+                                      },
+                                      child: Card(
+                                        color: Colors.white,
+                                        margin: EdgeInsets.all(3),
+                                        child: ListTile(
+                                            leading: Image.network(
+                                                snapshot.data!,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                fit: BoxFit.fill),
+                                            title: Text('${items[i].username}',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            subtitle: FutureBuilder<
+                                                    List<FollowModel>>(
                                                 future: followers,
                                                 builder: (context, snapshot) {
                                                   if (snapshot.hasData) {
@@ -708,21 +394,68 @@ class _SearchState extends State<Search> {
                                                   }
                                                 })
 
-                                        // trailing: IconButton(
-                                        //   onPressed: () {},
-                                        //   icon: Icon(Icons.more_vert),
-                                        // ),
-                                        ),
-                                  ));
-                        })
-                    : Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Text(
-                          'No results found',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
-                        ),
-                      )),
+                                            // trailing: IconButton(
+                                            //   onPressed: () {},
+                                            //   icon: Icon(Icons.more_vert),
+                                            // ),
+                                            ),
+                                      ));
+                                } else {
+                                  return CircularProgressIndicator();
+                                }
+                              })
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return OtherProfile(
+                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                      items[i].uid);
+                                }));
+                              },
+                              child: Card(
+                                color: Colors.white,
+                                margin: EdgeInsets.all(3),
+                                child: ListTile(
+                                    leading: Image.network(
+                                        "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                0.05,
+                                        fit: BoxFit.fill),
+                                    title: Text('${items[i].username}',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold)),
+                                    subtitle: FutureBuilder<List<FollowModel>>(
+                                        future: followers,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Text(
+                                                'Follow : ${snapshot.data!.length}');
+                                          } else {
+                                            return Text('Follow : 0');
+                                          }
+                                        })
+
+                                    // trailing: IconButton(
+                                    //   onPressed: () {},
+                                    //   icon: Icon(Icons.more_vert),
+                                    // ),
+                                    ),
+                              ));
+                    })
+                : Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Text(
+                      'No results found',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
+                  ),
           ),
 
           // Center(
@@ -741,146 +474,142 @@ class _SearchState extends State<Search> {
           //   )
           // ),
           Center(
-            child: Expanded(
-              child: Container(
-                margin: EdgeInsets.all(5),
-                alignment: Alignment.topLeft,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.all(5)),
-                        Expanded(
-                          child: Container(
-                            height: 50,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: method_list.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () => setState(() {
-                                    _value = index;
-                                    filterMethod(method_list[index]);
-                                  }),
-                                  child: Container(
-                                    width: 70,
-                                    child: Card(
-                                      shape: (_value == index)
-                                          ? RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  width: 7,
-                                                  color: Palette.roseBud))
-                                          : null,
-                                      elevation: 7,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          Text(
-                                            '${method_list[index].nameMethod}',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+            child: Container(
+              margin: EdgeInsets.all(5),
+              alignment: Alignment.topLeft,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(padding: EdgeInsets.all(5)),
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: method_list.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () => setState(() {
+                                  _value = index;
+                                  filterMethod(method_list[index]);
+                                }),
+                                child: Container(
+                                  width: 70,
+                                  child: Card(
+                                    shape: (_value == index)
+                                        ? RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                width: 7,
+                                                color: Palette.roseBud))
+                                        : null,
+                                    elevation: 7,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Text(
+                                          '${method_list[index].nameMethod}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                      child: filter.isNotEmpty
+                          ? MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 300.0,
+                                  crossAxisSpacing: 20.0,
+                                  mainAxisSpacing: 20.0,
+                                ),
+                                padding: EdgeInsets.only(
+                                    top: 5, left: 5, right: 5, bottom: 5),
+                                primary: false,
+                                shrinkWrap: true,
+                                physics: ScrollPhysics(),
+                                itemCount: filter.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1),
+                                      ),
+                                      color: Colors.white,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10),
+                                          buildPictureBtn(index),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                        child: filter.isNotEmpty
-                            ? MediaQuery.removePadding(
-                                context: context,
-                                removeTop: true,
-                                child: GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 300.0,
-                                    crossAxisSpacing: 20.0,
-                                    mainAxisSpacing: 20.0,
-                                  ),
-                                  padding: EdgeInsets.only(
-                                      top: 5, left: 5, right: 5),
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  physics: ScrollPhysics(),
-                                  itemCount: filter.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1),
-                                        ),
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: 8),
-                                            buildPictureBtn(index),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ))
-                            : Padding(
-                                padding: EdgeInsets.only(top: 210),
-                                child: Text(
-                                  'No results found',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                                  );
+                                },
                               ))
-                  ],
-                ),
+                          : Padding(
+                              padding: EdgeInsets.only(top: 210),
+                              child: Text(
+                                'No results found',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500),
+                              ),
+                            ))
+                ],
               ),
             ),
-            // child: filter.isNotEmpty
-            //     ? MediaQuery.removePadding(
-            //     context: context,
-            //     removeTop: true,
-            //     child: GridView.builder(
-            //       gridDelegate:
-            //       const SliverGridDelegateWithFixedCrossAxisCount(
-            //           crossAxisCount: 2),
-            //       padding:
-            //       EdgeInsets.only(top: 5,left: 5,right: 5),
-            //       primary: false,
-            //       shrinkWrap: true,
-            //       physics: ScrollPhysics(),
-            //       itemCount: filter.length,
-            //       itemBuilder: (BuildContext context, int index) {
-            //         return Container(
-            //           child: Card(
-            //             shape: RoundedRectangleBorder(
-            //               side: BorderSide(color:Colors.transparent,width: 1),
-            //               // borderRadius: BorderRadius.circular(15),
-            //             ),
-            //             color: Colors.white,
-            //             child: Column(
-            //               children: [
-            //                 SizedBox(height: 8),
-            //                 buildPictureBtn(index),
-            //               ],
-            //             ),
-            //           ),
-            //         );
-            //       },
-            //     ))
-            //     : Text('No results found',
-            //   style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
           ),
+          // child: filter.isNotEmpty
+          //     ? MediaQuery.removePadding(
+          //     context: context,
+          //     removeTop: true,
+          //     child: GridView.builder(
+          //       gridDelegate:
+          //       const SliverGridDelegateWithFixedCrossAxisCount(
+          //           crossAxisCount: 2),
+          //       padding:
+          //       EdgeInsets.only(top: 5,left: 5,right: 5),
+          //       primary: false,
+          //       shrinkWrap: true,
+          //       physics: ScrollPhysics(),
+          //       itemCount: filter.length,
+          //       itemBuilder: (BuildContext context, int index) {
+          //         return Container(
+          //           child: Card(
+          //             shape: RoundedRectangleBorder(
+          //               side: BorderSide(color:Colors.transparent,width: 1),
+          //               // borderRadius: BorderRadius.circular(15),
+          //             ),
+          //             color: Colors.white,
+          //             child: Column(
+          //               children: [
+          //                 SizedBox(height: 8),
+          //                 buildPictureBtn(index),
+          //               ],
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     ))
+          //     : Text('No results found',
+          //
         ]),
       ),
     );

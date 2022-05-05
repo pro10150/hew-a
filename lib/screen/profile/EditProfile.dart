@@ -61,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
         if (user[0].name != null) {
           nameController.text = user[0].name!;
         }
-         usernameController.text = user[0].username!;
+        usernameController.text = user[0].username!;
       });
     });
   }
@@ -221,8 +221,7 @@ class _EditProfileState extends State<EditProfile> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
                 ),
-                Expanded(
-                    child: Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -247,7 +246,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Text('Update Preference',
                             style: TextStyle(color: Colors.white)))
                   ],
-                )),
+                ),
                 Expanded(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

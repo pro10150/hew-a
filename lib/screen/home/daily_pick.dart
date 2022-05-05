@@ -19,7 +19,7 @@ class DailyPick extends StatelessWidget {
   }
 
   getLike(String id) async {
-    print(LikeHelper().readDataFromSQLiteWhereRecipe(id).runtimeType);
+    // print(LikeHelper().readDataFromSQLiteWhereRecipe(id).runtimeType);
     return await LikeHelper().readDataFromSQLiteWhereRecipe(id);
   }
 
@@ -30,7 +30,7 @@ class DailyPick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     for (var object in likes) {
-      print(object.runtimeType);
+      // print(object.runtimeType);
     }
     return Expanded(
         // wrap in Expanded

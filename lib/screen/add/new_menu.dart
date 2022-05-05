@@ -30,7 +30,6 @@ class NewMenu extends StatefulWidget {
 List<String> ingredients = [];
 List<IngredModel> ingredModel = [];
 
-
 class _NewMenuState extends State<NewMenu> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // TextEditingController menuController = TextEditingController();
@@ -142,7 +141,6 @@ class _NewMenuState extends State<NewMenu> {
     }
   }
 
-
   final _formKey = new GlobalKey<FormState>();
 
   final menuController = TextEditingController();
@@ -160,21 +158,13 @@ class _NewMenuState extends State<NewMenu> {
             .first
             .id,
         descMenu: descmenu);
-    int result;
-    result = await MenuHelper().insert(menuModel);
-
-    if (result != 0) {
-      setState(() {
-        print('Success');
-        menu.add(menuModel);
-      });
-    } else {
-      print('Failed');
-    }
-
+    MenuHelper().insert(menuModel);
+    setState(() {
+      menu.add(menuModel);
+    });
     uploadImageToFirebase(context);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeStep1(menuModel)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RecipeStep1(menuModel)));
   }
 
   Widget buildnextBtn() {
