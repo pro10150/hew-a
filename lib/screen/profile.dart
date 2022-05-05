@@ -490,58 +490,54 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               body: TabBarView(
                 controller: controller,
                 children: [
-                  Expanded(
-                      child: menuRecipes.length > 0
-                          ? GridView.builder(
-                              // primary: false,
-                              // shrinkWrap: true,
-                              // physics: ScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300.0,
-                                crossAxisSpacing: 20.0,
-                                mainAxisSpacing: 20.0,
-                              ),
-                              // const SliverGridDelegateWithFixedCrossAxisCount(
-                              //     crossAxisCount: 2),
-                              itemCount: menuRecipes.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return recipes(menuRecipes[index]);
-                              })
-                          : Container(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height *
-                                      0.05),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                'You haven\'t create any recipes yet',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))),
-                  Expanded(
-                      child: likeRecipes.length > 0
-                          ? GridView.builder(
-                              // primary: false,
-                              // shrinkWrap: true,
-                              // physics: ScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300.0,
-                                crossAxisSpacing: 20.0,
-                                mainAxisSpacing: 20.0,
-                              ),
-                              itemCount: likeRecipes.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return recipeslike(likeRecipes[index]);
-                              })
-                          : Container(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).size.height *
-                                      0.05),
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                'You haven\'t liked anything yet',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))),
+                  menuRecipes.length > 0
+                      ? GridView.builder(
+                          // primary: false,
+                          // shrinkWrap: true,
+                          // physics: ScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 300.0,
+                            crossAxisSpacing: 20.0,
+                            mainAxisSpacing: 20.0,
+                          ),
+                          // const SliverGridDelegateWithFixedCrossAxisCount(
+                          //     crossAxisCount: 2),
+                          itemCount: menuRecipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return recipes(menuRecipes[index]);
+                          })
+                      : Container(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.05),
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            'You haven\'t create any recipes yet',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                  likeRecipes.length > 0
+                      ? GridView.builder(
+                          // primary: false,
+                          // shrinkWrap: true,
+                          // physics: ScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 300.0,
+                            crossAxisSpacing: 20.0,
+                            mainAxisSpacing: 20.0,
+                          ),
+                          itemCount: likeRecipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return recipeslike(likeRecipes[index]);
+                          })
+                      : Container(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.05),
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            'You haven\'t liked anything yet',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
                 ],
               )
 

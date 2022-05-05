@@ -59,25 +59,28 @@ class _SearchState extends State<Search> {
   void readSQLite() {
     MenuRecipeHelper().readDataFromSQLite().then((menus) {
       for (var model in menus) {
-        menu.add(model);
-        filter.add(model);
+        setState(() {
+          menu.add(model);
+          filter.add(model);
+        });
       }
-      setState(() {});
     });
     UserHelper().readlDataFromSQLite().then((users) {
       for (var model in users) {
-        user.add(model);
-        filtersearch.add(model);
+        setState(() {
+          user.add(model);
+          filtersearch.add(model);
+        });
       }
-      setState(() {});
     });
     MethodHelper().readDataFromSQLite().then((methods) {
       MethodModel methodModel = MethodModel(nameMethod: "All");
       method_list.add(methodModel);
       for (var model in methods) {
-        method_list.add(model);
+        setState(() {
+          method_list.add(model);
+        });
       }
-      setState(() {});
     });
   }
 
@@ -129,13 +132,13 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return MenuDetail(filter[index]);
                     }));
                   },
                 ),
               ),
-
             ]),
             Text(
               filter[index].nameMenu!,
@@ -359,6 +362,7 @@ class _SearchState extends State<Search> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 100,
           bottom: TabBar(
             unselectedLabelColor: Colors.white,
@@ -612,114 +616,113 @@ class _SearchState extends State<Search> {
             child: Expanded(
                 child: items.isNotEmpty
                     ? ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, i) {
-                      var url;
-                      if (items[i].image != null) {
-                        final ref = FirebaseStorage.instance
-                            .ref()
-                            .child('upload')
-                            .child(items[i].image!);
-                        url = ref.getDownloadURL();
-                      }
-                      var followers = getUserFollowers(items[i]);
-                      return url != null
-                          ? FutureBuilder<String>(
-                          future: url,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return GestureDetector(
+                        itemCount: items.length,
+                        itemBuilder: (context, i) {
+                          var url;
+                          if (items[i].image != null) {
+                            final ref = FirebaseStorage.instance
+                                .ref()
+                                .child('upload')
+                                .child(items[i].image!);
+                            url = ref.getDownloadURL();
+                          }
+                          var followers = getUserFollowers(items[i]);
+                          return url != null
+                              ? FutureBuilder<String>(
+                                  future: url,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return OtherProfile(
+                                                  snapshot.data!, items[i].uid);
+                                            }));
+                                          },
+                                          child: Card(
+                                            color: Colors.white,
+                                            margin: EdgeInsets.all(3),
+                                            child: ListTile(
+                                                leading: Image.network(
+                                                    snapshot.data!),
+                                                title: Text(
+                                                    '${items[i].username}',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                subtitle: FutureBuilder<
+                                                        List<FollowModel>>(
+                                                    future: followers,
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        return Text(
+                                                            'Follow : ${snapshot.data!.length}');
+                                                      } else {
+                                                        return Text(
+                                                            'Follow : 0');
+                                                      }
+                                                    })
+
+                                                // trailing: IconButton(
+                                                //   onPressed: () {},
+                                                //   icon: Icon(Icons.more_vert),
+                                                // ),
+                                                ),
+                                          ));
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  })
+                              : GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
-                                        MaterialPageRoute(
-                                            builder: (context) {
-                                              return OtherProfile(
-                                                  snapshot.data!,
-                                                  items[i].uid);
-                                            }));
+                                        MaterialPageRoute(builder: (context) {
+                                      return OtherProfile(
+                                          "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
+                                          items[i].uid);
+                                    }));
                                   },
                                   child: Card(
                                     color: Colors.white,
                                     margin: EdgeInsets.all(3),
                                     child: ListTile(
                                         leading: Image.network(
-                                            snapshot.data!),
-                                        title: Text(
-                                            '${items[i].username}',
+                                            "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
+                                        title: Text('${items[i].username}',
                                             style: TextStyle(
                                                 fontSize: 18,
-                                                fontWeight:
-                                                FontWeight.bold)),
-                                        subtitle: FutureBuilder<
-                                            List<FollowModel>>(
-                                            future: followers,
-                                            builder:
-                                                (context, snapshot) {
-                                              if (snapshot.hasData) {
-                                                return Text(
-                                                    'Follow : ${snapshot.data!.length}');
-                                              } else {
-                                                return Text(
-                                                    'Follow : 0');
-                                              }
-                                            })
+                                                fontWeight: FontWeight.bold)),
+                                        subtitle:
+                                            FutureBuilder<List<FollowModel>>(
+                                                future: followers,
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return Text(
+                                                        'Follow : ${snapshot.data!.length}');
+                                                  } else {
+                                                    return Text('Follow : 0');
+                                                  }
+                                                })
 
-                                      // trailing: IconButton(
-                                      //   onPressed: () {},
-                                      //   icon: Icon(Icons.more_vert),
-                                      // ),
-                                    ),
+                                        // trailing: IconButton(
+                                        //   onPressed: () {},
+                                        //   icon: Icon(Icons.more_vert),
+                                        // ),
+                                        ),
                                   ));
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          })
-                          : GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                                  return OtherProfile(
-                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg",
-                                      items[i].uid);
-                                }));
-                          },
-                          child: Card(
-                            color: Colors.white,
-                            margin: EdgeInsets.all(3),
-                            child: ListTile(
-                                leading: Image.network(
-                                    "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"),
-                                title: Text('${items[i].username}',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold)),
-                                subtitle:
-                                FutureBuilder<List<FollowModel>>(
-                                    future: followers,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Text(
-                                            'Follow : ${snapshot.data!.length}');
-                                      } else {
-                                        return Text('Follow : 0');
-                                      }
-                                    })
-
-                              // trailing: IconButton(
-                              //   onPressed: () {},
-                              //   icon: Icon(Icons.more_vert),
-                              // ),
-                            ),
-                          ));
-                    })
+                        })
                     : Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Text(
-                    'No results found',
-                    style: TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                )),
+                        padding: EdgeInsets.only(top: 50),
+                        child: Text(
+                          'No results found',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                      )),
           ),
 
           // Center(
@@ -764,14 +767,14 @@ class _SearchState extends State<Search> {
                                     child: Card(
                                       shape: (_value == index)
                                           ? RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              width: 7,
-                                              color: Palette.roseBud))
+                                              side: BorderSide(
+                                                  width: 7,
+                                                  color: Palette.roseBud))
                                           : null,
                                       elevation: 7,
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceAround,
                                         children: <Widget>[
                                           Text(
                                             '${method_list[index].nameMethod}',
@@ -794,51 +797,51 @@ class _SearchState extends State<Search> {
                     Expanded(
                         child: filter.isNotEmpty
                             ? MediaQuery.removePadding(
-                            context: context,
-                            removeTop: true,
-                            child: GridView.builder(
-                              gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300.0,
-                                crossAxisSpacing: 20.0,
-                                mainAxisSpacing: 20.0,
-                              ),
-                              padding: EdgeInsets.only(
-                                  top: 5, left: 5, right: 5),
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
-                              itemCount: filter.length,
-                              itemBuilder:
-                                  (BuildContext context, int index) {
-                                return Container(
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 1),
-                                    ),
-                                    color: Colors.white,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 8),
-                                        buildPictureBtn(index),
-                                      ],
-                                    ),
+                                context: context,
+                                removeTop: true,
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 300.0,
+                                    crossAxisSpacing: 20.0,
+                                    mainAxisSpacing: 20.0,
                                   ),
-                                );
-                              },
-                            ))
+                                  padding: EdgeInsets.only(
+                                      top: 5, left: 5, right: 5),
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  itemCount: filter.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1),
+                                        ),
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(height: 8),
+                                            buildPictureBtn(index),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ))
                             : Padding(
-                          padding: EdgeInsets.only(top: 210),
-                          child: Text(
-                            'No results found',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ))
+                                padding: EdgeInsets.only(top: 210),
+                                child: Text(
+                                  'No results found',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ))
                   ],
                 ),
               ),
@@ -881,7 +884,6 @@ class _SearchState extends State<Search> {
         ]),
       ),
     );
-
   }
 }
 

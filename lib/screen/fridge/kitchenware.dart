@@ -95,8 +95,8 @@ class _KitchenwareState extends State<Kitchenware> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    KitchHelper().deleteAlldata();
-    KitchHelper().initialInsert();
+    // KitchHelper().deleteAlldata();
+    // KitchHelper().initialInsert();
     //ใช้ initialInsert เพื่อinsert เครื่องครัว
     getKitchenware();
     getSwitch();

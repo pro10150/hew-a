@@ -77,108 +77,108 @@ class _FollowingState extends State<Following> {
   @override
   Widget build(BuildContext context) {
     print(menuRecipeModels.length);
-    return Expanded(
-        // wrap in Expanded
-        child: refs.length > 0
-            ? TikTokStyleFullPageScroller(
-                contentSize: menuRecipeModels.length,
-                swipePositionThreshold: 0.2,
-                swipeVelocityThreshold: 1000,
-                animationDuration: const Duration(milliseconds: 300),
-                builder: (BuildContext context, int index) {
-                  return RecipeContent(
-                      menuRecipeModels[index], refs[index], userModel);
-                },
-              )
-            : Column(children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Flexible(
-                    child: Text(
-                      "You haven't followed anyone yet. \nTry following these users.",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+    return refs.length > 0
+        ? Expanded(
+            // wrap in Expanded
+            child: TikTokStyleFullPageScroller(
+            contentSize: menuRecipeModels.length,
+            swipePositionThreshold: 0.2,
+            swipeVelocityThreshold: 1000,
+            animationDuration: const Duration(milliseconds: 300),
+            builder: (BuildContext context, int index) {
+              return RecipeContent(
+                  menuRecipeModels[index], refs[index], userModel);
+            },
+          ))
+        : Column(children: [
+            Align(
+              alignment: Alignment.center,
+              child: Flexible(
+                child: Text(
+                  "You haven't followed anyone yet. \nTry following these users.",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-                Flexible(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2),
-                    itemCount: recommendedUserModels.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          FutureBuilder<String>(
-                              future: recommendedUrls[index],
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Colors.grey,
-                                    child: ClipOval(
-                                      child: SizedBox(
-                                          height: 500,
-                                          width: 500,
-                                          child: Image.network(
-                                            snapshot.data!,
-                                            fit: BoxFit.cover,
-                                          )),
-                                    ),
-                                  );
-                                } else {
-                                  return CircularProgressIndicator();
-                                }
-                              }),
-                          recommendedUserModels[index].name != null
-                              ? Text(recommendedUserModels[index].name!)
-                              : Text(recommendedUserModels[index].username!),
-                          isFollowed[index] != false
-                              ? TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isFollowed[index] = false;
-                                    });
-                                    unfollow(index);
-                                  },
-                                  child: Text(
-                                    "Unfollow",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.black),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18),
-                                    )),
-                                  ))
-                              : TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isFollowed[index] = true;
-                                    });
-                                    follow(index);
-                                  },
-                                  child: Text(
-                                    "Follow",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.black),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18),
-                                    )),
-                                  ))
-                        ],
-                      );
-                    },
-                  ),
-                )
-              ]));
+              ),
+            ),
+            Flexible(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: recommendedUserModels.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      FutureBuilder<String>(
+                          future: recommendedUrls[index],
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.grey,
+                                child: ClipOval(
+                                  child: SizedBox(
+                                      height: 500,
+                                      width: 500,
+                                      child: Image.network(
+                                        snapshot.data!,
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          }),
+                      recommendedUserModels[index].name != null
+                          ? Text(recommendedUserModels[index].name!)
+                          : Text(recommendedUserModels[index].username!),
+                      isFollowed[index] != false
+                          ? TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  isFollowed[index] = false;
+                                });
+                                unfollow(index);
+                              },
+                              child: Text(
+                                "Unfollow",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                )),
+                              ))
+                          : TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  isFollowed[index] = true;
+                                });
+                                follow(index);
+                              },
+                              child: Text(
+                                "Follow",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                )),
+                              ))
+                    ],
+                  );
+                },
+              ),
+            )
+          ]);
   }
 }
