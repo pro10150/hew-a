@@ -10,8 +10,6 @@ import 'package:hewa/screen/login/loginscreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -23,7 +21,7 @@ void main() async {
 // ส่วนของ Stateless widget
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+//sssss
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +33,7 @@ class MyApp extends StatelessWidget {
           })),
       title: 'Hew\'a App',
       initialRoute: '/',
-      home: SplashScreen(),// สามารถใช้ home แทนได้
+      home: SplashScreen(), // สามารถใช้ home แทนได้
       // routes: {
       //   LoginScreen.routeName: (context) => LoginScreen(),
       // },
@@ -76,11 +74,14 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(
               height: 5,
             ),
-            Text('Hew\'a App',
-            style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.black),
+            Text(
+              'Hew\'a App',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
-            SizedBox(
-              height:MediaQuery.of(context).size.height / 10),
+            SizedBox(height: MediaQuery.of(context).size.height / 10),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
@@ -90,4 +91,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
