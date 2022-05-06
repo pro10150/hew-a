@@ -180,63 +180,63 @@
         <entry key="firebase_auth">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.16/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.8/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_auth_platform_interface">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.2.4/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.2.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_auth_web">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.13/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.8/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_core">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.15.0/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.12.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_core_platform_interface">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.5/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.4/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_core_web">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.2/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_storage">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.14/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.8/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_storage_platform_interface">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.1.4/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.1.0/lib" />
             </list>
           </value>
         </entry>
         <entry key="firebase_storage_web">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.13/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.9/lib" />
             </list>
           </value>
         </entry>
@@ -677,14 +677,14 @@
         <entry key="sqflite">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.2+1/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.2/lib" />
             </list>
           </value>
         </entry>
         <entry key="sqflite_common">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.2.1+1/lib" />
+              <option value="$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.2.0/lib" />
             </list>
           </value>
         </entry>
@@ -828,15 +828,15 @@
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.5.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/filter_list-1.0.1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.16/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.2.4/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.13/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.15.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.5/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.2/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.14/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.1.4/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.13/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.8/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_platform_interface-6.2.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.8/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.12.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.4/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.8/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_platform_interface-4.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.9/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_advanced_switch-3.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blurhash-0.6.8/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_cache_manager-3.3.0/lib" />
@@ -895,8 +895,8 @@
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/searchfield-0.6.4/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/share-2.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.2+1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.2.1+1/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.2/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/step_progress_indicator-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
