@@ -131,6 +131,8 @@ class UserHelper {
     List<dynamic> maps;
     var objects = await FollowHelper().readlDataFromSQLite();
     if (objects.length > 0) {
+      print(
+          'SELECT * FROM userTABLE INNER JOIN followTABLE ON userTABLE.uid = followTABLE.uid WHERE userTABLE.uid <> ? AND usertable.uid IN (SELECT uid FROM followTABLE GROUP BY uid ORDER BY count(uid) DESC) GROUP BY followTABLE.uid ORDER BY count(followTABLE.uid) DESC; 55555555555555555555555555');
       maps = await HewaAPI().rawQuery(
           'SELECT * FROM userTABLE INNER JOIN followTABLE ON userTABLE.uid = followTABLE.uid WHERE userTABLE.uid <> ? AND usertable.uid IN (SELECT uid FROM followTABLE GROUP BY uid ORDER BY count(uid) DESC) GROUP BY followTABLE.uid ORDER BY count(followTABLE.uid) DESC;',
           values: [uid]);

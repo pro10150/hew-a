@@ -87,22 +87,22 @@ class _HomeState extends State<Home> {
     }
   }
 
-  getPreference() async {
-    final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
-    final response = await http.get(Uri.parse(
-        'http://192.168.1.108:5000/recommendation?uid=' +
-            FirebaseAuth.instance.currentUser!.uid +
-            "&databaseLocation=" +
-            dbPath));
+  // getPreference() async {
+  //   // final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
+  //   final response = await http.get(Uri.parse(
+  //       'http://192.168.1.108:5000/recommendation?uid=' +
+  //           FirebaseAuth.instance.currentUser!.uid +
+  //           "&databaseLocation=" +
+  //           dbPath));
 
-    final decoded = json.decode(response.body) as Map<String, dynamic>;
+  //   final decoded = json.decode(response.body) as Map<String, dynamic>;
 
-    setState(() {
-      greetings = decoded['uid'];
-      recommendations = decoded['recommendation'];
-      print(recommendations);
-    });
-  }
+  //   setState(() {
+  //     greetings = decoded['uid'];
+  //     recommendations = decoded['recommendation'];
+  //     print(recommendations);
+  //   });
+  // }
 
   getRecommendedUserModel() async {
     var objects = await UserHelper().getUserTop5(_auth.currentUser!.uid);
@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
     });
     var objects = await MenuRecipeHelper().readDataFromSQLite();
     for (var object in objects) {
-      print(object);
+      // print(object);
       setState(() {
         menuRecipeModels.add(object);
       });
@@ -220,14 +220,18 @@ class _HomeState extends State<Home> {
   checkBan() async {
     var objects =
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
-    var currentDate = DateTime.now();
-    var period = daysBetween(
-        DateFormat("yyyy-MM-dd hh:mm:ss").parse(objects.first.dateBanned!),
-        currentDate);
-    print("tttttttttttttttttt");
-    print(period);
-    if (period < 3 || userModel!.isPermanentlyBan == 1) {
-      showAlert();
+    print("ban");
+    print(objects.length);
+    if (objects.length > 0) {
+      var currentDate = DateTime.now();
+      var period = daysBetween(
+          DateFormat("yyyy-MM-dd hh:mm:ss").parse(objects.first.dateBanned!),
+          currentDate);
+      print("tttttttttttttttttt");
+      print(period);
+      if (period < 3 || userModel!.isPermanentlyBan == 1) {
+        showAlert();
+      }
     }
   }
 

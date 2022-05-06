@@ -384,25 +384,24 @@ class _OtherProfileState extends State<OtherProfile>
               body: TabBarView(
                 controller: controller,
                 children: [
-                  Expanded(
-                      child: menuRecipeModels.length > 0
-                          ? GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300.0,
-                                crossAxisSpacing: 20.0,
-                                mainAxisSpacing: 20.0,
-                              ),
-                              itemCount: menuRecipeModels.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return recipes(menuRecipeModels[index]);
-                              })
-                          : Container(
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                'You haven\'t create any recipes yet',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))),
+                  menuRecipeModels.length > 0
+                      ? GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 300.0,
+                            crossAxisSpacing: 20.0,
+                            mainAxisSpacing: 20.0,
+                          ),
+                          itemCount: menuRecipeModels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return recipes(menuRecipeModels[index]);
+                          })
+                      : Container(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            'You haven\'t create any recipes yet',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
                 ],
               )
 

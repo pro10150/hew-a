@@ -220,7 +220,7 @@ class MenuRecipeHelper {
 
   Future<List<MenuRecipeModel>> getDailyPick() async {
     Database database = await connectedDatabase();
-    final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
+    // final dbPath = base64.encode(utf8.encode(await DBHelper().getDbPath()));
     final objects = await ViewHelper().readlDataFromSQLite();
     print(objects.runtimeType);
     var dio = Dio();

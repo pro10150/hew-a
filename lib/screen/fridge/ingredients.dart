@@ -65,7 +65,7 @@ class _IngredientsState extends State<Ingredients> {
         userModel = model;
         userModel!.uid = model.uid;
         userModel!.username = model.username;
-        print(model.ingredients);
+        // print(model.ingredients);
         if (model.ingredients == 1) {
           setState(() {
             isSwitched = true;
@@ -80,7 +80,7 @@ class _IngredientsState extends State<Ingredients> {
     print('object length ==> ${object.length}');
     ingredients.clear();
     for (var model in object) {
-      print(model);
+      // print(model);
       ingredModel.add(model);
       ingredients.add(model.name!);
     }

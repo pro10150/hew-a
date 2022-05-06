@@ -24,24 +24,7 @@ class Following extends StatefulWidget {
 
 class _FollowingState extends State<Following> {
   _FollowingState(
-      this.menuRecipeModels, this.userModel, this.recommendedUserModels) {
-    for (var object in menuRecipeModels) {
-      var ref = FirebaseStorage.instance
-          .ref()
-          .child('menus')
-          .child(object.menuImage!);
-      refs.add(ref.getDownloadURL());
-    }
-    for (var object in recommendedUserModels) {
-      if (object.image != null) {
-        var ref =
-            FirebaseStorage.instance.ref().child('upload').child(object.image!);
-        recommendedUrls.add(ref.getDownloadURL());
-      } else {
-        recommendedUrls.add(getUrl());
-      }
-    }
-  }
+      this.menuRecipeModels, this.userModel, this.recommendedUserModels);
 
   getLike(String id) async {
     return await LikeHelper().readDataFromSQLiteWhereRecipe(id);
@@ -65,6 +48,30 @@ class _FollowingState extends State<Following> {
         recommendedUserModels[index].uid!, _auth.currentUser!.uid);
   }
 
+  getMenuUrl() async {
+    for (var object in menuRecipeModels) {
+      print(object);
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('menus')
+          .child(object.menuImage!);
+      print(ref);
+      setState(() {
+        refs.add(ref.getDownloadURL());
+      });
+    }
+    print("yeeeeeeeeeeeeeeeeeeeeeeeee");
+    for (var object in recommendedUserModels) {
+      if (object.image != null) {
+        var ref =
+            FirebaseStorage.instance.ref().child('upload').child(object.image!);
+        recommendedUrls.add(ref.getDownloadURL());
+      } else {
+        recommendedUrls.add(getUrl());
+      }
+    }
+  }
+
   List<List<LikeModel>> likes = [];
   List<dynamic> refs = [];
   List<MenuRecipeModel> menuRecipeModels = [];
@@ -75,16 +82,31 @@ class _FollowingState extends State<Following> {
   var _auth = FirebaseAuth.instance;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // print("object");
+    // getMenuUrl();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("following");
+    print(recommendedUserModels.length);
+    print(recommendedUrls.length);
     print(menuRecipeModels.length);
-    return refs.length > 0
+    print(refs.length);
+    if (menuRecipeModels.length > 0) {
+      getMenuUrl();
+    }
+    return menuRecipeModels.length > 0
         ? Expanded(
             // wrap in Expanded
             child: TikTokStyleFullPageScroller(
             contentSize: menuRecipeModels.length,
             swipePositionThreshold: 0.2,
             swipeVelocityThreshold: 1000,
-            animationDuration: const Duration(milliseconds: 300),
+            animationDuration: const Duration(milliseconds: 200),
             builder: (BuildContext context, int index) {
               return RecipeContent(
                   menuRecipeModels[index], refs[index], userModel);
@@ -93,18 +115,21 @@ class _FollowingState extends State<Following> {
         : Column(children: [
             Align(
               alignment: Alignment.center,
-              child: Flexible(
-                child: Text(
-                  "You haven't followed anyone yet. \nTry following these users.",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
+              child: Text(
+                "You haven't followed anyone yet. \nTry following these users.",
+                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
             Flexible(
+                child: Container(
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 300.0,
+                  crossAxisSpacing: 20.0,
+                  mainAxisSpacing: 20.0,
+                ),
                 itemCount: recommendedUserModels.length,
                 itemBuilder: (context, index) {
                   return Column(
@@ -178,7 +203,7 @@ class _FollowingState extends State<Following> {
                   );
                 },
               ),
-            )
+            ))
           ]);
   }
 }

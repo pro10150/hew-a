@@ -135,14 +135,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
         protein: proteinmenu,
         carb: carbomenu,
         fat: fatmenu);
-    int resultrec;
-    resultrec = await RecipeHelper().insert(recipeModel!);
-
-    if (resultrec != 0) {
-      print('Success Recipe');
-    } else {
-      print('Failed');
-    }
+    RecipeHelper().insert(recipeModel!);
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
@@ -837,20 +830,13 @@ class _RecipeStep1State extends State<RecipeStep1> {
           step: i + 1,
           description: descStep,
           minute: timeStep);
-
-      int result;
-      result = await ReStepHelper().insert(reStepModel);
-
-      if (result != 0) {
-        setState(() {
-          steps.add(reStepModel);
-        });
-        print(descStep);
-        print(timeStep);
-        print('Success Step');
-      } else {
-        print('Failed');
-      }
+      ReStepHelper().insert(reStepModel);
+      setState(() {
+        steps.add(reStepModel);
+      });
+      print(descStep);
+      print(timeStep);
+      print('Success Step');
     }
     uploadImageToFirebase(context);
   }

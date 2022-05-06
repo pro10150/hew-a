@@ -147,7 +147,7 @@ var dio = Dio();
 /// SQL command builder.
 class HewaAPI {
   HewaAPI() {
-    print(pathAddress);
+    // print(pathAddress);
   }
 
   /// Convenience method for deleting rows in the database.
@@ -236,10 +236,10 @@ class HewaAPI {
 
     sql = query.toString();
     arguments = whereArgs != null ? List<Object?>.from(whereArgs) : null;
-    print(sql);
-    print(arguments);
+    // print(sql);
+    // print(arguments);
     Response<dynamic> data;
-    print(pathAddress + "query?query=" + sql);
+    // print(pathAddress + "query?query=" + sql);
     if (arguments != null)
       data =
           await dio.post(pathAddress + "query?query=" + sql, data: arguments);
