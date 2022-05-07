@@ -138,7 +138,7 @@ class MenuRecipeHelper {
     List<MenuRecipeModel> menuRecipeModels = [];
     List<dynamic> maps = [];
     maps = await HewaAPI().rawQuery(
-        'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = $id;',
+        'select *, recipeTABLE.id as id from recipeTABLE inner join menuTABLE on recipeTABLE.menuId = menuTABLE.id inner join ingredientTABLE on ingredientTABLE.id = menuTABLE.mainIngredient where recipeTABLE.id = ?;',
         values: [id]);
 
     for (var map in maps) {

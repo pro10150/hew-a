@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hewa/models/user_model.dart';
 import 'package:hewa/screen/launcher.dart';
 import 'package:hewa/utilities/user_helper.dart';
@@ -23,6 +24,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 import 'package:hewa/screen/login/round_image.dart';
 import 'package:hewa/screen/launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfile extends StatefulWidget {
   static const routeName = '/';
@@ -54,7 +57,7 @@ class _EditProfileState extends State<EditProfile> {
 
     UserHelper()
         .readDataFromSQLiteWhereId(_auth.currentUser!.uid)
-        .then((value) {
+        .then((value) async {
       print(value);
       setState(() {
         user = value;
@@ -63,7 +66,30 @@ class _EditProfileState extends State<EditProfile> {
         }
         usernameController.text = user[0].username!;
       });
+      if (user.first.image != null) {
+        var ref = FirebaseStorage.instance
+            .ref()
+            .child("steps")
+            .child(user.first.image!);
+        var image = await ref.getDownloadURL();
+        var imageFile = await convertUriToFile(image);
+        setState(() {
+          _imageFile = imageFile;
+        });
+      }
     });
+  }
+
+  convertUriToFile(url) async {
+    final http.Response responseData = await http.get(Uri.parse(url));
+    var uint8list = responseData.bodyBytes;
+    var buffer = uint8list.buffer;
+    ByteData byteData = ByteData.view(buffer);
+    var tempDir = await getTemporaryDirectory();
+    File file = await File('${tempDir.path}/' + DateTime.now().toString())
+        .writeAsBytes(
+            buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
   }
 
   File? _imageFile = null;
@@ -170,7 +196,7 @@ class _EditProfileState extends State<EditProfile> {
                               child: (_imageFile != null)
                                   ? Image.file(_imageFile!, fit: BoxFit.fill)
                                   : Image.network(
-                                      "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg")),
+                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg")),
                         ),
                       ),
                       Positioned(

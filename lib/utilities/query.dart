@@ -332,6 +332,7 @@ class HewaAPI {
     }
 
     arguments = bindArgs;
+    print(arguments);
     Response<dynamic> data;
     if (arguments != null) {
       data =

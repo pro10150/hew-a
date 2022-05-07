@@ -255,294 +255,287 @@ class _reportDetailState extends State<reportDetail> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Positioned(
-                left: (MediaQuery.of(context).size.width / 2) - 100.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(35.0),
-                        child: FutureBuilder<String>(
-                            future: url,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                if (snapshot.data != null) {
-                                  return CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage:
-                                          NetworkImage(snapshot.data!));
-                                } else {
-                                  return CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                          "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"));
-                                }
-                              } else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(35.0),
+                      child: FutureBuilder<String>(
+                          future: url,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data != null) {
+                                return CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        NetworkImage(snapshot.data!));
+                              } else {
                                 return CircleAvatar(
                                     radius: 50,
                                     backgroundImage: NetworkImage(
                                         "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"));
-                            }),
-                      ),
+                              }
+                            } else
+                              return CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: NetworkImage(
+                                      "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg"));
+                          }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SingleChildScrollView(
-                child: Positioned(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(45.0),
-                          topRight: Radius.circular(45.0),
-                        ),
-                        color: Colors.white),
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Report about:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                height: 35,
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: FittedBox(
-                                  child: Text(
-                                    "${reportModel.aboutName}",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "คำอธิบายเพิ่มเติม :",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(45.0),
+                        topRight: Radius.circular(45.0),
+                      ),
+                      color: Colors.white),
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            Text(
+                              "Report about:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Container(
-                              margin: EdgeInsets.only(left: 40),
-                              child: reportModel.text != null
-                                  ? Text(
-                                      "${reportModel.text}",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 14),
-                                    )
-                                  : Text(
-                                      "No details given",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 14),
-                                    ),
-                            )
+                              height: 35,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: FittedBox(
+                                child: Text(
+                                  "${reportModel.aboutName}",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "คำอธิบายเพิ่มเติม :",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "รูปภาพเพิ่มเติม :",
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 40),
+                            child: reportModel.text != null
+                                ? Text(
+                                    "${reportModel.text}",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 14),
+                                  )
+                                : Text(
+                                    "No details given",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 14),
+                                  ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "รูปภาพเพิ่มเติม :",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                      urls.length > 0
+                          ? buildImage()
+                          : Text("No images were found"),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RaisedButton(
+                              color: Colors.grey[200],
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Dismiss report",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
+                                    color: Colors.black, fontSize: 16),
                               ),
-                            ],
-                          ),
-                        ),
-                        urls.length > 0
-                            ? buildImage()
-                            : Text("No images were found"),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RaisedButton(
-                                color: Colors.grey[200],
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Text(
-                                  "Dismiss report",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
-                                ),
-                                onPressed: () {
-                                  onDismiss();
-                                },
+                              onPressed: () {
+                                onDismiss();
+                              },
+                            ),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            RaisedButton(
+                              color: Colors.red[400],
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                reportModel.type == 1
+                                    ? "Block account"
+                                    : "Delete reciepe",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
                               ),
-                              SizedBox(
-                                width: 70,
-                              ),
-                              RaisedButton(
-                                color: Colors.red[400],
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Text(
-                                  reportModel.type == 1
-                                      ? "Block account"
-                                      : "Delete reciepe",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                            title: Text(reportModel.typeName! +
-                                                " report"),
-                                            content: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.5,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.5,
-                                              child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    reportModel.type == 1
-                                                        ? Text(
-                                                            "Would you approve the report and ban this user?",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        : Text(
-                                                            "Would you approve the report and delete this recipe?",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                    reportModel.type == 1
-                                                        ? userModel!.banTime !=
-                                                                null
-                                                            ? Text(
-                                                                "This user has been banned ${userModel!.banTime} times")
-                                                            : Text(
-                                                                "This user has never been banned before")
-                                                        : Container(),
-                                                    SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.05),
-                                                    reportModel.type == 1
-                                                        ? Text(userModel!
-                                                                        .banTime ==
-                                                                    null ||
-                                                                userModel!
-                                                                        .banTime! <
-                                                                    3
-                                                            ? "Would you like to block this user?"
-                                                            : "Would you like to permanently ban this user?")
-                                                        : Container()
-                                                  ]),
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                          title: Text(reportModel.typeName! +
+                                              " report"),
+                                          content: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.5,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.5,
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  reportModel.type == 1
+                                                      ? Text(
+                                                          "Would you approve the report and ban this user?",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      : Text(
+                                                          "Would you approve the report and delete this recipe?",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                  reportModel.type == 1
+                                                      ? userModel!.banTime !=
+                                                              null
+                                                          ? Text(
+                                                              "This user has been banned ${userModel!.banTime} times")
+                                                          : Text(
+                                                              "This user has never been banned before")
+                                                      : Container(),
+                                                  SizedBox(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.05),
+                                                  reportModel.type == 1
+                                                      ? Text(userModel!
+                                                                      .banTime ==
+                                                                  null ||
+                                                              userModel!
+                                                                      .banTime! <
+                                                                  3
+                                                          ? "Would you like to block this user?"
+                                                          : "Would you like to permanently ban this user?")
+                                                      : Container()
+                                                ]),
+                                          ),
+                                          actionsAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          actions: <Widget>[
+                                            RaisedButton(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 10),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: Text(
+                                                "Cancel",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
                                             ),
-                                            actionsAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            actions: <Widget>[
-                                              RaisedButton(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 15,
-                                                    vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: Text(
-                                                  "Cancel",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                  ),
+                                            RaisedButton(
+                                              color: Colors.red,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 10),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: Text(
+                                                "Confirm",
+                                                style: TextStyle(
+                                                  color: Colors.white,
                                                 ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
                                               ),
-                                              RaisedButton(
-                                                color: Colors.red,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 15,
-                                                    vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                                child: Text(
-                                                  "Confirm",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  onApprove();
-                                                },
-                                              ),
-                                            ]);
-                                      });
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                                              onPressed: () {
+                                                onApprove();
+                                              },
+                                            ),
+                                          ]);
+                                    });
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
