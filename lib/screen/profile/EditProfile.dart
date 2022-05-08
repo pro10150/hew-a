@@ -273,8 +273,7 @@ class _EditProfileState extends State<EditProfile> {
                             style: TextStyle(color: Colors.white)))
                   ],
                 ),
-                Expanded(
-                    child: Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -289,7 +288,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Text('Logout',
                             style: TextStyle(color: Colors.white)))
                   ],
-                ))
+                )
               ],
             ),
           ),

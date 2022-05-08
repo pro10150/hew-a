@@ -166,9 +166,11 @@ class HewaAPI {
     _writeClause(delete, ' WHERE ', where);
     sql = delete.toString();
     arguments = whereArgs != null ? List<Object?>.from(whereArgs) : null;
-    Response<dynamic> data =
-        await dio.post(pathAddress + "query?query=" + sql, data: arguments);
-    return data.data;
+    if (arguments != null) {
+      await dio.post(pathAddress + "query?query=" + sql, data: arguments);
+    } else {
+      await dio.post(pathAddress + "emptyQuery?query=" + sql);
+    }
   }
 
   /// Build an SQL query string from the given clauses.

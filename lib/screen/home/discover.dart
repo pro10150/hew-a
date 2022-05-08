@@ -49,6 +49,10 @@ class _FollowingState extends State<Following> {
   }
 
   getMenuUrl() async {
+    setState(() {
+      refs.clear();
+      recommendedUrls.clear();
+    });
     for (var object in menuRecipeModels) {
       print(object);
       var ref = FirebaseStorage.instance
@@ -65,9 +69,13 @@ class _FollowingState extends State<Following> {
       if (object.image != null) {
         var ref =
             FirebaseStorage.instance.ref().child('upload').child(object.image!);
-        recommendedUrls.add(ref.getDownloadURL());
+        setState(() {
+          recommendedUrls.add(ref.getDownloadURL());
+        });
       } else {
-        recommendedUrls.add(getUrl());
+        setState(() {
+          recommendedUrls.add(getUrl());
+        });
       }
     }
   }
@@ -96,7 +104,7 @@ class _FollowingState extends State<Following> {
     print(recommendedUrls.length);
     print(menuRecipeModels.length);
     print(refs.length);
-    if (menuRecipeModels.length > 0) {
+    if (menuRecipeModels.length > 0 || recommendedUserModels.length > 0) {
       getMenuUrl();
     }
     return menuRecipeModels.length > 0
@@ -121,8 +129,7 @@ class _FollowingState extends State<Following> {
                 textAlign: TextAlign.center,
               ),
             ),
-            Flexible(
-                child: Container(
+            Container(
               child: GridView.builder(
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -203,7 +210,7 @@ class _FollowingState extends State<Following> {
                   );
                 },
               ),
-            ))
+            )
           ]);
   }
 }
