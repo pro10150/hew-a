@@ -1,0 +1,11 @@
+framework module uri_to_file {
+  umbrella header "uri_to_file-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module uri_to_file.Swift {
+    header "uri_to_file-Swift.h"
+    requires objc
+}

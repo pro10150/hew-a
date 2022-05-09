@@ -216,43 +216,59 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     if (reIngred.unit == "cup") {
       if (userIngred.unit == "cup") {
         if (reIngred.amount! * _n <= userIngred.amount!) {
-          isEnough = true;
+          setState(() {
+            isEnough = true;
+          });
         }
       } else if (userIngred.unit == "tbsp") {
         var reAmount = reIngred.amount! * 16;
         if (reAmount * _n <= userIngred.amount!) {
-          isEnough = true;
+          setState(() {
+            isEnough = true;
+          });
         } else {
-          isEnough = false;
+          setState(() {
+            isEnough = false;
+          });
         }
       }
     } else if (reIngred.unit == "tbsp") {
       if (userIngred.unit == "cup") {
         var reAmount = reIngred.amount! * 0.0625;
         if (reAmount * _n <= userIngred.amount!) {
-          isEnough = true;
+          setState(() {
+            isEnough = true;
+          });
         }
       }
     } else if (reIngred.unit == "g") {
       if (userIngred.unit == "kg") {
         var reAmount = reIngred.amount! * 100;
         if (reAmount * _n <= userIngred.amount!) {
-          isEnough = true;
+          setState(() {
+            isEnough = true;
+          });
         }
       }
     } else if (reIngred.unit == "kg") {
       if (userIngred.unit == "g") {
         var reAmount = reIngred.amount! * 0.001;
         if (reAmount * _n <= userIngred.amount!) {
-          isEnough = true;
+          setState(() {
+            isEnough = true;
+          });
         }
       }
     }
     if (userIngred.unit == reIngred.unit) {
       if (reIngred.amount! * _n <= userIngred.amount!) {
-        isEnough = true;
+        setState(() {
+          isEnough = true;
+        });
       } else if (reIngred.amount! * _n > userIngred.amount!) {
-        isEnough = false;
+        setState(() {
+          isEnough = false;
+        });
       }
     }
     return isEnough;
@@ -268,13 +284,17 @@ class _DetailedRecipeState extends State<DetailedRecipe>
       for (var userIngredModel in userIngredModels) {
         if (userIngredModel.amount == 0.0 &&
             (userIngredModel.unit != null && userIngredModel.unit != "")) {
-          isHave = true;
-          isEnough = true;
-          isDiffType = true;
+          setState(() {
+            isHave = true;
+            isEnough = true;
+            isDiffType = true;
+          });
           break;
         } else {
           if (reIngredIngredModel.id == userIngredModel.ingredientId) {
-            isHave = true;
+            setState(() {
+              isHave = true;
+            });
             if (reIngredIngredModel.amount != null ||
                 userIngredModel.amount == 0.0) {
               if (reIngredIngredModel.amount != null &&
@@ -285,21 +305,29 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                   isEnough = compareUnit(reIngredIngredModel, userIngredModel);
                 } else if (reIngredIngredModel.amount! * _n <=
                     userIngredModel.amount!) {
-                  isEnough = true;
+                  setState(() {
+                    isEnough = true;
+                  });
                 }
               } else {
-                isEnough = true;
+                setState(() {
+                  isEnough = true;
+                });
               }
             } else {
-              isEnough = true;
+              setState(() {
+                isEnough = true;
+              });
             }
           }
         }
       }
     } else {
-      isHave = true;
-      isEnough = true;
-      isDiffType = true;
+      setState(() {
+        isHave = true;
+        isEnough = true;
+        isDiffType = true;
+      });
     }
 
     return Container(

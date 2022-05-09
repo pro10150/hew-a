@@ -1,0 +1,6 @@
+framework module flutter_ringtone_player {
+  umbrella header "flutter_ringtone_player-umbrella.h"
+
+  export *
+  module * { export * }
+}

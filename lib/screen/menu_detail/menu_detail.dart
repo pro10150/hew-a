@@ -84,6 +84,7 @@ class _MenuDetailState extends State<MenuDetail> {
         .readDataFromSQLiteWhereUser(_auth.currentUser!.uid);
     setState(() {
       for (var object in objects) {
+        print(object.kitchenware);
         userKitchenwareModels.add(object);
       }
     });
@@ -118,7 +119,10 @@ class _MenuDetailState extends State<MenuDetail> {
     bool isOwn = false;
     if (userModel!.kitchenwares == 1) {
       for (var userKitchenwareModel in userKitchenwareModels) {
-        if (userKitchenwareModel.kitchenware == kitchenware) isOwn = true;
+        if (userKitchenwareModel.kitchenware == kitchenware)
+          setState(() {
+            isOwn = true;
+          });
       }
     }
 
