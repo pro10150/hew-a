@@ -109,6 +109,8 @@ class _NewMenuState extends State<NewMenu> {
             {print("Upload file path error ${error.toString()} ")});
 
     print(fileName);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => RecipeStep1(menu[0])));
   }
 
   void _showPicker(BuildContext ctx) {
@@ -163,8 +165,6 @@ class _NewMenuState extends State<NewMenu> {
       menu.add(menuModel);
     });
     uploadImageToFirebase(context);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RecipeStep1(menuModel)));
   }
 
   Widget buildnextBtn() {

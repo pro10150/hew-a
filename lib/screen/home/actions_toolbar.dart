@@ -83,6 +83,7 @@ class ActionsToolbar extends StatelessWidget {
   getIsFollow(List<FollowModel> follows) {
     String uid = _auth.currentUser!.uid;
     for (var follow in follows) {
+      print(uid == follow.followedUserID);
       if (uid == follow.followedUserID) {
         isFollowed = true;
         break;
@@ -161,14 +162,23 @@ class ActionsToolbar extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10),
       width: 60,
       height: 60,
-      child: Stack(children: [
-        _getProfilePicture(context, pictureUrl),
-        menuRecipeModel.recipeUid != _auth.currentUser!.uid
-            ? isFollowed
-                ? Container()
-                : _getPlusIcon()
-            : Container()
-      ]),
+      child: FutureBuilder<List<FollowModel>>(
+          future: followModels,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              getIsFollow(snapshot.data!);
+              return Stack(children: [
+                _getProfilePicture(context, pictureUrl),
+                menuRecipeModel.recipeUid != _auth.currentUser!.uid
+                    ? isFollowed
+                        ? Container()
+                        : _getPlusIcon()
+                    : Container()
+              ]);
+            } else {
+              return CircularProgressIndicator();
+            }
+          }),
     );
   }
 
@@ -182,7 +192,7 @@ class ActionsToolbar extends StatelessWidget {
         future: followModels,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            getIsFollow(snapshot.data!);
+            // getIsFollow(snapshot.data!);
             return StatefulBuilder(builder: (context, setState) {
               return Positioned(
                 bottom: 0,

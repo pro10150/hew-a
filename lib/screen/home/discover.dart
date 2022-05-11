@@ -64,7 +64,6 @@ class _FollowingState extends State<Following> {
         refs.add(ref.getDownloadURL());
       });
     }
-    print("yeeeeeeeeeeeeeeeeeeeeeeeee");
     for (var object in recommendedUserModels) {
       if (object.image != null) {
         var ref =
@@ -146,12 +145,13 @@ class _FollowingState extends State<Following> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return CircleAvatar(
-                                radius: 50,
+                                radius:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 backgroundColor: Colors.grey,
                                 child: ClipOval(
                                   child: SizedBox(
-                                      height: 500,
-                                      width: 500,
+                                      height: 300,
+                                      width: 300,
                                       child: Image.network(
                                         snapshot.data!,
                                         fit: BoxFit.cover,

@@ -418,7 +418,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
     //     vsync: this, duration: Duration(minutes: reStepModel.minute!));
     if (controllers[index] != null) {
       controllers[index].addListener(() {
-        if (controllers[index].value == 0 && isMoving == true) {
+        if (controllers[index].value == 0.1 && isMoving == true) {
           FlutterRingtonePlayer.playRingtone();
           setState(() {
             isMoving = false;
@@ -490,10 +490,10 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                       if (controllers[index].isAnimating) {
                         controllers[index].reset();
                         controllers[index].reverse(
-                            from: controllers[index].value == 0.0 ? 1.0 : 0);
+                            from: controllers[index].value == 0.0 ? 1.0 : 0.1);
                       } else {
                         controllers[index].reverse(
-                            from: controllers[index].value == 0.0 ? 1.0 : 0);
+                            from: controllers[index].value == 0.0 ? 1.0 : 0.1);
                       }
 
                       _openTimer(context, controllers[index], index);
@@ -569,6 +569,8 @@ class _DetailedRecipeState extends State<DetailedRecipe>
         closeFunction: () {
           setState(() {
             isMoving = false;
+            controller.value = 0;
+            controller.reset();
             Navigator.pop(context);
           });
         },
@@ -626,6 +628,8 @@ class _DetailedRecipeState extends State<DetailedRecipe>
               child: Text("Stop"),
               onPressed: () {
                 setState(() {
+                  controller.value = 0;
+                  controller.reset();
                   isMoving = false;
                 });
                 Navigator.pop(context);

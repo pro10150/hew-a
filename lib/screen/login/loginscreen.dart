@@ -195,13 +195,13 @@ class LoginScreenState extends State<LoginScreen> {
               text: '      Don\'t have an account ?',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500)),
           TextSpan(
               text: '  Sign Up',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold))
         ]),
       ),

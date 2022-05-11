@@ -63,7 +63,6 @@ List<KitchenwareModel> kitchenwareModel = [];
 
 List<String> ingredients = [];
 List<ReIngredModel> reingredModel = [];
-List<ReStepModel> reStepModel = [];
 List<ReStepModel> reStepModels = [];
 List<IngredModel> ingredModel = [];
 List<bool> isPrimarys = [];
@@ -99,8 +98,6 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   ReKitchenwareModel? reKitchenwareModel;
   ReKitchenwareHelper? reKitchenwareHelper;
-
-  ReIngredModel? reIngredModel;
 
   MenuHelper? menuHelper;
   MenuModel menuModel;
@@ -556,39 +553,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
     showDialog(
             context: context,
             builder: (BuildContext context) => _addIngredient())
-        .then((value) => setState(() async {
-              if (flagAdd == true) {
-                // ingredients.remove(_selectedIngredient);
-                // _selectedIngredients.add(_selectedIngredient);
-                // _selectedIngredientsCount.add((_selectedIngredientAmount));
-                // _selectedIngredientsUnit.add(_selectedUnit);
-                // var object =
-                //     await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-                // print(object.first.id);
-                //
-                // ReIngredModel reIngred = ReIngredModel(
-                //     ingredientId: ingredModel
-                //         .where((element) => element.name == _selectedIngredient)
-                //         .first
-                //         .id,
-                //     amount: _selectedIngredientAmount,
-                //     unit: _selectedUnit == '-' ? '' : _selectedUnit,
-                //     isPrimary: isPrimary == true ? 1 : 0);
-                //
-                // int resultIngred;
-                // resultIngred = await ReIngredHelper().insert(reIngred);
-                //
-                // setState(() {
-                //   reingredModel.add(reIngred);
-                // });
-                //
-                // if (resultIngred != 0) {
-                //   print('Success');
-                // } else {
-                //   print('Failed');
-                // }
-
-              }
+        .then((value) => setState(() {
+              print(reingredModel.length);
             }));
   }
 
@@ -1338,11 +1304,26 @@ class _RecipeStep1State extends State<RecipeStep1> {
         });
   }
 
+  clearData() {
+    setState(() {
+      kitchenware = [];
+      kitchenwareModel = [];
+
+      ingredients = [];
+      reingredModel = [];
+      reStepModels = [];
+      ingredModel = [];
+      isPrimarys = [];
+      units = ['-', 'g', 'kg', 'tbps', 'cup', 'ml', 'l', 'bottles'];
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // getKitchenware();
+    clearData();
     readSQLite();
     readSQLiteKitch();
     readSQLiteMenu();

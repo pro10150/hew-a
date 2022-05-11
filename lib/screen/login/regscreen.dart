@@ -235,13 +235,13 @@ class RegisterScreenState extends State<RegisterScreen> {
               text: '     I already have an account ?',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: FontWeight.w500)),
           TextSpan(
               text: '  Login',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold))
         ]),
       ),

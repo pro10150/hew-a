@@ -123,18 +123,30 @@ class _ExistingMenuState extends State<ExistingMenu> {
                               });
                               Navigator.push(
                                   context,
-                                  PageTransition(
-                                      child: RecipeStep1(menuModel),
-                                      type: PageTransitionType.rightToLeft));
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          RecipeStep1(menuModel)));
+                              // Navigator.push(
+                              //     context,
+                              //     PageTransition(
+                              //         child: RecipeStep1(menuModel),
+                              //         type: PageTransitionType.rightToLeft));
                             },
                           )),
                           TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        child: RecipeStep1(selectedMenuModel!),
-                                        type: PageTransitionType.rightToLeft));
+                                if (selectedMenuModel != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecipeStep1(selectedMenuModel!)));
+                                }
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         child: RecipeStep1(selectedMenuModel!),
+                                //         type: PageTransitionType.rightToLeft));
                               },
                               style: ButtonStyle(
                                   backgroundColor:

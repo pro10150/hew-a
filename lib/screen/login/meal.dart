@@ -206,9 +206,11 @@ class MealpreState extends State<Mealpre> {
                           primary: false,
                           shrinkWrap: true,
                           physics: ScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 300.0,
+                  crossAxisSpacing: 20.0,
+                  mainAxisSpacing: 20.0,
+                ),
                           itemCount: filter.length,
                           itemBuilder: (BuildContext context, int index) {
                             return buildmealBtn(index);

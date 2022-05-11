@@ -106,6 +106,7 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildPictureBtn(int index) {
+    print(filter[index].nameMenu);
     print(filter[index].menuImage);
     final ref = FirebaseStorage.instance
         .ref()
@@ -227,8 +228,8 @@ class _SearchState extends State<Search> {
     if (query.isNotEmpty) {
       var dummyListData = [];
       dummySearchList.forEach((item) {
-        var user = UserModel.fromJson(item);
-        if (user.username!.toLowerCase().contains(query.toLowerCase())) {
+        // var user = UserModel.fromJson(item);
+        if (item.username!.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });

@@ -690,10 +690,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             SimpleDialogOption(
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditRecipe(menuRecipeModel)));
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditRecipe(menuRecipeModel)))
+                                    .then((value) => getRecipe());
                                 readSQLite();
                               },
                               child: Row(
@@ -898,7 +899,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return MenuDetail(menuRecipeModel);
-                    }));
+                    })).then((value) => getRecipe());
                   },
                   child: Container(
                     padding: EdgeInsets.all(0),

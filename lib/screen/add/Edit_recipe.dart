@@ -122,15 +122,33 @@ class _EditRecipeState extends State<EditRecipe> {
         if (recipeModel!.recipeName != null) {
           recipeController.text = recipeModel!.recipeName!;
         }
-        desc1Controller.text = recipeModel!.description!;
-        calController.text = recipeModel!.calories!.toString();
-        carboController.text = recipeModel!.carb!.toString();
-        proteinController.text = recipeModel!.protein!.toString();
-        fatController.text = recipeModel!.fat!.toString();
-        _selectedMethod = recipeModel!.method!;
-        _selectedType = recipeModel!.type!;
-        _selectedMinute = recipeModel!.timeMinute! % 60;
-        _selectedHour = (recipeModel!.timeMinute! / 60).floor();
+        recipeModel!.description != null
+            ? desc1Controller.text = recipeModel!.description!
+            : desc1Controller.text = "";
+        if (recipeModel!.calories != null) {
+          calController.text = recipeModel!.calories!.toString();
+        }
+        if (recipeModel!.carb != null) {
+          carboController.text = recipeModel!.carb!.toString();
+        }
+        if (recipeModel!.protein != null) {
+          proteinController.text = recipeModel!.protein!.toString();
+        }
+        if (recipeModel!.fat != null) {
+          fatController.text = recipeModel!.fat!.toString();
+        }
+        if (recipeModel!.method != null) {
+          _selectedMethod = recipeModel!.method!;
+        }
+        if (recipeModel!.type != null) {
+          _selectedType = recipeModel!.type!;
+        }
+        if (recipeModel!.timeMinute != null) {
+          _selectedMinute = recipeModel!.timeMinute! % 60;
+        }
+        if (recipeModel!.timeMinute != null) {
+          _selectedHour = (recipeModel!.timeMinute! / 60).floor();
+        }
       });
     });
   }
@@ -180,8 +198,12 @@ class _EditRecipeState extends State<EditRecipe> {
                 .where((element) => element.id == object.ingredientId)
                 .first
                 .name!);
-            _selectedIngredientsCount.add(object.amount!);
-            _selectedIngredientsUnit.add(object.unit!);
+            object.amount != null
+                ? _selectedIngredientsCount.add(object.amount!)
+                : _selectedIngredientsCount.add(null);
+            object.unit != null
+                ? _selectedIngredientsUnit.add(object.unit!)
+                : _selectedIngredientsUnit.add(null);
             isPrimarys.add(object.isPrimary == 0 ? false : true);
             reingredModel.add(object);
           }
@@ -711,7 +733,7 @@ class _EditRecipeState extends State<EditRecipe> {
     showDialog(
             context: context,
             builder: (BuildContext context) => _addIngredient())
-        .then((value) => setState(() async {
+        .then((value) => setState(() {
               if (flagAdd == true) {
                 // ingredients.remove(_selectedIngredient);
                 // _selectedIngredients.add(_selectedIngredient);
@@ -1072,10 +1094,10 @@ class _EditRecipeState extends State<EditRecipe> {
   String _selectedMethod = 'Select method';
   String _selectedType = 'Select type';
 
-  List<String> _selectedKitchenware = ['Select Kitchenware'];
-  List<String> _selectedIngredients = [];
-  List<String> _selectedIngredientsUnit = [];
-  List<double> _selectedIngredientsCount = [];
+  List<dynamic> _selectedKitchenware = ['Select Kitchenware'];
+  List<dynamic> _selectedIngredients = [];
+  List<dynamic> _selectedIngredientsUnit = [];
+  List<dynamic> _selectedIngredientsCount = [];
 
   Future<Null> readSQLite() async {
     var object = await IngredHelper().readlDataFromSQLite();

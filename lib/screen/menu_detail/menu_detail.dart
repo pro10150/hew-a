@@ -39,11 +39,10 @@ class MenuDetail extends StatefulWidget {
   MenuRecipeModel object;
   static const routeName = '/';
   @override
-  _MenuDetailState createState() => _MenuDetailState();
+  _MenuDetailState createState() => _MenuDetailState(object);
 }
 
 var _auth = FirebaseAuth.instance;
-MenuRecipeModel? menuRecipeModel;
 UserModel? userModel;
 List<String> urls = [];
 List<KitchenwareModel> kitchenwareModels = [];
@@ -52,6 +51,8 @@ List<LikeModel> likeModels = [];
 bool isLiked = false;
 
 class _MenuDetailState extends State<MenuDetail> {
+  _MenuDetailState(this.menuRecipeModel);
+  MenuRecipeModel menuRecipeModel;
   Widget _getRecipePicture({required String pictureUrl}) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
@@ -64,16 +65,22 @@ class _MenuDetailState extends State<MenuDetail> {
     );
   }
 
-  getLike(MenuRecipeModel menuRecipeModel) async {
+  getLike() async {
+    setState(() {
+      isLiked = false;
+    });
     var objects = await LikeHelper()
         .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
 
     setState(() {
       likeModels.clear();
       likeModels = objects;
+      print(likeModels.length);
       for (var object in objects) {
         if (object.uid == _auth.currentUser!.uid) {
-          isLiked = true;
+          setState(() {
+            isLiked = true;
+          });
         }
       }
     });
@@ -96,7 +103,7 @@ class _MenuDetailState extends State<MenuDetail> {
     });
     getMenuUrl();
     var objects = await ReImageHelper()
-        .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id!);
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id!);
     for (var object in objects) {
       var ref =
           FirebaseStorage.instance.ref().child('recipes').child(object.name!);
@@ -139,7 +146,7 @@ class _MenuDetailState extends State<MenuDetail> {
 
   getUserRecipe() async {
     var objects = await UserHelper()
-        .readDataFromSQLiteWhereId(menuRecipeModel!.recipeUid!);
+        .readDataFromSQLiteWhereId(menuRecipeModel.recipeUid!);
     setState(() {
       userModel = objects.first;
     });
@@ -149,7 +156,7 @@ class _MenuDetailState extends State<MenuDetail> {
     var ref = FirebaseStorage.instance
         .ref()
         .child('menus')
-        .child(menuRecipeModel!.menuImage!);
+        .child(menuRecipeModel.menuImage!);
     var url = await ref.getDownloadURL();
     setState(() {
       urls.add(url);
@@ -161,7 +168,7 @@ class _MenuDetailState extends State<MenuDetail> {
       kitchenwareModels = [];
     });
     var objects = await ReKitchenwareHelper()
-        .readDataFromSQLiteWhereRecipe(menuRecipeModel!.id.toString());
+        .readDataFromSQLiteWhereRecipe(menuRecipeModel.id.toString());
     var kitchenwares = await KitchHelper().readlDataFromSQLite();
     for (var object in objects) {
       for (var kitchenware in kitchenwares) {
@@ -193,11 +200,11 @@ class _MenuDetailState extends State<MenuDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLike();
     getUserRecipe();
     getImageURL();
     getReKitchenware();
     getUserKitchenware();
-    getLike(menuRecipeModel!);
   }
 
   static const color = const Color(0xffffab91);
@@ -228,32 +235,32 @@ class _MenuDetailState extends State<MenuDetail> {
                     // });
 
                     await RecipeHelper()
-                        .deleteDataWhereId(menuRecipeModel!.id.toString())
+                        .deleteDataWhereId(menuRecipeModel.id.toString())
                         .then((value) {
                       print('Delete Success Recipe');
                     });
 
                     await ReKitchenwareHelper()
-                        .deleteDataWhereUser(menuRecipeModel!.id.toString())
+                        .deleteDataWhereUser(menuRecipeModel.id.toString())
                         .then((value) {
                       print('Delete Success ReKit');
                     });
 
                     await ReStepHelper()
-                        .deleteDataWhereRecipe(menuRecipeModel!.id.toString())
+                        .deleteDataWhereRecipe(menuRecipeModel.id.toString())
                         .then((value) {
                       print('Delete Success ReStep');
                     });
 
                     await ReIngredHelper()
-                        .deleteDataWhereUser(menuRecipeModel!.id.toString())
+                        .deleteDataWhereUser(menuRecipeModel.id.toString())
                         .then((value) {
                       print('Delete Success ReIngre');
                     });
 
                     await ReImageStepHelper()
                         .deleteDataWhereRecipeimage(
-                            menuRecipeModel!.id.toString())
+                            menuRecipeModel.id.toString())
                         .then((value) {
                       print('Delete Success ReImStep');
                     });
@@ -266,7 +273,7 @@ class _MenuDetailState extends State<MenuDetail> {
                           fontSize: 14, fontWeight: FontWeight.bold))),
             ],
             title: Text(
-              'Are you sure to delete ${menuRecipeModel!.recipeName!}?',
+              'Are you sure to delete ${menuRecipeModel.recipeName!}?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
@@ -280,14 +287,14 @@ class _MenuDetailState extends State<MenuDetail> {
       appBar: AppBar(
         title: Text(userModel!.username!),
         actions: [
-          menuRecipeModel!.recipeUid == _auth.currentUser!.uid
+          menuRecipeModel.recipeUid == _auth.currentUser!.uid
               ? PopupMenuButton(
                   onSelected: (result) {
                     if (result == 0) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditRecipe(menuRecipeModel!)),
+                            builder: (context) => EditRecipe(menuRecipeModel)),
                       );
                     }
                     if (result == 1) {
@@ -307,7 +314,7 @@ class _MenuDetailState extends State<MenuDetail> {
               : GestureDetector(
                   onTap: () {
                     LikeModel likeModel = LikeModel(
-                        recipeId: menuRecipeModel!.id,
+                        recipeId: menuRecipeModel.id,
                         uid: _auth.currentUser!.uid,
                         datetime: DateFormat('yyyy-MM-dd HH:mm:ss')
                             .format(DateTime.now()));
@@ -315,14 +322,14 @@ class _MenuDetailState extends State<MenuDetail> {
                       LikeHelper().insertDataToSQLite(likeModel);
                       setState(() {
                         isLiked = true;
-                        getLike(menuRecipeModel!);
+                        getLike();
                       });
                     } else {
                       LikeHelper().deleteDataWhere(_auth.currentUser!.uid,
-                          menuRecipeModel!.id.toString());
+                          menuRecipeModel.id.toString());
                       setState(() {
                         isLiked = false;
-                        getLike(menuRecipeModel!);
+                        getLike();
                       });
                     }
                   },
@@ -379,8 +386,8 @@ class _MenuDetailState extends State<MenuDetail> {
                               width: 5,
                             ),
                             Text(
-                                menuRecipeModel!.timeMinute != null
-                                    ? menuRecipeModel!.timeMinute.toString() +
+                                menuRecipeModel.timeMinute != null
+                                    ? menuRecipeModel.timeMinute.toString() +
                                         " min"
                                     : 'N/A',
                                 style: TextStyle(fontSize: 18)),
@@ -401,20 +408,20 @@ class _MenuDetailState extends State<MenuDetail> {
                               width: 20,
                             ),
                             Text(
-                              menuRecipeModel!.nameMenu!,
+                              menuRecipeModel.nameMenu!,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 24),
                             )
                           ],
                         ),
-                        menuRecipeModel!.recipeName != null
+                        menuRecipeModel.recipeName != null
                             ? Row(
                                 children: <Widget>[
                                   Container(
                                     width: 20,
                                   ),
                                   Text(
-                                    menuRecipeModel!.recipeName!,
+                                    menuRecipeModel.recipeName!,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
@@ -431,9 +438,10 @@ class _MenuDetailState extends State<MenuDetail> {
                               child: RichText(
                                 overflow: TextOverflow.visible,
                                 text: TextSpan(
-                                  text: menuRecipeModel!.description != null
-                                      ? menuRecipeModel!.description
-                                      : 'This recipe doesn\'t have any description',
+                                  text: menuRecipeModel.description == null ||
+                                          menuRecipeModel.description == ""
+                                      ? 'This recipe doesn\'t have any description'
+                                      : menuRecipeModel.description,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -470,7 +478,7 @@ class _MenuDetailState extends State<MenuDetail> {
                               onPressed: () {
                                 ViewModel viewModel = ViewModel(
                                     uid: _auth.currentUser!.uid,
-                                    recipeId: menuRecipeModel!.id!,
+                                    recipeId: menuRecipeModel.id!,
                                     isView: 1);
                                 ViewHelper().insertDataToSQLite(viewModel);
                                 showModalBottomSheet<void>(
@@ -481,7 +489,7 @@ class _MenuDetailState extends State<MenuDetail> {
                                     ),
                                     context: context,
                                     builder: (BuildContext conext) {
-                                      return DetailedRecipe(menuRecipeModel!);
+                                      return DetailedRecipe(menuRecipeModel);
                                     });
                               },
                               text: 'View Step',

@@ -258,10 +258,14 @@ class _UserInformationState extends State<UserInformation> {
               .readDataFromSQLiteWhereId(_auth.currentUser!.uid);
           var userModel = object.first;
           if (nameController.value.text != '') {
-            userModel.name = nameController.text.trim();
+            setState(() {
+              userModel.name = nameController.text.trim();
+            });
           }
           var rount = new MaterialPageRoute(
               builder: (BuildContext context) => new Mealpre());
+
+          UserHelper().updateDataToSQLite(userModel);
           uploadImageToFirebase()
               .then((value) => {Navigator.of(this.context).push(rount)});
         },
