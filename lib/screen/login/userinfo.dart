@@ -60,10 +60,6 @@ class _UserInformationState extends State<UserInformation> {
     var object =
         await UserHelper().readDataFromSQLiteWhereId(_auth.currentUser!.uid);
     var userModel = object.first;
-    if (nameController.value.text != '') {
-      userModel.name = nameController.text.trim();
-    }
-
     userModel.image = fileName;
     UserHelper().updateDataToSQLite(userModel);
     final metadata = firebase_storage.SettableMetadata(
@@ -257,12 +253,17 @@ class _UserInformationState extends State<UserInformation> {
       width: 320,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () {
+        onPressed: () async {
+          var object = await UserHelper()
+              .readDataFromSQLiteWhereId(_auth.currentUser!.uid);
+          var userModel = object.first;
+          if (nameController.value.text != '') {
+            userModel.name = nameController.text.trim();
+          }
           var rount = new MaterialPageRoute(
               builder: (BuildContext context) => new Mealpre());
-          Navigator.of(this.context).push(rount);
-
-          uploadImageToFirebase();
+          uploadImageToFirebase()
+              .then((value) => {Navigator.of(this.context).push(rount)});
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

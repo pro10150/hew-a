@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hewa/screen/add/Edit_recipe.dart';
 import 'package:hewa/screen/fridge/ingredients.dart';
 import 'package:hewa/screen/menu_detail/menu_detail.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -156,12 +157,15 @@ class _DetailedRecipeState extends State<DetailedRecipe>
         .readDataFromSQLiteWhereRecipeId(menuRecipeModel!.id.toString());
     for (var object in objects) {
       setState(() {
+        isHave.add(false);
+        isEnough.add(false);
         reIngredIngredModels.add(object);
         if (object.amount != null) {
           _ingr.add(object.amount!);
         } else {
           _ingr.add(0);
         }
+        checkIngredient(object);
       });
     }
   }
@@ -202,121 +206,118 @@ class _DetailedRecipeState extends State<DetailedRecipe>
   void add() {
     setState(() {
       _n++;
+      for (ReIngredIngredModel reIngredIngredModel in reIngredIngredModels) {
+        checkIngredient(reIngredIngredModel);
+      }
     });
   }
 
   void minus() {
     setState(() {
       if (_n != 1) _n--;
+      for (ReIngredIngredModel reIngredIngredModel in reIngredIngredModels) {
+        checkIngredient(reIngredIngredModel);
+      }
     });
   }
 
   bool compareUnit(ReIngredIngredModel reIngred, UserIngredModel userIngred) {
     bool isEnough = false;
-    if (reIngred.unit == "cup") {
-      if (userIngred.unit == "cup") {
-        if (reIngred.amount! * _n <= userIngred.amount!) {
-          setState(() {
+    setState(() {
+      if (reIngred.unit == "cup") {
+        if (userIngred.unit == "cup") {
+          if (reIngred.amount! * _n <= userIngred.amount!) {
             isEnough = true;
-          });
-        }
-      } else if (userIngred.unit == "tbsp") {
-        var reAmount = reIngred.amount! * 16;
-        if (reAmount * _n <= userIngred.amount!) {
-          setState(() {
+          }
+        } else if (userIngred.unit == "tbsp") {
+          var reAmount = reIngred.amount! * 16;
+          if (reAmount * _n <= userIngred.amount!) {
             isEnough = true;
-          });
-        } else {
-          setState(() {
+          } else {
             isEnough = false;
-          });
+          }
         }
-      }
-    } else if (reIngred.unit == "tbsp") {
-      if (userIngred.unit == "cup") {
-        var reAmount = reIngred.amount! * 0.0625;
-        if (reAmount * _n <= userIngred.amount!) {
-          setState(() {
+      } else if (reIngred.unit == "tbsp") {
+        if (userIngred.unit == "cup") {
+          var reAmount = reIngred.amount! * 0.0625;
+          if (reAmount * _n <= userIngred.amount!) {
             isEnough = true;
-          });
+          }
         }
-      }
-    } else if (reIngred.unit == "g") {
-      if (userIngred.unit == "kg") {
-        var reAmount = reIngred.amount! * 100;
-        if (reAmount * _n <= userIngred.amount!) {
-          setState(() {
+      } else if (reIngred.unit == "g") {
+        if (userIngred.unit == "kg") {
+          var reAmount = reIngred.amount! * 100;
+          if (reAmount * _n <= userIngred.amount!) {
             isEnough = true;
-          });
+          }
         }
-      }
-    } else if (reIngred.unit == "kg") {
-      if (userIngred.unit == "g") {
-        var reAmount = reIngred.amount! * 0.001;
-        if (reAmount * _n <= userIngred.amount!) {
-          setState(() {
+      } else if (reIngred.unit == "kg") {
+        if (userIngred.unit == "g") {
+          var reAmount = reIngred.amount! * 0.001;
+          if (reAmount * _n <= userIngred.amount!) {
             isEnough = true;
-          });
+          }
         }
       }
-    }
-    if (userIngred.unit == reIngred.unit) {
-      if (reIngred.amount! * _n <= userIngred.amount!) {
-        setState(() {
+      if (userIngred.unit == reIngred.unit) {
+        if (reIngred.amount! * _n <= userIngred.amount!) {
           isEnough = true;
-        });
-      } else if (reIngred.amount! * _n > userIngred.amount!) {
-        setState(() {
+        } else if (reIngred.amount! * _n > userIngred.amount!) {
           isEnough = false;
-        });
+        }
       }
-    }
+    });
     return isEnough;
   }
 
-  Widget _getIngredients(
-      ReIngredIngredModel reIngredIngredModel, double amount) {
-    bool isHave = false;
-    bool isEnough = false;
-    bool isDiffType = false;
-    print(reIngredIngredModel.name);
+  List<bool> isHave = [];
+  List<bool> isEnough = [];
+  checkIngredient(ReIngredIngredModel reIngredIngredModel) {
+    var i = reIngredIngredModels
+        .indexWhere((element) => element.id == reIngredIngredModel.id);
     if (userModel!.ingredients == 1) {
       for (var userIngredModel in userIngredModels) {
         if (userIngredModel.amount == 0.0 &&
             (userIngredModel.unit != null && userIngredModel.unit != "")) {
           setState(() {
-            isHave = true;
-            isEnough = true;
-            isDiffType = true;
+            isHave[i] = true;
+            isEnough[i] = true;
           });
+
           break;
         } else {
           if (reIngredIngredModel.id == userIngredModel.ingredientId) {
             setState(() {
-              isHave = true;
+              isHave[i] = true;
             });
+
             if (reIngredIngredModel.amount != null ||
-                userIngredModel.amount == 0.0) {
+                userIngredModel.amount != 0.0) {
               if (reIngredIngredModel.amount != null &&
-                  userIngredModel.amount == 0.0) {
+                  userIngredModel.amount != 0.0) {
                 if (reIngredIngredModel.unit != null &&
                     (userIngredModel.unit != null &&
                         userIngredModel.unit != "")) {
-                  isEnough = compareUnit(reIngredIngredModel, userIngredModel);
+                  setState(() {
+                    isEnough[i] =
+                        compareUnit(reIngredIngredModel, userIngredModel);
+                  });
                 } else if (reIngredIngredModel.amount! * _n <=
                     userIngredModel.amount!) {
                   setState(() {
-                    isEnough = true;
+                    isEnough[i] = true;
                   });
+                } else {
+                  isEnough[i] = false;
                 }
               } else {
                 setState(() {
-                  isEnough = true;
+                  isEnough[i] = true;
                 });
               }
             } else {
               setState(() {
-                isEnough = true;
+                isEnough[i] = true;
               });
             }
           }
@@ -324,12 +325,16 @@ class _DetailedRecipeState extends State<DetailedRecipe>
       }
     } else {
       setState(() {
-        isHave = true;
-        isEnough = true;
-        isDiffType = true;
+        isHave[i] = true;
+        isEnough[i] = true;
       });
     }
+  }
 
+  Widget _getIngredients(
+      ReIngredIngredModel reIngredIngredModel, double amount) {
+    var index = reIngredIngredModels
+        .indexWhere((element) => element.id == reIngredIngredModel.id);
     return Container(
       width: 100,
       margin: EdgeInsets.all(10),
@@ -362,7 +367,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                   style: TextStyle(fontSize: 10),
                 )
               : Container(),
-          isHave == false
+          isHave[index] == false
               ? Text(
                   'คุณไม่มี',
                   style: TextStyle(
@@ -371,7 +376,7 @@ class _DetailedRecipeState extends State<DetailedRecipe>
                           : Colors.orange[400],
                       fontSize: 10),
                 )
-              : isEnough == false
+              : isEnough[index] == false
                   ? Text(
                       'คุณมีไม่พอ',
                       style: TextStyle(

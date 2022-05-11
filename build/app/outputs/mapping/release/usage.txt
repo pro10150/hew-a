@@ -14817,9 +14817,9 @@ androidx.viewpager.widget.ViewPager$ViewPositionComparator
 com.google.android.gms.base.R
 com.google.android.gms.safetynet.SafetyNetApi$zzc
 androidx.customview.widget.ExploreByTouchHelper
-io.flutter.embedding.engine.systemchannels.PlatformChannel:
-    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
+    private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.PlatformChannel:
     private static final java.lang.String TAG
 kotlinx.coroutines.flow.FlowKt__ReduceKt$single$$inlined$collect$1
 com.google.common.collect.Multisets$FilteredMultiset$1
@@ -22163,8 +22163,8 @@ androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
 com.google.android.gms.measurement.internal.zzec:
     private java.lang.String zze
-io.flutter.plugin.platform.PlatformView$-CC
 io.flutter.plugin.common.BinaryMessenger$-CC:
     public static io.flutter.plugin.common.BinaryMessenger$TaskQueue $default$makeBackgroundTaskQueue(io.flutter.plugin.common.BinaryMessenger,io.flutter.plugin.common.BinaryMessenger$TaskQueueOptions)
     public static void $default$setMessageHandler(io.flutter.plugin.common.BinaryMessenger,java.lang.String,io.flutter.plugin.common.BinaryMessenger$BinaryMessageHandler,io.flutter.plugin.common.BinaryMessenger$TaskQueue)
+io.flutter.plugin.platform.PlatformView$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC
