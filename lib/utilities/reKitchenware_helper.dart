@@ -37,10 +37,9 @@ class ReKitchenwareHelper {
     }
   }
 
-  Future<int> insert(ReKitchenwareModel reKitchenwareModel) async {
+  insert(ReKitchenwareModel reKitchenwareModel) async {
     // Database database = await connectedDatabase();
-    var results = HewaAPI().insert(tableDatabase, reKitchenwareModel.toJson());
-    return results;
+    HewaAPI().insert(tableDatabase, reKitchenwareModel.toJson());
   }
 
   Future<Null> initInsertDataToSQLite() async {

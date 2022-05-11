@@ -3,6 +3,6 @@
 3    package="in.lazymanstudios.uri_to_file" >
 4
 5    <uses-sdk android:minSdkVersion="16" />
-5-->C:\src\flutter\.pub-cache\hosted\pub.dartlang.org\uri_to_file-0.2.0\android\src\main\AndroidManifest.xml
+5-->/Users/skooter/Downloads/flutter/.pub-cache/hosted/pub.dartlang.org/uri_to_file-0.2.0/android/src/main/AndroidManifest.xml
 6
 7</manifest>

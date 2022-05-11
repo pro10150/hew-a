@@ -5945,7 +5945,6 @@ androidx.core.text.TextDirectionHeuristicCompat
 androidx.customview.widget.ExploreByTouchHelper$1
 com.google.common.hash.LittleEndianByteArray$UnsafeByteArray
 okhttp3.internal.ws.RealWebSocket
-androidx.core.graphics.drawable.IconCompat$IconType
 androidx.core.app.SharedElementCallback:
     public void <init>()
     private static android.graphics.Bitmap createDrawableBitmap(android.graphics.drawable.Drawable)
@@ -5958,6 +5957,7 @@ androidx.core.app.SharedElementCallback:
     private static final java.lang.String BUNDLE_SNAPSHOT_BITMAP
     private static final java.lang.String BUNDLE_SNAPSHOT_IMAGE_SCALETYPE
     private static final java.lang.String BUNDLE_SNAPSHOT_IMAGE_MATRIX
+androidx.core.graphics.drawable.IconCompat$IconType
 kotlinx.coroutines.sync.SemaphoreImpl$onCancellationRelease$1
 dev.fluttercommunity.plus.network_info.R$attr
 android.support.v4.os.IResultReceiver
@@ -8277,9 +8277,9 @@ com.google.j2objc.annotations.AutoreleasePool
 com.google.firebase.installations.AutoValue_InstallationTokenResult$Builder
 kotlin.text.MatcherMatchResult$groups$1
 com.google.common.collect.AbstractMapBasedMultimap$KeySet$1
-androidx.asynclayoutinflater.view.AsyncLayoutInflater$InflateRequest
 com.google.android.gms.common.util.UidVerifier:
     private void <init>()
+androidx.asynclayoutinflater.view.AsyncLayoutInflater$InflateRequest
 com.google.common.reflect.Types$JavaVersion
 kotlin.collections.jdk8.CollectionsJDK8Kt
 com.example.se.R$mipmap
@@ -9523,13 +9523,13 @@ androidx.core.widget.AutoSizeableTextView:
 com.google.firebase.heartbeatinfo.HeartBeatInfo:
     public abstract com.google.android.gms.tasks.Task storeHeartBeatInfo(java.lang.String)
     public abstract com.google.android.gms.tasks.Task getAndClearStoredHeartBeatInfo()
-androidx.browser.browseractions.BrowserActionsIntent
 androidx.appcompat.widget.Toolbar$ExpandedActionViewMenuPresenter:
     public androidx.appcompat.view.menu.MenuView getMenuView(android.view.ViewGroup)
     public void setCallback(androidx.appcompat.view.menu.MenuPresenter$Callback)
     public int getId()
     public android.os.Parcelable onSaveInstanceState()
     public void onRestoreInstanceState(android.os.Parcelable)
+androidx.browser.browseractions.BrowserActionsIntent
 com.google.common.collect.ImmutableRangeMap
 kotlinx.coroutines.channels.AbstractChannel$onReceiveCatching$1
 com.google.android.gms.internal.firebase-auth-api.zzgo:
@@ -10916,8 +10916,8 @@ kotlin.annotation.MustBeDocumented
 kotlin.reflect.KFunction$DefaultImpls
 kotlinx.coroutines.flow.internal.NopCollector
 com.google.common.collect.CompoundOrdering
-com.google.j2objc.annotations.Weak
 kotlin.ranges.ULongRange
+com.google.j2objc.annotations.Weak
 com.google.android.gms.internal.common.zzc:
     public static void zzd(android.os.Parcel,android.os.Parcelable)
 io.flutter.plugin.common.BinaryCodec
@@ -13369,8 +13369,8 @@ com.google.android.gms.common.api.internal.zack:
     private final com.google.android.gms.common.api.internal.zacm zakw
     private boolean zakx
 com.google.common.graph.ConfigurableMutableGraph
-com.google.common.collect.SortedMultiset
 com.google.common.collect.CartesianList
+com.google.common.collect.SortedMultiset
 com.google.firebase.auth.OAuthCredential:
     public abstract java.lang.String getAccessToken()
     public abstract java.lang.String getIdToken()
@@ -14817,9 +14817,9 @@ androidx.viewpager.widget.ViewPager$ViewPositionComparator
 com.google.android.gms.base.R
 com.google.android.gms.safetynet.SafetyNetApi$zzc
 androidx.customview.widget.ExploreByTouchHelper
-io.flutter.embedding.engine.systemchannels.PlatformChannel:
-    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
+    private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.PlatformChannel:
     private static final java.lang.String TAG
 kotlinx.coroutines.flow.FlowKt__ReduceKt$single$$inlined$collect$1
 com.google.common.collect.Multisets$FilteredMultiset$1
@@ -15527,8 +15527,8 @@ com.google.common.collect.ImmutableTable
 kotlinx.coroutines.debug.internal.ConcurrentWeakMap$entries$1
 okhttp3.internal.cache2.Relay
 com.google.android.gms.internal.measurement.zzcu
-com.google.firebase.R$drawable
 io.flutter.plugins.firebase.core.R$id
+com.google.firebase.R$drawable
 okhttp3.internal.http2.Http2Connection:
     public okhttp3.Protocol getProtocol()
     public synchronized int openStreamCount()
@@ -19493,7 +19493,6 @@ com.google.android.gms.common.server.converter.zad
 androidx.core.app.FrameMetricsAggregator$FrameMetricsApi24Impl
 kotlinx.coroutines.BuildersKt__BuildersKt
 com.google.j2objc.annotations.RetainedWith
-com.google.common.collect.DenseImmutableTable$ColumnMap
 androidx.core.util.Preconditions:
     public static void checkArgument(boolean)
     public static void checkArgument(boolean,java.lang.Object)
@@ -19504,6 +19503,7 @@ androidx.core.util.Preconditions:
     public static void checkState(boolean)
     public static int checkArgumentNonnegative(int,java.lang.String)
     private void <init>()
+com.google.common.collect.DenseImmutableTable$ColumnMap
 kotlinx.coroutines.DispatchedCoroutine:
     public void <init>(kotlin.coroutines.CoroutineContext,kotlin.coroutines.Continuation)
     private final boolean trySuspend()
@@ -22163,8 +22163,8 @@ androidx.appcompat.view.StandaloneActionMode:
     private boolean mFocusable
 com.google.android.gms.measurement.internal.zzec:
     private java.lang.String zze
-io.flutter.plugin.platform.PlatformView$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC
+io.flutter.plugin.platform.PlatformView$-CC
 io.flutter.plugin.common.BinaryMessenger$-CC:
     public static io.flutter.plugin.common.BinaryMessenger$TaskQueue $default$makeBackgroundTaskQueue(io.flutter.plugin.common.BinaryMessenger,io.flutter.plugin.common.BinaryMessenger$TaskQueueOptions)
     public static void $default$setMessageHandler(io.flutter.plugin.common.BinaryMessenger,java.lang.String,io.flutter.plugin.common.BinaryMessenger$BinaryMessageHandler,io.flutter.plugin.common.BinaryMessenger$TaskQueue)

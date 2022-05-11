@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\firebase_core\\intermediates\\res\\merged\\release\\values-ka\\values-ka.xml",
+            "outputFile": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_core/intermediates/res/merged/release/values-ka/values-ka.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-ka\\values-ka.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "307",
-                        "endColumns": "100",
-                        "endOffsets": "403"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\e3c0216fa8fed62f9ff7007f459d905c\\jetified-play-services-basement-17.0.0\\res\\values-ka\\values.xml",
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/e3c0216fa8fed62f9ff7007f459d905c/jetified-play-services-basement-17.0.0/res/values-ka/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -35,32 +18,32 @@
                         "startOffsets": "105",
                         "endColumns": "201",
                         "endOffsets": "302"
+                    }
+                },
+                {
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/values-ka/values-ka.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "307",
+                        "endColumns": "100",
+                        "endOffsets": "403"
                     }
                 }
             ]
         },
         {
-            "outputFile": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\firebase_core\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ka\\values-ka.xml",
+            "outputFile": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/firebase_core/intermediates/incremental/mergeReleaseResources/merged.dir/values-ka/values-ka.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\6f6da31ded36fd59bf0fb59f8c9437af\\core-1.6.0\\res\\values-ka\\values-ka.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "307",
-                        "endColumns": "100",
-                        "endOffsets": "403"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\e3c0216fa8fed62f9ff7007f459d905c\\jetified-play-services-basement-17.0.0\\res\\values-ka\\values.xml",
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/e3c0216fa8fed62f9ff7007f459d905c/jetified-play-services-basement-17.0.0/res/values-ka/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -74,6 +57,23 @@
                         "startOffsets": "105",
                         "endColumns": "201",
                         "endOffsets": "302"
+                    }
+                },
+                {
+                    "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/6f6da31ded36fd59bf0fb59f8c9437af/core-1.6.0/res/values-ka/values-ka.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "307",
+                        "endColumns": "100",
+                        "endOffsets": "403"
                     }
                 }
             ]

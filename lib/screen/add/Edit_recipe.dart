@@ -330,14 +330,7 @@ class _EditRecipeState extends State<EditRecipe> {
               .where((element) => element.nameKitc == _selectedKitchenware[i])
               .first
               .id);
-      int resultkitc;
-      resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
-
-      if (resultkitc != 0) {
-        print('Success Kitchenware');
-      } else {
-        print('Failed');
-      }
+      await ReKitchenwareHelper().insert(reKitchenwareModel);
     }
   }
 
@@ -352,15 +345,7 @@ class _EditRecipeState extends State<EditRecipe> {
           amount: rei.amount,
           unit: rei.unit == '-' ? '' : rei.unit,
           isPrimary: rei.isPrimary);
-
-      int resultIngred;
-      resultIngred = await ReIngredHelper().insert(reIngred);
-
-      if (resultIngred != 0) {
-        print('Success Ingredient');
-      } else {
-        print('Failed');
-      }
+      ReIngredHelper().insert(reIngred);
     }
   }
 
@@ -996,9 +981,10 @@ class _EditRecipeState extends State<EditRecipe> {
 
   addReStep() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-    print(object.first.id);
+    // print(object.first.id);
 
     for (int i = 0; i < _count; i++) {
+      print(i);
       String descStep = _descStepControllers[i].value.text;
       int? timeStep = int.tryParse(_timeStepControllers[i].value.text);
 
@@ -1007,20 +993,11 @@ class _EditRecipeState extends State<EditRecipe> {
           step: i + 1,
           description: descStep,
           minute: timeStep);
+      ReStepHelper().insert(reStepModel);
 
-      int result;
-      result = await ReStepHelper().insert(reStepModel);
-
-      if (result != 0) {
-        setState(() {
-          steps.add(reStepModel);
-        });
-        print(descStep);
-        print(timeStep);
-        print('Success Step');
-      } else {
-        print('Failed');
-      }
+      setState(() {
+        steps.add(reStepModel);
+      });
     }
     uploadImageToFirebase(context);
   }

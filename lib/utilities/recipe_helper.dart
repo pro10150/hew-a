@@ -56,17 +56,15 @@ class RecipeHelper {
   //   }
   // }
 
-  Future<int> insert(RecipeModel recipeModel) async {
+  insert(RecipeModel recipeModel) async {
     //Database database = await connectedDatabase();
-    var results = HewaAPI().insert(tableDatabase, recipeModel.toJson());
-    return results;
+    HewaAPI().insert(tableDatabase, recipeModel.toJson());
   }
 
-  Future<int> update(RecipeModel recipeModel) async {
+  update(RecipeModel recipeModel) async {
     // Database database = await connectedDatabase();
-    var results = HewaAPI().update(tableDatabase, recipeModel.toJson(),
+    HewaAPI().update(tableDatabase, recipeModel.toJson(),
         where: '${idColumn} = ?', whereArgs: [recipeModel.id]);
-    return results;
   }
 
   Future<Null> initInsertDataToSqlite() async {
@@ -483,7 +481,9 @@ class RecipeHelper {
       RecipeModel recipeModel) async {
     //Database database = await connectedDatabase();
     List<RecipeModel> recipeModels = [];
-
+    print(recipeModel.menuId);
+    print(recipeModel.recipeName);
+    print(recipeModel.recipeUid);
     List<dynamic> maps = await HewaAPI().query(tableDatabase,
         where:
             '$menuIdColumn = ? and $recipeNameColumn = ? and $recipeUidColumn = ?',
@@ -492,6 +492,7 @@ class RecipeHelper {
           recipeModel.recipeName,
           recipeModel.recipeUid
         ]);
+    print(maps.length);
     for (var map in maps) {
       RecipeModel recipeModel = RecipeModel.fromJson(map);
       recipeModels.add(recipeModel);

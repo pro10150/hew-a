@@ -1,110 +1,110 @@
 [
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_shrink_fade_out_from_bottom.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_unchecked_box_inner_merged_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_unchecked_box_inner_merged_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_off_mtrl_ring_outer_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_off_mtrl_ring_outer_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_popup_enter.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_on_mtrl_ring_outer_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_on_mtrl_ring_outer_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_unchecked_icon_null_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_unchecked_icon_null_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_on_mtrl_ring_outer_path_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_on_mtrl_ring_outer_path_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_unchecked_check_path_merged_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_unchecked_check_path_merged_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_tooltip_enter.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_tooltip_enter.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_fade_out.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_on_mtrl_dot_group_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_on_mtrl_dot_group_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_slide_out_top.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_fade_in.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_fade_in.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/ucrop_loader_circle_scale.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/59ea20cdbb2f9915da8dba181b452248/jetified-ucrop-2.2.8/res/anim/ucrop_loader_circle_scale.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_off_mtrl_ring_outer_path_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_off_mtrl_ring_outer_path_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_slide_in_top.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_unchecked_box_inner_merged_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_unchecked_box_inner_merged_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_off_mtrl_dot_group_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_off_mtrl_dot_group_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_tooltip_exit.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_tooltip_exit.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_checked_box_inner_merged_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_checked_box_inner_merged_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_slide_in_top.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_slide_in_top.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_on_mtrl_ring_outer_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_on_mtrl_ring_outer_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_checked_box_outer_merged_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_checked_box_outer_merged_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_grow_fade_in_from_bottom.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_slide_in_bottom.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_slide_in_bottom.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_slide_in_bottom.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_unchecked_check_path_merged_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_unchecked_check_path_merged_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_checked_icon_null_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_checked_icon_null_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_radio_to_off_mtrl_dot_group_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_radio_to_off_mtrl_dot_group_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_tooltip_enter.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_tooltip_enter.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\ucrop_loader_circle_path.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\59ea20cdbb2f9915da8dba181b452248\\jetified-ucrop-2.2.8\\res\\anim\\ucrop_loader_circle_path.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_on_mtrl_dot_group_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_on_mtrl_dot_group_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_popup_exit.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_popup_exit.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_fade_in.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_slide_out_bottom.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_slide_out_bottom.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_slide_out_bottom.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_checked_icon_null_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_checked_icon_null_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/fragment_fast_out_extra_slow_in.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/9a4a5f4e1800457aeed70d13586b3c47/fragment-1.3.4/res/anim/fragment_fast_out_extra_slow_in.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_grow_fade_in_from_bottom.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_tooltip_exit.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_tooltip_exit.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\fragment_fast_out_extra_slow_in.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\9a4a5f4e1800457aeed70d13586b3c47\\fragment-1.3.4\\res\\anim\\fragment_fast_out_extra_slow_in.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_popup_exit.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_checked_box_inner_merged_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_checked_box_inner_merged_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_off_mtrl_ring_outer_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_off_mtrl_ring_outer_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_fade_out.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_fade_out.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_on_mtrl_ring_outer_path_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_on_mtrl_ring_outer_path_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_popup_enter.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_popup_enter.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_checkbox_to_checked_box_outer_merged_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_checkbox_to_checked_box_outer_merged_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\ucrop_loader_circle_scale.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\59ea20cdbb2f9915da8dba181b452248\\jetified-ucrop-2.2.8\\res\\anim\\ucrop_loader_circle_scale.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/btn_radio_to_off_mtrl_ring_outer_path_animation.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/btn_radio_to_off_mtrl_ring_outer_path_animation.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\btn_checkbox_to_unchecked_icon_null_animation.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\btn_checkbox_to_unchecked_icon_null_animation.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/ucrop_loader_circle_path.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/59ea20cdbb2f9915da8dba181b452248/jetified-ucrop-2.2.8/res/anim/ucrop_loader_circle_path.xml"
     },
     {
-        "merged": "C:\\Users\\pk117\\Documents\\GitHub\\hew-a\\build\\image_cropper\\intermediates\\res\\merged\\release\\anim\\abc_slide_out_top.xml",
-        "source": "C:\\Users\\pk117\\.gradle\\caches\\transforms-2\\files-2.1\\ead07320493a78d3605de9eb9f0a561a\\appcompat-1.3.0\\res\\anim\\abc_slide_out_top.xml"
+        "merged": "/Users/skooter/Desktop/Class/ปี3/se/hew-a/build/image_cropper/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/Users/skooter/.gradle/caches/transforms-2/files-2.1/ead07320493a78d3605de9eb9f0a561a/appcompat-1.3.0/res/anim/abc_shrink_fade_out_from_bottom.xml"
     }
 ]

@@ -40,10 +40,9 @@ class ReIngredHelper {
     }
   }
 
-  Future<int> insert(ReIngredModel reIngredModel) async {
+  insert(ReIngredModel reIngredModel) async {
     // Database database = await connectedDatabase();
-    var results = HewaAPI().insert(tableDatabase, reIngredModel.toJson());
-    return results;
+    HewaAPI().insert(tableDatabase, reIngredModel.toJson());
   }
 
   Future<Null> initInsertDataToSQLite() async {

@@ -150,20 +150,14 @@ class _RecipeStep1State extends State<RecipeStep1> {
               .where((element) => element.nameKitc == _selectedKitchenware[i])
               .first
               .id);
-      int resultkitc;
-      resultkitc = await ReKitchenwareHelper().insert(reKitchenwareModel);
-
-      if (resultkitc != 0) {
-        print('Success Kitchenware');
-      } else {
-        print('Failed');
-      }
+      await ReKitchenwareHelper().insert(reKitchenwareModel);
     }
   }
 
   createIngre() async {
+    print(recipeModel!.id);
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-    print(object.first.id);
+    // print(object.first.id);
 
     for (var rei in reingredModel) {
       ReIngredModel reIngred = ReIngredModel(
@@ -172,15 +166,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
           amount: rei.amount,
           unit: rei.unit == '-' ? '' : rei.unit,
           isPrimary: rei.isPrimary);
-
-      int resultIngred;
-      resultIngred = await ReIngredHelper().insert(reIngred);
-
-      if (resultIngred != 0) {
-        print('Success Ingredient');
-      } else {
-        print('Failed');
-      }
+      await ReIngredHelper().insert(reIngred);
     }
   }
 
@@ -785,7 +771,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
 
   addReStep() async {
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-    print(object.first.id);
+    // print(object.first.id);
 
     for (int i = 0; i < _count; i++) {
       String descStep = _descStepControllers[i].value.text;

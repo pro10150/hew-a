@@ -130,6 +130,7 @@ class _FollowingState extends State<Following> {
             ),
             Container(
               child: GridView.builder(
+                physics: ScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 300.0,

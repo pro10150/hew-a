@@ -40,10 +40,9 @@ class ReStepHelper {
     }
   }
 
-  Future<int> insert(ReStepModel reStepModel) async {
+  insert(ReStepModel reStepModel) async {
     //Database database = await connectedDatabase();
-    var results = HewaAPI().insert(tableDatabase, reStepModel.toJson());
-    return results;
+    HewaAPI().insert(tableDatabase, reStepModel.toJson());
   }
 
   Future<Null> initInsertDataToSQLite() async {
