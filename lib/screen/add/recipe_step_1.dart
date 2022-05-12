@@ -132,7 +132,8 @@ class _RecipeStep1State extends State<RecipeStep1> {
         protein: proteinmenu,
         carb: carbomenu,
         fat: fatmenu);
-    RecipeHelper().insert(recipeModel!);
+    print(recipeModel!.recipeName);
+    await RecipeHelper().insert(recipeModel!);
     // Navigator.push(
     //     context, MaterialPageRoute(builder: (context) => RecipeStep1()));
   }
@@ -141,7 +142,7 @@ class _RecipeStep1State extends State<RecipeStep1> {
     print(kitchenwareModel.length);
 
     var object = await RecipeHelper().readDataFromSQLiteRecipe(recipeModel!);
-    print(object.first.id);
+    // print(object.first.id);
 
     for (var i = 0; i < _selectedKitchenware.length; i++) {
       ReKitchenwareModel reKitchenwareModel = ReKitchenwareModel(

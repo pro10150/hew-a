@@ -642,10 +642,10 @@ library {
   maven_library {
     groupId: "io.flutter"
     artifactId: "flutter_embedding_release"
-    version: "1.0.0-79e076dc92808483a1ea8c253466ce01517af886"
+    version: "1.0.0-57d3bac3dd5cb5b0e464ab70e7bc8a0d8cf083ab"
   }
   digests {
-    sha256: "\t\360M\366x\3357\353#c-I\255\336F\t\001Nn\344\366\v\315\247\346\267\323\\\016\276\347w"
+    sha256: "\261\372\030\361\224\302\306\347\'\213\367\273\354\300\206}\243\a\r \034B4\'\347\264;F\v\0247\353"
   }
 }
 library {
@@ -919,35 +919,25 @@ library {
   maven_library {
     groupId: "io.flutter"
     artifactId: "armeabi_v7a_release"
-    version: "1.0.0-79e076dc92808483a1ea8c253466ce01517af886"
+    version: "1.0.0-57d3bac3dd5cb5b0e464ab70e7bc8a0d8cf083ab"
   }
   digests {
-    sha256: "\275\246gj{\376y\001\022\375\257\334!W\031\233\2367\314\247L\223Q\n\215M#2\a\371\023?"
+    sha256: "\337{*l\376\2430r\345}Z\036\242iO\215\270\2044\246X,D\371R\352\331\313\330MdV"
   }
 }
 library {
   maven_library {
     groupId: "io.flutter"
     artifactId: "arm64_v8a_release"
-    version: "1.0.0-79e076dc92808483a1ea8c253466ce01517af886"
+    version: "1.0.0-57d3bac3dd5cb5b0e464ab70e7bc8a0d8cf083ab"
   }
   digests {
-    sha256: "\004I\250\363\001\247\211\342\025T\004\243\214\024\3239\277\362\210\036\034s\262;\247\212\215\241j\345)^"
-  }
-}
-library {
-  maven_library {
-    groupId: "io.flutter"
-    artifactId: "x86_64_release"
-    version: "1.0.0-79e076dc92808483a1ea8c253466ce01517af886"
-  }
-  digests {
-    sha256: "3\222\033\366\251\274\343\347\366\tt\246^8\250L7\244\361\036\033\201\241S^\212\251A(\335\217e"
+    sha256: "\306\340\341[\027\276\300KyR\324*^\260|\323\002\316\353\177\232<.\204^\361U,\3139\336#"
   }
 }
 library {
   digests {
-    sha256: "<\\8N\321\bD\317\205~\367\340_\210\3528\212\224@h\303\031,i\217\276\0069\350\v\255;"
+    sha256: "\333\353u\236>W\270\362\243\303\321;r\275\346P\235Z\315\204\341\0039\005\217 -$\321_\343$"
   }
 }
 library_dependencies {
@@ -1457,7 +1447,7 @@ library_dependencies {
   library_dep_index: 20
 }
 library_dependencies {
-  library_index: 95
+  library_index: 94
 }
 module_dependencies {
   module_name: "base"
@@ -1468,5 +1458,4 @@ module_dependencies {
   dependency_index: 92
   dependency_index: 93
   dependency_index: 94
-  dependency_index: 95
 }

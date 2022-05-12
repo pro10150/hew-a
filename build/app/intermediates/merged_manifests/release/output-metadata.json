@@ -12,18 +12,6 @@
       "filters": [
         {
           "filterType": "ABI",
-          "value": "x86_64"
-        }
-      ],
-      "versionCode": 4001,
-      "versionName": "1.0.0",
-      "outputFile": "x86_64/AndroidManifest.xml"
-    },
-    {
-      "type": "ONE_OF_MANY",
-      "filters": [
-        {
-          "filterType": "ABI",
           "value": "armeabi-v7a"
         }
       ],

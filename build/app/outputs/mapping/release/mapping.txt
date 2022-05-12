@@ -1,11 +1,11 @@
 # compiler: R8
 # compiler_version: 2.1.62
 # min_api: 19
-# pg_map_id: 7b69d8f
+# pg_map_id: c70d645
 # common_typos_disable
 $$ServiceLoaderMethods -> a:
-    java.util.Iterator $load$19545() -> a
-    java.util.Iterator $load$20344() -> b
+    java.util.Iterator $load$19548() -> a
+    java.util.Iterator $load$20347() -> b
 $r8$backportedMethods$utility$Boolean$1$hashCode -> b:
     int hashCode(boolean) -> a
 $r8$backportedMethods$utility$Long$1$hashCode -> c:
@@ -23677,10 +23677,11 @@ io.flutter.embedding.android.FlutterSplashView$SavedState$1 -> io.flutter.embedd
 io.flutter.embedding.android.FlutterSurfaceView -> io.flutter.embedding.android.i:
     boolean renderTransparently -> n
     boolean isSurfaceAvailableForRendering -> o
-    boolean isAttachedToFlutterRenderer -> p
-    android.view.SurfaceHolder$Callback surfaceCallback -> r
-    io.flutter.embedding.engine.renderer.FlutterRenderer flutterRenderer -> q
-    io.flutter.embedding.engine.renderer.FlutterUiDisplayListener flutterUiDisplayListener -> s
+    boolean isPaused -> p
+    io.flutter.embedding.engine.renderer.FlutterRenderer flutterRenderer -> r
+    io.flutter.embedding.engine.renderer.FlutterUiDisplayListener flutterUiDisplayListener -> t
+    android.view.SurfaceHolder$Callback surfaceCallback -> s
+    boolean isAttachedToFlutterRenderer -> q
     void attachToRenderer(io.flutter.embedding.engine.renderer.FlutterRenderer) -> a
     void pause() -> b
     void detachFromRenderer() -> c
@@ -23701,11 +23702,12 @@ io.flutter.embedding.android.FlutterSurfaceView$2 -> io.flutter.embedding.androi
     void onFlutterUiNoLongerDisplayed() -> c
     void onFlutterUiDisplayed() -> f
 io.flutter.embedding.android.FlutterTextureView -> io.flutter.embedding.android.j:
+    android.view.TextureView$SurfaceTextureListener surfaceTextureListener -> s
     boolean isSurfaceAvailableForRendering -> n
     boolean isAttachedToFlutterRenderer -> o
-    android.view.TextureView$SurfaceTextureListener surfaceTextureListener -> r
-    android.view.Surface renderSurface -> q
-    io.flutter.embedding.engine.renderer.FlutterRenderer flutterRenderer -> p
+    boolean isPaused -> p
+    io.flutter.embedding.engine.renderer.FlutterRenderer flutterRenderer -> q
+    android.view.Surface renderSurface -> r
     void attachToRenderer(io.flutter.embedding.engine.renderer.FlutterRenderer) -> a
     void pause() -> b
     void detachFromRenderer() -> c
@@ -24274,7 +24276,7 @@ io.flutter.embedding.engine.renderer.FlutterRenderer -> io.flutter.embedding.eng
     void removeIsDisplayingFlutterUiListener(io.flutter.embedding.engine.renderer.FlutterUiDisplayListener) -> n
     void setSemanticsEnabled(boolean) -> o
     void setViewportMetrics(io.flutter.embedding.engine.renderer.FlutterRenderer$ViewportMetrics) -> p
-    void startRenderingToSurface(android.view.Surface) -> q
+    void startRenderingToSurface(android.view.Surface,boolean) -> q
     void stopRenderingToSurface() -> r
     void surfaceChanged(int,int) -> s
     void swapSurface(android.view.Surface) -> t
@@ -25085,19 +25087,23 @@ io.flutter.plugin.mouse.MouseCursorPlugin$1 -> h.a.c.c.a$a:
 io.flutter.plugin.mouse.MouseCursorPlugin$2 -> h.a.c.c.a$b:
 io.flutter.plugin.mouse.MouseCursorPlugin$MouseCursorViewDelegate -> h.a.c.c.a$c:
     android.view.PointerIcon getSystemPointerIcon(int) -> a
-io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$1$e5c3C2OqVHT99mmO_tfarimG9XI -> io.flutter.plugin.platform.a:
+io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$1$0Ep74mYgN1IcdrQsAdRJ2KpZinQ -> io.flutter.plugin.platform.a:
+    io.flutter.plugin.platform.VirtualDisplayController f$1 -> o
+    io.flutter.plugin.platform.PlatformViewsController$1 f$0 -> n
+    java.lang.Runnable f$2 -> p
+io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$1$e5c3C2OqVHT99mmO_tfarimG9XI -> io.flutter.plugin.platform.b:
     io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewCreationRequest f$1 -> b
     io.flutter.plugin.platform.PlatformViewsController$1 f$0 -> a
-io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$mrTTqqceK22Bx_mOvsp7tso--yo -> io.flutter.plugin.platform.b:
+io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$mrTTqqceK22Bx_mOvsp7tso--yo -> io.flutter.plugin.platform.c:
     io.flutter.plugin.platform.PlatformViewsController f$0 -> n
-io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$w2AODWB0BzvCt5q_c3ufSP3Z0mw -> io.flutter.plugin.platform.c:
+io.flutter.plugin.platform.-$$Lambda$PlatformViewsController$w2AODWB0BzvCt5q_c3ufSP3Z0mw -> io.flutter.plugin.platform.d:
     io.flutter.plugin.platform.PlatformViewsController f$0 -> a
     int f$1 -> b
-io.flutter.plugin.platform.AccessibilityEventsDelegate -> io.flutter.plugin.platform.d:
+io.flutter.plugin.platform.AccessibilityEventsDelegate -> io.flutter.plugin.platform.e:
     io.flutter.view.AccessibilityBridge accessibilityBridge -> a
     boolean requestSendAccessibilityEvent(android.view.View,android.view.View,android.view.accessibility.AccessibilityEvent) -> a
     void setAccessibilityBridge(io.flutter.view.AccessibilityBridge) -> b
-io.flutter.plugin.platform.PlatformPlugin -> io.flutter.plugin.platform.e:
+io.flutter.plugin.platform.PlatformPlugin -> io.flutter.plugin.platform.f:
     io.flutter.plugin.platform.PlatformPlugin$PlatformPluginDelegate platformPluginDelegate -> c
     io.flutter.embedding.engine.systemchannels.PlatformChannel$SystemChromeStyle currentTheme -> d
     io.flutter.embedding.engine.systemchannels.PlatformChannel$PlatformMessageHandler mPlatformMessageHandler -> f
@@ -25132,7 +25138,7 @@ io.flutter.plugin.platform.PlatformPlugin -> io.flutter.plugin.platform.e:
     void setSystemChromeEnabledSystemUIOverlays(java.util.List) -> x
     void setSystemChromePreferredOrientations(int) -> y
     void setSystemChromeSystemUIOverlayStyle(io.flutter.embedding.engine.systemchannels.PlatformChannel$SystemChromeStyle) -> z
-io.flutter.plugin.platform.PlatformPlugin$1 -> io.flutter.plugin.platform.e$a:
+io.flutter.plugin.platform.PlatformPlugin$1 -> io.flutter.plugin.platform.f$a:
     io.flutter.plugin.platform.PlatformPlugin this$0 -> a
     void popSystemNavigator() -> a
     void setSystemUiChangeListener() -> b
@@ -25147,35 +25153,35 @@ io.flutter.plugin.platform.PlatformPlugin$1 -> io.flutter.plugin.platform.e$a:
     boolean clipboardHasStrings() -> k
     java.lang.CharSequence getClipboardData(io.flutter.embedding.engine.systemchannels.PlatformChannel$ClipboardContentFormat) -> l
     void showSystemUiMode(io.flutter.embedding.engine.systemchannels.PlatformChannel$SystemUiMode) -> m
-io.flutter.plugin.platform.PlatformPlugin$2 -> io.flutter.plugin.platform.e$b:
+io.flutter.plugin.platform.PlatformPlugin$2 -> io.flutter.plugin.platform.f$b:
     io.flutter.plugin.platform.PlatformPlugin this$0 -> a
-io.flutter.plugin.platform.PlatformPlugin$3 -> io.flutter.plugin.platform.e$c:
+io.flutter.plugin.platform.PlatformPlugin$3 -> io.flutter.plugin.platform.f$c:
     int[] $SwitchMap$io$flutter$embedding$engine$systemchannels$PlatformChannel$SystemUiOverlay -> b
     int[] $SwitchMap$io$flutter$embedding$engine$systemchannels$PlatformChannel$Brightness -> c
     int[] $SwitchMap$io$flutter$embedding$engine$systemchannels$PlatformChannel$HapticFeedbackType -> a
-io.flutter.plugin.platform.PlatformPlugin$PlatformPluginDelegate -> io.flutter.plugin.platform.e$d:
+io.flutter.plugin.platform.PlatformPlugin$PlatformPluginDelegate -> io.flutter.plugin.platform.f$d:
     boolean popSystemNavigator() -> a
-io.flutter.plugin.platform.PlatformView -> io.flutter.plugin.platform.f:
+io.flutter.plugin.platform.PlatformView -> io.flutter.plugin.platform.g:
     void dispose() -> d
     void onFlutterViewAttached(android.view.View) -> e
     void onFlutterViewDetached() -> f
     void onInputConnectionUnlocked() -> g
     void onInputConnectionLocked() -> h
     android.view.View getView() -> i
-io.flutter.plugin.platform.PlatformViewFactory -> io.flutter.plugin.platform.g:
+io.flutter.plugin.platform.PlatformViewFactory -> io.flutter.plugin.platform.h:
     io.flutter.plugin.common.MessageCodec createArgsCodec -> a
     io.flutter.plugin.platform.PlatformView create(android.content.Context,int,java.lang.Object) -> a
     io.flutter.plugin.common.MessageCodec getCreateArgsCodec() -> b
-io.flutter.plugin.platform.PlatformViewRegistry -> io.flutter.plugin.platform.h:
-io.flutter.plugin.platform.PlatformViewRegistryImpl -> io.flutter.plugin.platform.i:
+io.flutter.plugin.platform.PlatformViewRegistry -> io.flutter.plugin.platform.i:
+io.flutter.plugin.platform.PlatformViewRegistryImpl -> io.flutter.plugin.platform.j:
     java.util.Map viewFactories -> a
     io.flutter.plugin.platform.PlatformViewFactory getFactory(java.lang.String) -> a
-io.flutter.plugin.platform.PlatformViewsAccessibilityDelegate -> io.flutter.plugin.platform.j:
-    void attachAccessibilityBridge(io.flutter.view.AccessibilityBridge) -> a
-    void detachAccessibiltyBridge() -> b
+io.flutter.plugin.platform.PlatformViewsAccessibilityDelegate -> io.flutter.plugin.platform.k:
+    void detachAccessibilityBridge() -> a
+    void attachAccessibilityBridge(io.flutter.view.AccessibilityBridge) -> b
     android.view.View getPlatformViewById(java.lang.Integer) -> c
     boolean usesVirtualDisplay(java.lang.Integer) -> d
-io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform.k:
+io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform.l:
     java.util.HashMap contextToPlatformView -> j
     int nextOverlayLayerId -> n
     java.util.HashMap vdControllers -> i
@@ -25185,6 +25191,7 @@ io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform
     boolean synchronizeToNativeViewHierarchy -> p
     io.flutter.embedding.android.MotionEventTracker motionEventTracker -> s
     io.flutter.plugin.platform.AccessibilityEventsDelegate accessibilityEventsDelegate -> h
+    io.flutter.embedding.android.FlutterView flutterView -> d
     java.util.HashSet currentFrameUsedPlatformViewIds -> r
     io.flutter.embedding.android.AndroidTouchProcessor androidTouchProcessor -> b
     io.flutter.view.TextureRegistry textureRegistry -> e
@@ -25194,7 +25201,6 @@ io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform
     io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewsHandler channelHandler -> t
     io.flutter.embedding.engine.systemchannels.PlatformViewsChannel platformViewsChannel -> g
     android.util.SparseArray platformViews -> k
-    android.view.View flutterView -> d
     android.util.SparseArray platformViewParent -> l
     void destroyOverlaySurfaces() -> A
     void detach() -> B
@@ -25222,21 +25228,22 @@ io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform
     java.util.List parsePointerCoordsList(java.lang.Object,float) -> X
     android.view.MotionEvent$PointerProperties parsePointerProperties(java.lang.Object) -> Y
     java.util.List parsePointerPropertiesList(java.lang.Object) -> Z
-    void attachAccessibilityBridge(io.flutter.view.AccessibilityBridge) -> a
-    android.view.MotionEvent toMotionEvent(float,io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewTouch,boolean) -> a0
-    void detachAccessibiltyBridge() -> b
-    int toPhysicalPixels(double) -> b0
+    void detachAccessibilityBridge() -> a
+    void removeOverlaySurfaces() -> a0
+    void attachAccessibilityBridge(io.flutter.view.AccessibilityBridge) -> b
+    android.view.MotionEvent toMotionEvent(float,io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewTouch,boolean) -> b0
     android.view.View getPlatformViewById(java.lang.Integer) -> c
-    void unlockInputConnection(io.flutter.plugin.platform.VirtualDisplayController) -> c0
+    int toPhysicalPixels(double) -> c0
     boolean usesVirtualDisplay(java.lang.Integer) -> d
-    boolean validateDirection(int) -> d0
+    void unlockInputConnection(io.flutter.plugin.platform.VirtualDisplayController) -> d0
     boolean access$000(int) -> e
-    void validateVirtualDisplayDimensions(int,int) -> e0
+    boolean validateDirection(int) -> e0
     io.flutter.plugin.platform.PlatformViewRegistryImpl access$100(io.flutter.plugin.platform.PlatformViewsController) -> f
+    void validateVirtualDisplayDimensions(int,int) -> f0
     io.flutter.plugin.editing.TextInputPlugin access$1000(io.flutter.plugin.platform.PlatformViewsController) -> g
     void access$1100(io.flutter.plugin.platform.PlatformViewsController,io.flutter.plugin.platform.VirtualDisplayController) -> h
-    void access$1200(io.flutter.plugin.platform.PlatformViewsController,io.flutter.plugin.platform.VirtualDisplayController) -> i
-    boolean access$1302(io.flutter.plugin.platform.PlatformViewsController,boolean) -> j
+    boolean access$1202(io.flutter.plugin.platform.PlatformViewsController,boolean) -> i
+    void access$1300(io.flutter.plugin.platform.PlatformViewsController,io.flutter.plugin.platform.VirtualDisplayController) -> j
     io.flutter.embedding.engine.systemchannels.PlatformViewsChannel access$1400(io.flutter.plugin.platform.PlatformViewsController) -> k
     android.content.Context access$200(io.flutter.plugin.platform.PlatformViewsController) -> l
     android.util.SparseArray access$300(io.flutter.plugin.platform.PlatformViewsController) -> m
@@ -25245,15 +25252,15 @@ io.flutter.plugin.platform.PlatformViewsController -> io.flutter.plugin.platform
     void access$600(io.flutter.plugin.platform.PlatformViewsController,int,int) -> p
     io.flutter.view.TextureRegistry access$700(io.flutter.plugin.platform.PlatformViewsController) -> q
     io.flutter.plugin.platform.AccessibilityEventsDelegate access$800(io.flutter.plugin.platform.PlatformViewsController) -> r
-    android.view.View access$900(io.flutter.plugin.platform.PlatformViewsController) -> s
+    io.flutter.embedding.android.FlutterView access$900(io.flutter.plugin.platform.PlatformViewsController) -> s
     void attach(android.content.Context,io.flutter.view.TextureRegistry,io.flutter.embedding.engine.dart.DartExecutor) -> t
     void attachTextInputPlugin(io.flutter.plugin.editing.TextInputPlugin) -> u
     void attachToFlutterRenderer(io.flutter.embedding.engine.renderer.FlutterRenderer) -> v
-    void attachToView(android.view.View) -> w
+    void attachToView(io.flutter.embedding.android.FlutterView) -> w
     boolean checkInputConnectionProxy(android.view.View) -> x
     io.flutter.embedding.engine.FlutterOverlaySurface createOverlaySurface() -> y
     io.flutter.embedding.engine.FlutterOverlaySurface createOverlaySurface(io.flutter.embedding.android.FlutterImageView) -> z
-io.flutter.plugin.platform.PlatformViewsController$1 -> io.flutter.plugin.platform.k$a:
+io.flutter.plugin.platform.PlatformViewsController$1 -> io.flutter.plugin.platform.l$a:
     io.flutter.plugin.platform.PlatformViewsController this$0 -> a
     void clearFocus(int) -> a
     void synchronizeToNativeViewHierarchy(boolean) -> b
@@ -25267,10 +25274,8 @@ io.flutter.plugin.platform.PlatformViewsController$1 -> io.flutter.plugin.platfo
     void ensureValidAndroidVersion(int) -> j
     void lambda$createVirtualDisplayForPlatformView$0(io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewCreationRequest,android.view.View,boolean) -> k
     void lambda$createVirtualDisplayForPlatformView$0$PlatformViewsController$1(io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewCreationRequest,android.view.View,boolean) -> l
-io.flutter.plugin.platform.PlatformViewsController$1$1 -> io.flutter.plugin.platform.k$a$a:
-    io.flutter.plugin.platform.VirtualDisplayController val$vdController -> n
-    java.lang.Runnable val$onComplete -> o
-    io.flutter.plugin.platform.PlatformViewsController$1 this$1 -> p
+    void lambda$resizePlatformView$1(io.flutter.plugin.platform.VirtualDisplayController,java.lang.Runnable) -> m
+    void lambda$resizePlatformView$1$PlatformViewsController$1(io.flutter.plugin.platform.VirtualDisplayController,java.lang.Runnable) -> n
 io.flutter.plugin.platform.SingleViewPresentation$AccessibilityDelegatingFrameLayout -> io.flutter.plugin.platform.SingleViewPresentation$a:
     android.view.View embeddedView -> o
     io.flutter.plugin.platform.AccessibilityEventsDelegate accessibilityEventsDelegate -> n
@@ -25304,7 +25309,7 @@ io.flutter.plugin.platform.SingleViewPresentation$WindowManagerHandler -> io.flu
     void removeView(java.lang.Object[]) -> c
     void removeViewImmediate(java.lang.Object[]) -> d
     void updateViewLayout(java.lang.Object[]) -> e
-io.flutter.plugin.platform.VirtualDisplayController -> io.flutter.plugin.platform.l:
+io.flutter.plugin.platform.VirtualDisplayController -> io.flutter.plugin.platform.m:
     android.content.Context context -> a
     android.hardware.display.VirtualDisplay virtualDisplay -> f
     android.view.View$OnFocusChangeListener focusChangeListener -> e
@@ -25322,16 +25327,16 @@ io.flutter.plugin.platform.VirtualDisplayController -> io.flutter.plugin.platfor
     void onInputConnectionLocked() -> g
     void onInputConnectionUnlocked() -> h
     void resize(int,int,java.lang.Runnable) -> i
-io.flutter.plugin.platform.VirtualDisplayController$1 -> io.flutter.plugin.platform.l$a:
+io.flutter.plugin.platform.VirtualDisplayController$1 -> io.flutter.plugin.platform.m$a:
     android.view.View val$embeddedView -> n
     java.lang.Runnable val$onNewSizeFrameAvailable -> o
-io.flutter.plugin.platform.VirtualDisplayController$1$1 -> io.flutter.plugin.platform.l$a$a:
+io.flutter.plugin.platform.VirtualDisplayController$1$1 -> io.flutter.plugin.platform.m$a$a:
     io.flutter.plugin.platform.VirtualDisplayController$1 this$1 -> n
-io.flutter.plugin.platform.VirtualDisplayController$OneTimeOnDrawListener -> io.flutter.plugin.platform.l$b:
+io.flutter.plugin.platform.VirtualDisplayController$OneTimeOnDrawListener -> io.flutter.plugin.platform.m$b:
     java.lang.Runnable mOnDrawRunnable -> b
     android.view.View mView -> a
     void schedule(android.view.View,java.lang.Runnable) -> a
-io.flutter.plugin.platform.VirtualDisplayController$OneTimeOnDrawListener$1 -> io.flutter.plugin.platform.l$b$a:
+io.flutter.plugin.platform.VirtualDisplayController$OneTimeOnDrawListener$1 -> io.flutter.plugin.platform.m$b$a:
     io.flutter.plugin.platform.VirtualDisplayController$OneTimeOnDrawListener this$0 -> n
 io.flutter.plugins.firebase.auth.-$$Lambda$AuthStateChannelStreamHandler$6SO47c4OzFAbDkBTIg_ndig00nw -> io.flutter.plugins.firebase.auth.a:
     java.util.Map f$1 -> b
