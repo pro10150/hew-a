@@ -1,16 +1,34 @@
-# se
+# Hew-a 🍳
 
-A new Flutter project.
+Tinder-style recipe discovery app. Swipe through menus, save the ones you like, and find dishes you can cook with what is already in your fridge.
 
-## Getting Started
+Third-year university project, team (2022).
 
-This project is a starting point for a Flutter application.
+> Archived. Code is kept as it was submitted; only this README was rewritten later for clarity.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+- Swipe feed of recipes, like / skip
+- Virtual fridge: add ingredients, get menus that match
+- Allergy filter
+- Post your own recipe with photos, steps and ingredients
+- Comments, likes and follows
+- Personalized picks from an item-based recommender
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Tech
+| Part | Stack |
+|---|---|
+| App | Flutter (Dart), GetX, Dio |
+| Backend | Firebase Auth, Firebase Storage, SQLite |
+| Recommender | Python, Flask, pandas, scikit-learn (cosine similarity, item-item) |
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Run
+```bash
+flutter pub get
+flutter run
+```
+Recommender service:
+```bash
+cd lib/recommendation
+pip install flask pandas numpy scipy scikit-learn
+python app.py
+```
